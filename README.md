@@ -22,7 +22,7 @@ See {file:sample_driver.rb} to see an example of using the Litle API.
 
 You can check out the latest source from git:
 
-    git clone git://github.com/gformich/LitleOnline_XML_v8_Ruby.git
+    git clone git@github.com:LitleCo/litle-sdk-for-ruby.git
 
 ### Building the gem from source
 
