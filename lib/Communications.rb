@@ -49,11 +49,7 @@ class Communications
   		http.use_ssl = true
 		  http.verify_mode = OpenSSL::SSL::VERIFY_PEER
 	 	 end
-		
-		#
-		# NOTE GF - what do we setup for HTTP timeout
-		# is this something that the merchant can override?
-		#
+	
 		#http.read_timeout= 60
 		http_post = Net::HTTP::Post.new(url.request_uri)
 		http_post.body = post_data
@@ -68,7 +64,7 @@ class Communications
 		# validate response, only an HTTP 200 will work, redirects are not followed 
 		case response_xml
 			when Net::HTTPOK 
-     			 	return response_xml
+     			 	return response_xml.body
      			else
      			   raise("Error with http http_post_request, code:" + response_xml.header.code)
      		end

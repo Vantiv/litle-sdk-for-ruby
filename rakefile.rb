@@ -5,7 +5,7 @@ spec = Gem::Specification.new do |s|
   s.description  = File.read(File.join(File.dirname(__FILE__), 'DESCRIPTION'))
   s.requirements = 
       [ 'Contact  ClientSDKSupport@litle.com for more information' ]
-  s.version     = "0.1.0"
+  s.version     = "1.8.8"
   s.author      = "Litle & Co"
   s.email       = "RubySupport@litle.com"
   s.homepage    = "http://www.litle.com"
@@ -13,7 +13,7 @@ spec = Gem::Specification.new do |s|
   s.required_ruby_version = '>=1.9'
   s.files       = Dir['**/**']
   s.executables = [ 'sample_driver.rb', 'Setup.rb' ]
-  s.test_files  = Dir["test/test*.rb"]
+  s.test_files  = Dir["test/unit*.rb"]
   s.has_rdoc    = true
   s.add_dependency('i18n')
   s.add_dependency('xml-simple')
