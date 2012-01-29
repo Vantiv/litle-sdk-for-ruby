@@ -16,21 +16,22 @@ See LICENSE file for details on using this software.
 
 See {file:sample_driver.rb} to see an example of using the Litle API.
 
-Source Code available from : https://github.com/gformich/LitleOnline_XML_v8_Ruby
+Source Code available from : https://github.com/LitleCo/litle-sdk-for-ruby
 
 Please contact Litle & Co. to receive valid merchant credentials in order to run tests successfully.
 
 Setup:
 
-1) Install the Litle API gem from rubygems*,* this will install the latest API gem in your Ruby environment.  Our gem is available publicly from rubygems.org
-
+1) Install the LitleOnline Ruby gem from rubygems.org, this will install the latest API gem in your Ruby environment.
+Our gem is available publicly from rubygems.org.  Use the command below to install.
 
 >sudo gem install LitleOnline
 
-2) Once the gem is installed run our setup program to generate a configuration file.  This file resides in $HOME/.litle_api_config.yml
+2) Once the gem is installed run our setup program to generate a configuration file.  This file resides in your home directory
+$HOME/.litle_api_config.yml
 
 
-    NOTICE you can setup $LITLE_CONFIG_DIR to locate your configuration file in a location other than the $HOME Directory, the the file will reside in $LITLE_CONFIG_DIR/.litle_api_config.yml
+    NOTICE you can set the environment variable $LITLE_CONFIG_DIR to locate your configuration file in a location other than the $HOME Directory, the the file will reside in $LITLE_CONFIG_DIR/.litle_api_config.yml
 
 
 >Setup.rb 
@@ -44,8 +45,8 @@ please input Litle schema version V8. choice from 1 to 10
 Please input litle url (choice from given such as 'cert' or directly input other URL):
 cert => https://cert.litle.com/vap/communicator/online
 precert => https://precert.litle.com/vap/communicator/online
-production1 => https://payment.litle.com/vap/communicator/online
-production2 => https://payment2.litle.com/vap/communicator/online
+production1 => https://payments.litle.com/vap/communicator/online
+production2 => https://payments2.litle.com/vap/communicator/online
 cert
 please input the proxy address, if no proxy hit enter key: 
 
@@ -99,4 +100,4 @@ Message: Valid Format
 Litle Transaction ID: 819795009551648291
 
 
-Please contact Lilte & Co. with any further questions. 
+Please contact Lilte & Co. with any further questions.   You can reach us at RubySupport@litle.com.
