@@ -35,7 +35,7 @@ For more details on setup see our instructions [here](https://github.com/LitleCo
 
 3.) Create a ruby file similar to:  
 
-'''ruby
+```ruby
 require 'LitleOnline'
 
 # Visa $10 Sale
@@ -57,7 +57,7 @@ response = LitleOnlineRequest.sale(litleSaleTxn)
 # display result
 puts "Message: "+ response.message
 puts "Litle Transaction ID: "+ response.creditResponse.litleTxnId
-'''
+```
 
 3) Next run this file using ruby. You should see the following result provided you have connectivity to the Litle certification environment.  You will see an HTTP error if you don't have access to the Litle URL
 
