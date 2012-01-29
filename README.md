@@ -31,10 +31,11 @@ Our gem is available publicly from rubygems.org.  Use the command below to insta
 2) Once the gem is installed run our setup program to generate a configuration file.  The configuration file resides in your home directory
 $HOME/.litle_SDK_config.yml
 
-For more details on setup see our instructions [here](https://github.com/LitleCo/litle-sdk-for-ruby/SETUP.md)
+For more details on setup see our instructions [here](https://github.com/LitleCo/litle-sdk-for-ruby/blob/master/SETUP.md)
 
-3.) Create a sample ruby file similar to:
+3.) Create a ruby file similar to:  
 
+<script src="https://gist.github.com/1696940.js"> </script>
 
 
 3) Next run this file using ruby. You should see the following result provided you have connectivity to the Litle certification environment.  You will see an HTTP error if you don't have access to the Litle URL
