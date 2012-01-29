@@ -6,7 +6,8 @@ Running the built in configuration file generator
 The Ruby SDK shops with a built in program which can be used to generate your specific configuration.
 
 This program runs as follows:
-
+   
+```
 >Setup.rb 
 Welcome to Litle Ruby_SDK
 please input your user name:
@@ -26,6 +27,7 @@ please input the proxy address, if no proxy hit enter key:
 please input the proxy port, if no proxy hit enter key: 
 
 The Litle configuration file has been generated, the file is locate at /<your-home-directory>/.litle_SDK_config.yml 
+```
 
 Modifying your configuration
 ----------------------------
@@ -37,9 +39,11 @@ NOTICE you can set the environment variable $LITLE_CONFIG_DIR to locate your con
 
 Sample configuration file contents
 ----------------------------------
+```
 user: test_user
 password: phi_phi_ffff
 version: 8.4
 url: https://precert.litle.com/vap/communicator/online
 proxy_addr: yourproxyserver
 poxy_port: 8080
+```

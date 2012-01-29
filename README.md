@@ -61,8 +61,8 @@ puts "Litle Transaction ID: "+ response.creditResponse.litleTxnId
 
 3) Next run this file using ruby. You should see the following result provided you have connectivity to the Litle certification environment.  You will see an HTTP error if you don't have access to the Litle URL
 
-Message: Valid Format
-Litle Transaction ID: <your-numeric-litle-txn-id>
+    Message: Valid Format
+    Litle Transaction ID: <your-numeric-litle-txn-id>
 
 
 Please contact Lilte & Co. with any further questions.   You can reach us at RubySupport@litle.com.
