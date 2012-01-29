@@ -1,103 +1,46 @@
-# Litle Online API
+Litle Online Ruby SDK
+=====================
 
+About Litle
+------------
 [Litle &amp; Co.](http://www.litle.com) powers the payment processing engines for leading companies that sell directly to consumers through  internet retail, direct response marketing (TV, radio and telephone), and online services. Litle & Co. is the leading, independent authority in card-not-present (CNP) commerce, transaction processing and merchant services.
 
-The Litle Online API is a Ruby implementation of  the [Litle &amp; Co.](http://www.litle.com) XML API.
-This API supports the HTTPS interface and requires coordination with the Litle team in order to be 
-provided with credentials for accessing our systems.
-  
-This Ruby API supports all of the functionality present in Litle XML v8.  Please request a copy of the
-XSD from your implementations coordinator at Litle.
 
-This API is implemented to support the Ruby programming language and was created by Litle & Co. It is intended use is for online transactions processing on the Litle payments engine.  This API is currently in the alpha testing phase and is not generally available
-or supported by Litle.
+About this SDK
+--------------
+The Litle Ruby SDK is a Ruby implementation of the [Litle &amp; Co.](http://www.litle.com). XML API. This SDK was created to make it as easy as possible to connect process your payments with Litle.  This SDK utilizes  the HTTPS protocol to securely connect to Litle.  Using the SDK requires coordination with the Litle team in order to be provided with credentials for accessing our systems.
+
+Our Ruby SDK supports all of the functionality present in Litle XML v8. Please see the online copy of our XSD for Litle XML to get more details on what is supported by the Litle payments engine.
+
+This SDK is implemented to support the Ruby programming language and was created by Litle & Co. It is intended use is for online transactions processing utilizing your account on the Litle payments engine.
 
 See LICENSE file for details on using this software.
 
-See {file:sample_driver.rb} to see an example of using the Litle API.
-
 Source Code available from : https://github.com/LitleCo/litle-sdk-for-ruby
 
-Please contact Litle & Co. to receive valid merchant credentials in order to run tests successfully.
+Please contact [Litle &amp; Co.](http://www.litle.com) to receive valid merchant credentials in order to run tests successfully or if you require assistance in any way.  We are reachable at MerchantSDKSupport@litle.com
 
-Setup:
+Setup
+-----
 
-1) Install the LitleOnline Ruby gem from rubygems.org, this will install the latest API gem in your Ruby environment.
+1) Install the LitleOnline Ruby gem from rubygems.org, this will install the latest SDK gem in your Ruby environment.
 Our gem is available publicly from rubygems.org.  Use the command below to install.
 
 >sudo gem install LitleOnline
 
-2) Once the gem is installed run our setup program to generate a configuration file.  This file resides in your home directory
-$HOME/.litle_api_config.yml
+2) Once the gem is installed run our setup program to generate a configuration file.  The configuration file resides in your home directory
+$HOME/.litle_SDK_config.yml
 
-
-    NOTICE you can set the environment variable $LITLE_CONFIG_DIR to locate your configuration file in a location other than the $HOME Directory, the the file will reside in $LITLE_CONFIG_DIR/.litle_api_config.yml
-
-
->Setup.rb 
-Welcome to Litle Ruby_API
-please input your user name:
-test_user
-please input your password:
-phi_phi_ffff
-please input Litle schema version V8. choice from 1 to 10
-4
-Please input litle url (choice from given such as 'cert' or directly input other URL):
-cert => https://cert.litle.com/vap/communicator/online
-precert => https://precert.litle.com/vap/communicator/online
-production1 => https://payments.litle.com/vap/communicator/online
-production2 => https://payments2.litle.com/vap/communicator/online
-cert
-please input the proxy address, if no proxy hit enter key: 
-
-please input the proxy port, if no proxy hit enter key: 
-
-The Litle configuration file has been generated, the file is locate at /usr/local/litle-home/gformich/.litle_api_config.yml
-
-You may change the configuration values at anytime by running Setup.rb, or opening the configuration file directly in the editor of your choosing and changing the appropriate fields.
-
-
-Sample Litle configuration file.  This file can optionally be edited as needed to make updates:
-
-
-user: test_user
-password: phi_phi_ffff
-version: 8.4
-url: https://cert.litle.com/vap/communicator/online
-proxy_addr:
-poxy_port:
+For more details on setup see our instructions [here](https://github.com/LitleCo/litle-sdk-for-ruby/SETUP.md)
 
 3.) Create a sample ruby file similar to:
 
 
-require 'LitleOnline'
-creditTxn = {
-    'merchantId' => '087900',
-    'reportGroup'=>'rpt_grp',
-    'orderId'=>'12344',
-    'card'=>{
-    'type'=>'VI',
-    'number' =>'4100000000000001',
-    'expDate' =>'1210'},
-    'orderSource'=>'ecommerce',
-    'amount'=>'106'
-    }
 
-# perform a test credit transaction
-response= LitleOnlineRequest.credit(creditTxn)
-
-#display results
-puts "Message: "+response.message
-puts "Litle Transaction ID: "+response.creditResponse.litleTxnId
-
-
-
-3) Next run this file using ruby. You should see the following result provided you have connectivity to the Litle certification environment.  You will see an HTTP error if you don't have access to the Litle site
-
-
+3) Next run this file using ruby. You should see the following result provided you have connectivity to the Litle certification environment.  You will see an HTTP error if you don't have access to the Litle URL
 
 Message: Valid Format
-Litle Transaction ID: 819795009551648291
+Litle Transaction ID: <your-numeric-litle-txn-id>
 
 
 Please contact Lilte & Co. with any further questions.   You can reach us at RubySupport@litle.com.
