@@ -35,8 +35,29 @@ For more details on setup see our instructions [here](https://github.com/LitleCo
 
 3.) Create a ruby file similar to:  
 
-<script src="https://gist.github.com/1696940.js"> </script>
+'''ruby
+require 'LitleOnline'
 
+# Visa $10 Sale
+litleSaleTxn = {
+    'merchantId' => '087900',
+    'reportGroup'=>'rpt_grp',
+    'orderId'=>'1234567',
+    'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1212'},
+        'orderSource'=>'ecommerce',
+        'amount'=>'1000'
+    }
+
+# Peform the transaction on the Litle Platform
+response = LitleOnlineRequest.sale(litleSaleTxn)
+
+# display result
+puts "Message: "+ response.message
+puts "Litle Transaction ID: "+ response.creditResponse.litleTxnId
+'''
 
 3) Next run this file using ruby. You should see the following result provided you have connectivity to the Litle certification environment.  You will see an HTTP error if you don't have access to the Litle URL
 
