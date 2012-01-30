@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 =begin
-Copyright (c) 20011 Litle & Co.
+Copyright (c) 2011 Litle & Co.
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
