@@ -43,9 +43,7 @@ class LitleOnlineRequest
 		}
 		Checker.requiredMissing(hash_out)
 	end 	
-	def LitleOnlineRequest.request()
-		
-	end
+
 	def LitleOnlineRequest.authorization(hash_in)
 		hash_out = {
 		'@id' => hash_in['id'],
