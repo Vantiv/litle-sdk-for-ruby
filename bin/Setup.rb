@@ -34,10 +34,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 class Setup
   attr_reader :handle, :path
 
-  # TODO GF - handle the case where we are running setup and this file already exists
-
   def initialize(filename)
-	# TODO GF Update - made the file readwrite for user only so that credentials are more secure
 	@handle = File.new(filename, File::CREAT|File::TRUNC|File::RDWR, 0600)	
 	File.open(filename, "w") do |f|
 		puts "Welcome to Litle Ruby_API"

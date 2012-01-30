@@ -30,7 +30,7 @@ require 'test/unit'
 require 'mocha'
 
 class Newtest < Test::Unit::TestCase
-      def test_simple
+      def test_simple        
           hash = {
                   'merchantId' => '101',
 		  'id'=>'001',
@@ -44,7 +44,7 @@ class Newtest < Test::Unit::TestCase
                            'expDate' =>'1210'
                    }}
                                    
-	   Communications.expects(:http_post).with(regexp_matches(/<litleOnlineRequest merchanfdsalf;jsdaltId="101" .*/m))
+	   Communications.expects(:http_post).with(regexp_matches(/<litleOnlineRequest merchantId="101" .*/m))
 	   XMLObject.expects(:new)
 	   
            response = LitleOnlineRequest.authorization(hash)

@@ -8,7 +8,7 @@ spec = Gem::Specification.new do |s|
   s.version     = "1.8.10"
   s.author      = "Litle & Co"
   s.email       = "RubySupport@litle.com"
-  s.homepage    = "http://www.litle.com"
+  s.homepage    = "http://www.litle.com/developers"
   s.platform    = Gem::Platform::RUBY
   s.required_ruby_version = '>=1.9'
   s.files       = Dir['**/**']
