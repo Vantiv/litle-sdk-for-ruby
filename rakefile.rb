@@ -13,11 +13,12 @@ spec = Gem::Specification.new do |s|
   s.required_ruby_version = '>=1.9'
   s.files       = Dir['**/**']
   s.executables = [ 'sample_driver.rb', 'Setup.rb' ]
-  s.test_files  = Dir["test/unit*.rb"]
+  s.test_files  = Dir["test/unit/ts_unit.rb"]
   s.has_rdoc    = true
   s.add_dependency('i18n')
   s.add_dependency('xml-simple')
   s.add_dependency('activesupport')
   s.add_dependency('xml-object')
+  s.add_dependency('mocha')
 end
 Rake::GemPackageTask.new(spec).define
