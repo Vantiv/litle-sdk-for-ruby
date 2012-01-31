@@ -25,6 +25,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
 
+
 # make setup file executable
 
 # 
@@ -33,27 +34,23 @@ OTHER DEALINGS IN THE SOFTWARE.
 class Setup
   attr_reader :handle, :path
 
-  # TODO GF - handle the case where we are running setup and this file already exists
-
   def initialize(filename)
-	# TODO GF Update - made the file readwrite for user only so that credentials are more secure
 	@handle = File.new(filename, File::CREAT|File::TRUNC|File::RDWR, 0600)	
 	File.open(filename, "w") do |f|
-		puts "Welcome to Litle Ruby_API"
+		puts "Welcome to Litle Ruby_SDK"
 		puts "Please input your user name:"
 		f.puts  "user: "+ gets
 		puts "Please input your password:"
 		f.puts	"password: " + gets
 		puts "Please input your merchantId:"
 		f.puts	"merchantId: " + gets
-		puts "Please input Litle schema version V8. choice from 1 to 10"
-		f.puts	"version: 8." + gets
-		puts "Please input litle url (choice from given such as 'cert' or directly input other URL): \nsandbox => https://www.testlitle.com/sandbox/vap/communicator/online \ncert => https://cert.litle.com/vap/communicator/online \nprecert => https://precert.litle.com/vap/communicator/online \nproduction1 => https://payment.litle.com/vap/communicator/online \nproduction2 => https://payment2.litle.com/vap/communicator/online"
+		f.puts	"version: 8.10"
+		puts "Please choose Litle url from the following list (example: 'cert') or directly input another URL: \nsandbox => https://www.testlitle.com/sandbox/vap/communicator/online \ncert => https://cert.litle.com/vap/communicator/online \nprecert => https://precert.litle.com/vap/communicator/online \nproduction1 => https://payment.litle.com/vap/communicator/online \nproduction2 => https://payment2.litle.com/vap/communicator/online"
 		f.puts "url: " + Setup.choice(gets)
-		puts "please input the proxy address, if no proxy hit enter key: "
+		puts "Please input the proxy address, if no proxy hit enter key: "
 		f.puts	"proxy_addr: " + gets
-		puts "please input the proxy port, if no proxy hit enter key: "
-		f.puts	"poxy_port: " + gets
+		puts "Please input the proxy port, if no proxy hit enter key: "
+		f.puts	"proxy_port: " + gets
 	end
   end
 
@@ -93,11 +90,11 @@ end
 
 # make the config.yml file hidden
 # create a config file contain all the configuration data
-config_file = path + "/.litle_api_config.yml"
+config_file = path + "/.litle_SDK_config.yml"
 f = Setup.new(config_file)
 
 # return the path of the config file and the path file
 @path = File.expand_path(config_file)
-puts "The Litle configuration file has been generated, the file is locate at " + @path
+puts "The Litle configuration file has been generated, the file is located at: " + @path
 f.finished
 
