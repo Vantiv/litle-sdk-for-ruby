@@ -42,7 +42,6 @@ require 'LitleOnline'
 
 # Visa $10 Sale
 litleSaleTxn = {
-    'merchantId' => '087900',
     'reportGroup'=>'rpt_grp',
     'orderId'=>'1234567',
     'card'=>{
