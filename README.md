@@ -28,6 +28,8 @@ Our gem is available publicly from rubygems.org.  Use the command below to insta
 
 >sudo gem install LitleOnline
 
+Note: If you get errors, you might have to configure your proxy.
+
 2) Once the gem is installed run our setup program to generate a configuration file.  The configuration file resides in your home directory
 $HOME/.litle_SDK_config.yml
 
