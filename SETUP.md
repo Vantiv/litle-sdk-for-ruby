@@ -26,7 +26,7 @@ please input the proxy address, if no proxy hit enter key:
 
 please input the proxy port, if no proxy hit enter key: 
 
-The Litle configuration file has been generated, the file is locate at /<your-home-directory>/.litle_api_config.yml 
+The Litle configuration file has been generated, the file is locate at /<your-home-directory>/.litle_SDK_config.yml 
 ```
 
 Modifying your configuration
