@@ -23,26 +23,23 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
 
-require 'rake/gempackagetask'
-spec = Gem::Specification.new do |s| 
-  s.name         = "LitleOnline"
-  s.summary      = "Ruby SDK produced by Litle & Co. for online transaction processing using Litle XML format v8.10"
-  s.description  = File.read(File.join(File.dirname(__FILE__), 'DESCRIPTION'))
-  s.requirements = 
-      [ 'Contact  ClientSDKSupport@litle.com for more information' ]
-  s.version     = "8.10.0"
-  s.author      = "Litle & Co"
-  s.email       = "RubySupport@litle.com"
-  s.homepage    = "http://www.litle.com"
-  s.platform    = Gem::Platform::RUBY
-  s.required_ruby_version = '>=1.9'
-  s.files       = Dir['**/**']
-  s.executables = [ 'sample_driver.rb', 'Setup.rb' ]
-  s.test_files  = Dir["test/unit*.rb"]
-  s.has_rdoc    = true
-  s.add_dependency('i18n')
-  s.add_dependency('xml-simple')
-  s.add_dependency('activesupport')
-  s.add_dependency('xml-object')
+#
+# Handles round trip of transactions
+# 
+# Maps the request to Litle XML -> Sends XML payload to Litle via HTTP(S) -> formats XML response into a Ruby hash and returns it
+#
+class LitleXmlMapper 
+	def LitleXmlMapper.request(hash)
+
+		# create a Litle XML request from the nested hashes	
+		request_xml = Obj2xml.to_XML(hash)
+
+		# get the Litle Online Response from the API server over HTTP
+	 	response_xml = Communications.http_post(request_xml)
+
+		# create response object from xml returned form the Litle API
+		response_object = XMLObject.new(response_xml)
+
+		return response_object
+	end
 end
-Rake::GemPackageTask.new(spec).define
