@@ -28,6 +28,8 @@ Our gem is available publicly from rubygems.org.  Use the command below to insta
 
 >sudo gem install LitleOnline
 
+Note: If you get errors, you might have to configure your proxy.
+
 2) Once the gem is installed run our setup program to generate a configuration file.  The configuration file resides in your home directory
 $HOME/.litle_SDK_config.yml
 
@@ -56,7 +58,7 @@ response = LitleOnlineRequest.sale(litleSaleTxn)
 
 # display result
 puts "Message: "+ response.message
-puts "Litle Transaction ID: "+ response.creditResponse.litleTxnId
+puts "Litle Transaction ID: "+ response.saleResponse.litleTxnId
 ```
 
 3) Next run this file using ruby. You should see the following result provided you have connectivity to the Litle certification environment.  You will see an HTTP error if you don't have access to the Litle URL

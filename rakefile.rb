@@ -33,16 +33,17 @@ spec = Gem::Specification.new do |s|
   s.version     = "8.10.0"
   s.author      = "Litle & Co"
   s.email       = "RubySupport@litle.com"
-  s.homepage    = "http://www.litle.com"
+  s.homepage    = "http://www.litle.com/developers"
   s.platform    = Gem::Platform::RUBY
   s.required_ruby_version = '>=1.9'
   s.files       = Dir['**/**']
   s.executables = [ 'sample_driver.rb', 'Setup.rb' ]
-  s.test_files  = Dir["test/unit*.rb"]
+  s.test_files  = Dir["test/unit/ts_unit.rb"]
   s.has_rdoc    = true
   s.add_dependency('i18n')
   s.add_dependency('xml-simple')
   s.add_dependency('activesupport')
   s.add_dependency('xml-object')
+  s.add_dependency('mocha')
 end
 Rake::GemPackageTask.new(spec).define
