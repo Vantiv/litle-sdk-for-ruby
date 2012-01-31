@@ -23,9 +23,10 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
 
+#contains all of the underlying XML fields and specifications needed to create the transaction set
 
 class XMLFields
-#contains all of the underlying XML fields and specifications needed to create the transaction set
+
 	def XMLFields.contact(hash_in)
 		 hash_out = {
 		 :name => hash_in['name'],

@@ -23,6 +23,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
 
+#Sample Litle configuration file. This file can optionally be edited as needed to make updates
 
 require 'yaml'
 
