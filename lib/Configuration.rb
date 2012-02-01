@@ -40,16 +40,7 @@ class Configuration
 		rescue
 			raise 'Cannot find  the configuration file, ' + config_file + ', Please run Setup.rb first'
 		end
-		config_hash={
-		'user'=> config['user'],
-		'password'=> config['password'],
-		'merchantId'=>config['merchantId'],
-		'version' => config['version'],
-		'url'=> config['url'],
-		'proxy_port'=> config['proxy_port'],
-		'proxy_addr'=> config['proxy_addr']
-		}
 
-		return config_hash
+		return config
 	end
 end
