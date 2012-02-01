@@ -24,8 +24,8 @@ OTHER DEALINGS IN THE SOFTWARE.
 =end
 
 
-require '../../lib/LitleOnline'
-require '../../lib/LitleOnlineRequest'
+require 'lib/LitleOnline'
+require 'lib/LitleOnlineRequest'
 require 'test/unit'
 require 'mocha'
 
