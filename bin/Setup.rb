@@ -43,7 +43,8 @@ class Setup
 		puts "Please input your password:"
 		f.puts	"password: " + gets
 		puts "Please input your merchantId:"
-		f.puts	"merchantId: " + gets
+		f.puts "currency_merchant_map:"
+		f.puts "  DEFAULT: " + gets
 		f.puts	"version: 8.10"
 		puts "Please choose Litle url from the following list (example: 'cert') or directly input another URL: \nsandbox => https://www.testlitle.com/sandbox/vap/communicator/online \ncert => https://cert.litle.com/vap/communicator/online \nprecert => https://precert.litle.com/vap/communicator/online \nproduction1 => https://payment.litle.com/vap/communicator/online \nproduction2 => https://payment2.litle.com/vap/communicator/online"
 		f.puts "url: " + Setup.choice(gets)
