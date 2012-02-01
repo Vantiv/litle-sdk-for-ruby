@@ -46,7 +46,7 @@ class LitleOnlineRequest
 	end 	
 	def LitleOnlineRequest.setMerchantId(hash_in)
 		if (hash_in['merchantId'] == nil)
-			return @config_hash['merchantId']
+			return @config_hash['currency_merchant_map']['DEFAULT']
 		else 
 			return hash_in['merchantId']
 		end 
