@@ -24,17 +24,15 @@ OTHER DEALINGS IN THE SOFTWARE.
 =end
 
 
-require 'lib/LitleOnline'
-require 'lib/LitleOnlineRequest'
+require '../../lib/LitleOnline'
+require '../../lib/LitleOnlineRequest'
 require 'test/unit'
 require 'mocha'
 
 class Newtest < Test::Unit::TestCase
       def test_simple        
           hash = {
-                  'merchantId' => '101',
-		  'id'=>'001',
-                  'reportGroup'=>'Planets',
+		  'reportGroup'=>'Planets',
                   'orderId'=>'12344',
                   'amount'=>'106',
                   'orderSource'=>'ecommerce',
@@ -44,7 +42,7 @@ class Newtest < Test::Unit::TestCase
                            'expDate' =>'1210'
                    }}
                                    
-	   Communications.expects(:http_post).with(regexp_matches(/<litleOnlineRequest merchantId="101" .*/m))
+	   Communications.expects(:http_post).with(regexp_matches(/<litleOnlineRequest .*/m))
 	   XMLObject.expects(:new)
 	   
            response = LitleOnlineRequest.authorization(hash)
@@ -52,10 +50,9 @@ class Newtest < Test::Unit::TestCase
 	
 	def test_authorization_missing_attributes
 	    hash={
-		  'id' => '002',
-                  'orderId'=>'12344',
 		  'reportGroup'=>'Planets',
                   'amount'=>'106',
+		
                   'orderSource'=>'ecommerce',
                   'card'=>{
                            'type'=>'VI', 
@@ -64,12 +61,11 @@ class Newtest < Test::Unit::TestCase
                  }}
 
 	    exception = assert_raise(RuntimeError){LitleOnlineRequest.authorization(hash)}
-	    assert_match /Missing Required Field: @merchantId!!!!/, exception.message	
+	    assert_match /Missing Required Field: orderId!!!!/, exception.message	
 	end
 
 	def test_authorization_attributes
 	    hash={
-		  'merchantId' => '101',
                   'reportGroup'=>'Planets',
 		  'id' => '003',
                   'orderId'=>'12344',
@@ -89,7 +85,6 @@ class Newtest < Test::Unit::TestCase
 
 	def test_authorization_elements
 	    hash={
-		  'merchantId' => '101',
                   'reportGroup'=>'Planets',
 		  'id' => '004',
                   'orderId'=>'12344',
@@ -109,7 +104,6 @@ class Newtest < Test::Unit::TestCase
 
 	def test_authorization_card_field
 	    hash={
-		  'merchantId' => '101',
                   'reportGroup'=>'Planets',
 		  'id' => '005',
                   'orderId'=>'12344',
@@ -129,7 +123,6 @@ class Newtest < Test::Unit::TestCase
 
 	def test_sale_card_field
 	    hash={
-		  'merchantId' => '101',
                   'reportGroup'=>'Planets',
 		  'id' => '006',
                   'orderId'=>'12344',
