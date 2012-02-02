@@ -23,24 +23,23 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
 
-
 #
 # Handles round trip of transactions
-# 
+#
 # Maps the request to Litle XML -> Sends XML payload to Litle via HTTP(S) -> formats XML response into a Ruby hash and returns it
 #
-class LitleXmlMapper 
-	def LitleXmlMapper.request(hash)
+class LitleXmlMapper
+  def LitleXmlMapper.request(hash,config_hash)
 
-		# create a Litle XML request from the nested hashes	
-		request_xml = Obj2xml.to_XML(hash)
+    # create a Litle XML request from the nested hashes
+    request_xml = Obj2xml.to_XML(hash)
 
-		# get the Litle Online Response from the API server over HTTP
-	 	response_xml = Communications.http_post(request_xml)
+    # get the Litle Online Response from the API server over HTTP
+    response_xml = Communications.http_post(request_xml,config_hash)
 
-		# create response object from xml returned form the Litle API
-		response_object = XMLObject.new(response_xml)
+    # create response object from xml returned form the Litle API
+    response_object = XMLObject.new(response_xml)
 
-		return response_object
-	end
+    return response_object
+  end
 end

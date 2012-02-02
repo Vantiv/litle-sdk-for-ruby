@@ -27,31 +27,30 @@ OTHER DEALINGS IN THE SOFTWARE.
 # Used to Handle verification of Ruby Hash data
 #
 class Checker
-	
-	#checks for empty,flagged and null hashes and deletes them
-	def Checker.purgeNull(hash)
-		hash.each_key do |i|
-			if (hash[i] == nil or hash[i] =={} or hash[i] == 'throwFlag')
-				hash.delete(i)
-			end
-		end 
-	end
+  #checks for empty,flagged and null hashes and deletes them
+  def Checker.purgeNull(hash)
+    hash.each_key do |i|
+      if (hash[i] == nil or hash[i] =={} or hash[i] == 'throwFlag')
+        hash.delete(i)
+      end
+    end
+  end
 
-	#checks if Required Fileds are missing and raises and error 
-	def Checker.requiredMissing(hash)
-		hash.each_key do |i| 
-			if hash[i] == 'REQUIRED'
-				raise "Missing Required Field: #{i}!!!!"
-			end
-		end 
-	end
+  #checks if Required Fileds are missing and raises and error
+  def Checker.requiredMissing(hash)
+    hash.each_key do |i|
+      if hash[i] == 'REQUIRED'
+        raise "Missing Required Field: #{i}!!!!"
+      end
+    end
+  end
 
-	#checks if one and only one field is filled out when given a choice between fields
-	def Checker.choice(hash)
-		hash = purgeNull(hash)
-		if hash.length > 1
-			raise 'Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!'
-		end  
-	end
-	
+  #checks if one and only one field is filled out when given a choice between fields
+  def Checker.choice(hash)
+    hash = purgeNull(hash)
+    if hash.length > 1
+      raise 'Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!'
+    end
+  end
+
 end

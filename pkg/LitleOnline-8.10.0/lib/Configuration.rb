@@ -22,34 +22,23 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-
 #Sample Litle configuration file. This file can optionally be edited as needed to make updates
 
 require 'yaml'
 
 class Configuration
+  def config()
+    begin
+      if !(ENV['LITLE_CONFIG_DIR'].nil?)
+        config_file = ENV['LITLE_CONFIG_DIR'] + "/.litle_SDK_config.yml"
+      else
+        config_file = ENV['HOME'] + "/.litle_SDK_config.yml"
+      end
+      config = YAML.load_file(config_file)
+    rescue
+      raise 'Cannot find  the configuration file, ' + config_file + ', Please run Setup.rb first'
+    end
 
-	def Configuration.config()
-		begin 
-			if !(ENV['LITLE_CONFIG_DIR'].nil?) 
-				config_file = ENV['LITLE_CONFIG_DIR'] + "/.litle_SDK_config.yml"
-			else
-				config_file = ENV['HOME'] + "/.litle_SDK_config.yml"
-			end
-			config = YAML.load_file(config_file)
-		rescue
-			raise 'Cannot find  the configuration file, ' + config_file + ', Please run Setup.rb first'
-		end
-		config_hash={
-		'user'=> config['user'],
-		'password'=> config['password'],
-		'merchantId'=>config['merchantId'],
-		'version' => config['version'],
-		'url'=> config['url'],
-		'proxy_port'=> config['proxy_port'],
-		'proxy_addr'=> config['proxy_addr']
-		}
-
-		return config_hash
-	end
+    return config
+  end
 end

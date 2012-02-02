@@ -31,9 +31,8 @@ OTHER DEALINGS IN THE SOFTWARE.
 #
 class Communications
   ##For http or https post with or without a proxy
-  def Communications.http_post(post_data)
+  def Communications.http_post(post_data,config_hash)
 
-    config_hash = Configuration.config()
 
     #setup optional proxy
     proxy_addr = (config_hash['proxy_addr'] or nil)

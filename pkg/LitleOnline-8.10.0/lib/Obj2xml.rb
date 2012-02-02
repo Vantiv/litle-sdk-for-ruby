@@ -23,16 +23,15 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
 
-
 #
 # Used for formulation of Litle XML
 # Creates an XML document from a set of input hashes
 #
 class Obj2xml
-	def Obj2xml.to_XML(hash)
-		request_xml = REXML::Document.new XmlSimple.xml_out(hash, 'Rootname'=>'litleOnlineRequest', 'AttrPrefix' => true)	
-		doc ="<?xml version=\"1.0\" ?>\n"# insure proper heading for XMl doc 
-		request_xml.write(doc)
-		return doc 
-	end 
+  def Obj2xml.to_XML(hash)
+    request_xml = REXML::Document.new XmlSimple.xml_out(hash, 'Rootname'=>'litleOnlineRequest', 'AttrPrefix' => true)
+    doc ="<?xml version=\"1.0\" ?>\n"# insure proper heading for XMl doc
+    request_xml.write(doc)
+    return doc
+  end
 end

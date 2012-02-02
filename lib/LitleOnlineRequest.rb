@@ -77,7 +77,7 @@ class LitleOnlineRequest
       :authorization=>hash_out
     }
     Checker.requiredMissing(litleOnline_hash)
-    LitleXmlMapper.request(litleOnline_hash)
+    LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
   def sale(hash_in)
@@ -127,7 +127,7 @@ class LitleOnlineRequest
       :sale=>hash_out
     }
     Checker.requiredMissing(litleOnline_hash)
-    LitleXmlMapper.request(litleOnline_hash)
+    LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
   def authReversal(hash_in)
@@ -150,7 +150,7 @@ class LitleOnlineRequest
       :authReversal=>hash_out
     }
     Checker.requiredMissing(litleOnline_hash)
-    LitleXmlMapper.request(litleOnline_hash)
+    LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
   def credit(hash_in)
@@ -189,7 +189,7 @@ class LitleOnlineRequest
     }
     Checker.purgeNull(hash_out)
     Checker.requiredMissing(litleOnline_hash)
-    LitleXmlMapper.request(litleOnline_hash)
+    LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
   def registerTokenRequest(hash_in)
@@ -214,7 +214,7 @@ class LitleOnlineRequest
       :registerTokenRequest=>hash_out
     }
     Checker.requiredMissing(litleOnline_hash)
-    LitleXmlMapper.request(litleOnline_hash)
+    LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
   def forceCapture(hash_in)
@@ -248,7 +248,7 @@ class LitleOnlineRequest
       :forceCapture=>hash_out
     }
     Checker.requiredMissing(litleOnline_hash)
-    LitleXmlMapper.request(litleOnline_hash)
+    LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
   def capture(hash_in)
@@ -274,7 +274,7 @@ class LitleOnlineRequest
       :capture=>hash_out
     }
     Checker.requiredMissing(litleOnline_hash)
-    LitleXmlMapper.request(litleOnline_hash)
+    LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
   def captureGivenAuth(hash_in)
@@ -311,7 +311,7 @@ class LitleOnlineRequest
       :captureGivenAuth=>hash_out
     }
     Checker.requiredMissing(litleOnline_hash)
-    LitleXmlMapper.request(litleOnline_hash)
+    LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
   def echeckRedeposit(hash_in)
@@ -335,7 +335,7 @@ class LitleOnlineRequest
       :echeckRedeposit=>hash_out
     }
     Checker.requiredMissing(litleOnline_hash)
-    LitleXmlMapper.request(litleOnline_hash)
+    LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
   def echeckSale(hash_in)
@@ -366,7 +366,7 @@ class LitleOnlineRequest
       :echeckSale=>hash_out
     }
     Checker.requiredMissing(litleOnline_hash)
-    LitleXmlMapper.request(litleOnline_hash)
+    LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
   def echeckCredit(hash_in)
@@ -395,7 +395,7 @@ class LitleOnlineRequest
       :echeckCredit=>hash_out
     }
     Checker.requiredMissing(litleOnline_hash)
-    LitleXmlMapper.request(litleOnline_hash)
+    LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
   def echeckVerification(hash_in)
@@ -423,7 +423,7 @@ class LitleOnlineRequest
       :echeckVerification=>hash_out
     }
     Checker.requiredMissing(litleOnline_hash)
-    LitleXmlMapper.request(litleOnline_hash)
+    LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
   def void(hash_in)
@@ -444,7 +444,7 @@ class LitleOnlineRequest
       :void=>hash_out
     }
     Checker.requiredMissing(litleOnline_hash)
-    LitleXmlMapper.request(litleOnline_hash)
+    LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
   
   private
