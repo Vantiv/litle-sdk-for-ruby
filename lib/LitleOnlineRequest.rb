@@ -27,32 +27,15 @@ require_relative 'Configuration'
 #
 # This class does all the heavy lifting of mapping the Ruby hash into Litle XML format
 # It also handles validation looking for missing or incorrect fields
+#contains the methods to properly create each transaction type
 #
 class LitleOnlineRequest
-  #contains the methods to properly create each transaction type
-  #load configuration dat
-
-  @config_hash = Configuration.config()
-  def LitleOnlineRequest.authentication(hash_in)
-    hash_out = {
-      :user =>(@config_hash['user'] or 'REQUIRED'),
-      :password =>(@config_hash['password'] or 'REQUIRED')
-    }
-    Checker.requiredMissing(hash_out)
+  def initialize
+    #load configuration data 
+    @config_hash = Configuration.new().config()
   end
-
-  def LitleOnlineRequest.setMerchantId(hash_in)
-    if (hash_in['merchantId'] == nil)
-      return @config_hash['currency_merchant_map']['DEFAULT']
-    else
-      return hash_in['merchantId']
-    end
-    #merchantId = ((hash_in['merchantId'].length== 1) ? hash_in['merchantId'] : @config_hash['merchantId'] )
-    #merchantId = ((hash_in['merchantId'].nil?) ? (@config_hash['merchantId'] or 'REQUIRED') : hash_in['merchantId'])
-    #return merchantId
-  end
-
-  def LitleOnlineRequest.authorization(hash_in)
+  
+  def authorization(hash_in)
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
@@ -89,7 +72,7 @@ class LitleOnlineRequest
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> LitleOnlineRequest.setMerchantId(hash_in),
+      "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
       :authorization=>hash_out
     }
@@ -97,7 +80,7 @@ class LitleOnlineRequest
     LitleXmlMapper.request(litleOnline_hash)
   end
 
-  def LitleOnlineRequest.sale(hash_in)
+  def sale(hash_in)
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
@@ -139,7 +122,7 @@ class LitleOnlineRequest
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> LitleOnlineRequest.setMerchantId(hash_in),
+      "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
       :sale=>hash_out
     }
@@ -147,7 +130,7 @@ class LitleOnlineRequest
     LitleXmlMapper.request(litleOnline_hash)
   end
 
-  def LitleOnlineRequest.authReversal(hash_in)
+  def authReversal(hash_in)
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
@@ -162,7 +145,7 @@ class LitleOnlineRequest
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> LitleOnlineRequest.setMerchantId(hash_in),
+      "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
       :authReversal=>hash_out
     }
@@ -170,7 +153,7 @@ class LitleOnlineRequest
     LitleXmlMapper.request(litleOnline_hash)
   end
 
-  def LitleOnlineRequest.credit(hash_in)
+  def credit(hash_in)
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
@@ -200,7 +183,7 @@ class LitleOnlineRequest
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> LitleOnlineRequest.setMerchantId(hash_in),
+      "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
       :credit=>hash_out
     }
@@ -209,7 +192,7 @@ class LitleOnlineRequest
     LitleXmlMapper.request(litleOnline_hash)
   end
 
-  def LitleOnlineRequest.registerTokenRequest(hash_in)
+  def registerTokenRequest(hash_in)
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
@@ -226,7 +209,7 @@ class LitleOnlineRequest
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> LitleOnlineRequest.setMerchantId(hash_in),
+      "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
       :registerTokenRequest=>hash_out
     }
@@ -234,7 +217,7 @@ class LitleOnlineRequest
     LitleXmlMapper.request(litleOnline_hash)
   end
 
-  def LitleOnlineRequest.forceCapture(hash_in)
+  def forceCapture(hash_in)
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
@@ -260,7 +243,7 @@ class LitleOnlineRequest
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> LitleOnlineRequest.setMerchantId(hash_in),
+      "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
       :forceCapture=>hash_out
     }
@@ -268,7 +251,7 @@ class LitleOnlineRequest
     LitleXmlMapper.request(litleOnline_hash)
   end
 
-  def LitleOnlineRequest.capture(hash_in)
+  def capture(hash_in)
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
@@ -286,7 +269,7 @@ class LitleOnlineRequest
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> LitleOnlineRequest.setMerchantId(hash_in),
+      "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
       :capture=>hash_out
     }
@@ -294,7 +277,7 @@ class LitleOnlineRequest
     LitleXmlMapper.request(litleOnline_hash)
   end
 
-  def LitleOnlineRequest.captureGivenAuth(hash_in)
+  def captureGivenAuth(hash_in)
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
@@ -323,7 +306,7 @@ class LitleOnlineRequest
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> LitleOnlineRequest.setMerchantId(hash_in),
+      "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
       :captureGivenAuth=>hash_out
     }
@@ -331,7 +314,7 @@ class LitleOnlineRequest
     LitleXmlMapper.request(litleOnline_hash)
   end
 
-  def LitleOnlineRequest.echeckRedeposit(hash_in)
+  def echeckRedeposit(hash_in)
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
@@ -347,7 +330,7 @@ class LitleOnlineRequest
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> LitleOnlineRequest.setMerchantId(hash_in),
+      "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
       :echeckRedeposit=>hash_out
     }
@@ -355,7 +338,7 @@ class LitleOnlineRequest
     LitleXmlMapper.request(litleOnline_hash)
   end
 
-  def LitleOnlineRequest.echeckSale(hash_in)
+  def echeckSale(hash_in)
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
@@ -378,7 +361,7 @@ class LitleOnlineRequest
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> LitleOnlineRequest.setMerchantId(hash_in),
+      "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
       :echeckSale=>hash_out
     }
@@ -386,7 +369,7 @@ class LitleOnlineRequest
     LitleXmlMapper.request(litleOnline_hash)
   end
 
-  def LitleOnlineRequest.echeckCredit(hash_in)
+  def echeckCredit(hash_in)
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
@@ -407,7 +390,7 @@ class LitleOnlineRequest
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> LitleOnlineRequest.setMerchantId(hash_in),
+      "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
       :echeckCredit=>hash_out
     }
@@ -415,7 +398,7 @@ class LitleOnlineRequest
     LitleXmlMapper.request(litleOnline_hash)
   end
 
-  def LitleOnlineRequest.echeckVerification(hash_in)
+  def echeckVerification(hash_in)
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
@@ -435,7 +418,7 @@ class LitleOnlineRequest
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> LitleOnlineRequest.setMerchantId(hash_in),
+      "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
       :echeckVerification=>hash_out
     }
@@ -443,7 +426,7 @@ class LitleOnlineRequest
     LitleXmlMapper.request(litleOnline_hash)
   end
 
-  def LitleOnlineRequest.void(hash_in)
+  def void(hash_in)
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
@@ -456,11 +439,29 @@ class LitleOnlineRequest
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> LitleOnlineRequest.setMerchantId(hash_in),
+      "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
       :void=>hash_out
     }
     Checker.requiredMissing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash)
   end
+  
+  private
+  def get_merchant_id(hash_in)
+    if (hash_in['merchantId'] == nil)
+      return @config_hash['currency_merchant_map']['DEFAULT']
+    else
+      return hash_in['merchantId']
+    end
+  end
+  
+  def authentication(hash_in)
+    hash_out = {
+      :user =>(@config_hash['user'] or 'REQUIRED'),
+      :password =>(@config_hash['password'] or 'REQUIRED')
+    }
+    Checker.requiredMissing(hash_out)
+  end
+
 end
