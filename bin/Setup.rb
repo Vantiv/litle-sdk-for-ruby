@@ -25,68 +25,66 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
 
-
 # make setup file executable
 
-# 
+#
 # Configuration generation for URL and credentials
 #
 class Setup
   attr_reader :handle, :path
-
   def initialize(filename)
-	@handle = File.new(filename, File::CREAT|File::TRUNC|File::RDWR, 0600)	
-	File.open(filename, "w") do |f|
-		puts "Welcome to Litle Ruby_SDK"
-		puts "Please input your user name:"
-		f.puts  "user: "+ gets
-		puts "Please input your password:"
-		f.puts	"password: " + gets
-		puts "Please input your merchantId:"
-		f.puts "currency_merchant_map:"
-		f.puts "  DEFAULT: " + gets
-		f.puts	"version: 8.10"
-		puts "Please choose Litle url from the following list (example: 'cert') or directly input another URL: \nsandbox => https://www.testlitle.com/sandbox/vap/communicator/online \ncert => https://cert.litle.com/vap/communicator/online \nprecert => https://precert.litle.com/vap/communicator/online \nproduction1 => https://payment.litle.com/vap/communicator/online \nproduction2 => https://payment2.litle.com/vap/communicator/online"
-		f.puts "url: " + Setup.choice(gets)
-		puts "Please input the proxy address, if no proxy hit enter key: "
-		f.puts	"proxy_addr: " + gets
-		puts "Please input the proxy port, if no proxy hit enter key: "
-		f.puts	"proxy_port: " + gets
-	end
+    @handle = File.new(filename, File::CREAT|File::TRUNC|File::RDWR, 0600)
+    File.open(filename, "w") do |f|
+      puts "Welcome to Litle Ruby_SDK"
+      puts "Please input your user name:"
+      f.puts  "user: "+ gets
+      puts "Please input your password:"
+      f.puts	"password: " + gets
+      puts "Please input your merchantId:"
+      f.puts "currency_merchant_map:"
+      f.puts "  DEFAULT: " + gets
+      f.puts	"version: 8.10"
+      puts "Please choose Litle url from the following list (example: 'cert') or directly input another URL: \nsandbox => https://www.testlitle.com/sandbox/vap/communicator/online \ncert => https://cert.litle.com/vap/communicator/online \nprecert => https://precert.litle.com/vap/communicator/online \nproduction1 => https://payment.litle.com/vap/communicator/online \nproduction2 => https://payment2.litle.com/vap/communicator/online"
+      f.puts "url: " + Setup.choice(gets)
+      puts "Please input the proxy address, if no proxy hit enter key: "
+      f.puts	"proxy_addr: " + gets
+      puts "Please input the proxy port, if no proxy hit enter key: "
+      f.puts	"proxy_port: " + gets
+    end
   end
 
   def finished
-	@handle.close
+    @handle.close
   end
 
   def Setup.choice(string)
     if string == "sandbox\n"
-	return 'https://www.testlitle.com/sandbox/vap/communicator/online'
+      return 'https://www.testlitle.com/sandbox/vap/communicator/online'
     elsif string == "cert\n"
-	return 'https://cert.litle.com/vap/communicator/online'
+      return 'https://cert.litle.com/vap/communicator/online'
     elsif string == "precert\n"
-	return 'https://precert.litle.com/vap/communicator/online'
+      return 'https://precert.litle.com/vap/communicator/online'
     elsif string == "production1\n"
-	return 'https://payment.litle.com/vap/communicator/online'
+      return 'https://payment.litle.com/vap/communicator/online'
     elsif string == "production2\n"
-	return 'https://payment.litle.com/vap/communicator/online'
+      return 'https://payment.litle.com/vap/communicator/online'
     else
-	return string
+      return string
     end
   end
 end
 
 #
-# 
+#
 # Optionally enable the configuration to reside in a custom location
 # if the $LITLE_CONFIG_DIR directory is set
 #
 
 # make the config.yml file in the LITLE_CONFIG_DIR directory or HOME directory
-if !(ENV['LITLE_CONFIG_DIR'].nil?) 
-	path = ENV['LITLE_CONFIG_DIR']
-else 
-	path = ENV['HOME']
+if !(ENV['LITLE_CONFIG_DIR'].nil?)
+  path = ENV['LITLE_CONFIG_DIR']
+else
+  path = ENV['HOME']
 end
 
 # make the config.yml file hidden

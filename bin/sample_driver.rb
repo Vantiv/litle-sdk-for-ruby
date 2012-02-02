@@ -25,25 +25,24 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
 
-
 #Sample Driver
 require 'LitleOnline'
 
 hash = {
-    'reportGroup'=>'Planets',
-    'orderId'=>'12344',
-    'card'=>{
-    'type'=>'VI',
-    'number' =>'4100000000000001',
-    'expDate' =>'1210'},
-    'orderSource'=>'ecommerce',
-    'amount'=>'106'
-    }
+  'reportGroup'=>'Planets',
+  'orderId'=>'12344',
+  'card'=>{
+  'type'=>'VI',
+  'number' =>'4100000000000001',
+  'expDate' =>'1210'},
+  'orderSource'=>'ecommerce',
+  'amount'=>'106'
+}
 
 #perform credit transaction
 response= LitleOnlineRequest.credit(hash)
 
 #display results
 
-    puts "Message: "+response.message
-    puts "Litle Transaction ID: "+response.creditResponse.litleTxnId
+puts "Message: "+response.message
+puts "Litle Transaction ID: "+response.creditResponse.litleTxnId

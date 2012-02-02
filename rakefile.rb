@@ -25,12 +25,13 @@ OTHER DEALINGS IN THE SOFTWARE.
 require 'rubygems'
 require 'rubygems/package_task'
 require 'rake/testtask'
-spec = Gem::Specification.new do |s| 
+
+spec = Gem::Specification.new do |s|
   s.name         = "LitleOnline"
   s.summary      = "Ruby SDK produced by Litle & Co. for online transaction processing using Litle XML format v8.10"
   s.description  = File.read(File.join(File.dirname(__FILE__), 'DESCRIPTION'))
-  s.requirements = 
-      [ 'Contact  ClientSDKSupport@litle.com for more information' ]
+  s.requirements =
+  [ 'Contact  ClientSDKSupport@litle.com for more information' ]
   s.version     = "8.10.0"
   s.author      = "Litle & Co"
   s.email       = "RubySupport@litle.com"

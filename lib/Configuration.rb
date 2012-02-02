@@ -22,25 +22,23 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-
 #Sample Litle configuration file. This file can optionally be edited as needed to make updates
 
 require 'yaml'
 
 class Configuration
+  def Configuration.config()
+    begin
+      if !(ENV['LITLE_CONFIG_DIR'].nil?)
+        config_file = ENV['LITLE_CONFIG_DIR'] + "/.litle_SDK_config.yml"
+      else
+        config_file = ENV['HOME'] + "/.litle_SDK_config.yml"
+      end
+      config = YAML.load_file(config_file)
+    rescue
+      raise 'Cannot find  the configuration file, ' + config_file + ', Please run Setup.rb first'
+    end
 
-	def Configuration.config()
-		begin 
-			if !(ENV['LITLE_CONFIG_DIR'].nil?) 
-				config_file = ENV['LITLE_CONFIG_DIR'] + "/.litle_SDK_config.yml"
-			else
-				config_file = ENV['HOME'] + "/.litle_SDK_config.yml"
-			end
-			config = YAML.load_file(config_file)
-		rescue
-			raise 'Cannot find  the configuration file, ' + config_file + ', Please run Setup.rb first'
-		end
-
-		return config
-	end
+    return config
+  end
 end
