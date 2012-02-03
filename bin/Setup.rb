@@ -57,19 +57,21 @@ class Setup
     @handle.close
   end
 
-  def Setup.choice(string)
-    if string == "sandbox\n"
-      return 'https://www.testlitle.com/sandbox/vap/communicator/online'
-    elsif string == "cert\n"
-      return 'https://cert.litle.com/vap/communicator/online'
-    elsif string == "precert\n"
-      return 'https://precert.litle.com/vap/communicator/online'
-    elsif string == "production1\n"
-      return 'https://payment.litle.com/vap/communicator/online'
-    elsif string == "production2\n"
-      return 'https://payment.litle.com/vap/communicator/online'
+  def Setup.choice(litle_env)
+    litle_online_ctx = 'vap/communicator/online'
+    if litle_env == "sandbox\n"
+      return 'https://www.testlitle.com/sandbox/' + litle_online_ctx
+    elsif litle_env == "cert\n"
+      return 'https://cert.litle.com/' + litle_online_ctx
+    elsif litle_env == "precert\n"
+      return 'https://precert.litle.com/' + litle_online_ctx
+    elsif litle_env == "production1\n"
+      return 'https://payments.litle.com/' + litle_online_ctx
+    elsif litle_env == "production2\n"
+      return 'https://payments2.litle.com/' + litle_online_ctx
     else
-      return string
+      # TODO - what default should we return?  Our sandbox environment?
+      return litle_env
     end
   end
 end

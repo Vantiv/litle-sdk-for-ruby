@@ -29,12 +29,13 @@ OTHER DEALINGS IN THE SOFTWARE.
 require 'LitleOnline'
 
 hash = {
-  'reportGroup'=>'Planets',
+  'reportGroup'=>'product1',
   'orderId'=>'12344',
   'card'=>{
-  'type'=>'VI',
-  'number' =>'4100000000000001',
-  'expDate' =>'1210'},
+    'type'=>'VI',
+    'number' =>'4100000000000001',
+    'expDate' =>'1210'
+    },
   'orderSource'=>'ecommerce',
   'amount'=>'106'
 }

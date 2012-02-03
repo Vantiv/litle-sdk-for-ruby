@@ -47,7 +47,8 @@ class Communications
       http.verify_mode = OpenSSL::SSL::VERIFY_PEER
     end
 
-    #http.read_timeout= 60
+    # See notes below on recommended time outs
+    http.read_timeout= 65
     http_post = Net::HTTP::Post.new(url.request_uri)
     http_post.body = post_data
 
@@ -67,3 +68,23 @@ class Communications
     end
   end
 end
+
+=begin
+ NOTES ON HTTP TIMEOUT
+
+  Litle & Co. optimizes our systems to ensure the return of responses as quickly as possible, some portions of the process are beyond our control.
+  The round-trip time of an Authorization can be broken down into three parts, as follows:
+    1.  Transmission time (across the internet) to Litle & Co. and back to the merchant
+    2.  Processing time by the authorization provider
+    3.  Processing time by Litle 
+  Under normal operating circumstances, the transmission time to and from Litle does not exceed 0.6 seconds 
+  and processing overhead by Litle occurs in 0.1 seconds. 
+  Typically, the processing time by the card association or authorization provider can take between 0.5 and 3 seconds,
+  but some percentage of transactions may take significantly longer.
+ 
+  Because the total processing time can vary due to a number of factors, Litle & Co. recommends using a minimum timeout setting of
+  60 seconds to accomodate Sale transactions and 30 seconds if you are not utilizing Sale tranactions.
+
+  These settings should ensure that you do not frequently disconnect prior to receiving a valid authorization causing dropped orders 
+  and/or re-auths and duplicate auths.
+=end
