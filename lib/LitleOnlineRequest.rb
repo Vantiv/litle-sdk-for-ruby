@@ -77,7 +77,6 @@ class LitleOnlineRequest
       :authorization=>hash_out
     }
     Checker.required_missing(litleOnline_hash)
-    puts litleOnline_hash
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
@@ -224,7 +223,7 @@ class LitleOnlineRequest
       '@customerId' => hash_in['customerId'],
       '@reportGroup' => (hash_in['reportGroup'] or 'REQUIRED'),
       :orderId =>(hash_in['orderId'] or 'REQUIRED'),
-      :amount =>(hash_in['amount'] or ''),
+      :amount =>(hash_in['amount']),
       :orderSource=>(hash_in['orderSource'] or 'REQUIRED'),
       :billToAddress=>XMLFields.contact((hash_in['billToAddress'] or ' ')),
       :card=> XMLFields.cardType((hash_in['card'] or ' ')),

@@ -28,15 +28,15 @@ require 'test/unit'
 require 'mocha'
 
 class Newtest < Test::Unit::TestCase
-  
   def test_set_merchant_id
     Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}})
     litle = LitleOnlineRequest.new
     assert_equal '2', litle.send(:get_merchant_id, {'merchantId'=>'2'})
     assert_equal '1', litle.send(:get_merchant_id, {'NotMerchantId'=>'2'})
   end
-  
+
   def test_simple
+    Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
     hash = {
       'reportGroup'=>'Planets',
       'orderId'=>'12344',
@@ -71,6 +71,7 @@ class Newtest < Test::Unit::TestCase
   end
 
   def test_authorization_attributes
+    Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
     hash={
       'reportGroup'=>'Planets',
       'id' => '003',
@@ -90,6 +91,7 @@ class Newtest < Test::Unit::TestCase
   end
 
   def test_authorization_elements
+    Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
     hash={
       'reportGroup'=>'Planets',
       'id' => '004',
@@ -109,6 +111,7 @@ class Newtest < Test::Unit::TestCase
   end
 
   def test_authorization_card_field
+    Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
     hash={
       'reportGroup'=>'Planets',
       'id' => '005',
@@ -128,6 +131,7 @@ class Newtest < Test::Unit::TestCase
   end
 
   def test_sale_card_field
+    Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
     hash={
       'reportGroup'=>'Planets',
       'id' => '006',
@@ -144,6 +148,36 @@ class Newtest < Test::Unit::TestCase
     XMLObject.expects(:new)
 
     response = LitleOnlineRequest.new.sale(hash)
+  end
+
+  def test_capture_amountUnsetShouldNotBeInXML
+    Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
+    hash={
+      'id' => '006',
+      'reportGroup'=>'Planets',
+      'litleTxnId'=>'123456789012345678',
+    }
+
+    Communications.expects(:http_post).with(Not(regexp_matches(/.*amount.*/m)),kind_of(Hash))
+    XMLObject.expects(:new)
+
+    response = LitleOnlineRequest.new.capture(hash)
+  end
+
+  def test_force_capture_amountUnsetShouldNotBeInXML
+    Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
+    hash={
+      'id' => '006',
+      'orderId'=>'12344',
+      'reportGroup'=>'Planets',
+      'orderSource'=>'ecommerce',
+      'litleTxnId'=>'123456789012345678',
+    }
+
+    Communications.expects(:http_post).with(Not(regexp_matches(/.*amount.*/m)),kind_of(Hash))
+    XMLObject.expects(:new)
+
+    response = LitleOnlineRequest.new.forceCapture(hash)
   end
 
 end
