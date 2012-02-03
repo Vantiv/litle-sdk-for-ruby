@@ -28,7 +28,6 @@ require 'test/unit'
 require 'mocha'
 
 class CheckerTest < Test::Unit::TestCase
-  
   def test_purge_null
     hash = {'a'=>'one','b'=>nil,'c'=>{},'d'=>{'e'=>'two'},'f'=>'throwFlag'}
     Checker.purge_null(hash)
@@ -36,6 +35,24 @@ class CheckerTest < Test::Unit::TestCase
     assert_equal 'one', hash['a']
     assert_equal 'two', hash['d']['e']
   end
-  
+
+  def test_required_missing
+    hash = {'a'=>'REQUIRED','b'=>'2'}
+    exception = assert_raise(RuntimeError){Checker.required_missing(hash)}
+    assert_match /Missing Required Field: a!!!!/, exception.message
+
+    hash = {'a'=>'1','b'=>'2'}
+    assert_nothing_raised {Checker.required_missing(hash)}
+  end
+
+  def test_choice
+    assert_nothing_raised {Checker.choice({})}
+
+    assert_nothing_raised {Checker.choice({'a'=>'1'})}
+    assert_nothing_raised {Checker.choice({'a'=>'1','b'=>nil})}
+      
+    exception = assert_raise(RuntimeError) {Checker.choice({'a'=>'1','b'=>'2'})}
+    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
+  end
 
 end
