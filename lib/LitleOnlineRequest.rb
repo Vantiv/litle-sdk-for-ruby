@@ -25,9 +25,9 @@ OTHER DEALINGS IN THE SOFTWARE.
 require_relative 'Configuration'
 
 #
-# This class does the heavy lifting of mapping the Ruby hash into the Litle XML format
-# It also handles validation by looking for missing or incorrect fields
-# This class contains all of the methods to properly create each transaction type
+# This class does all the heavy lifting of mapping the Ruby hash into Litle XML format
+# It also handles validation looking for missing or incorrect fields
+#contains the methods to properly create each transaction type
 #
 class LitleOnlineRequest
   def initialize
@@ -77,6 +77,7 @@ class LitleOnlineRequest
       :authorization=>hash_out
     }
     Checker.required_missing(litleOnline_hash)
+    puts litleOnline_hash
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
@@ -258,7 +259,7 @@ class LitleOnlineRequest
       '@reportGroup' => (hash_in['reportGroup'] or 'REQUIRED'),
       '@partial'=>hash_in['partial'],
       :litleTxnId => (hash_in['litleTxnId'] or 'REQUIRED'),
-      :amount =>(hash_in['amount'] or ''),
+      :amount =>(hash_in['amount']),
       :enhancedData=>XMLFields.enhancedData((hash_in['enhancedData'] or ' ')),
       :processingInstructions=>XMLFields.processingInstructions((hash_in['processingInstructions'] or ' ')),
       :payPalOrderComplete=>hash_in['payPalOrderComplete'],
