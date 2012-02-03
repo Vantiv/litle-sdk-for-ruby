@@ -32,7 +32,7 @@ require_relative 'Configuration'
 class LitleOnlineRequest
   def initialize
     #load configuration data 
-    @config_hash = Configuration.new().config()
+    @config_hash = Configuration.new.config
   end
   
   def authorization(hash_in)
@@ -65,10 +65,10 @@ class LitleOnlineRequest
       :merchantData=>XMLFields.filteringType((hash_in['merchantData'] or ' ')),
       :recyclingRequest=>XMLFields.recyclingRequestType((hash_in['recyclingRequest'] or ' '))
     }
-    Checker.purgeNull(hash_out)
+    Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:card],'2' =>hash_out[:paypal],'3'=>hash_out[:token],'4'=>hash_out[:paypage]}
     Checker.choice(choice1)
-    Checker.requiredMissing(hash_out)
+    Checker.required_missing(hash_out)
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
@@ -76,7 +76,7 @@ class LitleOnlineRequest
       :authentication => authentication(hash_in),
       :authorization=>hash_out
     }
-    Checker.requiredMissing(litleOnline_hash)
+    Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
@@ -113,12 +113,12 @@ class LitleOnlineRequest
       :merchantData=>XMLFields.filteringType((hash_in['merchantData'] or ' ')),
       :recyclingRequest=>XMLFields.recyclingRequestType((hash_in['recyclingRequest'] or ' '))
     }
-    Checker.purgeNull(hash_out)
+    Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:card],'2' =>hash_out[:paypal],'3'=>hash_out[:token],'4'=>hash_out[:paypage]}
     choice2= {'1'=>hash_out[:fraudCheck],'2'=>hash_out[:cardholderAuthentication]}
     Checker.choice(choice1)
     Checker.choice(choice2)
-    Checker.requiredMissing(hash_out)
+    Checker.required_missing(hash_out)
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
@@ -126,7 +126,7 @@ class LitleOnlineRequest
       :authentication => authentication(hash_in),
       :sale=>hash_out
     }
-    Checker.requiredMissing(litleOnline_hash)
+    Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
@@ -140,8 +140,8 @@ class LitleOnlineRequest
       :payPalNotes=>hash_in['payPalNotes'],
       :actionReason=>hash_in['actionReason']
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
@@ -149,7 +149,7 @@ class LitleOnlineRequest
       :authentication => authentication(hash_in),
       :authReversal=>hash_out
     }
-    Checker.requiredMissing(litleOnline_hash)
+    Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
@@ -176,10 +176,10 @@ class LitleOnlineRequest
       :amexAggregatorData=>XMLFields.amexAggregatorData((hash_in['amexAggregatorData'] or ' ')),
       :payPalNotes =>hash_in['payPalNotes']
     }
-    Checker.purgeNull(hash_out)
+    Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:card],'2' =>hash_out[:paypal],'3'=>hash_out[:token],'4'=>hash_out[:paypage]}
     Checker.choice(choice1)
-    Checker.requiredMissing(hash_out)
+    Checker.required_missing(hash_out)
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
@@ -187,8 +187,8 @@ class LitleOnlineRequest
       :authentication => authentication(hash_in),
       :credit=>hash_out
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(litleOnline_hash)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
@@ -202,10 +202,10 @@ class LitleOnlineRequest
       :echeckForToken=>XMLFields.echeckForTokenType((hash_in['echeckForToken'] or ' ')),
       :paypageRegistrationId=>hash_in['paypageRegistrationId']
     }
-    Checker.purgeNull(hash_out)
+    Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:accountNumber],'2' =>hash_out[:echeckForToken],'3'=>hash_out[:paypageRegistrationId]}
     Checker.choice(choice1)
-    Checker.requiredMissing(hash_out)
+    Checker.required_missing(hash_out)
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
@@ -213,7 +213,7 @@ class LitleOnlineRequest
       :authentication => authentication(hash_in),
       :registerTokenRequest=>hash_out
     }
-    Checker.requiredMissing(litleOnline_hash)
+    Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
@@ -236,10 +236,10 @@ class LitleOnlineRequest
       :pos=>XMLFields.pos((hash_in['pos'] or ' ')),
       :amexAggregatorData=>XMLFields.amexAggregatorData((hash_in['amexAggregatorData'] or ' '))
     }
-    Checker.purgeNull(hash_out)
+    Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:card],'3'=>hash_out[:token],'4'=>hash_out[:paypage]}
     Checker.choice(choice1)
-    Checker.requiredMissing(hash_out)
+    Checker.required_missing(hash_out)
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
@@ -247,7 +247,7 @@ class LitleOnlineRequest
       :authentication => authentication(hash_in),
       :forceCapture=>hash_out
     }
-    Checker.requiredMissing(litleOnline_hash)
+    Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
@@ -264,8 +264,8 @@ class LitleOnlineRequest
       :payPalOrderComplete=>hash_in['payPalOrderComplete'],
       :payPalNotes =>hash_in['payPalNotes']
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
@@ -273,7 +273,7 @@ class LitleOnlineRequest
       :authentication => authentication(hash_in),
       :capture=>hash_out
     }
-    Checker.requiredMissing(litleOnline_hash)
+    Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
@@ -299,10 +299,10 @@ class LitleOnlineRequest
       :pos=>XMLFields.pos((hash_in['pos'] or ' ')),
       :amexAggregatorData=>XMLFields.amexAggregatorData((hash_in['amexAggregatorData'] or ' '))
     }
-    Checker.purgeNull(hash_out)
+    Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:card],'3'=>hash_out[:token],'4'=>hash_out[:paypage]}
     Checker.choice(choice1)
-    Checker.requiredMissing(hash_out)
+    Checker.required_missing(hash_out)
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
@@ -310,7 +310,7 @@ class LitleOnlineRequest
       :authentication => authentication(hash_in),
       :captureGivenAuth=>hash_out
     }
-    Checker.requiredMissing(litleOnline_hash)
+    Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
@@ -323,10 +323,10 @@ class LitleOnlineRequest
       :echeck=>XMLFields.echeckType((hash_in['echeck'] or ' ')),
       :echeckToken=>XMLFields.echeckTokenType((hash_in['echeckToken'] or ' '))
     }
-    Checker.purgeNull(hash_out)
+    Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:echeck],'3'=>hash_out[:echeckToken]}
     Checker.choice(choice1)
-    Checker.requiredMissing(hash_out)
+    Checker.required_missing(hash_out)
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
@@ -334,7 +334,7 @@ class LitleOnlineRequest
       :authentication => authentication(hash_in),
       :echeckRedeposit=>hash_out
     }
-    Checker.requiredMissing(litleOnline_hash)
+    Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
@@ -354,10 +354,10 @@ class LitleOnlineRequest
       :echeckToken=>XMLFields.echeckTokenType((hash_in['echeckToken'] or ' ')),
       :customBilling=>XMLFields.customBilling((hash_in['customBilling'] or ' ')),
     }
-    Checker.purgeNull(hash_out)
+    Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:echeck],'3'=>hash_out[:echeckToken]}
     Checker.choice(choice1)
-    Checker.requiredMissing(hash_out)
+    Checker.required_missing(hash_out)
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
@@ -365,7 +365,7 @@ class LitleOnlineRequest
       :authentication => authentication(hash_in),
       :echeckSale=>hash_out
     }
-    Checker.requiredMissing(litleOnline_hash)
+    Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
@@ -383,10 +383,10 @@ class LitleOnlineRequest
       :echeckToken=>XMLFields.echeckTokenType((hash_in['echeckToken'] or ' ')),
       :customBilling=>XMLFields.customBilling((hash_in['customBilling'] or ' ')),
     }
-    Checker.purgeNull(hash_out)
+    Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:echeck],'3'=>hash_out[:echeckToken]}
     Checker.choice(choice1)
-    Checker.requiredMissing(hash_out)
+    Checker.required_missing(hash_out)
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
@@ -394,7 +394,7 @@ class LitleOnlineRequest
       :authentication => authentication(hash_in),
       :echeckCredit=>hash_out
     }
-    Checker.requiredMissing(litleOnline_hash)
+    Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
@@ -411,10 +411,10 @@ class LitleOnlineRequest
       :echeck=>XMLFields.echeckType((hash_in['echeck'] or ' ')),
       :echeckToken=>XMLFields.echeckTokenType((hash_in['echeckToken'] or ' ')),
     }
-    Checker.purgeNull(hash_out)
+    Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:echeck],'3'=>hash_out[:echeckToken]}
     Checker.choice(choice1)
-    Checker.requiredMissing(hash_out)
+    Checker.required_missing(hash_out)
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
@@ -422,7 +422,7 @@ class LitleOnlineRequest
       :authentication => authentication(hash_in),
       :echeckVerification=>hash_out
     }
-    Checker.requiredMissing(litleOnline_hash)
+    Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
@@ -434,8 +434,8 @@ class LitleOnlineRequest
       :litleTxnId => (hash_in['litleTxnId'] or 'REQUIRED'),
       :processingInstructions=>XMLFields.processingInstructions((hash_in['processingInstructions'] or ' '))
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     litleOnline_hash = {
       "@version"=> (@config_hash['version'] or 'REQUIRED'),
       "@xmlns"=> "http://www.litle.com/schema",
@@ -443,7 +443,7 @@ class LitleOnlineRequest
       :authentication => authentication(hash_in),
       :void=>hash_out
     }
-    Checker.requiredMissing(litleOnline_hash)
+    Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
   
@@ -461,7 +461,7 @@ class LitleOnlineRequest
       :user =>(@config_hash['user'] or 'REQUIRED'),
       :password =>(@config_hash['password'] or 'REQUIRED')
     }
-    Checker.requiredMissing(hash_out)
+    Checker.required_missing(hash_out)
   end
 
 end

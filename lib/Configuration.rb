@@ -29,7 +29,7 @@ require 'yaml'
 # Loads the configuration from a file
 #
 class Configuration
-  def config()
+  def config
     begin
       if !(ENV['LITLE_CONFIG_DIR'].nil?)
         config_file = ENV['LITLE_CONFIG_DIR'] + "/.litle_SDK_config.yml"

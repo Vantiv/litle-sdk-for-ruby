@@ -28,7 +28,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 #
 class Checker
   #checks for empty,flagged and null hashes and deletes them
-  def Checker.purgeNull(hash)
+  def Checker.purge_null(hash)
     hash.each_key do |i|
       if (hash[i] == nil or hash[i] =={} or hash[i] == 'throwFlag')
         hash.delete(i)
@@ -37,7 +37,7 @@ class Checker
   end
 
   #checks if Required Fileds are missing and raises and error
-  def Checker.requiredMissing(hash)
+  def Checker.required_missing(hash)
     hash.each_key do |i|
       if hash[i] == 'REQUIRED'
         raise "Missing Required Field: #{i}!!!!"
@@ -47,7 +47,7 @@ class Checker
 
   #checks if one and only one field is filled out when given a choice between fields
   def Checker.choice(hash)
-    hash = purgeNull(hash)
+    hash = purge_null(hash)
     if hash.length > 1
       raise 'Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!'
     end
