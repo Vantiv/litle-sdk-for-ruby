@@ -70,8 +70,8 @@ class Setup
     elsif litle_env == "production2\n"
       return 'https://payments2.litle.com/' + litle_online_ctx
     else
-      # TODO - what default should we return?  Our sandbox environment?
-      return litle_env
+      # TODO What default should we return?  Our sandbox environment?
+      return 'https://www.testlitle.com/sandbox/' + litle_online_ctx
     end
   end
 end
