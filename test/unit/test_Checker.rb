@@ -22,6 +22,20 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
+require 'lib/LitleOnline'
+require 'lib/LitleOnlineRequest'
 require 'test/unit'
-require_relative 'test_LitleOnlineRequest'
-require_relative 'test_Checker'
+require 'mocha'
+
+class CheckerTest < Test::Unit::TestCase
+  
+  def test_purge_null
+    hash = {'a'=>'one','b'=>nil,'c'=>{},'d'=>{'e'=>'two'},'f'=>'throwFlag'}
+    Checker.purge_null(hash)
+    assert_equal 2, hash.length
+    assert_equal 'one', hash['a']
+    assert_equal 'two', hash['d']['e']
+  end
+  
+
+end
