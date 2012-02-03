@@ -40,7 +40,7 @@ hash = {
 }
 
 #perform credit transaction
-response= LitleOnlineRequest.credit(hash)
+response= LitleOnlineRequest.new.credit(hash)
 
 #display results
 

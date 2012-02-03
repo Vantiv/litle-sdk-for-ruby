@@ -42,8 +42,8 @@ class XMLFields
       :email=>hash_in['email'],
       :phone=>hash_in['phone']
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
   end
 
@@ -62,8 +62,8 @@ class XMLFields
       :yearsAtResidence=>hash_in['yearsAtResidence'],
       :yearsAtEmployer=>hash_in['yearsAtEmployer']
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
   end
 
@@ -83,8 +83,8 @@ class XMLFields
       :itemCategoryCode=>hash_in['itemCategoryCode'] ,
       :authorizationSourcePlatform=>hash_in['authorizationSourcePlatform']
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
   end
 
@@ -95,8 +95,8 @@ class XMLFields
       :customerIpAddress=>hash_in['customerIpAddress'],
       :authenticatedByMerchant=>hash_in['authenticatedByMerchant']
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
   end
 
@@ -107,8 +107,8 @@ class XMLFields
       :fraudResult=>fraudResult((hash_in['detailTax'] or ' ')),
       :authAmount=>hash_in['authAmount']
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
   end
 
@@ -119,8 +119,8 @@ class XMLFields
       :authenticationResult=>hash_in['authenticationResult'],
       :advancedAVSResult=>hash_in['advancedAVSResult']
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
   end
 
@@ -132,8 +132,8 @@ class XMLFields
       :clinicOtherAmount=>hash_in['clinicOtherAmount'],
       :dentalAmount=>hash_in['dentalAmount']
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
   end
 
@@ -142,8 +142,8 @@ class XMLFields
       :healthcareAmounts=>healthcareAmounts((hash_in['healthcareAmounts'] or ' ')),
       :IIASFlag=>hash_in['IIASFlag']
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
   end
 
@@ -153,8 +153,8 @@ class XMLFields
       :entryMode=>(hash_in['entryMode']  or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag')),
       :cardholderId=>(hash_in['cardholderId']  or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag'))
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
   end
 
@@ -166,8 +166,8 @@ class XMLFields
       :taxTypeIdentifier=>hash_in['taxTypeIdentifier'],
       :cardAcceptorTaxId=>hash_in['cardAcceptorTaxId']
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
   end
 
@@ -186,8 +186,8 @@ class XMLFields
       :unitCost=>hash_in['unitCost'],
       :detailTax => detailTax((hash_in['detailTax'] or ' '))
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
   end
 
@@ -208,8 +208,8 @@ class XMLFields
       :detailTax=> detailTax((hash_in['detailTax'] or ' ')),
       :lineItemData=> lineItemData((hash_in['lineItemData'] or ' '))
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
   end
 
@@ -218,8 +218,8 @@ class XMLFields
       :sellerId=>hash_in['sellerId'],
       :sellerMerchantCategoryCode=>hash_in['sellerMerchantCategoryCode']
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
   end
 
@@ -231,7 +231,7 @@ class XMLFields
       :expDate=>hash_in['expDate'],
       :cardValidationNum=>hash_in['cardValidationNum']
     }
-    Checker.purgeNull(hash_out)
+    Checker.purge_null(hash_out)
     choice_hash={'1'=>hash_out[:type],'2'=>hash_out[:track]}
     Checker.choice(choice_hash)
     return hash_out
@@ -244,8 +244,8 @@ class XMLFields
       :cardValidationNum=>hash_in['cardValidationNumber'],
       :type=>hash_in['type']
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
   end
 
@@ -256,8 +256,8 @@ class XMLFields
       :cardValidationNum=>hash_in['cardValidationNumber'],
       :type=>hash_in['type']
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
   end
 
@@ -267,8 +267,8 @@ class XMLFields
       :token=>hash_in['token'],
       :transactionId=>(hash_in['transactionId']  or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag'))
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
   end
 
@@ -277,10 +277,10 @@ class XMLFields
       :payerId=>(hash_in['payerId']  or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag')),
       :payerEmail => (hash_in['payerEmail']  or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag')),
     }
-    Checker.purgeNull(hash_out)
+    Checker.purge_null(hash_out)
     choice_hash={'1'=>hash_out[:payerId],'2'=>hash_out[:payerEmail]}
     Checker.choice(choice_hash)
-    Checker.requiredMissing(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
   end
 
@@ -290,11 +290,11 @@ class XMLFields
       :city=>hash_in['city'],
       :url=>hash_in['url']
     }
-    Checker.purgeNull(hash_out)
+    Checker.purge_null(hash_out)
     Checker.choice(hash_out)
     hash_out[:descriptor] = hash_in['descriptor']
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
 
   end
@@ -305,8 +305,8 @@ class XMLFields
       :state=>(hash_in['state']  or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag')),
       :govtTxnType=>(hash_in['govtTxnType']  or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag'))
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
   end
 
@@ -314,8 +314,8 @@ class XMLFields
     hash_out ={
       :bypassVelocityCheck=>hash_in['bypassVelocityCheck']
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
   end
 
@@ -324,8 +324,8 @@ class XMLFields
       :accNum=>(hash_in['accNum'] or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag')),
       :routingNum=>(hash_in['routingNum']  or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag'))
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
   end
 
@@ -335,8 +335,8 @@ class XMLFields
       :international=>hash_in['international'],
       :chargeback=>hash_in['chargeback']
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
   end
 
@@ -347,8 +347,8 @@ class XMLFields
       :routingNum=>(hash_in['routingNum']  or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag')),
       :checkNum=>hash_in['checkNumberType']
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
   end
 
@@ -359,8 +359,8 @@ class XMLFields
       :accType=>(hash_in['accType'] or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag')),
       :checkNum=>hash_in['checkNum']
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
   end
 
@@ -368,8 +368,8 @@ class XMLFields
     hash_out= {
       :recyleBy=>(hash_in['recyleBy'] or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag')),
     }
-    Checker.purgeNull(hash_out)
-    Checker.requiredMissing(hash_out)
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
     return hash_out
   end
 end
