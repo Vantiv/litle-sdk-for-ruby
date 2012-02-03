@@ -22,7 +22,9 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require 'rake/gempackagetask'
+require 'rubygems'
+require 'rubygems/package_task'
+require 'rake/testtask'
 spec = Gem::Specification.new do |s|
   s.name = "LitleOnline"
   s.summary = "Ruby SDK produced by Litle & Co. for online transaction processing using Litle XML format v8.10"
@@ -45,4 +47,15 @@ spec = Gem::Specification.new do |s|
   s.add_dependency('xml-object')
   s.add_dependency('mocha')
 end
-Rake::GemPackageTask.new(spec).define
+Gem::PackageTask.new(spec) do |pkg|
+  pkg.gem_spec = spec
+end
+
+Rake::TestTask.new do |t|
+  t.libs << 'test'
+end
+
+desc "Run tests"
+task :default => :test
+
+#Rake::GemPackageTask.new(spec).define
