@@ -22,8 +22,11 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-# Header file containing required gems and ruby files
 
+#
+# Header file containing required gems and ruby files
+# Defines the Gem
+#
 require 'rubygems'
 require 'xmlsimple'
 require 'active_support/core_ext'

@@ -25,7 +25,6 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 #
 # Handles round trip of transactions
-#
 # Maps the request to Litle XML -> Sends XML payload to Litle via HTTP(S) -> formats XML response into a Ruby hash and returns it
 #
 class LitleXmlMapper

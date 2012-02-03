@@ -33,7 +33,6 @@ class Communications
   ##For http or https post with or without a proxy
   def Communications.http_post(post_data,config_hash)
 
-
     #setup optional proxy
     proxy_addr = (config_hash['proxy_addr'] or nil)
     proxy_port = ((config_hash['proxy_port']).to_i or nil)

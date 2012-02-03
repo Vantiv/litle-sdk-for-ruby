@@ -25,9 +25,9 @@ OTHER DEALINGS IN THE SOFTWARE.
 require_relative 'Configuration'
 
 #
-# This class does all the heavy lifting of mapping the Ruby hash into Litle XML format
-# It also handles validation looking for missing or incorrect fields
-#contains the methods to properly create each transaction type
+# This class does the heavy lifting of mapping the Ruby hash into the Litle XML format
+# It also handles validation by looking for missing or incorrect fields
+# This class contains all of the methods to properly create each transaction type
 #
 class LitleOnlineRequest
   def initialize
