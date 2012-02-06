@@ -33,7 +33,7 @@ spec = Gem::Specification.new do |s|
   s.summary = "Ruby SDK produced by Litle & Co. for online transaction processing using Litle XML format v8.10"
   s.description = File.read(File.join(File.dirname(__FILE__), 'DESCRIPTION'))
   s.requirements =
-      [ 'Contact ClientSDKSupport@litle.com for more information' ]
+  [ 'Contact ClientSDKSupport@litle.com for more information' ]
   s.version = "8.10.0"
   s.author = "Litle & Co"
   s.email = "RubySupport@litle.com"
@@ -58,24 +58,35 @@ Gem::PackageTask.new(spec) do |pkg|
 end
 
 namespace :test do
+
   Rake::TestTask.new do |t|
     t.libs << '.'
     t.name = 'unit'
     t.test_files = FileList['test/unit/ts_unit.rb']
     t.verbose = true
   end
-  
+
   Rake::TestTask.new do |t|
     t.libs << '.'
     t.name = 'functional'
     t.test_files = FileList['test/functional/ts_all.rb']
     t.verbose = true
   end
-  
+
   Rake::TestTask.new do |t|
     t.libs << '.'
     t.name = 'certification'
     t.test_files = FileList['test/certification/certTest*.rb']
     t.verbose = true
   end
+  
+  Rake::TestTask.new do |t|
+    t.libs << '.'
+    t.name = 'all'
+    t.test_files = FileList['test/**/*.rb']
+    t.verbose = true
+  end
+  
 end
+
+task :default =>'gem'
