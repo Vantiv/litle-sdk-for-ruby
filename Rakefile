@@ -25,7 +25,10 @@ OTHER DEALINGS IN THE SOFTWARE.
 require 'rubygems'
 require 'rubygems/package_task'
 require 'rake/testtask'
+require 'rake/clean'
+
 spec = Gem::Specification.new do |s|
+  FileUtils.rm_rf('pkg')
   s.name = "LitleOnline"
   s.summary = "Ruby SDK produced by Litle & Co. for online transaction processing using Litle XML format v8.10"
   s.description = File.read(File.join(File.dirname(__FILE__), 'DESCRIPTION'))
@@ -45,17 +48,34 @@ spec = Gem::Specification.new do |s|
   s.add_dependency('xml-simple')
   s.add_dependency('activesupport')
   s.add_dependency('xml-object')
-  s.add_dependency('mocha')
+  s.add_development_dependency('mocha')
 end
+
 Gem::PackageTask.new(spec) do |pkg|
   pkg.gem_spec = spec
+  pkg.need_zip = true
+  pkg.need_tar = true
 end
 
-Rake::TestTask.new do |t|
-  t.libs << 'test'
+namespace :test do
+  Rake::TestTask.new do |t|
+    t.libs << '.'
+    t.name = 'unit'
+    t.test_files = FileList['test/unit/ts_unit.rb']
+    t.verbose = true
+  end
+  
+  Rake::TestTask.new do |t|
+    t.libs << '.'
+    t.name = 'functional'
+    t.test_files = FileList['test/functional/ts_all.rb']
+    t.verbose = true
+  end
+  
+  Rake::TestTask.new do |t|
+    t.libs << '.'
+    t.name = 'certification'
+    t.test_files = FileList['test/certification/certTest*.rb']
+    t.verbose = true
+  end
 end
-
-desc "Run tests"
-task :default => :test
-
-#Rake::GemPackageTask.new(spec).define
