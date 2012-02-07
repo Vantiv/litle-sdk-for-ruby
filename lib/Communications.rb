@@ -51,6 +51,7 @@ class Communications
     http.read_timeout= 65
     http_post = Net::HTTP::Post.new(url.request_uri)
     http_post.body = post_data
+    http_post['content-type'] = 'text/xml'
 
     # perform post
     begin

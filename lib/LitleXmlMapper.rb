@@ -32,13 +32,13 @@ class LitleXmlMapper
 
     # create a Litle XML request from the nested hashes
     request_xml = Obj2xml.to_XML(hash)
-
+    puts request_xml
     # get the Litle Online Response from the API server over HTTP
     response_xml = Communications.http_post(request_xml,config_hash)
-
+    puts response_xml
     # create response object from xml returned form the Litle API
     response_object = XMLObject.new(response_xml)
-
+    
     return response_object
   end
 end
