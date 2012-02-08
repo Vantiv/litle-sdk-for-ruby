@@ -179,5 +179,37 @@ class Newtest < Test::Unit::TestCase
 
     response = LitleOnlineRequest.new.forceCapture(hash)
   end
+  
+def test_amount_is_not_required_in_echeck_credit
+  Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
+  hash={
+    'id' => '006',
+    'orderId'=>'12344',
+    'reportGroup'=>'Planets',
+    'orderSource'=>'ecommerce',
+    'litleTxnId'=>'123456789012345678',
+  }
+
+  Communications.expects(:http_post).with(Not(regexp_matches(/.*amount.*/m)),kind_of(Hash))
+  XMLObject.expects(:new)
+
+  response = LitleOnlineRequest.new.echeckCredit(hash)
+end
+
+def test_amount_is_not_required_in_echeck_sale
+  Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
+  hash={
+    'id' => '006',
+    'orderId'=>'12344',
+    'reportGroup'=>'Planets',
+    'orderSource'=>'ecommerce',
+    'litleTxnId'=>'123456789012345678',
+  }
+
+  Communications.expects(:http_post).with(Not(regexp_matches(/.*amount.*/m)),kind_of(Hash))
+  XMLObject.expects(:new)
+
+  response = LitleOnlineRequest.new.echeckSale(hash)
+end
 
 end
