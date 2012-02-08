@@ -16,45 +16,48 @@ class Litle_certTest5 < Test::Unit::TestCase
   assert_equal('445711', token_response.registerTokenResponse.bin)
 	assert_equal('VI', token_response.registerTokenResponse.type)
 	assert_equal('801', token_response.registerTokenResponse.response)
+  assert_equal('1111222233330123', token_response.registerTokenResponse.litleToken)
 	assert_equal('Account number was successfully registered', token_response.registerTokenResponse.message)
 	end
 
-#	def test_51
-#		customer_hash = {
-#		'orderId' => '51',
-#		'accountNumber' => '4457119999999999'
-#		}
-#	hash = customer_hash.merge(@@merchant_hash)
-#	token_response = LitleOnlineRequest.new.registerTokenRequest(hash)
-#	assert_equal('820', token_response.registerTokenResponse.response)
-#	assert_equal('Credit card number was invalid', token_response.registerTokenResponse.message)
-#	end
-#
-#	def test_52
-#		customer_hash = {
-#		'orderId' => '52',
-#		'accountNumber' => '4457119922390123'
-#		}
-#	hash = customer_hash.merge(@@merchant_hash)
-#	token_response = LitleOnlineRequest.new.registerTokenRequest(hash)
-#  assert_equal('445711', token_response.registerTokenResponse.bin)
-#	assert_equal('VI', token_response.registerTokenResponse.type)
-#	assert_equal('802', token_response.registerTokenResponse.response)
-#	assert_equal('Account number was previously registered', token_response.registerTokenResponse.message)
-#	end
-#
-#	def test_53 #merchant is not authorized for echeck tokens
-#		customer_hash = {
-#		'orderId' => '53',
-#		'echeckForToken'=>{'accNum'=>'1099999998','routingNum'=>'114567895'}
-#		}
-#	hash = customer_hash.merge(@@merchant_hash)
-#	token_response = LitleOnlineRequest.new.registerTokenRequest(hash)
-#	assert_equal('EC', token_response.registerTokenResponse.type)
-#	assert_equal('998', token_response.registerTokenResponse.eCheckAccountSuffix)
-#	assert_equal('801', token_response.registerTokenResponse.response)
-#	assert_equal('Account number was successfully registered', token_response.registerTokenResponse.message)
-#	end
+	def test_51
+		customer_hash = {
+		'orderId' => '51',
+		'accountNumber' => '4457119999999999'
+		}
+	hash = customer_hash.merge(@@merchant_hash)
+	token_response = LitleOnlineRequest.new.registerTokenRequest(hash)
+	assert_equal('820', token_response.registerTokenResponse.response)
+	assert_equal('Credit card number was invalid', token_response.registerTokenResponse.message)
+	end
+
+	def test_52
+		customer_hash = {
+		'orderId' => '52',
+		'accountNumber' => '4457119922390123'
+		}
+	hash = customer_hash.merge(@@merchant_hash)
+	token_response = LitleOnlineRequest.new.registerTokenRequest(hash)
+  assert_equal('445711', token_response.registerTokenResponse.bin)
+	assert_equal('VI', token_response.registerTokenResponse.type)
+	assert_equal('802', token_response.registerTokenResponse.response)
+  assert_equal('1111222233330123', token_response.registerTokenResponse.litleToken)
+	assert_equal('Account number was previously registered', token_response.registerTokenResponse.message)
+	end
+
+	def test_53 #merchant is not authorized for echeck tokens
+		customer_hash = {
+		'orderId' => '53',
+		'echeckForToken'=>{'accNum'=>'1099999998','routingNum'=>'114567895'}
+		}
+	hash = customer_hash.merge(@@merchant_hash)
+	token_response = LitleOnlineRequest.new.registerTokenRequest(hash)
+	assert_equal('EC', token_response.registerTokenResponse.type)
+	assert_equal('998', token_response.registerTokenResponse.eCheckAccountSuffix)
+	assert_equal('801', token_response.registerTokenResponse.response)
+	assert_equal('Account number was successfully registered', token_response.registerTokenResponse.message)
+  assert_equal('111922223333000998', token_response.registerTokenResponse.litleToken)
+	end
 #	
 #  def test_54 #merchant is not authorized for echeck tokens
 #     customer_hash = {
