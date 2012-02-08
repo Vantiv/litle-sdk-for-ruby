@@ -156,94 +156,192 @@ class Litle_certTest2 < Test::Unit::TestCase
     end
   
   
-#  def test_21
-#    customer_hash = {
-#      'orderId' => '21',
-#      'amount' => '5000',
-#      'orderSource'=>'ecommerce',
-#      'card'=>{
-#      'number' =>'4457010201000246',
-#      'expDate' => '0912',
-#      'type' => 'VI'
-#      }
-#    }
-#    hash = customer_hash.merge(@@merchant_hash)
-#    auth_response = LitleOnlineRequest.new.authorization(hash)
-#    assert_equal('000', auth_response.authorizationResponse.response)
-#    assert_equal('Approved', auth_response.authorizationResponse.message)
-#    assert_equal('AFFLUENT', auth_response.authorizationResponse.enhancedAuthResponse.affluence)
-#  end
-#
-#  def test_22
-#    customer_hash = {
-#      'orderId' => '22',
-#      'amount' => '5000',
-#      'orderSource'=>'ecommerce',
-#      'card'=>{
-#      'number' =>'4457010202000245',
-#      'expDate' => '1111',
-#      'type' => 'VI'
-#      }
-#    }
-#    hash = customer_hash.merge(@@merchant_hash)
-#    auth_response = LitleOnlineRequest.new.authorization(hash)
-#    assert_equal('000', auth_response.authorizationResponse.response)
-#    assert_equal('Approved', auth_response.authorizationResponse.message)
-#    assert_equal('MASS AFFLUENT', auth_response.authorizationResponse.enhancedAuthResponse.affluence)
-#  end
+  def test_21
+    customer_hash = {
+      'orderId' => '21',
+      'amount' => '5000',
+      'orderSource'=>'ecommerce',
+      'card'=>{
+      'number' =>'4457010201000246',
+      'expDate' => '0912',
+      'type' => 'VI'
+      }
+    }
+    hash = customer_hash.merge(@@merchant_hash)
+    auth_response = LitleOnlineRequest.new.authorization(hash)
+    assert_equal('000', auth_response.authorizationResponse.response)
+    assert_equal('Approved', auth_response.authorizationResponse.message)
+    assert_equal('AFFLUENT', auth_response.authorizationResponse.enhancedAuthResponse.affluence)
+  end
 
-#  def test_23
-#    customer_hash = {
-#      'orderId' => '23',
-#      'amount' => '5000',
-#      'orderSource'=>'ecommerce',
-#      'card'=>{
-#      'number' =>'5112010201000109',
-#      'expDate' => '0412',
-#      'type' => 'MC'
-#      }
-#    }
-#    hash = customer_hash.merge(@@merchant_hash)
-#    auth_response = LitleOnlineRequest.new.authorization(hash)
-#    assert_equal('000', auth_response.authorizationResponse.response)
-#    assert_equal('Approved', auth_response.authorizationResponse.message)
-#    assert_equal('AFFLUENT', auth_response.authorizationResponse.enhancedAuthResponse.affluence)
-#  end
-#
-#  def test_24
-#    customer_hash = {
-#      'orderId' => '24',
-#      'amount' => '5000',
-#      'orderSource'=>'ecommerce',
-#      'card'=>{
-#      'number' =>'5112010202000108',
-#      'expDate' => '0812',
-#      'type' => 'MC'
-#      }
-#    }
-#    hash = customer_hash.merge(@@merchant_hash)
-#    auth_response = LitleOnlineRequest.new.authorization(hash)
-#    assert_equal('000', auth_response.authorizationResponse.response)
-#    assert_equal('Approved', auth_response.authorizationResponse.message)
-#    assert_equal('MASS AFFLUENT', auth_response.authorizationResponse.enhancedAuthResponse.affluence)
-#  end
-#
-#  def test_25
-#    customer_hash = {
-#      'orderId' => '25',
-#      'amount' => '5000',
-#      'orderSource'=>'ecommerce',
-#      'card'=>{
-#      'number' =>'4100204446270000',
-#      'expDate' => '1112',
-#      'type' => 'VI'}
-#    }
-#    hash = customer_hash.merge(@@merchant_hash)
-#    auth_response = LitleOnlineRequest.new.authorization(hash)
-#    assert_equal('000', auth_response.authorizationResponse.response)
-#    assert_equal('Approved', auth_response.authorizationResponse.message)
-#    assert_equal('BRA', auth_response.authorizationResponse.enhancedAuthResponse.issuerCountry)
-#  end
+  def test_22
+    customer_hash = {
+      'orderId' => '22',
+      'amount' => '5000',
+      'orderSource'=>'ecommerce',
+      'card'=>{
+      'number' =>'4457010202000245',
+      'expDate' => '1111',
+      'type' => 'VI'
+      }
+    }
+    hash = customer_hash.merge(@@merchant_hash)
+    auth_response = LitleOnlineRequest.new.authorization(hash)
+    assert_equal('000', auth_response.authorizationResponse.response)
+    assert_equal('Approved', auth_response.authorizationResponse.message)
+    assert_equal('MASS AFFLUENT', auth_response.authorizationResponse.enhancedAuthResponse.affluence)
+  end
 
-  # test 26-31 healthcare
+  def test_23
+    customer_hash = {
+      'orderId' => '23',
+      'amount' => '5000',
+      'orderSource'=>'ecommerce',
+      'card'=>{
+      'number' =>'5112010201000109',
+      'expDate' => '0412',
+      'type' => 'MC'
+      }
+    }
+    hash = customer_hash.merge(@@merchant_hash)
+    auth_response = LitleOnlineRequest.new.authorization(hash)
+    assert_equal('000', auth_response.authorizationResponse.response)
+    assert_equal('Approved', auth_response.authorizationResponse.message)
+    assert_equal('AFFLUENT', auth_response.authorizationResponse.enhancedAuthResponse.affluence)
+  end
+
+  def test_24
+    customer_hash = {
+      'orderId' => '24',
+      'amount' => '5000',
+      'orderSource'=>'ecommerce',
+      'card'=>{
+      'number' =>'5112010202000108',
+      'expDate' => '0812',
+      'type' => 'MC'
+      }
+    }
+    hash = customer_hash.merge(@@merchant_hash)
+    auth_response = LitleOnlineRequest.new.authorization(hash)
+    assert_equal('000', auth_response.authorizationResponse.response)
+    assert_equal('Approved', auth_response.authorizationResponse.message)
+    assert_equal('MASS AFFLUENT', auth_response.authorizationResponse.enhancedAuthResponse.affluence)
+  end
+
+  def test_25
+    customer_hash = {
+      'orderId' => '25',
+      'amount' => '5000',
+      'orderSource'=>'ecommerce',
+      'card'=>{
+      'number' =>'4100204446270000',
+      'expDate' => '1112',
+      'type' => 'VI'}
+    }
+    hash = customer_hash.merge(@@merchant_hash)
+    auth_response = LitleOnlineRequest.new.authorization(hash)
+    assert_equal('000', auth_response.authorizationResponse.response)
+    assert_equal('Approved', auth_response.authorizationResponse.message)
+    assert_equal('BRA', auth_response.authorizationResponse.enhancedAuthResponse.issuerCountry)
+  end
+
+  # test 26-31 healthcare iias
+  def test_26
+    customer_hash = {
+      'orderId' => '26',
+      'amount' => '18698',
+      'orderSource'=>'ecommerce',
+      'card'=>{
+      'number' =>'5194560012341234',
+      'expDate' => '1212',
+      'type' => 'MC'},
+      'allowPartialAuth' => 'true',
+      'healthcareIIAS' => { 
+        'healthcareAmounts' => { 
+          'totalHealthcareAmount' =>'20000' 
+        },
+        'IIASFlag' => 'Y'
+      }
+    }
+    hash = customer_hash.merge(@@merchant_hash)
+    auth_response = LitleOnlineRequest.new.authorization(hash)
+    assert_equal('341', auth_response.authorizationResponse.response)
+    assert_equal('Invalid healthcare amounts', auth_response.authorizationResponse.message)
+  end
+  
+  def test_27
+    customer_hash = {
+      'orderId' => '27',
+      'amount' => '18698',
+      'orderSource'=>'ecommerce',
+      'card'=>{
+      'number' =>'5194560012341234',
+      'expDate' => '1212',
+      'type' => 'MC'},
+      'allowPartialAuth' => 'true',
+      'healthcareIIAS' => { 
+        'healthcareAmounts' => { 
+          'totalHealthcareAmount' =>'20000',
+          'RxAmount' => '16000'
+        },
+        'IIASFlag' => 'Y'
+      }
+    }
+    hash = customer_hash.merge(@@merchant_hash)
+    auth_response = LitleOnlineRequest.new.authorization(hash)
+    assert_equal('341', auth_response.authorizationResponse.response)
+    assert_equal('Invalid healthcare amounts', auth_response.authorizationResponse.message)
+  end
+
+  def test_28
+    customer_hash = {
+      'orderId' => '28',
+      'amount' => '15000',
+      'orderSource'=>'ecommerce',
+      'card'=>{
+      'number' =>'5194560012341234',
+      'expDate' => '1212',
+      'type' => 'MC'},
+      'allowPartialAuth' => 'true',
+      'healthcareIIAS' => { 
+        'healthcareAmounts' => { 
+          'totalHealthcareAmount' =>'15000', 
+          'RxAmount' => '3698'
+        },
+        'IIASFlag' => 'Y'
+      }
+    }
+    hash = customer_hash.merge(@@merchant_hash)
+    auth_response = LitleOnlineRequest.new.authorization(hash)
+    assert_equal('000', auth_response.authorizationResponse.response)
+    assert_equal('Approved', auth_response.authorizationResponse.message)
+  end
+
+  def test_29
+    customer_hash = {
+      'orderId' => '29',
+      'amount' => '18699',
+      'orderSource'=>'ecommerce',
+      'card'=>{
+      'number' =>'4024720001231239',
+      'expDate' => '1212',
+      'type' => 'VI'},
+      'allowPartialAuth' => 'true',
+      'healthcareIIAS' => { 
+        'healthcareAmounts' => { 
+          'totalHealthcareAmount' =>'31000',
+          'RxAmount' => '1000',
+          'visionAmount' => '19901',
+          'clinicOtherAmount' => '9050',
+          'dentalAmount' => '1049'
+        },
+        'IIASFlag' => 'Y'
+      }
+    }
+    hash = customer_hash.merge(@@merchant_hash)
+    auth_response = LitleOnlineRequest.new.authorization(hash)
+    assert_equal('341', auth_response.authorizationResponse.response)
+    assert_equal('Invalid healthcare amounts', auth_response.authorizationResponse.message)
+  end
+
 end
