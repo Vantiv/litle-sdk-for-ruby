@@ -188,68 +188,92 @@ class Litle_certTest4 < Test::Unit::TestCase
     end
   
   #  #test 45-49 echeckCredit
-  #  def test_45
-  #    customer_hash = {
-  #      'orderId' => '45',
-  #      'amount' => '1001',
-  #      'orderSource'=>'telephone',
-  #      'billToAddress'=>{
-  #      'firstName' => 'John',
-  #      'lastName' => 'Smith'
-  #      },
-  #      'echeck'=>{
-  #      'accNum' =>'10@BC99999',
-  #      'accType' => 'Checking',
-  #      'routingNum' => '053100300'}
-  #    }
-  #    hash = customer_hash.merge(@@merchant_hash)
-  #    echeck_response = LitleOnlineRequest.new.echeckCredit(hash)
-  #
-  #    assert_equal('301', echeck_response.echeckCreditResponse.response)
-  #    #	assert_equal('InValid Account Number', echeck_response.echeckCreditResponse.message)
-  #  end
-  #
-  #  def test_46
-  #    customer_hash = {
-  #      'orderId' => '46',
-  #      'amount' => '1003',
-  #      'orderSource'=>'telephone',
-  #      'billToAddress'=>{
-  #      'firstName' => 'Robert',
-  #      'lastName' => 'Jones',
-  #      'companyName' => 'Widget Inc'
-  #      },
-  #      'echeck'=>{
-  #      'accNum' =>'3099999999',
-  #      'accType' => 'Corporate',
-  #      'routingNum' => '063102152'}
-  #    }
-  #    hash = customer_hash.merge(@@merchant_hash)
-  #    echeck_response = LitleOnlineRequest.new.echeckCredit(hash)
-  #
-  #    assert_equal('000', echeck_response.echeckCreditResponse.response)
-  #    assert_equal('Approved', echeck_response.echeckCreditResponse.message)
-  #  end
-  #
-  #  def test_47
-  #    customer_hash = {
-  #      'orderId' => '47',
-  #      'amount' => '1007',
-  #      'orderSource'=>'telephone',
-  #      'billToAddress'=>{
-  #      'firstName' => 'Peter',
-  #      'lastName' => 'Green',
-  #      'companyName' => 'Green Co'
-  #      },
-  #      'echeck'=>{
-  #      'accNum' =>'6099999993',
-  #      'accType' => 'Corporate',
-  #      'routingNum' => '211370545'}
-  #    }
-  #    hash = customer_hash.merge(@@merchant_hash)
-  #    echeck_response = LitleOnlineRequest.new.echeckCredit(hash)
-  #
-  #    assert_equal('000', echeck_response.echeckCreditResponse.response)
-  #    assert_equal('Approved', echeck_response.echeckCreditResponse.message)
-  #  end
+    def test_45
+      customer_hash = {
+        'orderId' => '45',
+        'amount' => '1001',
+        'orderSource'=>'telephone',
+        'billToAddress'=>{
+        'firstName' => 'John',
+        'lastName' => 'Smith'
+        },
+        'echeck'=>{
+        'accNum' =>'10@BC99999',
+        'accType' => 'Checking',
+        'routingNum' => '053100300'}
+      }
+      hash = customer_hash.merge(@@merchant_hash)
+      echeck_response = LitleOnlineRequest.new.echeckCredit(hash)
+  
+      assert_equal('301', echeck_response.echeckCreditResponse.response)
+      #	assert_equal('InValid Account Number', echeck_response.echeckCreditResponse.message)
+    end
+  
+    def test_46
+      customer_hash = {
+        'orderId' => '46',
+        'amount' => '1003',
+        'orderSource'=>'telephone',
+        'billToAddress'=>{
+        'firstName' => 'Robert',
+        'lastName' => 'Jones',
+        'companyName' => 'Widget Inc'
+        },
+        'echeck'=>{
+        'accNum' =>'3099999999',
+        'accType' => 'Corporate',
+        'routingNum' => '063102152'}
+      }
+      hash = customer_hash.merge(@@merchant_hash)
+      echeck_response = LitleOnlineRequest.new.echeckCredit(hash)
+  
+      assert_equal('000', echeck_response.echeckCreditResponse.response)
+      assert_equal('Approved', echeck_response.echeckCreditResponse.message)
+    end
+  
+    def test_47
+      customer_hash = {
+        'orderId' => '47',
+        'amount' => '1007',
+        'orderSource'=>'telephone',
+        'billToAddress'=>{
+        'firstName' => 'Peter',
+        'lastName' => 'Green',
+        'companyName' => 'Green Co'
+        },
+        'echeck'=>{
+        'accNum' =>'6099999993',
+        'accType' => 'Corporate',
+        'routingNum' => '211370545'}
+      }
+      hash = customer_hash.merge(@@merchant_hash)
+      echeck_response = LitleOnlineRequest.new.echeckCredit(hash)
+  
+      assert_equal('000', echeck_response.echeckCreditResponse.response)
+      assert_equal('Approved', echeck_response.echeckCreditResponse.message)
+    end
+    
+  def test_48
+    customer_hash = {
+      #'orderId' => '48',
+      'litleTxnId' => '430000000000000001'
+    }
+    hash = customer_hash.merge(@@merchant_hash)
+    echeck_response = LitleOnlineRequest.new.echeckCredit(hash)
+
+    assert_equal('000', echeck_response.echeckCreditResponse.response)
+    assert_equal('Approved', echeck_response.echeckCreditResponse.message)
+  end
+  
+  def test_49
+    customer_hash = {
+      #'orderId' => '49',
+      'litleTxnId' => '2'
+    }
+    hash = customer_hash.merge(@@merchant_hash)
+    echeck_response = LitleOnlineRequest.new.echeckCredit(hash)
+
+    assert_equal('360', echeck_response.echeckCreditResponse.response)
+    assert_equal('No transaction found with specified litleTxnId', echeck_response.echeckCreditResponse.message)
+  end
 end
