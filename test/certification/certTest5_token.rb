@@ -58,35 +58,35 @@ class Litle_certTest5 < Test::Unit::TestCase
 	assert_equal('Account number was successfully registered', token_response.registerTokenResponse.message)
   assert_equal('111922223333000998', token_response.registerTokenResponse.litleToken)
 	end
-#	
-#  def test_54 #merchant is not authorized for echeck tokens
-#     customer_hash = {
-#     'orderId' => '54',
-#     'echeckForToken'=>{'accNum'=>'1022222102','routingNum'=>'1145_7895'}
-#     }
-#   hash = customer_hash.merge(@@merchant_hash)
-#   token_response = LitleOnlineRequest.new.registerTokenRequest(hash)
-#   assert_equal('900', token_response.registerTokenResponse.response)
-#   assert_equal('Invalid Bank Routing Number', token_response.registerTokenResponse.message)
-#   end
-#
-#	def test_55
-#		customer_hash = {
-#		'orderId' => '55',
-#		'amount' => '15000',
-#		'orderSource' => 'ecommerce',
-#		'card' => {'number' => '5435101234510196', 'expDate' => '1112', 'cardValidationNum' => '987', 'type' => 'MC'}		
-#		}
-#	hash = customer_hash.merge(@@merchant_hash)
-#	token_response = LitleOnlineRequest.new.authorization(hash)
-#	assert_equal('000', token_response.authorizationResponse.response)
-#	assert_equal('Approved', token_response.authorizationResponse.message)
-#	assert_equal('801', token_response.authorizationResponse.tokenResponse.tokenResponseCode)
-#	assert_equal('Account number was successfully registered', token_response.authorizationResponse.tokenResponse.tokenMessage)
-#	assert_equal('MC', token_response.authorizationResponse.tokenResponse.type)
-#	assert_equal('543510', token_response.authorizationResponse.tokenResponse.bin)
-#	end
-#
+	
+  def test_54 #merchant is not authorized for echeck tokens
+     customer_hash = {
+     'orderId' => '54',
+     'echeckForToken'=>{'accNum'=>'1022222102','routingNum'=>'1145_7895'}
+     }
+   hash = customer_hash.merge(@@merchant_hash)
+   token_response = LitleOnlineRequest.new.registerTokenRequest(hash)
+   assert_equal('900', token_response.registerTokenResponse.response)
+   assert_equal('Invalid bank routing number', token_response.registerTokenResponse.message)
+   end
+
+	def test_55
+		customer_hash = {
+		'orderId' => '55',
+		'amount' => '15000',
+		'orderSource' => 'ecommerce',
+		'card' => {'number' => '5435101234510196', 'expDate' => '1112', 'cardValidationNum' => '987', 'type' => 'MC'}		
+		}
+	hash = customer_hash.merge(@@merchant_hash)
+	token_response = LitleOnlineRequest.new.authorization(hash)
+	assert_equal('000', token_response.authorizationResponse.response)
+	assert_equal('Approved', token_response.authorizationResponse.message)
+	assert_equal('801', token_response.authorizationResponse.tokenResponse.tokenResponseCode)
+	assert_equal('Account number was successfully registered', token_response.authorizationResponse.tokenResponse.tokenMessage)
+	assert_equal('MC', token_response.authorizationResponse.tokenResponse.type)
+	assert_equal('543510', token_response.authorizationResponse.tokenResponse.bin)
+	end
+
 #	def test_56
 #		customer_hash = {
 #		'orderId' => '56',
