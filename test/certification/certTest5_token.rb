@@ -87,36 +87,36 @@ class Litle_certTest5 < Test::Unit::TestCase
 	assert_equal('543510', token_response.authorizationResponse.tokenResponse.bin)
 	end
 
-#	def test_56
-#		customer_hash = {
-#		'orderId' => '56',
-#		'amount' => '15000',
-#		'orderSource' => 'ecommerce',
-#		'card' => {'number' => '5435109999999999', 'expDate' => '1112', 'cardValidationNum' => '987', 'type' => 'MC'}		
-#		}
-#	hash = customer_hash.merge(@@merchant_hash)
-#	token_response = LitleOnlineRequest.new.authorization(hash)
-#	assert_equal('301', token_response.authorizationResponse.response)
-#	assert_equal('Invalid Account Number', token_response.authorizationResponse.message)
-#	end
-#
-#	def test_57
-#		customer_hash = {
-#		'orderId' => '57',
-#		'amount' => '15000',
-#		'orderSource' => 'ecommerce',
-#		'card' => {'number' => '5435101234510196', 'expDate' => '1112', 'cardValidationNum' => '987', 'type' => 'MC'}		
-#		}
-#	hash = customer_hash.merge(@@merchant_hash)
-#	token_response = LitleOnlineRequest.new.authorization(hash)
-#	assert_equal('000', token_response.authorizationResponse.response)
-#	assert_equal('Approved', token_response.authorizationResponse.message)
-#	assert_equal('802', token_response.authorizationResponse.tokenResponse.tokenResponseCode)
-#	assert_equal('Account number was previously registered', token_response.authorizationResponse.tokenResponse.tokenMessage)
-#	assert_equal('MC', token_response.authorizationResponse.tokenResponse.type)
-#	assert_equal('543510', token_response.authorizationResponse.tokenResponse.bin)
-#	end
-#
+	def test_56
+		customer_hash = {
+		'orderId' => '56',
+		'amount' => '15000',
+		'orderSource' => 'ecommerce',
+		'card' => {'number' => '5435109999999999', 'expDate' => '1112', 'cardValidationNum' => '987', 'type' => 'MC'}		
+		}
+	hash = customer_hash.merge(@@merchant_hash)
+	token_response = LitleOnlineRequest.new.authorization(hash)
+	assert_equal('301', token_response.authorizationResponse.response)
+	assert_equal('Invalid account number', token_response.authorizationResponse.message)
+	end
+
+	def test_57
+		customer_hash = {
+		'orderId' => '57',
+		'amount' => '15000',
+		'orderSource' => 'ecommerce',
+		'card' => {'number' => '5435101234510196', 'expDate' => '1112', 'cardValidationNum' => '987', 'type' => 'MC'}		
+		}
+	hash = customer_hash.merge(@@merchant_hash)
+	token_response = LitleOnlineRequest.new.authorization(hash)
+	assert_equal('000', token_response.authorizationResponse.response)
+	assert_equal('Approved', token_response.authorizationResponse.message)
+	assert_equal('802', token_response.authorizationResponse.tokenResponse.tokenResponseCode)
+	assert_equal('Account number was previously registered', token_response.authorizationResponse.tokenResponse.tokenMessage)
+	assert_equal('MC', token_response.authorizationResponse.tokenResponse.type)
+	assert_equal('543510', token_response.authorizationResponse.tokenResponse.bin)
+	end
+
 ##	def test_58
 ##		customer_hash = {
 ##		'orderId' => '58',
@@ -135,31 +135,31 @@ class Litle_certTest5 < Test::Unit::TestCase
 ##	assert_equal('543510', token_response.authorizationResponse.tokenResponse.bin)
 ##	end
 #
-#	def test_59
-#		customer_hash = {
-#		'orderId' => '59',
-#		'amount' => '15000',
-#		'orderSource' => 'ecommerce',
-#		'token' => {'litleToken' => '1712990000040196', 'expDate' => '1112'}		
-#		}
-#	hash = customer_hash.merge(@@merchant_hash)
-#	token_response = LitleOnlineRequest.new.authorization(hash)
-#	assert_equal('822', token_response.authorizationResponse.response)
-#	assert_equal('Token was not found', token_response.authorizationResponse.message)
-#	end
-#
-#	def test_60
-#		customer_hash = {
-#		'orderId' => '60',
-#		'amount' => '15000',
-#		'orderSource' => 'ecommerce',
-#		'token' => {'litleToken' => '171299999999999', 'expDate' => '1112'}		
-#		}
-#	hash = customer_hash.merge(@@merchant_hash)
-#	token_response = LitleOnlineRequest.new.authorization(hash)
-#	assert_equal('823', token_response.authorizationResponse.response)
-#	assert_equal('Token was invalid', token_response.authorizationResponse.message)
-#	end
+	def test_59
+		customer_hash = {
+		'orderId' => '59',
+		'amount' => '15000',
+		'orderSource' => 'ecommerce',
+		'token' => {'litleToken' => '1712990000040196', 'expDate' => '1112'}		
+		}
+	hash = customer_hash.merge(@@merchant_hash)
+	token_response = LitleOnlineRequest.new.authorization(hash)
+	assert_equal('822', token_response.authorizationResponse.response)
+	assert_equal('Token was not found', token_response.authorizationResponse.message)
+	end
+
+	def test_60
+		customer_hash = {
+		'orderId' => '60',
+		'amount' => '15000',
+		'orderSource' => 'ecommerce',
+		'token' => {'litleToken' => '1712999999999999', 'expDate' => '1112'}		
+		}
+	hash = customer_hash.merge(@@merchant_hash)
+	token_response = LitleOnlineRequest.new.authorization(hash)
+	assert_equal('823', token_response.authorizationResponse.response)
+	assert_equal('Token was invalid', token_response.authorizationResponse.message)
+	end
 
 # test 61-64 need echecksale to support token. merchantid not authoried.
 #	def test_61
