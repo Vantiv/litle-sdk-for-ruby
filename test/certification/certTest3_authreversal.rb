@@ -57,6 +57,7 @@ class Litle_certTest3 < Test::Unit::TestCase
       'billToAddress'=>{
       'name' => 'Mike J. Hammer',
       'addressLine1' => '2 Main St.',
+      'addressLine2' => 'Apt. 222',
       'city' => 'Riverside',
       'state' => 'RI',
       'zip' => '02915',
@@ -178,7 +179,7 @@ class Litle_certTest3 < Test::Unit::TestCase
     hash1a = authReversal_hash.merge(@@merchant_hash)
     authReversal_response = LitleOnlineRequest.new.authReversal(hash1a)
     assert_equal('336', authReversal_response.authReversalResponse.response)
-    assert_equal('Reversal amount does not match authorization amount', authReversal_response.authReversalResponse.message)
+    assert_equal('Reversal Amount does not match Authorization amount', authReversal_response.authReversalResponse.message)
   end
 
 end
