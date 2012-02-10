@@ -39,25 +39,19 @@ class Communications
 
     # setup https or http post
     litle_url = (config_hash['url'] or 'https://cert.litle.com/vap/communicator/online')
-    url = URI.parse(litle_url)
-    http = Net::HTTP.new(url.host, url.port)
-    # SSL is automatically detected based on the URL
-    if (url.scheme == 'https')
-      http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-    end
+    uri = URI.parse(litle_url)
 
-    # See notes below on recommended time outs
-    http.read_timeout= 65
-    http_post = Net::HTTP::Post.new(url.request_uri)
+    http_post = Net::HTTP::Post.new(uri.request_uri)
     http_post.body = post_data
     http_post['content-type'] = 'text/xml'
 
-    # perform post
+    response_xml = ''
     begin
-      # Proxy method automatically returns an HTTP object
-      # when proxy_addr is nil, so we can have a single code path...neat!
-      response_xml= Net::HTTP::Proxy(proxy_addr,proxy_port).start(url.host, url.port) {|https| http.request(http_post)}
+      proxy = Net::HTTP::Proxy(proxy_addr,proxy_port)
+      # See notes below on recommended time outs
+      proxy.start(uri.host, uri.port, :use_ssl => uri.scheme=='https', :read_timeout => config_hash['timeout']) do |http|
+        response_xml = http.request(http_post)
+      end
     end
 
     # validate response, only an HTTP 200 will work, redirects are not followed
