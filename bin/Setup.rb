@@ -44,7 +44,7 @@ class Setup
       f.puts "currency_merchant_map:"
       f.puts "  DEFAULT: " + gets
       f.puts	"version: '8.10'"
-      puts "Please choose Litle url from the following list (example: 'cert') or directly input another URL: \nsandbox => https://www.testlitle.com/sandbox/vap/communicator/online \ncert => https://cert.litle.com/vap/communicator/online \nprecert => https://precert.litle.com/vap/communicator/online \nproduction1 => https://payment.litle.com/vap/communicator/online \nproduction2 => https://payment2.litle.com/vap/communicator/online"
+      puts "Please choose Litle url from the following list (example: 'cert') or directly input another URL: \nsandbox => https://www.testlitle.com/sandbox/communicator/online \ncert => https://cert.litle.com/vap/communicator/online \nprecert => https://precert.litle.com/vap/communicator/online \nproduction1 => https://payment.litle.com/vap/communicator/online \nproduction2 => https://payment2.litle.com/vap/communicator/online"
       f.puts "url: " + Setup.choice(gets)
       puts "Please input the proxy address, if no proxy hit enter key: "
       f.puts	"proxy_addr: " + gets
@@ -72,8 +72,7 @@ class Setup
     elsif litle_env == "production2\n"
       return 'https://payments2.litle.com/' + litle_online_ctx
     else
-      # TODO What default should we return?  Our sandbox environment?
-      return 'https://www.testlitle.com/sandbox/' + litle_online_ctx
+      return 'https://www.testlitle.com/sandbox/communicator/online'
     end
   end
 end
