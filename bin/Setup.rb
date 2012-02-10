@@ -51,6 +51,7 @@ class Setup
       puts "Please input the proxy port, if no proxy hit enter key: "
       f.puts	"proxy_port: " + gets
       f.puts "printxml: false"
+      f.puts "timeout: 65"
     end
   end
 
@@ -61,7 +62,7 @@ class Setup
   def Setup.choice(litle_env)
     litle_online_ctx = 'vap/communicator/online'
     if litle_env == "sandbox\n"
-      return 'https://www.testlitle.com/sandbox/' + litle_online_ctx
+      return 'https://www.testlitle.com/sandbox/communicator/online'
     elsif litle_env == "cert\n"
       return 'https://cert.litle.com/' + litle_online_ctx
     elsif litle_env == "precert\n"
