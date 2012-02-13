@@ -39,7 +39,7 @@ class LitleOnlineRequest
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
-      '@reportGroup' => (hash_in['reportGroup'] or 'REQUIRED'),
+      '@reportGroup' => get_report_group(hash_in),
       :litleTxnId => hash_in['litleTxnId'],
       :orderId =>(hash_in['orderId'] or 'REQUIRED'),
       :amount =>(hash_in['amount'] or 'REQUIRED'),
@@ -84,7 +84,7 @@ class LitleOnlineRequest
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
-      '@reportGroup' => (hash_in['reportGroup'] or 'REQUIRED'),
+      '@reportGroup' => get_report_group(hash_in),
       :litleTxnId => hash_in['litleTxnId'],
       :orderId =>(hash_in['orderId'] or 'REQUIRED'),
       :amount =>(hash_in['amount'] or 'REQUIRED'),
@@ -134,7 +134,7 @@ class LitleOnlineRequest
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
-      '@reportGroup' => (hash_in['reportGroup'] or 'REQUIRED'),
+      '@reportGroup' => get_report_group(hash_in),
       :litleTxnId => (hash_in['litleTxnId']or 'REQUIRED'),
       :amount =>hash_in['amount'],
       :payPalNotes=>hash_in['payPalNotes'],
@@ -157,7 +157,7 @@ class LitleOnlineRequest
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
-      '@reportGroup' => (hash_in['reportGroup'] or 'REQUIRED'),
+      '@reportGroup' => get_report_group(hash_in),
       :litleTxnId => (hash_in['litleTxnId']),
       :orderId =>hash_in['orderId'],
       :amount =>hash_in['amount'],
@@ -196,7 +196,7 @@ class LitleOnlineRequest
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
-      '@reportGroup' => (hash_in['reportGroup'] or 'REQUIRED'),
+      '@reportGroup' => get_report_group(hash_in),
       :orderId =>(hash_in['orderId'] or ' '),
       :accountNumber=>hash_in['accountNumber'],
       :echeckForToken=>XMLFields.echeckForTokenType((hash_in['echeckForToken'] or ' ')),
@@ -221,7 +221,7 @@ class LitleOnlineRequest
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
-      '@reportGroup' => (hash_in['reportGroup'] or 'REQUIRED'),
+      '@reportGroup' => get_report_group(hash_in),
       :orderId =>(hash_in['orderId'] or 'REQUIRED'),
       :amount =>(hash_in['amount']),
       :orderSource=>(hash_in['orderSource'] or 'REQUIRED'),
@@ -255,7 +255,7 @@ class LitleOnlineRequest
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
-      '@reportGroup' => (hash_in['reportGroup'] or 'REQUIRED'),
+      '@reportGroup' => get_report_group(hash_in),
       '@partial'=>hash_in['partial'],
       :litleTxnId => (hash_in['litleTxnId'] or 'REQUIRED'),
       :amount =>(hash_in['amount']),
@@ -281,7 +281,7 @@ class LitleOnlineRequest
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
-      '@reportGroup' => (hash_in['reportGroup'] or 'REQUIRED'),
+      '@reportGroup' => get_report_group(hash_in),
       :orderId =>(hash_in['orderId'] or 'REQUIRED'),
       :authInformation=>XMLFields.authInformation((hash_in['authInformation'] or ' ')),
       :amount =>(hash_in['amount'] or 'REQUIRED'),
@@ -318,7 +318,7 @@ class LitleOnlineRequest
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
-      '@reportGroup' => (hash_in['reportGroup'] or 'REQUIRED'),
+      '@reportGroup' => get_report_group(hash_in),
       :litleTxnId => (hash_in['litleTxnId'] or 'REQUIRED'),
       :echeck=>XMLFields.echeckType((hash_in['echeck'] or ' ')),
       :echeckToken=>XMLFields.echeckTokenType((hash_in['echeckToken'] or ' '))
@@ -342,7 +342,7 @@ class LitleOnlineRequest
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
-      '@reportGroup' => (hash_in['reportGroup'] or 'REQUIRED'),
+      '@reportGroup' => get_report_group(hash_in),
       :litleTxnId => hash_in['litleTxnId'],
       :orderId =>hash_in['orderId'],
       :verify =>hash_in['verify'],
@@ -373,7 +373,7 @@ class LitleOnlineRequest
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
-      '@reportGroup' => (hash_in['reportGroup'] or 'REQUIRED'),
+      '@reportGroup' => get_report_group(hash_in),
       :litleTxnId => hash_in['litleTxnId'],
       :orderId =>hash_in['orderId'],
       :amount =>hash_in['amount'],
@@ -402,7 +402,7 @@ class LitleOnlineRequest
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
-      '@reportGroup' => (hash_in['reportGroup'] or 'REQUIRED'),
+      '@reportGroup' => get_report_group(hash_in),
       :litleTxnId => hash_in['litleTxnId'],
       :orderId =>(hash_in['orderId'] or 'REQUIRED'),
       :amount =>(hash_in['amount'] or 'REQUIRED'),
@@ -430,7 +430,7 @@ class LitleOnlineRequest
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
-      '@reportGroup' => (hash_in['reportGroup'] or 'REQUIRED'),
+      '@reportGroup' => get_report_group(hash_in),
       :litleTxnId => (hash_in['litleTxnId'] or 'REQUIRED'),
       :processingInstructions=>XMLFields.processingInstructions((hash_in['processingInstructions'] or ' '))
     }
@@ -455,6 +455,14 @@ class LitleOnlineRequest
       return hash_in['merchantId']
     end
   end
+  
+  def get_report_group(hash_in)
+      if (hash_in['reportGroup'] == nil)
+        return (@config_hash['default_report_group'] or 'REQUIRED')
+      else
+        return hash_in['reportGroup']
+      end
+    end
   
   def authentication(hash_in)
     hash_out = {

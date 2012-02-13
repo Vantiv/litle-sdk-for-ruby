@@ -7,7 +7,6 @@ class Litle_certTest3 < Test::Unit::TestCase
     'merchantId'=>'101'
   }
 
-  #test 32-36 not done cause litletxnid from previous test 27-31 which need healthcare not doing.
   def test_32
     customer_hash = {
       'orderId' => '32',
