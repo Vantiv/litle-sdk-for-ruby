@@ -36,10 +36,10 @@ class Configuration
       else
         config_file = ENV['HOME'] + "/.litle_SDK_config.yml"
       end
+      return YAML.load_file(config_file)
     rescue
       raise 'Cannot find  the configuration file, ' + config_file + ', Please run Setup.rb first'
     end
 
-    return YAML.load_file(config_file)
   end
 end
