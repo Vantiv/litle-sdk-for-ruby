@@ -3,7 +3,7 @@ require 'test/unit'
 
 class Litle_certTest3 < Test::Unit::TestCase
   #test auth reversal
-  @@merchant_hash = {'reportGroup'=>'Planets',
+  @@merchant_hash = {'reportGroup'=>'Planets','id'=>'321','customerId'=>'123',
     'merchantId'=>'101'
   }
 

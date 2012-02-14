@@ -37,9 +37,6 @@ class LitleOnlineRequest
 
   def authorization(hash_in)
     hash_out = {
-      '@id' => hash_in['id'],
-      '@customerId' => hash_in['customerId'],
-      '@reportGroup' => get_report_group(hash_in),
       :litleTxnId => hash_in['litleTxnId'],
       :orderId => required_field(hash_in['orderId']),
       :amount =>required_field(hash_in['amount']),
@@ -65,26 +62,18 @@ class LitleOnlineRequest
       :merchantData=>XMLFields.filteringType(optional_field(hash_in['merchantData'])),
       :recyclingRequest=>XMLFields.recyclingRequestType(optional_field(hash_in['recyclingRequest']))
     }
+    hash_out.merge!(get_common_attributes(hash_in))
     Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:card],'2' =>hash_out[:paypal],'3'=>hash_out[:token],'4'=>hash_out[:paypage]}
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
-    litleOnline_hash = {
-      "@version"=> required_field(@config_hash['version']),
-      "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> get_merchant_id(hash_in),
-      :authentication => authentication(hash_in),
-      :authorization=>hash_out
-    }
+    litleOnline_hash = build_full_hash(hash_in, {:authorization => hash_out})
     Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
   def sale(hash_in)
     hash_out = {
-      '@id' => hash_in['id'],
-      '@customerId' => hash_in['customerId'],
-      '@reportGroup' => get_report_group(hash_in),
       :litleTxnId => hash_in['litleTxnId'],
       :orderId =>required_field(hash_in['orderId']),
       :amount =>required_field(hash_in['amount']),
@@ -113,51 +102,35 @@ class LitleOnlineRequest
       :merchantData=>XMLFields.filteringType(optional_field(hash_in['merchantData'])),
       :recyclingRequest=>XMLFields.recyclingRequestType(optional_field(hash_in['recyclingRequest']))
     }
+    hash_out.merge!(get_common_attributes(hash_in))
     Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:card],'2' =>hash_out[:paypal],'3'=>hash_out[:token],'4'=>hash_out[:paypage]}
     choice2= {'1'=>hash_out[:fraudCheck],'2'=>hash_out[:cardholderAuthentication]}
     Checker.choice(choice1)
     Checker.choice(choice2)
     Checker.required_missing(hash_out)
-    litleOnline_hash = {
-      "@version"=> required_field(@config_hash['version']),
-      "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> get_merchant_id(hash_in),
-      :authentication => authentication(hash_in),
-      :sale=>hash_out
-    }
+    litleOnline_hash = build_full_hash(hash_in, {:sale => hash_out})
     Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
   def authReversal(hash_in)
     hash_out = {
-      '@id' => hash_in['id'],
-      '@customerId' => hash_in['customerId'],
-      '@reportGroup' => get_report_group(hash_in),
       :litleTxnId => required_field(hash_in['litleTxnId']),
       :amount =>hash_in['amount'],
       :payPalNotes=>hash_in['payPalNotes'],
       :actionReason=>hash_in['actionReason']
     }
+    hash_out.merge!(get_common_attributes(hash_in))
     Checker.purge_null(hash_out)
     Checker.required_missing(hash_out)
-    litleOnline_hash = {
-      "@version"=> required_field(@config_hash['version']),
-      "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> get_merchant_id(hash_in),
-      :authentication => authentication(hash_in),
-      :authReversal=>hash_out
-    }
+    litleOnline_hash = build_full_hash(hash_in, {:authReversal => hash_out})
     Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
   def credit(hash_in)
     hash_out = {
-      '@id' => hash_in['id'],
-      '@customerId' => hash_in['customerId'],
-      '@reportGroup' => get_report_group(hash_in),
       :litleTxnId => (hash_in['litleTxnId']),
       :orderId =>hash_in['orderId'],
       :amount =>hash_in['amount'],
@@ -176,17 +149,12 @@ class LitleOnlineRequest
       :amexAggregatorData=>XMLFields.amexAggregatorData(optional_field(hash_in['amexAggregatorData'])),
       :payPalNotes =>hash_in['payPalNotes']
     }
+    hash_out.merge!(get_common_attributes(hash_in))
     Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:card],'2' =>hash_out[:paypal],'3'=>hash_out[:token],'4'=>hash_out[:paypage]}
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
-    litleOnline_hash = {
-      "@version"=> required_field(@config_hash['version']),
-      "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> get_merchant_id(hash_in),
-      :authentication => authentication(hash_in),
-      :credit=>hash_out
-    }
+    litleOnline_hash = build_full_hash(hash_in, {:credit => hash_out})
     Checker.purge_null(hash_out)
     Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
@@ -194,34 +162,23 @@ class LitleOnlineRequest
 
   def registerTokenRequest(hash_in)
     hash_out = {
-      '@id' => hash_in['id'],
-      '@customerId' => hash_in['customerId'],
-      '@reportGroup' => get_report_group(hash_in),
       :orderId =>optional_field(hash_in['orderId']),
       :accountNumber=>hash_in['accountNumber'],
       :echeckForToken=>XMLFields.echeckForTokenType(optional_field(hash_in['echeckForToken'])),
       :paypageRegistrationId=>hash_in['paypageRegistrationId']
     }
+    hash_out.merge!(get_common_attributes(hash_in))
     Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:accountNumber],'2' =>hash_out[:echeckForToken],'3'=>hash_out[:paypageRegistrationId]}
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
-    litleOnline_hash = {
-      "@version"=> required_field(@config_hash['version']),
-      "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> get_merchant_id(hash_in),
-      :authentication => authentication(hash_in),
-      :registerTokenRequest=>hash_out
-    }
+    litleOnline_hash = build_full_hash(hash_in, {:registerTokenRequest => hash_out})
     Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
   def forceCapture(hash_in)
     hash_out = {
-      '@id' => hash_in['id'],
-      '@customerId' => hash_in['customerId'],
-      '@reportGroup' => get_report_group(hash_in),
       :orderId =>required_field(hash_in['orderId']),
       :amount =>(hash_in['amount']),
       :orderSource=>required_field(hash_in['orderSource']),
@@ -236,26 +193,19 @@ class LitleOnlineRequest
       :pos=>XMLFields.pos(optional_field(hash_in['pos'])),
       :amexAggregatorData=>XMLFields.amexAggregatorData(optional_field(hash_in['amexAggregatorData']))
     }
+    hash_out.merge!(get_common_attributes(hash_in))
     Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:card],'3'=>hash_out[:token],'4'=>hash_out[:paypage]}
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
-    litleOnline_hash = {
-      "@version"=> required_field(@config_hash['version']),
-      "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> get_merchant_id(hash_in),
-      :authentication => authentication(hash_in),
-      :forceCapture=>hash_out
-    }
+    litleOnline_hash = build_full_hash(hash_in, {:forceCapture => hash_out})
     Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
   def capture(hash_in)
+    ####TODO check partial
     hash_out = {
-      '@id' => hash_in['id'],
-      '@customerId' => hash_in['customerId'],
-      '@reportGroup' => get_report_group(hash_in),
       '@partial'=>hash_in['partial'],
       :litleTxnId => required_field(hash_in['litleTxnId']),
       :amount =>(hash_in['amount']),
@@ -264,24 +214,16 @@ class LitleOnlineRequest
       :payPalOrderComplete=>hash_in['payPalOrderComplete'],
       :payPalNotes =>hash_in['payPalNotes']
     }
+    hash_out.merge!(get_common_attributes(hash_in))
     Checker.purge_null(hash_out)
     Checker.required_missing(hash_out)
-    litleOnline_hash = {
-      "@version"=> required_field(@config_hash['version']),
-      "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> get_merchant_id(hash_in),
-      :authentication => authentication(hash_in),
-      :capture=>hash_out
-    }
+    litleOnline_hash = build_full_hash(hash_in, {:capture => hash_out})
     Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
   def captureGivenAuth(hash_in)
     hash_out = {
-      '@id' => hash_in['id'],
-      '@customerId' => hash_in['customerId'],
-      '@reportGroup' => get_report_group(hash_in),
       :orderId =>required_field(hash_in['orderId']),
       :authInformation=>XMLFields.authInformation(optional_field(hash_in['authInformation'])),
       :amount =>required_field(hash_in['amount']),
@@ -299,50 +241,34 @@ class LitleOnlineRequest
       :pos=>XMLFields.pos(optional_field(hash_in['pos'])),
       :amexAggregatorData=>XMLFields.amexAggregatorData(optional_field(hash_in['amexAggregatorData']))
     }
+    hash_out.merge!(get_common_attributes(hash_in))
     Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:card],'3'=>hash_out[:token],'4'=>hash_out[:paypage]}
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
-    litleOnline_hash = {
-      "@version"=> required_field(@config_hash['version']),
-      "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> get_merchant_id(hash_in),
-      :authentication => authentication(hash_in),
-      :captureGivenAuth=>hash_out
-    }
+    litleOnline_hash = build_full_hash(hash_in, {:captureGivenAuth => hash_out})
     Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
   def echeckRedeposit(hash_in)
     hash_out = {
-      '@id' => hash_in['id'],
-      '@customerId' => hash_in['customerId'],
-      '@reportGroup' => get_report_group(hash_in),
       :litleTxnId => required_field(hash_in['litleTxnId']),
       :echeck=>XMLFields.echeckType(optional_field(hash_in['echeck'])),
       :echeckToken=>XMLFields.echeckTokenType(optional_field(hash_in['echeckToken']))
     }
+    hash_out.merge!(get_common_attributes(hash_in))
     Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:echeck],'3'=>hash_out[:echeckToken]}
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
-    litleOnline_hash = {
-      "@version"=> required_field(@config_hash['version']),
-      "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> get_merchant_id(hash_in),
-      :authentication => authentication(hash_in),
-      :echeckRedeposit=>hash_out
-    }
+    litleOnline_hash = build_full_hash(hash_in, {:echeckRedeposit => hash_out})
     Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
   def echeckSale(hash_in)
     hash_out = {
-      '@id' => hash_in['id'],
-      '@customerId' => hash_in['customerId'],
-      '@reportGroup' => get_report_group(hash_in),
       :litleTxnId => hash_in['litleTxnId'],
       :orderId =>hash_in['orderId'],
       :verify =>hash_in['verify'],
@@ -354,26 +280,18 @@ class LitleOnlineRequest
       :echeckToken=>XMLFields.echeckTokenType(optional_field(hash_in['echeckToken'])),
       :customBilling=>XMLFields.customBilling(optional_field(hash_in['customBilling'])),
     }
+    hash_out.merge!(get_common_attributes(hash_in))
     Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:echeck],'3'=>hash_out[:echeckToken]}
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
-    litleOnline_hash = {
-      "@version"=> required_field(@config_hash['version']),
-      "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> get_merchant_id(hash_in),
-      :authentication => authentication(hash_in),
-      :echeckSale=>hash_out
-    }
+    litleOnline_hash = build_full_hash(hash_in, {:echeckSale => hash_out})
     Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
   def echeckCredit(hash_in)
     hash_out = {
-      '@id' => hash_in['id'],
-      '@customerId' => hash_in['customerId'],
-      '@reportGroup' => get_report_group(hash_in),
       :litleTxnId => hash_in['litleTxnId'],
       :orderId =>hash_in['orderId'],
       :amount =>hash_in['amount'],
@@ -383,26 +301,18 @@ class LitleOnlineRequest
       :echeckToken=>XMLFields.echeckTokenType(optional_field(hash_in['echeckToken'])),
       :customBilling=>XMLFields.customBilling(optional_field(hash_in['customBilling'])),
     }
+    hash_out.merge!(get_common_attributes(hash_in))
     Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:echeck],'3'=>hash_out[:echeckToken]}
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
-    litleOnline_hash = {
-      "@version"=> required_field(@config_hash['version']),
-      "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> get_merchant_id(hash_in),
-      :authentication => authentication(hash_in),
-      :echeckCredit=>hash_out
-    }
+    litleOnline_hash = build_full_hash(hash_in, {:echeckCredit => hash_out})
     Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
   def echeckVerification(hash_in)
     hash_out = {
-      '@id' => hash_in['id'],
-      '@customerId' => hash_in['customerId'],
-      '@reportGroup' => get_report_group(hash_in),
       :litleTxnId => hash_in['litleTxnId'],
       :orderId =>required_field(hash_in['orderId']),
       :amount =>required_field(hash_in['amount']),
@@ -411,38 +321,25 @@ class LitleOnlineRequest
       :echeck=>XMLFields.echeckType(optional_field(hash_in['echeck'])),
       :echeckToken=>XMLFields.echeckTokenType(optional_field(hash_in['echeckToken'])),
     }
+    hash_out.merge!(get_common_attributes(hash_in))
     Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:echeck],'3'=>hash_out[:echeckToken]}
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
-    litleOnline_hash = {
-      "@version"=> required_field(@config_hash['version']),
-      "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> get_merchant_id(hash_in),
-      :authentication => authentication(hash_in),
-      :echeckVerification=>hash_out
-    }
+    litleOnline_hash = build_full_hash(hash_in, {:echeckVerification => hash_out})
     Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
 
   def void(hash_in)
     hash_out = {
-      '@id' => hash_in['id'],
-      '@customerId' => hash_in['customerId'],
-      '@reportGroup' => get_report_group(hash_in),
       :litleTxnId => required_field(hash_in['litleTxnId']),
       :processingInstructions=>XMLFields.processingInstructions(optional_field(hash_in['processingInstructions']))
     }
+    hash_out.merge!(get_common_attributes(hash_in))
     Checker.purge_null(hash_out)
     Checker.required_missing(hash_out)
-    litleOnline_hash = {
-      "@version"=> required_field(@config_hash['version']),
-      "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> get_merchant_id(hash_in),
-      :authentication => authentication(hash_in),
-      :void=>hash_out
-    }
+    litleOnline_hash = build_full_hash(hash_in, {:void => hash_out})
     Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
@@ -472,7 +369,7 @@ class LitleOnlineRequest
     }
     Checker.required_missing(hash_out)
   end
-  
+
   def required_field(value)
     return (value or 'REQUIRED')
   end
@@ -481,5 +378,22 @@ class LitleOnlineRequest
     return (value or ' ')
   end
 
+  def build_full_hash(hash_in, merge_hash)
+    litleOnline_hash = {
+      "@version"=> required_field(@config_hash['version']),
+      "@xmlns"=> "http://www.litle.com/schema",
+      "@merchantId"=> get_merchant_id(hash_in),
+      :authentication => authentication(hash_in)
+    }
+    return litleOnline_hash.merge(merge_hash)
+  end
+
+  def get_common_attributes(hash_in)
+    return {
+      '@id' => hash_in['id'],
+      '@customerId' => hash_in['customerId'],
+      '@reportGroup' => get_report_group(hash_in)
+    }
+  end
 
 end
