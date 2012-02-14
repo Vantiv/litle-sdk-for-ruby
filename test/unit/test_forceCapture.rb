@@ -26,31 +26,12 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class TestForceCapture < Test::Unit::TestCase
-  def test_simple_forceCapturewithCard
+  def test_noOrderId
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
       'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.forceCapture(hash)
-    assert_equal('000', response.forceCaptureResponse.response)
-  end
-
-  def test_simple_forceCapturewithtoken
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
       'amount'=>'106',
       'orderSource'=>'ecommerce',
       'token'=> {
@@ -59,30 +40,28 @@ class TestForceCapture < Test::Unit::TestCase
       'cardValidationNum'=>'555',
       'type'=>'VI'
       }}
-    response= LitleOnlineRequest.new.forceCapture(hash)
-    assert_equal('Valid Format', response.message)
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.forceCapture(hash)}
+    assert_match /Missing Required Field: orderId!!!!/, exception.message
   end
 
-  def test_FieldsOutOfOrder
+  def test_noOrderSource
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
-      'orderSource'=>'ecommerce',
+      'reportGroup'=>'Planets',
       'litleTxnId'=>'123456',
+      'orderId'=>'12344',
       'amount'=>'106',
       'card'=>{
       'type'=>'VI',
       'number' =>'4100000000000001',
       'expDate' =>'1210'
-      },
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344'
-    }
-    response= LitleOnlineRequest.new.forceCapture(hash)
-    assert_equal('Valid Format', response.message)
+      }}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.forceCapture(hash)}
+    assert_match /Missing Required Field: orderSource!!!!/, exception.message
   end
 
-  def test_InvalidField
+  def test_BothChoicesCardandtoken
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -91,14 +70,52 @@ class TestForceCapture < Test::Unit::TestCase
       'orderId'=>'12344',
       'amount'=>'106',
       'orderSource'=>'ecommerce',
+      'fraudCheck'=>{'authenticationTransactionId'=>'123'},
+      'cardholderAuthentication'=>{'authenticationTransactionId'=>'123'},
       'card'=>{
-      'NOexistantField' => 'ShouldNotCauseError',
       'type'=>'VI',
       'number' =>'4100000000000001',
       'expDate' =>'1210'
+      },
+      'token'=> {
+      'litleToken'=>'1234',
+      'expDate'=>'1210',
+      'cardValidationNum'=>'555',
+      'type'=>'VI'
       }}
-    response= LitleOnlineRequest.new.forceCapture(hash)
-    assert_equal('Valid Format', response.message)
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.forceCapture(hash)}
+    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
+  end
+
+  def test_allChoices
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'litleTxnId'=>'123456',
+      'orderId'=>'12344',
+      'amount'=>'106',
+      'orderSource'=>'ecommerce',
+      'fraudCheck'=>{'authenticationTransactionId'=>'123'},
+      'cardholderAuthentication'=>{'authenticationTransactionId'=>'123'},
+      'card'=>{
+      'type'=>'VI',
+      'number' =>'4100000000000001',
+      'expDate' =>'1210'
+      },
+      'paypage'=> {
+      'paypageRegistrationId'=>'1234',
+      'expDate'=>'1210',
+      'cardValidationNum'=>'555',
+      'type'=>'VI'},
+      'token'=> {
+      'litleToken'=>'1234',
+      'expDate'=>'1210',
+      'cardValidationNum'=>'555',
+      'type'=>'VI'
+      }}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.forceCapture(hash)}
+    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 
 end

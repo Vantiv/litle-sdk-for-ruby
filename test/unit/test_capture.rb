@@ -26,46 +26,15 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class Test_capture < Test::Unit::TestCase
-  def test_simplecapture
+  def test_noTxnId
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
       'amount'=>'106',
     }
-    response= LitleOnlineRequest.new.capture(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_simplecapturewithpartial
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'partial'=>'true',
-      'litleTxnId'=>'123456',
-      'amount'=>'106',
-    }
-    response= LitleOnlineRequest.new.capture(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_complexcapture
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'amount'=>'106',
-      'enhancedData'=>{
-      'customerReference'=>'Litle',
-      'salesTax'=>'50',
-      'deliveryType'=>'TBD'},
-      'payPalOrderComplete'=>'true'
-    }
-    response= LitleOnlineRequest.new.capture(hash)
-    assert_equal('Valid Format', response.message)
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.capture(hash)}
+    assert_match /Missing Required Field: litleTxnId!!!!/, exception.message
   end
 end
 

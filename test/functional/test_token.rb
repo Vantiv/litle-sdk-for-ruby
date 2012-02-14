@@ -74,58 +74,6 @@ class TestToken < Test::Unit::TestCase
     assert(response.message =~ /Error validating xml data against the schema/)
   end
 
-  def test_noReportGroup
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'orderId'=>'12344',
-      'accountNumber'=>'1233456789101112',
-    }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.registerTokenRequest(hash)}
-    assert_match /Missing Required Field: @reportGroup!!!!/, exception.message
-
-  end
-
-  def test_accountNumandPaypage
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'accountNumber'=>'1233456789101112',
-      'paypageRegistrationId'=>'1233456789101112'
-    }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.registerTokenRequest(hash)}
-    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
-  end
-
-  def test_echeckandPaypage
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'echeckForToken'=>{'accNum'=>'12344565','routingNum'=>'123476545'},
-      'paypageRegistrationId'=>'1233456789101112'
-    }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.registerTokenRequest(hash)}
-    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
-  end
-
-  def test_echeckandPaypageandaccountnum
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'accountNumber'=>'1233456789101112',
-      'echeckForToken'=>{'accNum'=>'12344565','routingNum'=>'123476545'},
-      'paypageRegistrationId'=>'1233456789101112'
-    }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.registerTokenRequest(hash)}
-    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
-  end
-
   def test_FieldsOutOfOrder
     hash = {
       'merchantId' => '101',

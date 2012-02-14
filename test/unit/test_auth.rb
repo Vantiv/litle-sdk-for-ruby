@@ -25,137 +25,144 @@ OTHER DEALINGS IN THE SOFTWARE.
 require 'lib/LitleOnline'
 require 'test/unit'
 
-class TestcaptureGivenAuth < Test::Unit::TestCase
-  def test_simplecaptureGivenAuth_withCard
+#test Authorization Transaction
+class TestAuth < Test::Unit::TestCase
+  def test_noOrderId
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
-      'orderId'=>'12344',
+      'litleTxnId'=>'123456',
       'amount'=>'106',
-      'authInformation' => {
-      'authDate'=>'2002-10-09','authCode'=>'543216',
-      'authAmount'=>'12345'
-      },
       'orderSource'=>'ecommerce',
       'card'=>{
       'type'=>'VI',
       'number' =>'4100000000000001',
       'expDate' =>'1210'
       }}
-    response= LitleOnlineRequest.new.captureGivenAuth(hash)
-    assert_equal('Valid Format', response.message)
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
+    assert_match /Missing Required Field: orderId!!!!/, exception.message
   end
 
-  def test_simplecaptureGivenAuth_withToken
+  def test_noAmount
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'litleTxnId'=>'123456',
+      'orderId'=>'12344',
+      'orderSource'=>'ecommerce',
+      'card'=>{
+      'type'=>'VI',
+      'number' =>'4100000000000001',
+      'expDate' =>'1210'
+      }}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
+    assert_match /Missing Required Field: amount!!!!/, exception.message
+  end
+
+  def test_noOrderSource
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'litleTxnId'=>'123456',
+      'orderId'=>'12344',
+      'amount'=>'106',
+      'card'=>{
+      'type'=>'VI',
+      'number' =>'4100000000000001',
+      'expDate' =>'1210'
+      }}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
+    assert_match /Missing Required Field: orderSource!!!!/, exception.message
+  end
+
+  def test_BothChoicesCardandPaypal
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
       'orderId'=>'12344',
-      'authInformation' => {
-      'authDate'=>'2002-10-09','authCode'=>'543216', 'processingInstructions'=>{'bypassVelocityCheck'=>'true'},
-      'authAmount'=>'12345'
-      },
       'amount'=>'106',
       'orderSource'=>'ecommerce',
+      'card'=>{
+      'type'=>'VI',
+      'number' =>'4100000000000001',
+      'expDate' =>'1210'
+      },
+      'paypal'=>{
+      'payerId'=>'1234',
+      'token'=>'1234',
+      'transactionId'=>'123456'
+      }}
+
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
+    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
+  end
+
+  def test_threeChoicesCardandPaypageandPaypal
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'orderId'=>'12344',
+      'amount'=>'106',
+      'orderSource'=>'ecommerce',
+      'card'=>{
+      'type'=>'VI',
+      'number' =>'4100000000000001',
+      'expDate' =>'1210'
+      },
+      'paypage'=> {
+      'paypageRegistrationId'=>'1234',
+      'expDate'=>'1210',
+      'cardValidationNum'=>'555',
+      'type'=>'VI'},
+      'paypal'=>{
+      'payerId'=>'1234',
+      'token'=>'1234',
+      'transactionId'=>'123456'
+      }}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
+    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
+  end
+
+  def test_allChoicesCardandPaypageandPaypalandToken
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'litleTxnId'=>'123456',
+      'orderId'=>'12344',
+      'amount'=>'106',
+      'orderSource'=>'ecommerce',
+      'fraudCheck'=>{'authenticationTransactionId'=>'123'},
+      'bypassVelocityCheckcardholderAuthentication'=>{'authenticationTransactionId'=>'123'},
+      'card'=>{
+      'type'=>'VI',
+      'number' =>'4100000000000001',
+      'expDate' =>'1210'
+      },
+      'paypage'=> {
+      'paypageRegistrationId'=>'1234',
+      'expDate'=>'1210',
+      'cardValidationNum'=>'555',
+      'type'=>'VI'},
+      'paypal'=>{
+      'payerId'=>'1234',
+      'token'=>'1234',
+      'transactionId'=>'123456'},
       'token'=> {
-      'litleToken'=>'123456789101112',
+      'litleToken'=>'1234',
       'expDate'=>'1210',
       'cardValidationNum'=>'555',
       'type'=>'VI'
       }}
-    response= LitleOnlineRequest.new.captureGivenAuth(hash)
-    assert_equal('Valid Format', response.message)
+
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
+    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 
-  def test_FieldsOutOfOrder
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'orderSource'=>'ecommerce',
-      'authInformation' => {
-      'authDate'=>'2002-10-09','authCode'=>'543216',
-      'authAmount'=>'12345'
-      },
-      'amount'=>'106',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      },
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344'
-    }
-    response= LitleOnlineRequest.new.captureGivenAuth(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_InvalidField
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'authInformation' => {
-      'authDate'=>'2002-10-09','authCode'=>'543216',
-      'authAmount'=>'12345'
-      },
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'NOexistantField' => 'ShouldNotCauseError',
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.captureGivenAuth(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_complex_captureGivenAuth
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'authInformation' => {
-      'authDate'=>'2002-10-09','authCode'=>'543216',
-      'authAmount'=>'12345'
-      },
-      'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'},
-      'processingInstructions'=>{'bypassVelocityCheck'=>'true'},
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.captureGivenAuth(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_authInfo
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'authInformation' => {
-      'authDate'=>'2002-10-09','authCode'=>'543216',
-      'authAmount'=>'12345','fraudResult'=>{'avsResult'=>'12','cardValidationResult'=>'123','authenticationResult'=>'1',
-      'advancedAVSResult'=>'123'}
-      },
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.captureGivenAuth(hash)
-    assert_equal('Valid Format', response.message)
-  end
 end
 

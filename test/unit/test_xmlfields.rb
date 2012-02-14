@@ -25,8 +25,9 @@ OTHER DEALINGS IN THE SOFTWARE.
 require 'lib/LitleOnline'
 require 'test/unit'
 
-class TestSale < Test::Unit::TestCase
-  def test_simpleSalewithCard
+class TestXmlfields < Test::Unit::TestCase
+
+  def test_cardbothtypeandtrack
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -37,14 +38,53 @@ class TestSale < Test::Unit::TestCase
       'orderSource'=>'ecommerce',
       'card'=>{
       'type'=>'VI',
-      'number' =>'4100000000000002',
+      'track'=>'1234',
+      'number' =>'4100000000000001',
       'expDate' =>'1210'
       }}
-    response= LitleOnlineRequest.new.sale(hash)
-    assert_equal('000', response.saleResponse.response)
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
+    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 
-  def test_simpleSalewithpaypal
+  def test_customBillingwithtwoChoices
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'litleTxnId'=>'123456',
+      'orderId'=>'12344',
+      'amount'=>'106',
+      'orderSource'=>'ecommerce',
+      'customBilling'=>{'phone'=>'1234567890','url'=>'www.litle.com'},
+      'card'=>{
+      'type'=>'VI',
+      'number' =>'4100000000000001',
+      'expDate' =>'1210'
+      }}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
+    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
+  end
+
+  def test_customBillingwiththreeChoices
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'litleTxnId'=>'123456',
+      'orderId'=>'12344',
+      'amount'=>'106',
+      'orderSource'=>'ecommerce',
+      'customBilling'=>{'phone'=>'123456789','url'=>'www.litle.com','city'=>'lowell'},
+      'card'=>{
+      'type'=>'VI',
+      'number' =>'4100000000000001',
+      'expDate' =>'1210'
+      }}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
+    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
+  end
+
+  def test_paypalmissingPayerid
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -54,33 +94,14 @@ class TestSale < Test::Unit::TestCase
       'amount'=>'106',
       'orderSource'=>'ecommerce',
       'paypal'=>{
-      'payerId'=>'1234',
       'token'=>'1234',
       'transactionId'=>'123456'
       }}
-    response= LitleOnlineRequest.new.sale(hash)
-    assert_equal 'Valid Format', response.message
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
+    assert_match /Missing Required Field: payerId!!!!/, exception.message
   end
 
-  def test_illegalorderSource
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecomerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000002',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.sale(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
-  end
-
-  def test_illegalcardType
+  def test_paypalmissingtransactionId
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -89,110 +110,64 @@ class TestSale < Test::Unit::TestCase
       'orderId'=>'12344',
       'amount'=>'106',
       'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'NO',
-      'number' =>'4100000000000002',
-      'expDate' =>'1210'
+      'paypal'=>{
+      'token'=>'1234',
+      'payerId'=>'123456'
       }}
-    response= LitleOnlineRequest.new.sale(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
+    assert_match /Missing Required Field: transactionId!!!!/, exception.message
   end
 
-  def test_noReportGroup
+  def test_poswithoutCapability
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
       'orderId'=>'12344',
       'amount'=>'106',
       'orderSource'=>'ecommerce',
+      'pos'=>{'entryMode'=>'track1','cardholderId'=>'pin'},
       'card'=>{
       'type'=>'VI',
-      'number' =>'4100000000000002',
+      'number' =>'4100000000000001',
       'expDate' =>'1210'
       }}
-    response= LitleOnlineRequest.new.sale(hash)
-    assert_equal('000', response.saleResponse.response)
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
+    assert_match /Missing Required Field: capability!!!!/, exception.message
   end
 
-  def test_FieldsOutOfOrder
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'orderSource'=>'ecommerce',
-      'litleTxnId'=>'123456',
-      'amount'=>'106',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000002',
-      'expDate' =>'1210'
-      },
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344'
-    }
-    response= LitleOnlineRequest.new.sale(hash)
-    assert_equal('000', response.saleResponse.response)
-  end
-
-  def test_InvalidField
+  def test_tokenmissingtoken
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
       'orderId'=>'12344',
       'amount'=>'106',
       'orderSource'=>'ecommerce',
-      'card'=>{
-      'NOexistantField' => 'ShouldNotCauseError',
-      'type'=>'VI',
-      'number' =>'4100000000000002',
-      'expDate' =>'1210'
+      'token'=> {
+      'expDate'=>'1210',
+      'cardValidationNum'=>'555',
+      'type'=>'VI'
       }}
-    response= LitleOnlineRequest.new.sale(hash)
-    assert_equal('000', response.saleResponse.response)
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
+    assert_match /Missing Required Field: litleToken!!!!/, exception.message
   end
 
-  def test_InvalidEmbeddedFieldValues
-    #becasue there are sub fields under fraud check that are not specified
+  def test_paypagemissingId
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
       'orderId'=>'12344',
       'amount'=>'106',
       'orderSource'=>'ecommerce',
-      'fraudCheck'=>'one',
-      'cardholderAuthentication'=>'two',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000002',
+      'paypage'=> {
+      'expDate'=>'1210',
+      'cardValidationNum'=>'555',
+      'type'=>'VI'
       }}
-    response= LitleOnlineRequest.new.sale(hash)
-    assert_equal('000', response.saleResponse.response)
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
+    assert_match /Missing Required Field: paypageRegistrationId!!!!/, exception.message
   end
-
-  def test_simpleSalewithCard
-    hash = {
-      'merchantId'=>'101',
-      'proxy_addr' => '10.1.2.254',
-      'proxy_port' => '8080',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000002',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.sale(hash)
-    assert_equal('000', response.saleResponse.response)
-  end
-
 end
 

@@ -25,47 +25,52 @@ OTHER DEALINGS IN THE SOFTWARE.
 require 'lib/LitleOnline'
 require 'test/unit'
 
-class Test_capture < Test::Unit::TestCase
-  def test_simplecapture
+class Test_echeckRedeposit < Test::Unit::TestCase
+  def test_noTXNId
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'amount'=>'106',
     }
-    response= LitleOnlineRequest.new.capture(hash)
-    assert_equal('Valid Format', response.message)
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeckRedeposit(hash)}
+    assert_match /Missing Required Field: litleTxnId!!!!/, exception.message
   end
 
-  def test_simplecapturewithpartial
+  def test_echeckRedeposit_withecheckmissingfield
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
-      'partial'=>'true',
       'litleTxnId'=>'123456',
-      'amount'=>'106',
+      'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','checkNum'=>'123455'}
     }
-    response= LitleOnlineRequest.new.capture(hash)
-    assert_equal('Valid Format', response.message)
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeckRedeposit(hash)}
+    assert_match /Missing Required Field: routingNum!!!!/, exception.message
   end
 
-  def test_complexcapture
+  def test_echeckRedeposit_withecheckTokenmssingfield
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
       'litleTxnId'=>'123456',
-      'amount'=>'106',
-      'enhancedData'=>{
-      'customerReference'=>'Litle',
-      'salesTax'=>'50',
-      'deliveryType'=>'TBD'},
-      'payPalOrderComplete'=>'true'
+      'echeckToken' => {'accType'=>'Checking','litleToken'=>'1234565789012','checkNum'=>'123455'}
     }
-    response= LitleOnlineRequest.new.capture(hash)
-    assert_equal('Valid Format', response.message)
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeckRedeposit(hash)}
+    assert_match /Missing Required Field: routingNum!!!!/, exception.message
+  end
+
+  def test_echeckRedeposit_withBOTH
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'litleTxnId'=>'123456',
+      'echeckToken' => {'accType'=>'Checking','litleToken'=>'1234565789012','routingNum'=>'123456789','checkNum'=>'123455'},
+      'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'}
+    }
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeckRedeposit(hash)}
+    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 end
 

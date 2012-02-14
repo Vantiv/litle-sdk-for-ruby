@@ -37,7 +37,7 @@ class TestAuth < Test::Unit::TestCase
       'orderSource'=>'ecommerce',
       'card'=>{
       'type'=>'VI',
-      'number' =>'4100000000000001',
+      'number' =>'4100000000000002',
       'expDate' =>'1210'
       }}
     response= LitleOnlineRequest.new.authorization(hash)
@@ -68,7 +68,7 @@ class TestAuth < Test::Unit::TestCase
       'reportGroup'=>'Planets',
       'orderId'=>'12344',
       'amount'=>'106',
-      'orderSource'=>'ecomerce',
+      'orderSource'=>'ecomerce', #This order source is mispelled on purpose!
       'card'=>{
       'type'=>'VI',
       'number' =>'4100000000000001',
@@ -76,74 +76,6 @@ class TestAuth < Test::Unit::TestCase
       }}
     response= LitleOnlineRequest.new.authorization(hash)
     assert(response.message =~ /Error validating xml data against the schema/)
-  end
-
-  def test_noReportGroup
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
-    assert_match /Missing Required Field: @reportGroup!!!!/, exception.message
-
-  end
-
-  def test_noOrderId
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
-    assert_match /Missing Required Field: orderId!!!!/, exception.message
-  end
-
-  def test_noAmount
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
-    assert_match /Missing Required Field: amount!!!!/, exception.message
-  end
-
-  def test_noOrderSource
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
-    assert_match /Missing Required Field: orderSource!!!!/, exception.message
   end
 
   def test_FieldsOutOfOrder
@@ -154,7 +86,7 @@ class TestAuth < Test::Unit::TestCase
       'orderId'=>'12344',
       'card'=>{
       'type'=>'VI',
-      'number' =>'4100000000000001',
+      'number' =>'4100000000000002',
       'expDate' =>'1210'
       },
       'orderSource'=>'ecommerce',
@@ -175,97 +107,11 @@ class TestAuth < Test::Unit::TestCase
       'card'=>{
       'NOexistantField' => 'ShouldNotCauseError',
       'type'=>'VI',
-      'number' =>'4100000000000001',
+      'number' =>'4100000000000002',
       'expDate' =>'1210'
       }}
     response= LitleOnlineRequest.new.authorization(hash)
     assert_equal('000', response.authorizationResponse.response)
-  end
-
-  def test_BothChoicesCardandPaypal
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      },
-      'paypal'=>{
-      'payerId'=>'1234',
-      'token'=>'1234',
-      'transactionId'=>'123456'
-      }}
-
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
-    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
-  end
-
-  def test_threeChoicesCardandPaypageandPaypal
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      },
-      'paypage'=> {
-      'paypageRegistrationId'=>'1234',
-      'expDate'=>'1210',
-      'cardValidationNum'=>'555',
-      'type'=>'VI'},
-      'paypal'=>{
-      'payerId'=>'1234',
-      'token'=>'1234',
-      'transactionId'=>'123456'
-      }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
-    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
-  end
-
-  def test_allChoicesCardandPaypageandPaypalandToken
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'fraudCheck'=>{'authenticationTransactionId'=>'123'},
-      'bypassVelocityCheckcardholderAuthentication'=>{'authenticationTransactionId'=>'123'},
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      },
-      'paypage'=> {
-      'paypageRegistrationId'=>'1234',
-      'expDate'=>'1210',
-      'cardValidationNum'=>'555',
-      'type'=>'VI'},
-      'paypal'=>{
-      'payerId'=>'1234',
-      'token'=>'1234',
-      'transactionId'=>'123456'},
-      'token'=> {
-      'litleToken'=>'1234',
-      'expDate'=>'1210',
-      'cardValidationNum'=>'555',
-      'type'=>'VI'
-      }}
-
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
-    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 
   def test_poswithoutCapabilityandentryMode

@@ -25,64 +25,58 @@ OTHER DEALINGS IN THE SOFTWARE.
 require 'lib/LitleOnline'
 require 'test/unit'
 
-class TestForceCapture < Test::Unit::TestCase
-  def test_simple_forceCapturewithCard
+class TestCredit < Test::Unit::TestCase
+  def test_BothChoicesCardandPaypal
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
       'orderId'=>'12344',
       'amount'=>'106',
       'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.forceCapture(hash)
-    assert_equal('000', response.forceCaptureResponse.response)
-  end
-
-  def test_simple_forceCapturewithtoken
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'token'=> {
-      'litleToken'=>'123456789101112',
-      'expDate'=>'1210',
-      'cardValidationNum'=>'555',
-      'type'=>'VI'
-      }}
-    response= LitleOnlineRequest.new.forceCapture(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_FieldsOutOfOrder
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'orderSource'=>'ecommerce',
-      'litleTxnId'=>'123456',
-      'amount'=>'106',
       'card'=>{
       'type'=>'VI',
       'number' =>'4100000000000001',
       'expDate' =>'1210'
       },
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344'
-    }
-    response= LitleOnlineRequest.new.forceCapture(hash)
-    assert_equal('Valid Format', response.message)
+      'paypal'=>{
+      'payerId'=>'1234',
+      'token'=>'1234',
+      'transactionId'=>'123456'
+      }}
+
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
+    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 
-  def test_InvalidField
+  def test_threeChoicesCardandPaypageandPaypal
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'orderId'=>'12344',
+      'amount'=>'106',
+      'orderSource'=>'ecommerce',
+      'card'=>{
+      'type'=>'VI',
+      'number' =>'4100000000000001',
+      'expDate' =>'1210'
+      },
+      'paypage'=> {
+      'paypageRegistrationId'=>'1234',
+      'expDate'=>'1210',
+      'cardValidationNum'=>'555',
+      'type'=>'VI'},
+      'paypal'=>{
+      'payerId'=>'1234',
+      'token'=>'1234',
+      'transactionId'=>'123456'
+      }}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
+    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
+  end
+
+  def test_allChoicesCardandPaypageandPaypalandToken
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -91,15 +85,33 @@ class TestForceCapture < Test::Unit::TestCase
       'orderId'=>'12344',
       'amount'=>'106',
       'orderSource'=>'ecommerce',
+      'fraudCheck'=>{'authenticationTransactionId'=>'123'},
+      'bypassVelocityCheckcardholderAuthentication'=>{'authenticationTransactionId'=>'123'},
       'card'=>{
-      'NOexistantField' => 'ShouldNotCauseError',
       'type'=>'VI',
       'number' =>'4100000000000001',
       'expDate' =>'1210'
+      },
+      'paypage'=> {
+      'paypageRegistrationId'=>'1234',
+      'expDate'=>'1210',
+      'cardValidationNum'=>'555',
+      'type'=>'VI'},
+      'paypal'=>{
+      'payerId'=>'1234',
+      'token'=>'1234',
+      'transactionId'=>'123456'},
+      'token'=> {
+      'litleToken'=>'1234',
+      'expDate'=>'1210',
+      'cardValidationNum'=>'555',
+      'type'=>'VI'
       }}
-    response= LitleOnlineRequest.new.forceCapture(hash)
-    assert_equal('Valid Format', response.message)
+
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
+    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
+
 
 end
 

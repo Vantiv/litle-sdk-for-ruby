@@ -25,81 +25,84 @@ OTHER DEALINGS IN THE SOFTWARE.
 require 'lib/LitleOnline'
 require 'test/unit'
 
-class TestForceCapture < Test::Unit::TestCase
-  def test_simple_forceCapturewithCard
+class TestcaptureGivenAuth < Test::Unit::TestCase
+  def test_noamount
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
       'orderId'=>'12344',
-      'amount'=>'106',
+      'authInformation' => {
+      'authDate'=>'2002-10-09','authCode'=>'543216',
+      'authAmount'=>'12345'
+      },
       'orderSource'=>'ecommerce',
       'card'=>{
       'type'=>'VI',
       'number' =>'4100000000000001',
       'expDate' =>'1210'
       }}
-    response= LitleOnlineRequest.new.forceCapture(hash)
-    assert_equal('000', response.forceCaptureResponse.response)
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.captureGivenAuth(hash)}
+    assert_match /Missing Required Field: amount!!!!/, exception.message
   end
 
-  def test_simple_forceCapturewithtoken
+  def test_BothChoicesCardandToken
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
       'orderId'=>'12344',
       'amount'=>'106',
       'orderSource'=>'ecommerce',
+      'authInformation' => {
+      'authDate'=>'2002-10-09','authCode'=>'543216',
+      'authAmount'=>'12345'
+      },
       'token'=> {
       'litleToken'=>'123456789101112',
       'expDate'=>'1210',
       'cardValidationNum'=>'555',
-      'type'=>'VI'
+      'type'=>'VI'},
+      'card'=>{
+      'type'=>'VI',
+      'number' =>'4100000000000001',
+      'expDate' =>'1210'
       }}
-    response= LitleOnlineRequest.new.forceCapture(hash)
-    assert_equal('Valid Format', response.message)
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.captureGivenAuth(hash)}
+    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 
-  def test_FieldsOutOfOrder
+  def test_allthreechoices
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
-      'orderSource'=>'ecommerce',
-      'litleTxnId'=>'123456',
+      'reportGroup'=>'Planets',
+      'orderId'=>'12344',
       'amount'=>'106',
+      'orderSource'=>'ecommerce',
+      'authInformation' => {
+      'authDate'=>'2002-10-09','authCode'=>'543216',
+      'authAmount'=>'12345'
+      },
       'card'=>{
       'type'=>'VI',
       'number' =>'4100000000000001',
       'expDate' =>'1210'
       },
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344'
-    }
-    response= LitleOnlineRequest.new.forceCapture(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_InvalidField
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'NOexistantField' => 'ShouldNotCauseError',
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
+      'paypage'=> {
+      'paypageRegistrationId'=>'1234',
+      'expDate'=>'1210',
+      'cardValidationNum'=>'555',
+      'type'=>'VI'},
+      'token'=> {
+      'litleToken'=>'1234',
+      'expDate'=>'1210',
+      'cardValidationNum'=>'555',
+      'type'=>'VI'
       }}
-    response= LitleOnlineRequest.new.forceCapture(hash)
-    assert_equal('Valid Format', response.message)
-  end
 
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.captureGivenAuth(hash)}
+    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
+  end
 end
 

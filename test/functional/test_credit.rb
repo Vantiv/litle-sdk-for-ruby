@@ -77,23 +77,6 @@ class TestCredit < Test::Unit::TestCase
     assert(response.message =~ /Error validating xml data against the schema/)
   end
 
-  def test_noReportGroup
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
-    assert_match /Missing Required Field: @reportGroup!!!!/, exception.message
-
-  end
-
   def test_FieldsOutOfOrder
     hash = {
       'merchantId' => '101',
@@ -128,92 +111,6 @@ class TestCredit < Test::Unit::TestCase
       }}
     response= LitleOnlineRequest.new.credit(hash)
     assert_equal('Valid Format', response.message)
-  end
-
-  def test_BothChoicesCardandPaypal
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      },
-      'paypal'=>{
-      'payerId'=>'1234',
-      'token'=>'1234',
-      'transactionId'=>'123456'
-      }}
-
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
-    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
-  end
-
-  def test_threeChoicesCardandPaypageandPaypal
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      },
-      'paypage'=> {
-      'paypageRegistrationId'=>'1234',
-      'expDate'=>'1210',
-      'cardValidationNum'=>'555',
-      'type'=>'VI'},
-      'paypal'=>{
-      'payerId'=>'1234',
-      'token'=>'1234',
-      'transactionId'=>'123456'
-      }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
-    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
-  end
-
-  def test_allChoicesCardandPaypageandPaypalandToken
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'fraudCheck'=>{'authenticationTransactionId'=>'123'},
-      'bypassVelocityCheckcardholderAuthentication'=>{'authenticationTransactionId'=>'123'},
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      },
-      'paypage'=> {
-      'paypageRegistrationId'=>'1234',
-      'expDate'=>'1210',
-      'cardValidationNum'=>'555',
-      'type'=>'VI'},
-      'paypal'=>{
-      'payerId'=>'1234',
-      'token'=>'1234',
-      'transactionId'=>'123456'},
-      'token'=> {
-      'litleToken'=>'1234',
-      'expDate'=>'1210',
-      'cardValidationNum'=>'555',
-      'type'=>'VI'
-      }}
-
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
-    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 
   def test_payPalNotes

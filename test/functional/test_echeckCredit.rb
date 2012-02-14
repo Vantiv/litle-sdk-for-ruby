@@ -38,24 +38,14 @@ class Test_echeckCredit < Test::Unit::TestCase
     assert_equal('Valid Format', response.message)
   end
 
-  def test_noReportGroup
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'litleTxnId'=>'123456',
-    }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeckCredit(hash)}
-    assert_match /Missing Required Field: @reportGroup!!!!/, exception.message
-  end
-
   def test_noAmount
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
     }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeckCredit(hash)}
-    assert_match /Missing Required Field: amount!!!!/, exception.message
+    response = LitleOnlineRequest.new.echeckCredit(hash)
+    assert_match /The content of element 'echeckCredit' is not complete/, response.message
   end
 
   def test_echeckCredit_withecheck
@@ -88,19 +78,6 @@ class Test_echeckCredit < Test::Unit::TestCase
     }
     response= LitleOnlineRequest.new.echeckCredit(hash)
     assert_equal('Valid Format', response.message)
-  end
-
-  def test_echeckCredit_withBOTH
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'echeckToken' => {'accType'=>'Checking','litleToken'=>'1234565789012','routingNum'=>'123456789','checkNum'=>'123455'},
-      'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'}
-    }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeckCredit(hash)}
-    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 
   def test_extrafieldand_incorrectOrder

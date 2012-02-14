@@ -39,31 +39,6 @@ class TestAuthReversal < Test::Unit::TestCase
     assert_equal('Valid Format', response.message)
   end
 
-  def test_noReportGroup
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'litleTxnId'=>'12345678',
-      'amount'=>'106',
-      'payPalNotes'=>'Notes'
-    }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authReversal(hash)}
-    assert_match /Missing Required Field: @reportGroup!!!!/, exception.message
-
-  end
-
-  def test_noReportGroup
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'12345678',
-      'amount'=>'106',
-      'payPalNotes'=>'Notes'
-    }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authReversal(hash)}
-    assert_match /Missing Required Field: litleTxnId!!!!/, exception.message
-  end
-
   def test_FieldsOutOfOrder
     hash = {
       'merchantId' => '101',
