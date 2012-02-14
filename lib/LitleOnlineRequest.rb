@@ -31,19 +31,19 @@ require_relative 'Configuration'
 #
 class LitleOnlineRequest
   def initialize
-    #load configuration data 
+    #load configuration data
     @config_hash = Configuration.new.config
   end
-  
+
   def authorization(hash_in)
     hash_out = {
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
       '@reportGroup' => get_report_group(hash_in),
       :litleTxnId => hash_in['litleTxnId'],
-      :orderId =>(hash_in['orderId'] or 'REQUIRED'),
-      :amount =>(hash_in['amount'] or 'REQUIRED'),
-      :orderSource=>(hash_in['orderSource'] or 'REQUIRED'),
+      :orderId => require_field(hash_in['orderId']),
+      :amount =>require_field(hash_in['amount']),
+      :orderSource=>require_field(hash_in['orderSource']),
       :customerInfo=>XMLFields.customerInfo((hash_in['customerInfo'] or ' ')),
       :billToAddress=>XMLFields.contact((hash_in['billToAddress'] or ' ')),
       :shipToAddress=>XMLFields.contact((hash_in['shipToAddress'] or ' ')),
@@ -70,7 +70,7 @@ class LitleOnlineRequest
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> (@config_hash['version'] or 'REQUIRED'),
+      "@version"=> require_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -86,9 +86,9 @@ class LitleOnlineRequest
       '@customerId' => hash_in['customerId'],
       '@reportGroup' => get_report_group(hash_in),
       :litleTxnId => hash_in['litleTxnId'],
-      :orderId =>(hash_in['orderId'] or 'REQUIRED'),
-      :amount =>(hash_in['amount'] or 'REQUIRED'),
-      :orderSource=>(hash_in['orderSource'] or 'REQUIRED'),
+      :orderId =>require_field(hash_in['orderId']),
+      :amount =>require_field(hash_in['amount']),
+      :orderSource=>require_field(hash_in['orderSource']),
       :customerInfo=>XMLFields.customerInfo((hash_in['customerInfo'] or ' ')),
       :billToAddress=>XMLFields.contact((hash_in['billToAddress'] or ' ')),
       :shipToAddress=>XMLFields.contact((hash_in['shipToAddress'] or ' ')),
@@ -120,7 +120,7 @@ class LitleOnlineRequest
     Checker.choice(choice2)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> (@config_hash['version'] or 'REQUIRED'),
+      "@version"=> require_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -143,7 +143,7 @@ class LitleOnlineRequest
     Checker.purge_null(hash_out)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> (@config_hash['version'] or 'REQUIRED'),
+      "@version"=> require_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -181,7 +181,7 @@ class LitleOnlineRequest
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> (@config_hash['version'] or 'REQUIRED'),
+      "@version"=> require_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -207,7 +207,7 @@ class LitleOnlineRequest
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> (@config_hash['version'] or 'REQUIRED'),
+      "@version"=> require_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -222,9 +222,9 @@ class LitleOnlineRequest
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
       '@reportGroup' => get_report_group(hash_in),
-      :orderId =>(hash_in['orderId'] or 'REQUIRED'),
+      :orderId =>require_field(hash_in['orderId']),
       :amount =>(hash_in['amount']),
-      :orderSource=>(hash_in['orderSource'] or 'REQUIRED'),
+      :orderSource=>require_field(hash_in['orderSource']),
       :billToAddress=>XMLFields.contact((hash_in['billToAddress'] or ' ')),
       :card=> XMLFields.cardType((hash_in['card'] or ' ')),
       :token=>XMLFields.cardTokenType((hash_in['token'] or ' ')),
@@ -241,7 +241,7 @@ class LitleOnlineRequest
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> (@config_hash['version'] or 'REQUIRED'),
+      "@version"=> require_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -257,7 +257,7 @@ class LitleOnlineRequest
       '@customerId' => hash_in['customerId'],
       '@reportGroup' => get_report_group(hash_in),
       '@partial'=>hash_in['partial'],
-      :litleTxnId => (hash_in['litleTxnId'] or 'REQUIRED'),
+      :litleTxnId => require_field(hash_in['litleTxnId']),
       :amount =>(hash_in['amount']),
       :enhancedData=>XMLFields.enhancedData((hash_in['enhancedData'] or ' ')),
       :processingInstructions=>XMLFields.processingInstructions((hash_in['processingInstructions'] or ' ')),
@@ -267,7 +267,7 @@ class LitleOnlineRequest
     Checker.purge_null(hash_out)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> (@config_hash['version'] or 'REQUIRED'),
+      "@version"=> require_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -282,10 +282,10 @@ class LitleOnlineRequest
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
       '@reportGroup' => get_report_group(hash_in),
-      :orderId =>(hash_in['orderId'] or 'REQUIRED'),
+      :orderId =>require_field(hash_in['orderId']),
       :authInformation=>XMLFields.authInformation((hash_in['authInformation'] or ' ')),
-      :amount =>(hash_in['amount'] or 'REQUIRED'),
-      :orderSource=>(hash_in['orderSource'] or 'REQUIRED'),
+      :amount =>require_field(hash_in['amount']),
+      :orderSource=>require_field(hash_in['orderSource']),
       :billToAddress=>XMLFields.contact((hash_in['billToAddress'] or ' ')),
       :shipToAddress=>XMLFields.contact((hash_in['shipToAddress'] or ' ')),
       :card=> XMLFields.cardType((hash_in['card'] or ' ')),
@@ -304,7 +304,7 @@ class LitleOnlineRequest
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> (@config_hash['version'] or 'REQUIRED'),
+      "@version"=> require_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -319,7 +319,7 @@ class LitleOnlineRequest
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
       '@reportGroup' => get_report_group(hash_in),
-      :litleTxnId => (hash_in['litleTxnId'] or 'REQUIRED'),
+      :litleTxnId => require_field(hash_in['litleTxnId']),
       :echeck=>XMLFields.echeckType((hash_in['echeck'] or ' ')),
       :echeckToken=>XMLFields.echeckTokenType((hash_in['echeckToken'] or ' '))
     }
@@ -328,7 +328,7 @@ class LitleOnlineRequest
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> (@config_hash['version'] or 'REQUIRED'),
+      "@version"=> require_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -359,7 +359,7 @@ class LitleOnlineRequest
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> (@config_hash['version'] or 'REQUIRED'),
+      "@version"=> require_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -388,7 +388,7 @@ class LitleOnlineRequest
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> (@config_hash['version'] or 'REQUIRED'),
+      "@version"=> require_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -404,9 +404,9 @@ class LitleOnlineRequest
       '@customerId' => hash_in['customerId'],
       '@reportGroup' => get_report_group(hash_in),
       :litleTxnId => hash_in['litleTxnId'],
-      :orderId =>(hash_in['orderId'] or 'REQUIRED'),
-      :amount =>(hash_in['amount'] or 'REQUIRED'),
-      :orderSource =>(hash_in['orderSource'] or 'REQUIRED'),
+      :orderId =>require_field(hash_in['orderId']),
+      :amount =>require_field(hash_in['amount']),
+      :orderSource =>require_field(hash_in['orderSource']),
       :billToAddress=>XMLFields.contact((hash_in['billToAddress'] or ' ')),
       :echeck=>XMLFields.echeckType((hash_in['echeck'] or ' ')),
       :echeckToken=>XMLFields.echeckTokenType((hash_in['echeckToken'] or ' ')),
@@ -416,7 +416,7 @@ class LitleOnlineRequest
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> (@config_hash['version'] or 'REQUIRED'),
+      "@version"=> require_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -431,13 +431,13 @@ class LitleOnlineRequest
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
       '@reportGroup' => get_report_group(hash_in),
-      :litleTxnId => (hash_in['litleTxnId'] or 'REQUIRED'),
+      :litleTxnId => require_field(hash_in['litleTxnId']),
       :processingInstructions=>XMLFields.processingInstructions((hash_in['processingInstructions'] or ' '))
     }
     Checker.purge_null(hash_out)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> (@config_hash['version'] or 'REQUIRED'),
+      "@version"=> require_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -446,8 +446,9 @@ class LitleOnlineRequest
     Checker.required_missing(litleOnline_hash)
     LitleXmlMapper.request(litleOnline_hash,@config_hash)
   end
-  
+
   private
+
   def get_merchant_id(hash_in)
     if (hash_in['merchantId'] == nil)
       return @config_hash['currency_merchant_map']['DEFAULT']
@@ -455,15 +456,15 @@ class LitleOnlineRequest
       return hash_in['merchantId']
     end
   end
-  
+
   def get_report_group(hash_in)
-      if (hash_in['reportGroup'] == nil)
-        return (@config_hash['default_report_group'] or 'REQUIRED')
-      else
-        return hash_in['reportGroup']
-      end
+    if (hash_in['reportGroup'] == nil)
+      return (@config_hash['default_report_group'] or 'REQUIRED')
+    else
+      return hash_in['reportGroup']
     end
-  
+  end
+
   def authentication(hash_in)
     hash_out = {
       :user =>(@config_hash['user'] or 'REQUIRED'),
@@ -471,5 +472,10 @@ class LitleOnlineRequest
     }
     Checker.required_missing(hash_out)
   end
+  
+  def require_field(value)
+    return (value or 'REQUIRED')
+  end
+
 
 end

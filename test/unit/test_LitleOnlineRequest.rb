@@ -179,37 +179,89 @@ class Newtest < Test::Unit::TestCase
 
     response = LitleOnlineRequest.new.forceCapture(hash)
   end
+
+  def test_amount_is_not_required_in_echeck_credit
+    Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
+    hash={
+      'id' => '006',
+      'orderId'=>'12344',
+      'reportGroup'=>'Planets',
+      'orderSource'=>'ecommerce',
+      'litleTxnId'=>'123456789012345678',
+    }
+
+    Communications.expects(:http_post).with(Not(regexp_matches(/.*amount.*/m)),kind_of(Hash))
+    XMLObject.expects(:new)
+
+    response = LitleOnlineRequest.new.echeckCredit(hash)
+  end
+
+  def test_amount_is_not_required_in_echeck_sale
+    Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
+    hash={
+      'id' => '006',
+      'orderId'=>'12344',
+      'reportGroup'=>'Planets',
+      'orderSource'=>'ecommerce',
+      'litleTxnId'=>'123456789012345678',
+    }
+
+    Communications.expects(:http_post).with(Not(regexp_matches(/.*amount.*/m)),kind_of(Hash))
+    XMLObject.expects(:new)
+
+    response = LitleOnlineRequest.new.echeckSale(hash)
+  end
+
+  def test_choice_between_card_token
+    start_hash = {
+      'orderId'=>'12344',
+      'merchantId'=>'101',
+      'reportGroup'=>'Planets',
+      'amount'=>'101',
+      'orderSource'=>'ecommerce'
+    }
+    
+    card_only = {
+      'card' => {
+      'type' => 'VI',
+      'number' => '1111222233334444'
+      }
+    }
+    token_only = {
+      'token'=> {
+        'litleToken' => '1111222233334444'
+      }
+    }
+
+    XMLObject.expects(:new)
+    Communications.expects(:http_post).with(regexp_matches(/.*card.*/m))
+    Communications.expects(:http_post).with(Not(regexp_matches(/.*token.*/m)),kind_of(Hash))
+    LitleOnlineRequest.new.authorization(start_hash.merge(card_only))
+      
+    XMLObject.expects(:new)
+    Communications.expects(:http_post).with(regexp_matches(/.*token.*/m))
+    Communications.expects(:http_post).with(Not(regexp_matches(/.*card.*/m)),kind_of(Hash))
+    LitleOnlineRequest.new.authorization(start_hash.merge(token_only))
+  end
   
-def test_amount_is_not_required_in_echeck_credit
-  Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
-  hash={
-    'id' => '006',
-    'orderId'=>'12344',
-    'reportGroup'=>'Planets',
-    'orderSource'=>'ecommerce',
-    'litleTxnId'=>'123456789012345678',
-  }
-
-  Communications.expects(:http_post).with(Not(regexp_matches(/.*amount.*/m)),kind_of(Hash))
-  XMLObject.expects(:new)
-
-  response = LitleOnlineRequest.new.echeckCredit(hash)
-end
-
-def test_amount_is_not_required_in_echeck_sale
-  Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
-  hash={
-    'id' => '006',
-    'orderId'=>'12344',
-    'reportGroup'=>'Planets',
-    'orderSource'=>'ecommerce',
-    'litleTxnId'=>'123456789012345678',
-  }
-
-  Communications.expects(:http_post).with(Not(regexp_matches(/.*amount.*/m)),kind_of(Hash))
-  XMLObject.expects(:new)
-
-  response = LitleOnlineRequest.new.echeckSale(hash)
-end
-
+  def test_orderId_required
+    start_hash = {
+      #'orderId'=>'12344',
+      'merchantId'=>'101',
+      'reportGroup'=>'Planets',
+      'amount'=>'101',
+      'orderSource'=>'ecommerce',
+      'card' => {
+      'type' => 'VI',
+      'number' => '1111222233334444'
+      }
+    }
+    exception = assert_raise(RuntimeError) {LitleOnlineRequest.new.authorization(start_hash)}
+    assert_match /Missing Required Field: orderId!!!!/, exception.message
+    
+    XMLObject.expects(:new)
+    Communications.expects(:http_post).with(regexp_matches(/.*orderId.*/m),kind_of(Hash))
+    assert_nothing_raised {LitleOnlineRequest.new.authorization(start_hash.merge({'orderId'=>'1234'}))}
+  end
+    
 end
