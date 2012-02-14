@@ -220,7 +220,7 @@ class Newtest < Test::Unit::TestCase
       'amount'=>'101',
       'orderSource'=>'ecommerce'
     }
-    
+
     card_only = {
       'card' => {
       'type' => 'VI',
@@ -229,7 +229,7 @@ class Newtest < Test::Unit::TestCase
     }
     token_only = {
       'token'=> {
-        'litleToken' => '1111222233334444'
+      'litleToken' => '1111222233334444'
       }
     }
 
@@ -237,13 +237,13 @@ class Newtest < Test::Unit::TestCase
     Communications.expects(:http_post).with(regexp_matches(/.*card.*/m))
     Communications.expects(:http_post).with(Not(regexp_matches(/.*token.*/m)),kind_of(Hash))
     LitleOnlineRequest.new.authorization(start_hash.merge(card_only))
-      
+
     XMLObject.expects(:new)
     Communications.expects(:http_post).with(regexp_matches(/.*token.*/m))
     Communications.expects(:http_post).with(Not(regexp_matches(/.*card.*/m)),kind_of(Hash))
     LitleOnlineRequest.new.authorization(start_hash.merge(token_only))
   end
-  
+
   def test_orderId_required
     start_hash = {
       #'orderId'=>'12344',
@@ -258,10 +258,31 @@ class Newtest < Test::Unit::TestCase
     }
     exception = assert_raise(RuntimeError) {LitleOnlineRequest.new.authorization(start_hash)}
     assert_match /Missing Required Field: orderId!!!!/, exception.message
-    
+
     XMLObject.expects(:new)
     Communications.expects(:http_post).with(regexp_matches(/.*orderId.*/m),kind_of(Hash))
     assert_nothing_raised {LitleOnlineRequest.new.authorization(start_hash.merge({'orderId'=>'1234'}))}
   end
-    
+
+  def test_ssn_optional
+    start_hash = {
+      'orderId'=>'12344',
+      'merchantId'=>'101',
+      'reportGroup'=>'Planets',
+      'amount'=>'101',
+      'orderSource'=>'ecommerce',
+      'card' => {
+      'type' => 'VI',
+      'number' => '1111222233334444'
+      },
+    }
+    XMLObject.expects(:new)
+    Communications.expects(:http_post).with(Not(regexp_matches(/.*ssn.*/m)),kind_of(Hash))
+    assert_nothing_raised {LitleOnlineRequest.new.authorization(start_hash)}
+
+    XMLObject.expects(:new)
+    Communications.expects(:http_post).with(regexp_matches(/.*ssn.*/m),kind_of(Hash))
+    assert_nothing_raised {LitleOnlineRequest.new.authorization(start_hash.merge({'customerInfo'=>{'ssn'=>'000112222'} }))}
+  end
+
 end

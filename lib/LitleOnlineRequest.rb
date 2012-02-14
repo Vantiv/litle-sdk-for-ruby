@@ -41,36 +41,36 @@ class LitleOnlineRequest
       '@customerId' => hash_in['customerId'],
       '@reportGroup' => get_report_group(hash_in),
       :litleTxnId => hash_in['litleTxnId'],
-      :orderId => require_field(hash_in['orderId']),
-      :amount =>require_field(hash_in['amount']),
-      :orderSource=>require_field(hash_in['orderSource']),
-      :customerInfo=>XMLFields.customerInfo((hash_in['customerInfo'] or ' ')),
-      :billToAddress=>XMLFields.contact((hash_in['billToAddress'] or ' ')),
-      :shipToAddress=>XMLFields.contact((hash_in['shipToAddress'] or ' ')),
-      :card=> XMLFields.cardType((hash_in['card'] or ' ')),
-      :paypal=>XMLFields.payPal((hash_in['paypal'] or ' ')),
-      :token=>XMLFields.cardTokenType((hash_in['token'] or ' ')),
-      :paypage=>XMLFields.cardPaypageType((hash_in['paypage'] or ' ')),
-      :billMeLaterRequest=>XMLFields.billMeLaterRequest((hash_in['billMeLaterRequest'] or ' ')),
-      :cardholderAuthentication=>XMLFields.fraudCheckType((hash_in['cardholderAuthentication'] or ' ')),
-      :processingInstructions=>XMLFields.processingInstructions((hash_in['processingInstructions'] or ' ')),
-      :pos=>XMLFields.pos((hash_in['pos'] or ' ')),
-      :customBilling=>XMLFields.customBilling((hash_in['customBilling'] or ' ')),
-      :taxBilling=>XMLFields.taxBilling((hash_in['taxBilling'] or ' ')),
-      :enhancedData=>XMLFields.enhancedData((hash_in['enhancedData'] or ' ')),
-      :amexAggregatorData=>XMLFields.amexAggregatorData((hash_in['amexAggregatorData'] or ' ')),
+      :orderId => required_field(hash_in['orderId']),
+      :amount =>required_field(hash_in['amount']),
+      :orderSource=>required_field(hash_in['orderSource']),
+      :customerInfo=>XMLFields.customerInfo(optional_field(hash_in['customerInfo'])),
+      :billToAddress=>XMLFields.contact(optional_field(hash_in['billToAddress'])),
+      :shipToAddress=>XMLFields.contact(optional_field(hash_in['shipToAddress'])),
+      :card=> XMLFields.cardType(optional_field(hash_in['card'])),
+      :paypal=>XMLFields.payPal(optional_field(hash_in['paypal'])),
+      :token=>XMLFields.cardTokenType(optional_field(hash_in['token'])),
+      :paypage=>XMLFields.cardPaypageType(optional_field(hash_in['paypage'])),
+      :billMeLaterRequest=>XMLFields.billMeLaterRequest(optional_field(hash_in['billMeLaterRequest'])),
+      :cardholderAuthentication=>XMLFields.fraudCheckType(optional_field(hash_in['cardholderAuthentication'])),
+      :processingInstructions=>XMLFields.processingInstructions(optional_field(hash_in['processingInstructions'])),
+      :pos=>XMLFields.pos(optional_field(hash_in['pos'])),
+      :customBilling=>XMLFields.customBilling(optional_field(hash_in['customBilling'])),
+      :taxBilling=>XMLFields.taxBilling(optional_field(hash_in['taxBilling'])),
+      :enhancedData=>XMLFields.enhancedData(optional_field(hash_in['enhancedData'])),
+      :amexAggregatorData=>XMLFields.amexAggregatorData(optional_field(hash_in['amexAggregatorData'])),
       :allowPartialAuth=>hash_in['allowPartialAuth'],
-      :healthcareIIAS=>XMLFields.healthcareIIAS((hash_in['healthcareIIAS'] or ' ')),
-      :filtering=>XMLFields.filteringType((hash_in['filtering'] or ' ')),
-      :merchantData=>XMLFields.filteringType((hash_in['merchantData'] or ' ')),
-      :recyclingRequest=>XMLFields.recyclingRequestType((hash_in['recyclingRequest'] or ' '))
+      :healthcareIIAS=>XMLFields.healthcareIIAS(optional_field(hash_in['healthcareIIAS'])),
+      :filtering=>XMLFields.filteringType(optional_field(hash_in['filtering'])),
+      :merchantData=>XMLFields.filteringType(optional_field(hash_in['merchantData'])),
+      :recyclingRequest=>XMLFields.recyclingRequestType(optional_field(hash_in['recyclingRequest']))
     }
     Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:card],'2' =>hash_out[:paypal],'3'=>hash_out[:token],'4'=>hash_out[:paypage]}
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> require_field(@config_hash['version']),
+      "@version"=> required_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -86,32 +86,32 @@ class LitleOnlineRequest
       '@customerId' => hash_in['customerId'],
       '@reportGroup' => get_report_group(hash_in),
       :litleTxnId => hash_in['litleTxnId'],
-      :orderId =>require_field(hash_in['orderId']),
-      :amount =>require_field(hash_in['amount']),
-      :orderSource=>require_field(hash_in['orderSource']),
-      :customerInfo=>XMLFields.customerInfo((hash_in['customerInfo'] or ' ')),
-      :billToAddress=>XMLFields.contact((hash_in['billToAddress'] or ' ')),
-      :shipToAddress=>XMLFields.contact((hash_in['shipToAddress'] or ' ')),
-      :card=> XMLFields.cardType((hash_in['card'] or ' ')),
-      :paypal=>XMLFields.payPal((hash_in['paypal'] or ' ')),
-      :token=>XMLFields.cardTokenType((hash_in['token'] or ' ')),
-      :paypage=>XMLFields.cardPaypageType((hash_in['paypage'] or ' ')),
-      :billMeLaterRequest=>XMLFields.billMeLaterRequest((hash_in['billMeLaterRequest'] or ' ')),
-      :fraudCheck=>XMLFields.fraudCheckType((hash_in['fraudCheck'] or ' ')),
-      :cardholderAuthentication=>XMLFields.fraudCheckType((hash_in['cardholderAuthentication'] or ' ')),
-      :customBilling=>XMLFields.customBilling((hash_in['customBilling'] or ' ')),
-      :taxBilling=>XMLFields.taxBilling((hash_in['taxBilling'] or ' ')),
-      :enhancedData=>XMLFields.enhancedData((hash_in['enhancedData'] or ' ')),
-      :processingInstructions=>XMLFields.processingInstructions((hash_in['processingInstructions'] or ' ')),
-      :pos=>XMLFields.pos((hash_in['pos'] or ' ')),
+      :orderId =>required_field(hash_in['orderId']),
+      :amount =>required_field(hash_in['amount']),
+      :orderSource=>required_field(hash_in['orderSource']),
+      :customerInfo=>XMLFields.customerInfo(optional_field(hash_in['customerInfo'])),
+      :billToAddress=>XMLFields.contact(optional_field(hash_in['billToAddress'])),
+      :shipToAddress=>XMLFields.contact(optional_field(hash_in['shipToAddress'])),
+      :card=> XMLFields.cardType(optional_field(hash_in['card'])),
+      :paypal=>XMLFields.payPal(optional_field(hash_in['paypal'])),
+      :token=>XMLFields.cardTokenType(optional_field(hash_in['token'])),
+      :paypage=>XMLFields.cardPaypageType(optional_field(hash_in['paypage'])),
+      :billMeLaterRequest=>XMLFields.billMeLaterRequest(optional_field(hash_in['billMeLaterRequest'])),
+      :fraudCheck=>XMLFields.fraudCheckType(optional_field(hash_in['fraudCheck'])),
+      :cardholderAuthentication=>XMLFields.fraudCheckType(optional_field(hash_in['cardholderAuthentication'])),
+      :customBilling=>XMLFields.customBilling(optional_field(hash_in['customBilling'])),
+      :taxBilling=>XMLFields.taxBilling(optional_field(hash_in['taxBilling'])),
+      :enhancedData=>XMLFields.enhancedData(optional_field(hash_in['enhancedData'])),
+      :processingInstructions=>XMLFields.processingInstructions(optional_field(hash_in['processingInstructions'])),
+      :pos=>XMLFields.pos(optional_field(hash_in['pos'])),
       :payPalOrderComplete=> hash_in['paypalOrderComplete'],
       :payPalNotes=> hash_in['paypalNotesType'],
-      :amexAggregatorData=>XMLFields.amexAggregatorData((hash_in['amexAggregatorData'] or ' ')),
+      :amexAggregatorData=>XMLFields.amexAggregatorData(optional_field(hash_in['amexAggregatorData'])),
       :allowPartialAuth=>hash_in['allowPartialAuth'],
-      :healthcareIIAS=>XMLFields.healthcareIIAS((hash_in['healthcareIIAS'] or ' ')),
-      :filtering=>XMLFields.filteringType((hash_in['filtering'] or ' ')),
-      :merchantData=>XMLFields.filteringType((hash_in['merchantData'] or ' ')),
-      :recyclingRequest=>XMLFields.recyclingRequestType((hash_in['recyclingRequest'] or ' '))
+      :healthcareIIAS=>XMLFields.healthcareIIAS(optional_field(hash_in['healthcareIIAS'])),
+      :filtering=>XMLFields.filteringType(optional_field(hash_in['filtering'])),
+      :merchantData=>XMLFields.filteringType(optional_field(hash_in['merchantData'])),
+      :recyclingRequest=>XMLFields.recyclingRequestType(optional_field(hash_in['recyclingRequest']))
     }
     Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:card],'2' =>hash_out[:paypal],'3'=>hash_out[:token],'4'=>hash_out[:paypage]}
@@ -120,7 +120,7 @@ class LitleOnlineRequest
     Checker.choice(choice2)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> require_field(@config_hash['version']),
+      "@version"=> required_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -135,7 +135,7 @@ class LitleOnlineRequest
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
       '@reportGroup' => get_report_group(hash_in),
-      :litleTxnId => (hash_in['litleTxnId']or 'REQUIRED'),
+      :litleTxnId => required_field(hash_in['litleTxnId']),
       :amount =>hash_in['amount'],
       :payPalNotes=>hash_in['payPalNotes'],
       :actionReason=>hash_in['actionReason']
@@ -143,7 +143,7 @@ class LitleOnlineRequest
     Checker.purge_null(hash_out)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> require_field(@config_hash['version']),
+      "@version"=> required_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -162,18 +162,18 @@ class LitleOnlineRequest
       :orderId =>hash_in['orderId'],
       :amount =>hash_in['amount'],
       :orderSource=>hash_in['orderSource'],
-      :billToAddress=>XMLFields.contact((hash_in['billToAddress'] or ' ')),
-      :card=> XMLFields.cardType((hash_in['card'] or ' ')),
-      :paypal=>XMLFields.payPal((hash_in['paypal'] or ' ')),
-      :token=>XMLFields.cardTokenType((hash_in['token'] or ' ')),
-      :paypage=>XMLFields.cardPaypageType((hash_in['paypage'] or ' ')),
-      :customBilling=>XMLFields.customBilling((hash_in['customBilling'] or ' ')),
-      :taxBilling=>XMLFields.taxBilling((hash_in['taxBilling'] or ' ')),
-      :billMeLaterRequest=>XMLFields.billMeLaterRequest((hash_in['billMeLaterRequest'] or ' ')),
-      :enhancedData=>XMLFields.enhancedData((hash_in['enhancedData'] or ' ')),
-      :processingInstructions=>XMLFields.processingInstructions((hash_in['processingInstructions'] or ' ')),
-      :pos=>XMLFields.pos((hash_in['pos'] or ' ')),
-      :amexAggregatorData=>XMLFields.amexAggregatorData((hash_in['amexAggregatorData'] or ' ')),
+      :billToAddress=>XMLFields.contact(optional_field(hash_in['billToAddress'])),
+      :card=> XMLFields.cardType(optional_field(hash_in['card'])),
+      :paypal=>XMLFields.payPal(optional_field(hash_in['paypal'])),
+      :token=>XMLFields.cardTokenType(optional_field(hash_in['token'])),
+      :paypage=>XMLFields.cardPaypageType(optional_field(hash_in['paypage'])),
+      :customBilling=>XMLFields.customBilling(optional_field(hash_in['customBilling'])),
+      :taxBilling=>XMLFields.taxBilling(optional_field(hash_in['taxBilling'])),
+      :billMeLaterRequest=>XMLFields.billMeLaterRequest(optional_field(hash_in['billMeLaterRequest'])),
+      :enhancedData=>XMLFields.enhancedData(optional_field(hash_in['enhancedData'])),
+      :processingInstructions=>XMLFields.processingInstructions(optional_field(hash_in['processingInstructions'])),
+      :pos=>XMLFields.pos(optional_field(hash_in['pos'])),
+      :amexAggregatorData=>XMLFields.amexAggregatorData(optional_field(hash_in['amexAggregatorData'])),
       :payPalNotes =>hash_in['payPalNotes']
     }
     Checker.purge_null(hash_out)
@@ -181,7 +181,7 @@ class LitleOnlineRequest
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> require_field(@config_hash['version']),
+      "@version"=> required_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -197,9 +197,9 @@ class LitleOnlineRequest
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
       '@reportGroup' => get_report_group(hash_in),
-      :orderId =>(hash_in['orderId'] or ' '),
+      :orderId =>optional_field(hash_in['orderId']),
       :accountNumber=>hash_in['accountNumber'],
-      :echeckForToken=>XMLFields.echeckForTokenType((hash_in['echeckForToken'] or ' ')),
+      :echeckForToken=>XMLFields.echeckForTokenType(optional_field(hash_in['echeckForToken'])),
       :paypageRegistrationId=>hash_in['paypageRegistrationId']
     }
     Checker.purge_null(hash_out)
@@ -207,7 +207,7 @@ class LitleOnlineRequest
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> require_field(@config_hash['version']),
+      "@version"=> required_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -222,26 +222,26 @@ class LitleOnlineRequest
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
       '@reportGroup' => get_report_group(hash_in),
-      :orderId =>require_field(hash_in['orderId']),
+      :orderId =>required_field(hash_in['orderId']),
       :amount =>(hash_in['amount']),
-      :orderSource=>require_field(hash_in['orderSource']),
-      :billToAddress=>XMLFields.contact((hash_in['billToAddress'] or ' ')),
-      :card=> XMLFields.cardType((hash_in['card'] or ' ')),
-      :token=>XMLFields.cardTokenType((hash_in['token'] or ' ')),
-      :paypage=>XMLFields.cardPaypageType((hash_in['paypage'] or ' ')),
-      :customBilling=>XMLFields.customBilling((hash_in['customBilling'] or ' ')),
-      :taxBilling=>XMLFields.taxBilling((hash_in['taxBilling'] or ' ')),
-      :enhancedData=>XMLFields.enhancedData((hash_in['enhancedData'] or ' ')),
-      :processingInstructions=>XMLFields.processingInstructions((hash_in['processingInstructions'] or ' ')),
-      :pos=>XMLFields.pos((hash_in['pos'] or ' ')),
-      :amexAggregatorData=>XMLFields.amexAggregatorData((hash_in['amexAggregatorData'] or ' '))
+      :orderSource=>required_field(hash_in['orderSource']),
+      :billToAddress=>XMLFields.contact(optional_field(hash_in['billToAddress'])),
+      :card=> XMLFields.cardType(optional_field(hash_in['card'])),
+      :token=>XMLFields.cardTokenType(optional_field(hash_in['token'])),
+      :paypage=>XMLFields.cardPaypageType(optional_field(hash_in['paypage'])),
+      :customBilling=>XMLFields.customBilling(optional_field(hash_in['customBilling'])),
+      :taxBilling=>XMLFields.taxBilling(optional_field(hash_in['taxBilling'])),
+      :enhancedData=>XMLFields.enhancedData(optional_field(hash_in['enhancedData'])),
+      :processingInstructions=>XMLFields.processingInstructions(optional_field(hash_in['processingInstructions'])),
+      :pos=>XMLFields.pos(optional_field(hash_in['pos'])),
+      :amexAggregatorData=>XMLFields.amexAggregatorData(optional_field(hash_in['amexAggregatorData']))
     }
     Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:card],'3'=>hash_out[:token],'4'=>hash_out[:paypage]}
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> require_field(@config_hash['version']),
+      "@version"=> required_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -257,17 +257,17 @@ class LitleOnlineRequest
       '@customerId' => hash_in['customerId'],
       '@reportGroup' => get_report_group(hash_in),
       '@partial'=>hash_in['partial'],
-      :litleTxnId => require_field(hash_in['litleTxnId']),
+      :litleTxnId => required_field(hash_in['litleTxnId']),
       :amount =>(hash_in['amount']),
-      :enhancedData=>XMLFields.enhancedData((hash_in['enhancedData'] or ' ')),
-      :processingInstructions=>XMLFields.processingInstructions((hash_in['processingInstructions'] or ' ')),
+      :enhancedData=>XMLFields.enhancedData(optional_field(hash_in['enhancedData'])),
+      :processingInstructions=>XMLFields.processingInstructions(optional_field(hash_in['processingInstructions'])),
       :payPalOrderComplete=>hash_in['payPalOrderComplete'],
       :payPalNotes =>hash_in['payPalNotes']
     }
     Checker.purge_null(hash_out)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> require_field(@config_hash['version']),
+      "@version"=> required_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -282,29 +282,29 @@ class LitleOnlineRequest
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
       '@reportGroup' => get_report_group(hash_in),
-      :orderId =>require_field(hash_in['orderId']),
-      :authInformation=>XMLFields.authInformation((hash_in['authInformation'] or ' ')),
-      :amount =>require_field(hash_in['amount']),
-      :orderSource=>require_field(hash_in['orderSource']),
-      :billToAddress=>XMLFields.contact((hash_in['billToAddress'] or ' ')),
-      :shipToAddress=>XMLFields.contact((hash_in['shipToAddress'] or ' ')),
-      :card=> XMLFields.cardType((hash_in['card'] or ' ')),
-      :token=>XMLFields.cardTokenType((hash_in['token'] or ' ')),
-      :paypage=>XMLFields.cardPaypageType((hash_in['paypage'] or ' ')),
-      :customBilling=>XMLFields.customBilling((hash_in['customBilling'] or ' ')),
-      :taxBilling=>XMLFields.taxBilling((hash_in['taxBilling'] or ' ')),
-      :billMeLaterRequest=>XMLFields.billMeLaterRequest((hash_in['billMeLaterRequest'] or ' ')),
-      :enhancedData=>XMLFields.enhancedData((hash_in['enhancedData'] or ' ')),
-      :processingInstructions=>XMLFields.processingInstructions((hash_in['processingInstructions'] or ' ')),
-      :pos=>XMLFields.pos((hash_in['pos'] or ' ')),
-      :amexAggregatorData=>XMLFields.amexAggregatorData((hash_in['amexAggregatorData'] or ' '))
+      :orderId =>required_field(hash_in['orderId']),
+      :authInformation=>XMLFields.authInformation(optional_field(hash_in['authInformation'])),
+      :amount =>required_field(hash_in['amount']),
+      :orderSource=>required_field(hash_in['orderSource']),
+      :billToAddress=>XMLFields.contact(optional_field(hash_in['billToAddress'])),
+      :shipToAddress=>XMLFields.contact(optional_field(hash_in['shipToAddress'])),
+      :card=> XMLFields.cardType(optional_field(hash_in['card'])),
+      :token=>XMLFields.cardTokenType(optional_field(hash_in['token'])),
+      :paypage=>XMLFields.cardPaypageType(optional_field(hash_in['paypage'])),
+      :customBilling=>XMLFields.customBilling(optional_field(hash_in['customBilling'])),
+      :taxBilling=>XMLFields.taxBilling(optional_field(hash_in['taxBilling'])),
+      :billMeLaterRequest=>XMLFields.billMeLaterRequest(optional_field(hash_in['billMeLaterRequest'])),
+      :enhancedData=>XMLFields.enhancedData(optional_field(hash_in['enhancedData'])),
+      :processingInstructions=>XMLFields.processingInstructions(optional_field(hash_in['processingInstructions'])),
+      :pos=>XMLFields.pos(optional_field(hash_in['pos'])),
+      :amexAggregatorData=>XMLFields.amexAggregatorData(optional_field(hash_in['amexAggregatorData']))
     }
     Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:card],'3'=>hash_out[:token],'4'=>hash_out[:paypage]}
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> require_field(@config_hash['version']),
+      "@version"=> required_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -319,16 +319,16 @@ class LitleOnlineRequest
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
       '@reportGroup' => get_report_group(hash_in),
-      :litleTxnId => require_field(hash_in['litleTxnId']),
-      :echeck=>XMLFields.echeckType((hash_in['echeck'] or ' ')),
-      :echeckToken=>XMLFields.echeckTokenType((hash_in['echeckToken'] or ' '))
+      :litleTxnId => required_field(hash_in['litleTxnId']),
+      :echeck=>XMLFields.echeckType(optional_field(hash_in['echeck'])),
+      :echeckToken=>XMLFields.echeckTokenType(optional_field(hash_in['echeckToken']))
     }
     Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:echeck],'3'=>hash_out[:echeckToken]}
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> require_field(@config_hash['version']),
+      "@version"=> required_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -348,18 +348,18 @@ class LitleOnlineRequest
       :verify =>hash_in['verify'],
       :amount =>hash_in['amount'],
       :orderSource =>hash_in['orderSource'],
-      :billToAddress=>XMLFields.contact((hash_in['billToAddress'] or ' ')),
-      :shipToAddress=>XMLFields.contact((hash_in['shipToAddress'] or ' ')),
-      :echeck=>XMLFields.echeckType((hash_in['echeck'] or ' ')),
-      :echeckToken=>XMLFields.echeckTokenType((hash_in['echeckToken'] or ' ')),
-      :customBilling=>XMLFields.customBilling((hash_in['customBilling'] or ' ')),
+      :billToAddress=>XMLFields.contact(optional_field(hash_in['billToAddress'])),
+      :shipToAddress=>XMLFields.contact(optional_field(hash_in['shipToAddress'])),
+      :echeck=>XMLFields.echeckType(optional_field(hash_in['echeck'])),
+      :echeckToken=>XMLFields.echeckTokenType(optional_field(hash_in['echeckToken'])),
+      :customBilling=>XMLFields.customBilling(optional_field(hash_in['customBilling'])),
     }
     Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:echeck],'3'=>hash_out[:echeckToken]}
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> require_field(@config_hash['version']),
+      "@version"=> required_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -378,17 +378,17 @@ class LitleOnlineRequest
       :orderId =>hash_in['orderId'],
       :amount =>hash_in['amount'],
       :orderSource =>hash_in['orderSource'],
-      :billToAddress=>XMLFields.contact((hash_in['billToAddress'] or ' ')),
-      :echeck=>XMLFields.echeckType((hash_in['echeck'] or ' ')),
-      :echeckToken=>XMLFields.echeckTokenType((hash_in['echeckToken'] or ' ')),
-      :customBilling=>XMLFields.customBilling((hash_in['customBilling'] or ' ')),
+      :billToAddress=>XMLFields.contact(optional_field(hash_in['billToAddress'])),
+      :echeck=>XMLFields.echeckType(optional_field(hash_in['echeck'])),
+      :echeckToken=>XMLFields.echeckTokenType(optional_field(hash_in['echeckToken'])),
+      :customBilling=>XMLFields.customBilling(optional_field(hash_in['customBilling'])),
     }
     Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:echeck],'3'=>hash_out[:echeckToken]}
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> require_field(@config_hash['version']),
+      "@version"=> required_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -404,19 +404,19 @@ class LitleOnlineRequest
       '@customerId' => hash_in['customerId'],
       '@reportGroup' => get_report_group(hash_in),
       :litleTxnId => hash_in['litleTxnId'],
-      :orderId =>require_field(hash_in['orderId']),
-      :amount =>require_field(hash_in['amount']),
-      :orderSource =>require_field(hash_in['orderSource']),
-      :billToAddress=>XMLFields.contact((hash_in['billToAddress'] or ' ')),
-      :echeck=>XMLFields.echeckType((hash_in['echeck'] or ' ')),
-      :echeckToken=>XMLFields.echeckTokenType((hash_in['echeckToken'] or ' ')),
+      :orderId =>required_field(hash_in['orderId']),
+      :amount =>required_field(hash_in['amount']),
+      :orderSource =>required_field(hash_in['orderSource']),
+      :billToAddress=>XMLFields.contact(optional_field(hash_in['billToAddress'])),
+      :echeck=>XMLFields.echeckType(optional_field(hash_in['echeck'])),
+      :echeckToken=>XMLFields.echeckTokenType(optional_field(hash_in['echeckToken'])),
     }
     Checker.purge_null(hash_out)
     choice1= {'1'=>hash_out[:echeck],'3'=>hash_out[:echeckToken]}
     Checker.choice(choice1)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> require_field(@config_hash['version']),
+      "@version"=> required_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -431,13 +431,13 @@ class LitleOnlineRequest
       '@id' => hash_in['id'],
       '@customerId' => hash_in['customerId'],
       '@reportGroup' => get_report_group(hash_in),
-      :litleTxnId => require_field(hash_in['litleTxnId']),
-      :processingInstructions=>XMLFields.processingInstructions((hash_in['processingInstructions'] or ' '))
+      :litleTxnId => required_field(hash_in['litleTxnId']),
+      :processingInstructions=>XMLFields.processingInstructions(optional_field(hash_in['processingInstructions']))
     }
     Checker.purge_null(hash_out)
     Checker.required_missing(hash_out)
     litleOnline_hash = {
-      "@version"=> require_field(@config_hash['version']),
+      "@version"=> required_field(@config_hash['version']),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
       :authentication => authentication(hash_in),
@@ -459,7 +459,7 @@ class LitleOnlineRequest
 
   def get_report_group(hash_in)
     if (hash_in['reportGroup'] == nil)
-      return (@config_hash['default_report_group'] or 'REQUIRED')
+      return required_field(@config_hash['default_report_group'])
     else
       return hash_in['reportGroup']
     end
@@ -467,14 +467,18 @@ class LitleOnlineRequest
 
   def authentication(hash_in)
     hash_out = {
-      :user =>(@config_hash['user'] or 'REQUIRED'),
-      :password =>(@config_hash['password'] or 'REQUIRED')
+      :user =>required_field(@config_hash['user']),
+      :password =>required_field(@config_hash['password'])
     }
     Checker.required_missing(hash_out)
   end
   
-  def require_field(value)
+  def required_field(value)
     return (value or 'REQUIRED')
+  end
+
+  def optional_field(value)
+    return (value or ' ')
   end
 
 
