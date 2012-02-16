@@ -31,7 +31,7 @@ class Test_capture < Test::Unit::TestCase
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
+      'litleTxnId'=>'123456000',
       'amount'=>'106',
     }
     response= LitleOnlineRequest.new.capture(hash)
@@ -44,7 +44,7 @@ class Test_capture < Test::Unit::TestCase
       'version'=>'8.8',
       'reportGroup'=>'Planets',
       'partial'=>'true',
-      'litleTxnId'=>'123456',
+      'litleTxnId'=>'123456000',
       'amount'=>'106',
     }
     response= LitleOnlineRequest.new.capture(hash)
@@ -56,7 +56,7 @@ class Test_capture < Test::Unit::TestCase
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
+      'litleTxnId'=>'123456000',
       'amount'=>'106',
       'enhancedData'=>{
       'customerReference'=>'Litle',

@@ -31,7 +31,7 @@ class TestAuthReversal < Test::Unit::TestCase
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
-      'litleTxnId'=>'12345678',
+      'litleTxnId'=>'12345678000',
       'amount'=>'106',
       'payPalNotes'=>'Notes'
     }
@@ -43,7 +43,7 @@ class TestAuthReversal < Test::Unit::TestCase
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
-      'litleTxnId'=>'12345678',
+      'litleTxnId'=>'12345000',
       'payPalNotes'=>'Notes',
       'amount'=>'106',
       'reportGroup'=>'Planets',
@@ -56,7 +56,7 @@ class TestAuthReversal < Test::Unit::TestCase
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
-      'litleTxnId'=>'12345678',
+      'litleTxnId'=>'12345678000',
       'NonexistentField'=>'none',
       'payPalNotes'=>'Notes',
       'amount'=>'106',

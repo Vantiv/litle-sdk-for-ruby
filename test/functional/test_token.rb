@@ -32,7 +32,7 @@ class TestToken < Test::Unit::TestCase
       'version'=>'8.8',
       'reportGroup'=>'Planets',
       'orderId'=>'12344',
-      'accountNumber'=>'1233456789101112'
+      'accountNumber'=>'1233456789103801'
     }
     response= LitleOnlineRequest.new.registerTokenRequest(hash)
     assert_equal('Valid Format', response.message)
@@ -79,7 +79,7 @@ class TestToken < Test::Unit::TestCase
       'merchantId' => '101',
       'version'=>'8.8',
       'orderId'=>'12344',
-      'accountNumber'=>'1233456789101112',
+      'accountNumber'=>'1233456789103801',
       'reportGroup'=>'Planets',
     }
     response= LitleOnlineRequest.new.registerTokenRequest(hash)
@@ -92,7 +92,7 @@ class TestToken < Test::Unit::TestCase
       'version'=>'8.8',
       'NOSUCHFIELD'=>'none',
       'orderId'=>'12344',
-      'accountNumber'=>'1233456789101112',
+      'accountNumber'=>'1233456789103801',
       'reportGroup'=>'Planets',
     }
     response= LitleOnlineRequest.new.registerTokenRequest(hash)
