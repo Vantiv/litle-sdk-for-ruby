@@ -33,10 +33,10 @@ spec = Gem::Specification.new do |s|
   s.summary = "Ruby SDK produced by Litle & Co. for online transaction processing using Litle XML format v8.10"
   s.description = File.read(File.join(File.dirname(__FILE__), 'DESCRIPTION'))
   s.requirements =
-  [ 'Contact ClientSDKSupport@litle.com for more information' ]
+  [ 'Contact sdksupport@litle.com for more information' ]
   s.version = "8.10.0"
   s.author = "Litle & Co"
-  s.email = "RubySupport@litle.com"
+  s.email = "sdksupport@litle.com"
   s.homepage = "http://www.litle.com/developers"
   s.platform = Gem::Platform::RUBY
   s.required_ruby_version = '>=1.9'
