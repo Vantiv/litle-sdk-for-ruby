@@ -155,7 +155,7 @@ class Litle_certTest2 < Test::Unit::TestCase
     assert_equal('PAYROLL', auth_response.authorizationResponse.enhancedAuthResponse.fundingSource.prepaidCardType)
   end
 
-  def test_2118698
+  def test_21
     customer_hash = {
       'orderId' => '21',
       'amount' => '5000',
