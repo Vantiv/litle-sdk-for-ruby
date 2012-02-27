@@ -35,7 +35,8 @@ class LitleOnlineRequest
     @config_hash = Configuration.new.config
   end
 
-  def authorization(hash_in)
+  def authorization(hash_in, run_checker = false)
+    @run_checker = run_checker
     hash_out = {
       :litleTxnId => hash_in['litleTxnId'],
       :orderId => required_field(hash_in['orderId']),
@@ -64,15 +65,28 @@ class LitleOnlineRequest
     }
     hash_out.merge!(get_common_attributes(hash_in))
     Checker.purge_null(hash_out)
-    choice1= {'1'=>hash_out[:card],'2' =>hash_out[:paypal],'3'=>hash_out[:token],'4'=>hash_out[:paypage]}
-    Checker.choice(choice1)
-    Checker.required_missing(hash_out)
+    if(run_checker)
+      choice1= {'1'=>hash_out[:card],'2' =>hash_out[:paypal],'3'=>hash_out[:token],'4'=>hash_out[:paypage]}
+      Checker.choice(choice1)
+      Checker.required_missing(hash_out)
+    end
     litleOnline_hash = build_full_hash(hash_in, {:authorization => hash_out})
-    Checker.required_missing(litleOnline_hash)
-    LitleXmlMapper.request(litleOnline_hash,@config_hash)
+
+    if(run_checker)
+      Checker.required_missing(litleOnline_hash)
+      response_object = LitleXmlMapper.request(litleOnline_hash,@config_hash, true)
+    else
+      response_object = LitleXmlMapper.request(litleOnline_hash,@config_hash)
+    end
+
+    if( response_object == nil )
+      response_object = authorization(hash_in, true)
+    end
+
+    return response_object
   end
 
-  def sale(hash_in)
+  def sale(hash_in, run_checker = false)
     hash_out = {
       :litleTxnId => hash_in['litleTxnId'],
       :orderId =>required_field(hash_in['orderId']),
@@ -104,14 +118,25 @@ class LitleOnlineRequest
     }
     hash_out.merge!(get_common_attributes(hash_in))
     Checker.purge_null(hash_out)
-    choice1= {'1'=>hash_out[:card],'2' =>hash_out[:paypal],'3'=>hash_out[:token],'4'=>hash_out[:paypage]}
-    choice2= {'1'=>hash_out[:fraudCheck],'2'=>hash_out[:cardholderAuthentication]}
-    Checker.choice(choice1)
-    Checker.choice(choice2)
-    Checker.required_missing(hash_out)
+    if(run_checker)
+      choice1= {'1'=>hash_out[:card],'2' =>hash_out[:paypal],'3'=>hash_out[:token],'4'=>hash_out[:paypage]}
+      choice2= {'1'=>hash_out[:fraudCheck],'2'=>hash_out[:cardholderAuthentication]}
+      Checker.choice(choice1)
+      Checker.choice(choice2)
+      Checker.required_missing(hash_out)
+    end
     litleOnline_hash = build_full_hash(hash_in, {:sale => hash_out})
-    Checker.required_missing(litleOnline_hash)
-    LitleXmlMapper.request(litleOnline_hash,@config_hash)
+
+    if(run_checker)
+      Checker.required_missing(litleOnline_hash)
+      response_object = LitleXmlMapper.request(litleOnline_hash,@config_hash, true)
+    else
+      response_object = LitleXmlMapper.request(litleOnline_hash,@config_hash)
+    end
+    if( response_object == nil )
+      response_object = sale(hash_in, true)
+    end
+    return response_object
   end
 
   def authReversal(hash_in)
@@ -371,7 +396,11 @@ class LitleOnlineRequest
   end
 
   def required_field(value)
-    return (value or 'REQUIRED')
+    if(@run_checker)
+      return (value or 'REQUIRED')
+    else
+      return value
+    end
   end
 
   def optional_field(value)
