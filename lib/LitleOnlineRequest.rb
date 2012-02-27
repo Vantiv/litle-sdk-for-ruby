@@ -36,36 +36,45 @@ class LitleOnlineRequest
   end
 
   def authorization(hash_in)
-    hash_out = {
-      :litleTxnId => hash_in['litleTxnId'],
-      :orderId => required_field(hash_in['orderId']),
-      :amount =>required_field(hash_in['amount']),
-      :orderSource=>required_field(hash_in['orderSource']),
-      :customerInfo=>XMLFields.customerInfo(optional_field(hash_in['customerInfo'])),
-      :billToAddress=>XMLFields.contact(optional_field(hash_in['billToAddress'])),
-      :shipToAddress=>XMLFields.contact(optional_field(hash_in['shipToAddress'])),
-      :card=> XMLFields.cardType(optional_field(hash_in['card'])),
-      :paypal=>XMLFields.payPal(optional_field(hash_in['paypal'])),
-      :token=>XMLFields.cardTokenType(optional_field(hash_in['token'])),
-      :paypage=>XMLFields.cardPaypageType(optional_field(hash_in['paypage'])),
-      :billMeLaterRequest=>XMLFields.billMeLaterRequest(optional_field(hash_in['billMeLaterRequest'])),
-      :cardholderAuthentication=>XMLFields.fraudCheckType(optional_field(hash_in['cardholderAuthentication'])),
-      :processingInstructions=>XMLFields.processingInstructions(optional_field(hash_in['processingInstructions'])),
-      :pos=>XMLFields.pos(optional_field(hash_in['pos'])),
-      :customBilling=>XMLFields.customBilling(optional_field(hash_in['customBilling'])),
-      :taxBilling=>XMLFields.taxBilling(optional_field(hash_in['taxBilling'])),
-      :enhancedData=>XMLFields.enhancedData(optional_field(hash_in['enhancedData'])),
-      :amexAggregatorData=>XMLFields.amexAggregatorData(optional_field(hash_in['amexAggregatorData'])),
-      :allowPartialAuth=>hash_in['allowPartialAuth'],
-      :healthcareIIAS=>XMLFields.healthcareIIAS(optional_field(hash_in['healthcareIIAS'])),
-      :filtering=>XMLFields.filteringType(optional_field(hash_in['filtering'])),
-      :merchantData=>XMLFields.filteringType(optional_field(hash_in['merchantData'])),
-      :recyclingRequest=>XMLFields.recyclingRequestType(optional_field(hash_in['recyclingRequest']))
-    }
+    isLitleTxnIdProvided = !hash_in['litleTxnId'].nil?
+    if(isLitleTxnIdProvided)
+      hash_out = {
+        :litleTxnId => hash_in['litleTxnId']
+      }
+    else
+      hash_out = {
+        :orderId => required_field(hash_in['orderId']),
+        :amount =>required_field(hash_in['amount']),
+        :orderSource=>required_field(hash_in['orderSource']),
+        :customerInfo=>XMLFields.customerInfo(optional_field(hash_in['customerInfo'])),
+        :billToAddress=>XMLFields.contact(optional_field(hash_in['billToAddress'])),
+        :shipToAddress=>XMLFields.contact(optional_field(hash_in['shipToAddress'])),
+        :card=> XMLFields.cardType(optional_field(hash_in['card'])),
+        :paypal=>XMLFields.payPal(optional_field(hash_in['paypal'])),
+        :token=>XMLFields.cardTokenType(optional_field(hash_in['token'])),
+        :paypage=>XMLFields.cardPaypageType(optional_field(hash_in['paypage'])),
+        :billMeLaterRequest=>XMLFields.billMeLaterRequest(optional_field(hash_in['billMeLaterRequest'])),
+        :cardholderAuthentication=>XMLFields.fraudCheckType(optional_field(hash_in['cardholderAuthentication'])),
+        :processingInstructions=>XMLFields.processingInstructions(optional_field(hash_in['processingInstructions'])),
+        :pos=>XMLFields.pos(optional_field(hash_in['pos'])),
+        :customBilling=>XMLFields.customBilling(optional_field(hash_in['customBilling'])),
+        :taxBilling=>XMLFields.taxBilling(optional_field(hash_in['taxBilling'])),
+        :enhancedData=>XMLFields.enhancedData(optional_field(hash_in['enhancedData'])),
+        :amexAggregatorData=>XMLFields.amexAggregatorData(optional_field(hash_in['amexAggregatorData'])),
+        :allowPartialAuth=>hash_in['allowPartialAuth'],
+        :healthcareIIAS=>XMLFields.healthcareIIAS(optional_field(hash_in['healthcareIIAS'])),
+        :filtering=>XMLFields.filteringType(optional_field(hash_in['filtering'])),
+        :merchantData=>XMLFields.filteringType(optional_field(hash_in['merchantData'])),
+        :recyclingRequest=>XMLFields.recyclingRequestType(optional_field(hash_in['recyclingRequest']))
+      }
+    end
+
     hash_out.merge!(get_common_attributes(hash_in))
     Checker.purge_null(hash_out)
-    choice1= {'1'=>hash_out[:card],'2' =>hash_out[:paypal],'3'=>hash_out[:token],'4'=>hash_out[:paypage]}
-    Checker.choice(choice1)
+    if(!isLitleTxnIdProvided)
+      choice1= {'1'=>hash_out[:card],'2' =>hash_out[:paypal],'3'=>hash_out[:token],'4'=>hash_out[:paypage]}
+      Checker.choice(choice1)
+    end
     Checker.required_missing(hash_out)
     litleOnline_hash = build_full_hash(hash_in, {:authorization => hash_out})
     Checker.required_missing(litleOnline_hash)
