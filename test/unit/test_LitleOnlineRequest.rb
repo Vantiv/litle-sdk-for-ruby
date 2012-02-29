@@ -227,22 +227,31 @@ class Newtest < Test::Unit::TestCase
       'number' => '1111222233334444'
       }
     }
-    token_only = {
-      'token'=> {
-      'litleToken' => '1111222233334444'
-      }
-    }
 
     XMLObject.expects(:new)
-    Communications.expects(:http_post).with(regexp_matches(/.*card.*/m))
-    Communications.expects(:http_post).with(Not(regexp_matches(/.*token.*/m)),kind_of(Hash))
+    Communications.expects(:http_post).with(regexp_matches(/.*card.*/m),kind_of(Hash))
     LitleOnlineRequest.new.authorization(start_hash.merge(card_only))
-
-    XMLObject.expects(:new)
-    Communications.expects(:http_post).with(regexp_matches(/.*token.*/m))
-    Communications.expects(:http_post).with(Not(regexp_matches(/.*card.*/m)),kind_of(Hash))
-    LitleOnlineRequest.new.authorization(start_hash.merge(token_only))
   end
+  
+def test_choice_between_card_token2
+  start_hash = {
+    'orderId'=>'12344',
+    'merchantId'=>'101',
+    'reportGroup'=>'Planets',
+    'amount'=>'101',
+    'orderSource'=>'ecommerce'
+  }
+  
+  token_only = {
+    'token'=> {
+    'litleToken' => '1111222233334444'
+    }
+  }
+
+  XMLObject.expects(:new)
+  Communications.expects(:http_post).with(regexp_matches(/.*token.*/m),kind_of(Hash))
+  LitleOnlineRequest.new.authorization(start_hash.merge(token_only))
+end
 
   def test_orderId_required
     start_hash = {

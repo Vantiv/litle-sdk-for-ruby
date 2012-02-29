@@ -32,7 +32,7 @@ class TestAuth < Test::Unit::TestCase
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
+      #      'litleTxnId'=>'123456',
       'amount'=>'106',
       'orderSource'=>'ecommerce',
       'card'=>{
@@ -44,12 +44,25 @@ class TestAuth < Test::Unit::TestCase
     assert_match /Missing Required Field: orderId!!!!/, exception.message
   end
 
+  def test_successReAuth
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'litleTxnId'=>'123456'
+    }
+
+    XMLObject.expects(:new)
+    Communications.expects(:http_post).with(regexp_matches(/.*litleTxnId.*/m),kind_of(Hash))
+    LitleOnlineRequest.new.authorization(hash)
+  end
+
   def test_noAmount
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
+      #      'litleTxnId'=>'123456',
       'orderId'=>'12344',
       'orderSource'=>'ecommerce',
       'card'=>{
@@ -66,7 +79,7 @@ class TestAuth < Test::Unit::TestCase
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
+      #      'litleTxnId'=>'123456',
       'orderId'=>'12344',
       'amount'=>'106',
       'card'=>{
@@ -133,7 +146,7 @@ class TestAuth < Test::Unit::TestCase
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
+      #      'litleTxnId'=>'123456',
       'orderId'=>'12344',
       'amount'=>'106',
       'orderSource'=>'ecommerce',
