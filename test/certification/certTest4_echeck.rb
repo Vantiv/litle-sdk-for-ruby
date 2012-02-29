@@ -206,7 +206,6 @@ class Litle_certTest4 < Test::Unit::TestCase
       echeck_response = LitleOnlineRequest.new.echeckCredit(hash)
   
       assert_equal('301', echeck_response.echeckCreditResponse.response)
-      #	assert_equal('InValid Account Number', echeck_response.echeckCreditResponse.message)
     end
   
     def test_46
@@ -255,7 +254,6 @@ class Litle_certTest4 < Test::Unit::TestCase
     
   def test_48
     customer_hash = {
-      #'orderId' => '48',
       'litleTxnId' => '430000000000000001'
     }
     hash = customer_hash.merge(@@merchant_hash)
@@ -267,7 +265,6 @@ class Litle_certTest4 < Test::Unit::TestCase
   
   def test_49
     customer_hash = {
-      #'orderId' => '49',
       'litleTxnId' => '2'
     }
     hash = customer_hash.merge(@@merchant_hash)

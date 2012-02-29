@@ -49,7 +49,7 @@ class XMLFields
     return hash_out
   end
 
-  def XMLFields.customerInfo(hash_in)
+  def XMLFields.customer_info(hash_in)
     hash_out={
       :ssn=>hash_in['ssn'],
       :dob=>hash_in['dob'],
@@ -69,7 +69,7 @@ class XMLFields
     return hash_out
   end
 
-  def XMLFields.billMeLaterRequest(hash_in)
+  def XMLFields.bill_me_later_request(hash_in)
     hash_out = {
       :bmlMerchantId=>hash_in['bmlMerchantId'],
       :termsAndConditions=>hash_in['termsAndConditions'],
@@ -90,7 +90,7 @@ class XMLFields
     return hash_out
   end
 
-  def XMLFields.fraudCheckType(hash_in)
+  def XMLFields.fraud_check_type(hash_in)
     hash_out = {
       :authenticationValue=>hash_in['authenticationValue'],
       :authenticationTransactionId=>hash_in['authenticationTransactionId'],
@@ -102,11 +102,11 @@ class XMLFields
     return hash_out
   end
 
-  def XMLFields.authInformation(hash_in)
+  def XMLFields.auth_information(hash_in)
     hash_out = {
       :authDate=>(hash_in['authDate']  or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag')),
       :authCode=>(hash_in['authCode']  or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag')),
-      :fraudResult=>fraudResult((hash_in['detailTax'] or ' ')),
+      :fraudResult=>fraud_result((hash_in['detailTax'] or ' ')),
       :authAmount=>hash_in['authAmount']
     }
     Checker.purge_null(hash_out)
@@ -114,7 +114,7 @@ class XMLFields
     return hash_out
   end
 
-  def XMLFields.fraudResult(hash_in)
+  def XMLFields.fraud_result(hash_in)
     hash_out= {
       :avsResult=>hash_in['avsResult'],
       :cardValidationResult=>hash_in['cardValidationResult'],
@@ -126,7 +126,7 @@ class XMLFields
     return hash_out
   end
 
-  def XMLFields.healthcareAmounts(hash_in)
+  def XMLFields.healthcare_amounts(hash_in)
     hash_out = {
       :totalHealthcareAmount=>hash_in['totalHealthcareAmount'],
       :RxAmount=>hash_in['RxAmount'],
@@ -139,9 +139,9 @@ class XMLFields
     return hash_out
   end
 
-  def XMLFields.healthcareIIAS(hash_in)
+  def XMLFields.healthcare_iias(hash_in)
     hash_out ={
-      :healthcareAmounts=>healthcareAmounts((hash_in['healthcareAmounts'] or ' ')),
+      :healthcareAmounts=>healthcare_amounts((hash_in['healthcareAmounts'] or ' ')),
       :IIASFlag=>hash_in['IIASFlag']
     }
     Checker.purge_null(hash_out)
@@ -160,7 +160,7 @@ class XMLFields
     return hash_out
   end
 
-  def XMLFields.detailTax(hash_in)
+  def XMLFields.detail_tax(hash_in)
     hash_out ={
       :taxIncludedInTotal=>hash_in['taxIncludedInTotal'],
       :taxAmount=>hash_in['taxAmount'],
@@ -173,7 +173,7 @@ class XMLFields
     return hash_out
   end
 
-  def XMLFields.lineItemData(hash_in)
+  def XMLFields.line_item_data(hash_in)
     hash_out = {
       :itemSequenceNumber=>hash_in['itemSequenceNumber'],
       :itemDescription=>hash_in['itemDescription'],
@@ -186,14 +186,14 @@ class XMLFields
       :itemDiscountAmount=>hash_in['itemDiscountAmount'],
       :commodityCode=>hash_in['commodityCode'],
       :unitCost=>hash_in['unitCost'],
-      :detailTax => detailTax((hash_in['detailTax'] or ' '))
+      :detailTax => detail_tax((hash_in['detailTax'] or ' '))
     }
     Checker.purge_null(hash_out)
     Checker.required_missing(hash_out)
     return hash_out
   end
 
-  def XMLFields.enhancedData(hash_in)
+  def XMLFields.enhanced_data(hash_in)
     hash_out = {
       :customerReference=>hash_in['customerReference'],
       :salesTax=>hash_in['salesTax'],
@@ -207,15 +207,15 @@ class XMLFields
       :destinationCountryCode=>hash_in['destinationCountryCode'],
       :invoiceReferenceNumber=>hash_in['invoiceReferenceNumber'],
       :orderDate=>hash_in['orderDate'],
-      :detailTax=> detailTax((hash_in['detailTax'] or ' ')),
-      :lineItemData=> lineItemData((hash_in['lineItemData'] or ' '))
+      :detailTax=> detail_tax((hash_in['detailTax'] or ' ')),
+      :lineItemData=> line_item_data((hash_in['lineItemData'] or ' '))
     }
     Checker.purge_null(hash_out)
     Checker.required_missing(hash_out)
     return hash_out
   end
 
-  def XMLFields.amexAggregatorData(hash_in)
+  def XMLFields.amex_aggregator_data(hash_in)
     hash_out ={
       :sellerId=>hash_in['sellerId'],
       :sellerMerchantCategoryCode=>hash_in['sellerMerchantCategoryCode']
@@ -225,7 +225,7 @@ class XMLFields
     return hash_out
   end
 
-  def XMLFields.cardType(hash_in)
+  def XMLFields.card_type(hash_in)
     hash_out= {
       :type=>hash_in['type'] ,
       :track=>hash_in['track'],
@@ -239,7 +239,7 @@ class XMLFields
     return hash_out
   end
 
-  def XMLFields.cardTokenType(hash_in)
+  def XMLFields.card_token_type(hash_in)
     hash_out = {
       :litleToken=>(hash_in['litleToken'] or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag')),
       :expDate=>hash_in['expDate'],
@@ -251,7 +251,7 @@ class XMLFields
     return hash_out
   end
 
-  def XMLFields.cardPaypageType(hash_in)
+  def XMLFields.card_paypage_type(hash_in)
     hash_out = {
       :paypageRegistrationId=>(hash_in['paypageRegistrationId'] or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag')),
       :expDate=>hash_in['expDate'] ,
@@ -263,7 +263,7 @@ class XMLFields
     return hash_out
   end
 
-  def XMLFields.payPal(hash_in)
+  def XMLFields.pay_pal(hash_in)
     hash_out = {
       :payerId=>(hash_in['payerId']  or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag')),
       :token=>hash_in['token'],
@@ -274,7 +274,7 @@ class XMLFields
     return hash_out
   end
 
-  def XMLFields.credit_payPal(hash_in)
+  def XMLFields.credit_pay_pal(hash_in)
     hash_out = {
       :payerId=>(hash_in['payerId']  or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag')),
       :payerEmail => (hash_in['payerEmail']  or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag')),
@@ -286,7 +286,7 @@ class XMLFields
     return hash_out
   end
 
-  def XMLFields.customBilling(hash_in)
+  def XMLFields.custom_billing(hash_in)
     hash_out = {
       :phone=>hash_in['phone'],
       :city=>hash_in['city'],
@@ -301,7 +301,7 @@ class XMLFields
 
   end
 
-  def XMLFields.taxBilling(hash_in)
+  def XMLFields.tax_billing(hash_in)
     hash_out = {
       :taxAuthority=>(hash_in['taxAuthority']  or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag')),
       :state=>(hash_in['state']  or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag')),
@@ -312,7 +312,7 @@ class XMLFields
     return hash_out
   end
 
-  def XMLFields.processingInstructions(hash_in)
+  def XMLFields.processing_instructions(hash_in)
     hash_out ={
       :bypassVelocityCheck=>hash_in['bypassVelocityCheck']
     }
@@ -321,7 +321,7 @@ class XMLFields
     return hash_out
   end
 
-  def XMLFields.echeckForTokenType(hash_in)
+  def XMLFields.echeck_for_token_type(hash_in)
     hash_out = {
       :accNum=>(hash_in['accNum'] or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag')),
       :routingNum=>(hash_in['routingNum']  or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag'))
@@ -331,7 +331,7 @@ class XMLFields
     return hash_out
   end
 
-  def XMLFields.filteringType(hash_in)
+  def XMLFields.filtering_type(hash_in)
     hash_out = {
       :prepaid=>hash_in['prepaid'],
       :international=>hash_in['international'],
@@ -342,7 +342,7 @@ class XMLFields
     return hash_out
   end
 
-  def XMLFields.echeckType(hash_in)
+  def XMLFields.echeck_type(hash_in)
     hash_out= {
       :accType=>(hash_in['accType'] or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag')),
       :accNum=>(hash_in['accNum'] or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag')),
@@ -354,7 +354,7 @@ class XMLFields
     return hash_out
   end
 
-  def XMLFields.echeckTokenType(hash_in)
+  def XMLFields.echeck_token_type(hash_in)
     hash_out= {
       :litleToken=>(hash_in['litleToken'] or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag')),
       :routingNum=>(hash_in['routingNum']  or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag')),
@@ -366,7 +366,7 @@ class XMLFields
     return hash_out
   end
 
-  def XMLFields.recyclingRequestType(hash_in)
+  def XMLFields.recycling_request_type(hash_in)
     hash_out= {
       :recyleBy=>(hash_in['recyleBy'] or (!(hash_in.length== 1) ? 'REQUIRED':'throwFlag')),
     }

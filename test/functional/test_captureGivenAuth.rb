@@ -26,7 +26,7 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class TestcaptureGivenAuth < Test::Unit::TestCase
-  def test_simplecaptureGivenAuth_withCard
+  def test_simple_capture_given_auth_with_card
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -43,11 +43,11 @@ class TestcaptureGivenAuth < Test::Unit::TestCase
       'number' =>'4100000000000001',
       'expDate' =>'1210'
       }}
-    response= LitleOnlineRequest.new.captureGivenAuth(hash)
+    response= LitleOnlineRequest.new.capture_given_auth(hash)
     assert_equal('Valid Format', response.message)
   end
 
-  def test_simplecaptureGivenAuth_withToken
+  def test_simple_capture_given_auth_with_token
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -65,11 +65,11 @@ class TestcaptureGivenAuth < Test::Unit::TestCase
       'cardValidationNum'=>'555',
       'type'=>'VI'
       }}
-    response= LitleOnlineRequest.new.captureGivenAuth(hash)
+    response= LitleOnlineRequest.new.capture_given_auth(hash)
     assert_equal('Valid Format', response.message)
   end
 
-  def test_FieldsOutOfOrder
+  def test_fields_out_of_order
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -87,11 +87,11 @@ class TestcaptureGivenAuth < Test::Unit::TestCase
       'reportGroup'=>'Planets',
       'orderId'=>'12344'
     }
-    response= LitleOnlineRequest.new.captureGivenAuth(hash)
+    response= LitleOnlineRequest.new.capture_given_auth(hash)
     assert_equal('Valid Format', response.message)
   end
 
-  def test_InvalidField
+  def test_invalid_field
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -109,11 +109,11 @@ class TestcaptureGivenAuth < Test::Unit::TestCase
       'number' =>'4100000000000001',
       'expDate' =>'1210'
       }}
-    response= LitleOnlineRequest.new.captureGivenAuth(hash)
+    response= LitleOnlineRequest.new.capture_given_auth(hash)
     assert_equal('Valid Format', response.message)
   end
 
-  def test_complex_captureGivenAuth
+  def test_complex_capture_given_auth
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -132,11 +132,11 @@ class TestcaptureGivenAuth < Test::Unit::TestCase
       'number' =>'4100000000000001',
       'expDate' =>'1210'
       }}
-    response= LitleOnlineRequest.new.captureGivenAuth(hash)
+    response= LitleOnlineRequest.new.capture_given_auth(hash)
     assert_equal('Valid Format', response.message)
   end
 
-  def test_authInfo
+  def test_auth_info
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -154,7 +154,7 @@ class TestcaptureGivenAuth < Test::Unit::TestCase
       'number' =>'4100000000000001',
       'expDate' =>'1210'
       }}
-    response= LitleOnlineRequest.new.captureGivenAuth(hash)
+    response= LitleOnlineRequest.new.capture_given_auth(hash)
     assert_equal('Valid Format', response.message)
   end
 end

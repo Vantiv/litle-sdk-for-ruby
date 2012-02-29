@@ -26,7 +26,7 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class TestAuthReversal < Test::Unit::TestCase
-  def test_simpleAuthReversal
+  def test_simple_auth_reversal
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -35,11 +35,11 @@ class TestAuthReversal < Test::Unit::TestCase
       'amount'=>'106',
       'payPalNotes'=>'Notes'
     }
-    response= LitleOnlineRequest.new.authReversal(hash)
+    response= LitleOnlineRequest.new.auth_reversal(hash)
     assert_equal('Valid Format', response.message)
   end
 
-  def test_FieldsOutOfOrder
+  def test_fields_out_of_order
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -48,11 +48,11 @@ class TestAuthReversal < Test::Unit::TestCase
       'amount'=>'106',
       'reportGroup'=>'Planets',
     }
-    response= LitleOnlineRequest.new.authReversal(hash)
+    response= LitleOnlineRequest.new.auth_reversal(hash)
     assert_equal('Valid Format', response.message)
   end
 
-  def test_InvalidField
+  def test_invalid_field
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -62,7 +62,7 @@ class TestAuthReversal < Test::Unit::TestCase
       'amount'=>'106',
       'reportGroup'=>'Planets',
     }
-    response= LitleOnlineRequest.new.authReversal(hash)
+    response= LitleOnlineRequest.new.auth_reversal(hash)
     assert_equal('Valid Format', response.message)
   end
 end

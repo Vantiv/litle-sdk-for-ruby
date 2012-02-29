@@ -27,7 +27,7 @@ require 'test/unit'
 
 #test Authorization Transaction
 class TestAuth < Test::Unit::TestCase
-  def test_simpleAuthwithCard
+  def test_simple_auth_with_card
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -44,7 +44,7 @@ class TestAuth < Test::Unit::TestCase
     assert_equal('000', response.authorizationResponse.response)
   end
 
-  def test_simpleAuthwithpaypal
+  def test_simple_auth_with_paypal
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -61,7 +61,7 @@ class TestAuth < Test::Unit::TestCase
     assert_equal 'Valid Format', response.message
   end
 
-  def test_illegalorderSource
+  def test_illegal_order_source
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -78,7 +78,7 @@ class TestAuth < Test::Unit::TestCase
     assert(response.message =~ /Error validating xml data against the schema/)
   end
 
-  def test_FieldsOutOfOrder
+  def test_fields_out_of_order
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -96,7 +96,7 @@ class TestAuth < Test::Unit::TestCase
     assert_equal('000', response.authorizationResponse.response)
   end
 
-  def test_InvalidField
+  def test_invalid_field
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -114,7 +114,7 @@ class TestAuth < Test::Unit::TestCase
     assert_equal('000', response.authorizationResponse.response)
   end
 
-  def test_poswithoutCapabilityandentryMode
+  def test_pos_without_capability_and_entry_mode
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',

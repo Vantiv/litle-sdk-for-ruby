@@ -26,7 +26,7 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class Test_capture < Test::Unit::TestCase
-  def test_simplecapture
+  def test_simple_capture
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -38,7 +38,7 @@ class Test_capture < Test::Unit::TestCase
     assert_equal('Valid Format', response.message)
   end
 
-  def test_simplecapturewithpartial
+  def test_simple_capture_with_partial
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -51,7 +51,7 @@ class Test_capture < Test::Unit::TestCase
     assert_equal('Valid Format', response.message)
   end
 
-  def test_complexcapture
+  def test_complex_capture
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
