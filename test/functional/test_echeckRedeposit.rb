@@ -26,18 +26,18 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class Test_echeckRedeposit < Test::Unit::TestCase
-  def test_simple_echeckRedeposit
+  def test_simple_echeck_redeposit
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
       'litleTxnId'=>'123456'
     }
-    response= LitleOnlineRequest.new.echeckRedeposit(hash)
+    response= LitleOnlineRequest.new.echeck_redeposit(hash)
     assert_equal('Valid Format', response.message)
   end
 
-  def test_echeckRedeposit_withecheck
+  def test_echeck_redeposit_with_echeck
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -45,11 +45,11 @@ class Test_echeckRedeposit < Test::Unit::TestCase
       'litleTxnId'=>'123456',
       'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'}
     }
-    response= LitleOnlineRequest.new.echeckRedeposit(hash)
+    response= LitleOnlineRequest.new.echeck_redeposit(hash)
     assert_equal('Valid Format', response.message)
   end
 
-  def test_echeckRedeposit_withecheckToken
+  def test_echeck_redeposit_with_echeck_token
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -57,11 +57,11 @@ class Test_echeckRedeposit < Test::Unit::TestCase
       'litleTxnId'=>'123456',
       'echeckToken' => {'accType'=>'Checking','litleToken'=>'1234565789012','routingNum'=>'123456789','checkNum'=>'123455'}
     }
-    response= LitleOnlineRequest.new.echeckRedeposit(hash)
+    response= LitleOnlineRequest.new.echeck_redeposit(hash)
     assert_equal('Valid Format', response.message)
   end
 
-  def test_extrafieldand_incorrectOrder
+  def test_extra_field_and_incorrect_order
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -70,7 +70,7 @@ class Test_echeckRedeposit < Test::Unit::TestCase
       'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
       'litleTxnId'=>'123456'
     }
-    response= LitleOnlineRequest.new.echeckRedeposit(hash)
+    response= LitleOnlineRequest.new.echeck_redeposit(hash)
     assert_equal('Valid Format', response.message)
   end
 

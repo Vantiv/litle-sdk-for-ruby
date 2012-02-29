@@ -26,7 +26,7 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class Test_echeckSale < Test::Unit::TestCase
-  def test_echeckSalewithecheck
+  def test_echeck_sale_with_echeck
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -38,21 +38,21 @@ class Test_echeckSale < Test::Unit::TestCase
       'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
       'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
     }
-    response= LitleOnlineRequest.new.echeckSale(hash)
+    response= LitleOnlineRequest.new.echeck_sale(hash)
     assert_equal('Valid Format', response.message)
   end
 
-  def test_noamount
+  def test_no_amount
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets'
     }
-    response = LitleOnlineRequest.new.echeckSale(hash)
+    response = LitleOnlineRequest.new.echeck_sale(hash)
     assert_match /The content of element 'echeckSale' is not complete/, response.message
   end
 
-  def test_echeckSalewithecheck
+  def test_echeck_sale_with_echeck
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -64,11 +64,11 @@ class Test_echeckSale < Test::Unit::TestCase
       'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
       'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
     }
-    response= LitleOnlineRequest.new.echeckSale(hash)
+    response= LitleOnlineRequest.new.echeck_sale(hash)
     assert_equal('Valid Format', response.message)
   end
 
-  def test_echeckSalewith_shipto
+  def test_echeck_sale_with_ship_to
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -81,11 +81,11 @@ class Test_echeckSale < Test::Unit::TestCase
       'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'},
       'shipToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
     }
-    response= LitleOnlineRequest.new.echeckSale(hash)
+    response= LitleOnlineRequest.new.echeck_sale(hash)
     assert_equal('Valid Format', response.message)
   end
 
-  def test_echeckSale_withechecktoken
+  def test_echeck_sale_with_echeck_token
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -98,11 +98,11 @@ class Test_echeckSale < Test::Unit::TestCase
       'customBilling'=>{'phone'=>'123456789','descriptor'=>'good'},
       'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
     }
-    response= LitleOnlineRequest.new.echeckSale(hash)
+    response= LitleOnlineRequest.new.echeck_sale(hash)
     assert_equal('Valid Format', response.message)
   end
 
-  def test_extrafieldand_incorrectOrder
+  def test_extra_field_and_incorrect_order
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -115,11 +115,11 @@ class Test_echeckSale < Test::Unit::TestCase
       'orderSource'=>'ecommerce',
       'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
     }
-    response= LitleOnlineRequest.new.echeckSale(hash)
+    response= LitleOnlineRequest.new.echeck_sale(hash)
     assert_equal('Valid Format', response.message)
   end
 
-  def test_extrafieldand_missingBilling
+  def test_extra_field_and_missing_billing
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -131,27 +131,29 @@ class Test_echeckSale < Test::Unit::TestCase
       'orderId'=>'12345',
       'orderSource'=>'ecommerce',
     }
-    response= LitleOnlineRequest.new.echeckSale(hash)
+    response= LitleOnlineRequest.new.echeck_sale(hash)
     assert(response.message =~ /Error validating xml data against the schema/)
   end
-  #	 def test_simple_echecksale
-  #		 hash = {
-  #		 'reportGroup'=>'Planets',
-  #		 'litleTxnId'=>'123456789101112',
-  #		 'amount'=>'12'
-  #		 }
-  #		 response= LitleOnlineRequest.new.echeckSale(hash)
-  #		 assert_equal('Valid Format', response.message)
-  #	end
-  #	def test_simple_echeckSalewithCustombilling
-  #		 hash = {
-  #		 'reportGroup'=>'Planets',
-  #		 'litleTxnId'=>'123456',
-  #		 'amount'=>'10',
-  #		 }
-  #		 response= LitleOnlineRequest.new.echeckSale(hash)
-  #		 assert_equal('Valid Format', response.message)
-  #	end
+
+  def test_simple_echecksale
+    hash = {
+      'reportGroup'=>'Planets',
+      'litleTxnId'=>'123456789101112',
+      'amount'=>'12'
+    }
+    response= LitleOnlineRequest.new.echeck_sale(hash)
+    assert_equal('Valid Format', response.message)
+  end
+
+  def test_simple_echeck_sale_with_custom_billing
+    hash = {
+      'reportGroup'=>'Planets',
+      'litleTxnId'=>'123456',
+      'amount'=>'10',
+    }
+    response= LitleOnlineRequest.new.echeck_sale(hash)
+    assert_equal('Valid Format', response.message)
+  end
 
 end
 

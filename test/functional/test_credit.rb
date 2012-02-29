@@ -43,7 +43,7 @@ class TestCredit < Test::Unit::TestCase
     assert_equal('Valid Format', response.message)
   end
 
-  def test_simpleCredit_withpaypal
+  def test_simple_credit_with_paypal
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -59,7 +59,7 @@ class TestCredit < Test::Unit::TestCase
     assert(response.message =~ /Error validating xml data against the schema/)
   end
 
-  def test_illegalorderID
+  def test_illegal_order_id
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -77,7 +77,7 @@ class TestCredit < Test::Unit::TestCase
     assert(response.message =~ /Error validating xml data against the schema/)
   end
 
-  def test_FieldsOutOfOrder
+  def test_fields_out_of_order
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -95,7 +95,7 @@ class TestCredit < Test::Unit::TestCase
     assert_equal('Valid Format', response.message)
   end
 
-  def test_InvalidField
+  def test_invalid_field
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -113,7 +113,7 @@ class TestCredit < Test::Unit::TestCase
     assert_equal('Valid Format', response.message)
   end
 
-  def test_payPalNotes
+  def test_pay_pal_notes
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -131,7 +131,7 @@ class TestCredit < Test::Unit::TestCase
     assert_equal('Valid Format', response.message)
   end
 
-  def test_processingInstructionsandAmexdata
+  def test_processing_instructions_and_amex_data
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
