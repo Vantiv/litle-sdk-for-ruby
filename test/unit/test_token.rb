@@ -48,7 +48,7 @@ class TestToken < Test::Unit::TestCase
       'echeckForToken'=>{'accNum'=>'12344565','routingNum'=>'123476545'},
       'paypageRegistrationId'=>'1233456789101112'
     }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.registerTokenRequest(hash)}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.register_token_request(hash)}
     assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 
@@ -62,7 +62,7 @@ class TestToken < Test::Unit::TestCase
       'echeckForToken'=>{'accNum'=>'12344565','routingNum'=>'123476545'},
       'paypageRegistrationId'=>'1233456789101112'
     }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.registerTokenRequest(hash)}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.register_token_request(hash)}
     assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 

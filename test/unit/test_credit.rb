@@ -47,7 +47,7 @@ class TestCredit < Test::Unit::TestCase
 
     exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
     assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
-    ends
+  end
 
   def test_three_choices_card_and_paypage_and_paypal
     hash = {
@@ -111,7 +111,4 @@ class TestCredit < Test::Unit::TestCase
     exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
     assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
-
-
 end
-
