@@ -26,7 +26,7 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class TestSale < Test::Unit::TestCase
-  def test_simpleSalewithCard
+  def test_simple_sale_with_card
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -44,7 +44,7 @@ class TestSale < Test::Unit::TestCase
     assert_equal('000', response.saleResponse.response)
   end
 
-  def test_simpleSalewithpaypal
+  def test_simple_sale_with_paypal
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -62,7 +62,7 @@ class TestSale < Test::Unit::TestCase
     assert_equal 'Valid Format', response.message
   end
 
-  def test_illegalorderSource
+  def test_illegal_order_source
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -80,7 +80,7 @@ class TestSale < Test::Unit::TestCase
     assert(response.message =~ /Error validating xml data against the schema/)
   end
 
-  def test_illegalcardType
+  def test_illegal_card_type
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -98,7 +98,7 @@ class TestSale < Test::Unit::TestCase
     assert(response.message =~ /Error validating xml data against the schema/)
   end
 
-  def test_noReportGroup
+  def test_no_report_group
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -116,7 +116,7 @@ class TestSale < Test::Unit::TestCase
     assert_equal('000', response.saleResponse.response)
   end
 
-  def test_FieldsOutOfOrder
+  def test_fields_out_of_order
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -135,7 +135,7 @@ class TestSale < Test::Unit::TestCase
     assert_equal('000', response.saleResponse.response)
   end
 
-  def test_InvalidField
+  def test_invalid_field
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -154,7 +154,7 @@ class TestSale < Test::Unit::TestCase
     assert_equal('000', response.saleResponse.response)
   end
 
-  def test_InvalidEmbeddedFieldValues
+  def test_invalid_embedded_field_values
     #becasue there are sub fields under fraud check that are not specified
     hash = {
       'merchantId' => '101',
@@ -174,7 +174,7 @@ class TestSale < Test::Unit::TestCase
     assert_equal('000', response.saleResponse.response)
   end
 
-  def test_simpleSalewithCard
+  def test_simple_sale_with_card
     hash = {
       'merchantId'=>'101',
       'proxy_addr' => '10.1.2.254',

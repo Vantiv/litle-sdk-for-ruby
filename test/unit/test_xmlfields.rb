@@ -46,7 +46,7 @@ class TestXmlfields < Test::Unit::TestCase
     assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 
-  def test_customBillingwithtwoChoices
+  def test_custom_billing_with_two_choices
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -65,7 +65,7 @@ class TestXmlfields < Test::Unit::TestCase
     assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 
-  def test_customBillingwiththreeChoices
+  def test_custom_billing_with_three_choices
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -84,7 +84,7 @@ class TestXmlfields < Test::Unit::TestCase
     assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 
-  def test_paypalmissingPayerid
+  def test_paypal_missing_payer_id
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -100,7 +100,7 @@ class TestXmlfields < Test::Unit::TestCase
     assert_match /Missing Required Field: payerId!!!!/, exception.message
   end
 
-  def test_paypalmissingtransactionId
+  def test_paypal_missing_transaction_id
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -116,7 +116,7 @@ class TestXmlfields < Test::Unit::TestCase
     assert_match /Missing Required Field: transactionId!!!!/, exception.message
   end
 
-  def test_poswithoutCapability
+  def test_pos_without_capability
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -134,7 +134,7 @@ class TestXmlfields < Test::Unit::TestCase
     assert_match /Missing Required Field: capability!!!!/, exception.message
   end
 
-  def test_tokenmissingtoken
+  def test_token_missing_token
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -151,7 +151,7 @@ class TestXmlfields < Test::Unit::TestCase
     assert_match /Missing Required Field: litleToken!!!!/, exception.message
   end
 
-  def test_paypagemissingId
+  def test_paypage_missing_id
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',

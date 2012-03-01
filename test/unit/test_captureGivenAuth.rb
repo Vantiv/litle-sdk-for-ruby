@@ -26,7 +26,7 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class TestcaptureGivenAuth < Test::Unit::TestCase
-  def test_noamount
+  def test_no_amount
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -42,11 +42,11 @@ class TestcaptureGivenAuth < Test::Unit::TestCase
       'number' =>'4100000000000001',
       'expDate' =>'1210'
       }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.captureGivenAuth(hash)}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.capture_given_auth(hash)}
     assert_match /Missing Required Field: amount!!!!/, exception.message
   end
 
-  def test_BothChoicesCardandToken
+  def test_both_choices_card_and_token
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -68,11 +68,11 @@ class TestcaptureGivenAuth < Test::Unit::TestCase
       'number' =>'4100000000000001',
       'expDate' =>'1210'
       }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.captureGivenAuth(hash)}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.capture_given_auth(hash)}
     assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 
-  def test_allthreechoices
+  def test_all_three_choices
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -101,7 +101,7 @@ class TestcaptureGivenAuth < Test::Unit::TestCase
       'type'=>'VI'
       }}
 
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.captureGivenAuth(hash)}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.capture_given_auth(hash)}
     assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 end

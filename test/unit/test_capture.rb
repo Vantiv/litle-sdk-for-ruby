@@ -26,7 +26,7 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class Test_capture < Test::Unit::TestCase
-  def test_noTxnId
+  def test_no_txn_id
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',

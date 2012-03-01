@@ -26,28 +26,28 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class Test_echeckVerification < Test::Unit::TestCase
-  def test_noAmount
+  def test_no_amount
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
       'orderId'=>'12345'
     }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeckVerification(hash)}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_verification(hash)}
     assert_match /Missing Required Field: amount!!!!/, exception.message
   end
 
-  def test_noOrderId
+  def test_no_order_id
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
     }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeckVerification(hash)}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_verification(hash)}
     assert_match /Missing Required Field: orderId!!!!/, exception.message
   end
 
-  def test_noOrderSource
+  def test_no_order_source
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -55,11 +55,11 @@ class Test_echeckVerification < Test::Unit::TestCase
       'amount'=>'123456',
       'orderId'=>'12345'
     }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeckVerification(hash)}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_verification(hash)}
     assert_match /Missing Required Field: orderSource!!!/, exception.message
   end
 
-  def test_echeckVerification_withBOTH
+  def test_echeck_verification_with_both
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -68,7 +68,7 @@ class Test_echeckVerification < Test::Unit::TestCase
       'echeckToken' => {'accType'=>'Checking','litleToken'=>'1234565789012','routingNum'=>'123456789','checkNum'=>'123455'},
       'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'}
     }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeckVerification(hash)}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_verification(hash)}
     assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 end

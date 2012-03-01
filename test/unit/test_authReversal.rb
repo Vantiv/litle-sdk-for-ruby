@@ -26,7 +26,7 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class TestAuthReversal < Test::Unit::TestCase
-  def test_noLitleTxnId
+  def test_no_litle_txn_id
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -34,7 +34,7 @@ class TestAuthReversal < Test::Unit::TestCase
       'amount'=>'106',
       'payPalNotes'=>'Notes'
     }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authReversal(hash)}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.auth_reversal(hash)}
     assert_match /Missing Required Field: litleTxnId!!!!/, exception.message
   end
 

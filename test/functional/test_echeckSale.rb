@@ -135,7 +135,7 @@ class Test_echeckSale < Test::Unit::TestCase
     assert(response.message =~ /Error validating xml data against the schema/)
   end
 
-  def test_simple_echecksale
+  def test_simple_echeck_sale
     hash = {
       'reportGroup'=>'Planets',
       'litleTxnId'=>'123456789101112',

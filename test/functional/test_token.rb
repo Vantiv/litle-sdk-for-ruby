@@ -26,7 +26,7 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class TestToken < Test::Unit::TestCase
-  def test_simpleToken
+  def test_simple_token
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -34,11 +34,11 @@ class TestToken < Test::Unit::TestCase
       'orderId'=>'12344',
       'accountNumber'=>'1233456789103801'
     }
-    response= LitleOnlineRequest.new.registerTokenRequest(hash)
+    response= LitleOnlineRequest.new.register_token_request(hash)
     assert_equal('Valid Format', response.message)
   end
 
-  def test_simpleTokenwithpaypage
+  def test_simple_token_with_paypage
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -46,11 +46,11 @@ class TestToken < Test::Unit::TestCase
       'orderId'=>'12344',
       'paypageRegistrationId'=>'1233456789101112'
     }
-    response= LitleOnlineRequest.new.registerTokenRequest(hash)
+    response= LitleOnlineRequest.new.register_token_request(hash)
     assert_equal('Valid Format', response.message)
   end
 
-  def test_simpleTokenecheck
+  def test_simple_token_echeck
     hash = {
       'reportGroup'=>'Planets',
       'merchantId' => '101',
@@ -58,11 +58,11 @@ class TestToken < Test::Unit::TestCase
       'orderId'=>'12344',
       'echeckForToken'=>{'accNum'=>'12344565','routingNum'=>'123476545'}
     }
-    response= LitleOnlineRequest.new.registerTokenRequest(hash)
+    response= LitleOnlineRequest.new.register_token_request(hash)
     assert_equal('Valid Format', response.message)
   end
 
-  def test_Tokenecheckmissingrequired
+  def test_token_echeck_missing_required
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -70,11 +70,11 @@ class TestToken < Test::Unit::TestCase
       'orderId'=>'12344',
       'echeckForToken'=>{'routingNum'=>'132344565'}
     }
-    response= LitleOnlineRequest.new.registerTokenRequest(hash)
+    response= LitleOnlineRequest.new.register_token_request(hash)
     assert(response.message =~ /Error validating xml data against the schema/)
   end
 
-  def test_FieldsOutOfOrder
+  def test_fields_out_of_order
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -82,11 +82,11 @@ class TestToken < Test::Unit::TestCase
       'accountNumber'=>'1233456789103801',
       'reportGroup'=>'Planets',
     }
-    response= LitleOnlineRequest.new.registerTokenRequest(hash)
+    response= LitleOnlineRequest.new.register_token_request(hash)
     assert_equal('Valid Format', response.message)
   end
 
-  def test_InvalidField
+  def test_invalid_field
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -95,7 +95,7 @@ class TestToken < Test::Unit::TestCase
       'accountNumber'=>'1233456789103801',
       'reportGroup'=>'Planets',
     }
-    response= LitleOnlineRequest.new.registerTokenRequest(hash)
+    response= LitleOnlineRequest.new.register_token_request(hash)
     assert_equal('Valid Format', response.message)
   end
 end

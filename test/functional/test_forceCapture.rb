@@ -26,7 +26,7 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class TestForceCapture < Test::Unit::TestCase
-  def test_simple_forceCapturewithCard
+  def test_simple_force_capture_with_card
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -40,11 +40,11 @@ class TestForceCapture < Test::Unit::TestCase
       'number' =>'4100000000000001',
       'expDate' =>'1210'
       }}
-    response= LitleOnlineRequest.new.forceCapture(hash)
+    response= LitleOnlineRequest.new.force_capture(hash)
     assert_equal('000', response.forceCaptureResponse.response)
   end
 
-  def test_simple_forceCapturewithtoken
+  def test_simple_force_capture_with_token
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -59,11 +59,11 @@ class TestForceCapture < Test::Unit::TestCase
       'cardValidationNum'=>'555',
       'type'=>'VI'
       }}
-    response= LitleOnlineRequest.new.forceCapture(hash)
+    response= LitleOnlineRequest.new.force_capture(hash)
     assert_equal('Valid Format', response.message)
   end
 
-  def test_FieldsOutOfOrder
+  def test_fields_out_of_order
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -78,11 +78,11 @@ class TestForceCapture < Test::Unit::TestCase
       'reportGroup'=>'Planets',
       'orderId'=>'12344'
     }
-    response= LitleOnlineRequest.new.forceCapture(hash)
+    response= LitleOnlineRequest.new.force_capture(hash)
     assert_equal('Valid Format', response.message)
   end
 
-  def test_InvalidField
+  def test_invalid_field
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -97,7 +97,7 @@ class TestForceCapture < Test::Unit::TestCase
       'number' =>'4100000000000001',
       'expDate' =>'1210'
       }}
-    response= LitleOnlineRequest.new.forceCapture(hash)
+    response= LitleOnlineRequest.new.force_capture(hash)
     assert_equal('Valid Format', response.message)
   end
 

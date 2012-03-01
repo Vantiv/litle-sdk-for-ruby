@@ -27,12 +27,11 @@ require 'test/unit'
 
 #test Authorization Transaction
 class TestAuth < Test::Unit::TestCase
-  def test_noOrderId
+  def test_no_order_id
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
-      #      'litleTxnId'=>'123456',
       'amount'=>'106',
       'orderSource'=>'ecommerce',
       'card'=>{
@@ -44,7 +43,7 @@ class TestAuth < Test::Unit::TestCase
     assert_match /Missing Required Field: orderId!!!!/, exception.message
   end
 
-  def test_successReAuth
+  def test_success_re_auth
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -57,7 +56,7 @@ class TestAuth < Test::Unit::TestCase
     LitleOnlineRequest.new.authorization(hash)
   end
 
-  def test_noAmount
+  def test_no_amount
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -74,7 +73,7 @@ class TestAuth < Test::Unit::TestCase
     assert_match /Missing Required Field: amount!!!!/, exception.message
   end
 
-  def test_noOrderSource
+  def test_no_order_source
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -91,7 +90,7 @@ class TestAuth < Test::Unit::TestCase
     assert_match /Missing Required Field: orderSource!!!!/, exception.message
   end
 
-  def test_BothChoicesCardandPaypal
+  def test_both_choices_card_and_paypal
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -114,7 +113,7 @@ class TestAuth < Test::Unit::TestCase
     assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 
-  def test_threeChoicesCardandPaypageandPaypal
+  def test_three_choices_card_and_paypage_and_paypal
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -141,7 +140,7 @@ class TestAuth < Test::Unit::TestCase
     assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 
-  def test_allChoicesCardandPaypageandPaypalandToken
+  def test_all_choices_card_and_paypage_and_paypal_and_token
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',

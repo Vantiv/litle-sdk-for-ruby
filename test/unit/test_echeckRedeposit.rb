@@ -26,17 +26,17 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class Test_echeckRedeposit < Test::Unit::TestCase
-  def test_noTXNId
+  def test_no_txn_id
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
     }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeckRedeposit(hash)}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_redeposit(hash)}
     assert_match /Missing Required Field: litleTxnId!!!!/, exception.message
   end
 
-  def test_echeckRedeposit_withecheckmissingfield
+  def test_echeck_redeposit_withecheckmissingfield
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -44,11 +44,11 @@ class Test_echeckRedeposit < Test::Unit::TestCase
       'litleTxnId'=>'123456',
       'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','checkNum'=>'123455'}
     }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeckRedeposit(hash)}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_redeposit(hash)}
     assert_match /Missing Required Field: routingNum!!!!/, exception.message
   end
 
-  def test_echeckRedeposit_withecheckTokenmssingfield
+  def test_echeck_redeposit_with_echeck_token_missing_field
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -56,11 +56,11 @@ class Test_echeckRedeposit < Test::Unit::TestCase
       'litleTxnId'=>'123456',
       'echeckToken' => {'accType'=>'Checking','litleToken'=>'1234565789012','checkNum'=>'123455'}
     }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeckRedeposit(hash)}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_redeposit(hash)}
     assert_match /Missing Required Field: routingNum!!!!/, exception.message
   end
 
-  def test_echeckRedeposit_withBOTH
+  def test_echeck_redeposit_with_both
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -69,7 +69,7 @@ class Test_echeckRedeposit < Test::Unit::TestCase
       'echeckToken' => {'accType'=>'Checking','litleToken'=>'1234565789012','routingNum'=>'123456789','checkNum'=>'123455'},
       'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'}
     }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeckRedeposit(hash)}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_redeposit(hash)}
     assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 end

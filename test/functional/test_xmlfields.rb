@@ -26,7 +26,7 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class TestXmlfields < Test::Unit::TestCase
-  def test_cardnoRequiredtypeortrack
+  def test_card_no_required_type_or_track
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -44,7 +44,7 @@ class TestXmlfields < Test::Unit::TestCase
     assert(response.message =~ /Error validating xml data against the schema/)
   end
 
-  def test_simpleCustomBilling
+  def test_simple_custom_billing
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -63,7 +63,7 @@ class TestXmlfields < Test::Unit::TestCase
     assert_equal('Valid Format', response.message)
   end
 
-  def test_BillMeLater
+  def test_bill_me_later
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -83,7 +83,7 @@ class TestXmlfields < Test::Unit::TestCase
     assert_equal('000', response.saleResponse.response)
   end
 
-  def test_CustomerInfo
+  def test__customer_info
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -102,7 +102,7 @@ class TestXmlfields < Test::Unit::TestCase
     assert_equal('Valid Format', response.message)
   end
 
-  def test_simplebilltoAddress
+  def test_simple_bill_to_address
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -120,7 +120,7 @@ class TestXmlfields < Test::Unit::TestCase
     assert_equal('Valid Format', response.message)
   end
 
-  def test_processingInstructions
+  def test_processing_instructions
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -156,7 +156,7 @@ class TestXmlfields < Test::Unit::TestCase
     assert_equal('Valid Format', response.message)
   end
 
-  def test_poswithinvalidentryMode
+  def test_pos_with_invalid_entry_mode
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -174,7 +174,7 @@ class TestXmlfields < Test::Unit::TestCase
     assert(response.message =~ /Error validating xml data against the schema/)
   end
 
-  def test_amexData
+  def test_amex_data
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -192,7 +192,7 @@ class TestXmlfields < Test::Unit::TestCase
     assert_equal('Valid Format', response.message)
   end
 
-  def test_amexDatamissingsellerId
+  def test_amex_data_missing_seller_id
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -210,7 +210,7 @@ class TestXmlfields < Test::Unit::TestCase
     assert(response.message =~ /Error validating xml data against the schema/)
   end
 
-  def test_simpleEnhancedData
+  def test_simple_enhanced_data
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -234,7 +234,7 @@ class TestXmlfields < Test::Unit::TestCase
     assert_equal('Valid Format', response.message)
   end
 
-  def test_simpleEnhancedDataincorrectEnumforCountryCode
+  def test_simple_enhanced_data_incorrect_enum_for_country_code
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -258,7 +258,7 @@ class TestXmlfields < Test::Unit::TestCase
     assert(response.message =~ /Error validating xml data against the schema/)
   end
 
-  def test_EnhancedDatawithdetailtax
+  def test_enhanced_data_with_detail_tax
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -283,7 +283,7 @@ class TestXmlfields < Test::Unit::TestCase
     assert_equal('Valid Format', response.message)
   end
 
-  def test_EnhancedDatawithlineItem
+  def test_enhanced_data_with_line_item
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -314,7 +314,7 @@ class TestXmlfields < Test::Unit::TestCase
     assert_equal('Valid Format', response.message)
   end
 
-  def test_simpletoken
+  def test_simple_token
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -332,7 +332,7 @@ class TestXmlfields < Test::Unit::TestCase
     assert_equal('Valid Format', response.message)
   end
 
-  def test_tokenwithincorrecttokenLength
+  def test_token_with_incorrect_token_Length
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -350,7 +350,7 @@ class TestXmlfields < Test::Unit::TestCase
     assert(response.message =~ /Error validating xml data against the schema/)
   end
 
-  def test_tokenmissingexpDatandvalidNum
+  def test_token_missing_exp_dat_and_valid_num
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -366,7 +366,7 @@ class TestXmlfields < Test::Unit::TestCase
     assert_equal('Valid Format', response.message)
   end
 
-  def test_simplePaypage
+  def test_simple_paypage
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -384,7 +384,7 @@ class TestXmlfields < Test::Unit::TestCase
     assert_equal('Valid Format', response.message)
   end
 
-  def test_paypagemissingexpDatandvalidNum
+  def test_paypage_missing_exp_dat_and_valid_num
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',

@@ -150,7 +150,7 @@ class Newtest < Test::Unit::TestCase
     response = LitleOnlineRequest.new.sale(hash)
   end
 
-  def test_capture_amountUnsetShouldNotBeInXML
+  def test_capture_amount_unset_should_not_be_in_xml
     Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
     hash={
       'id' => '006',
@@ -164,7 +164,7 @@ class Newtest < Test::Unit::TestCase
     response = LitleOnlineRequest.new.capture(hash)
   end
 
-  def test_force_capture_amountUnsetShouldNotBeInXML
+  def test_force_capture_amount_unset_should_not_be_in_xml
     Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
     hash={
       'id' => '006',
@@ -177,7 +177,7 @@ class Newtest < Test::Unit::TestCase
     Communications.expects(:http_post).with(Not(regexp_matches(/.*amount.*/m)),kind_of(Hash))
     XMLObject.expects(:new)
 
-    response = LitleOnlineRequest.new.forceCapture(hash)
+    response = LitleOnlineRequest.new.force_capture(hash)
   end
 
   def test_amount_is_not_required_in_echeck_credit
@@ -193,7 +193,7 @@ class Newtest < Test::Unit::TestCase
     Communications.expects(:http_post).with(Not(regexp_matches(/.*amount.*/m)),kind_of(Hash))
     XMLObject.expects(:new)
 
-    response = LitleOnlineRequest.new.echeckCredit(hash)
+    response = LitleOnlineRequest.new.echeck_credit(hash)
   end
 
   def test_amount_is_not_required_in_echeck_sale
@@ -209,7 +209,7 @@ class Newtest < Test::Unit::TestCase
     Communications.expects(:http_post).with(Not(regexp_matches(/.*amount.*/m)),kind_of(Hash))
     XMLObject.expects(:new)
 
-    response = LitleOnlineRequest.new.echeckSale(hash)
+    response = LitleOnlineRequest.new.echeck_sale(hash)
   end
 
   def test_choice_between_card_token

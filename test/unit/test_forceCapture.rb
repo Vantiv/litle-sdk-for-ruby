@@ -26,7 +26,7 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class TestForceCapture < Test::Unit::TestCase
-  def test_noOrderId
+  def test_no_order_id
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -40,11 +40,11 @@ class TestForceCapture < Test::Unit::TestCase
       'cardValidationNum'=>'555',
       'type'=>'VI'
       }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.forceCapture(hash)}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.force_capture(hash)}
     assert_match /Missing Required Field: orderId!!!!/, exception.message
   end
 
-  def test_noOrderSource
+  def test_no_order_source
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -57,11 +57,11 @@ class TestForceCapture < Test::Unit::TestCase
       'number' =>'4100000000000001',
       'expDate' =>'1210'
       }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.forceCapture(hash)}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.force_capture(hash)}
     assert_match /Missing Required Field: orderSource!!!!/, exception.message
   end
 
-  def test_BothChoicesCardandtoken
+  def test_both_choices_card_and_token
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -83,11 +83,11 @@ class TestForceCapture < Test::Unit::TestCase
       'cardValidationNum'=>'555',
       'type'=>'VI'
       }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.forceCapture(hash)}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.force_capture(hash)}
     assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 
-  def test_allChoices
+  def test_all_choices
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -114,7 +114,7 @@ class TestForceCapture < Test::Unit::TestCase
       'cardValidationNum'=>'555',
       'type'=>'VI'
       }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.forceCapture(hash)}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.force_capture(hash)}
     assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 

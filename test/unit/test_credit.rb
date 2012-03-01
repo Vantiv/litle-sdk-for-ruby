@@ -26,7 +26,7 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class TestCredit < Test::Unit::TestCase
-  def test_BothChoicesCardandPaypal
+  def test_both_choices_card_and_paypal
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -47,9 +47,9 @@ class TestCredit < Test::Unit::TestCase
 
     exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
     assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
-  end
+    ends
 
-  def test_threeChoicesCardandPaypageandPaypal
+  def test_three_choices_card_and_paypage_and_paypal
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -76,7 +76,7 @@ class TestCredit < Test::Unit::TestCase
     assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 
-  def test_allChoicesCardandPaypageandPaypalandToken
+  def test_all_choices_card_and_paypage_and_paypal_and_token
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',

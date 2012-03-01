@@ -26,7 +26,7 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class TestToken < Test::Unit::TestCase
-  def test_accountNumandPaypage
+  def test_account_num_and_paypage
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
@@ -35,7 +35,7 @@ class TestToken < Test::Unit::TestCase
       'accountNumber'=>'1233456789101112',
       'paypageRegistrationId'=>'1233456789101112'
     }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.registerTokenRequest(hash)}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.register_token_request(hash)}
     assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 
