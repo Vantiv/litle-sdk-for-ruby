@@ -177,8 +177,6 @@ class TestSale < Test::Unit::TestCase
   def test_simple_sale_with_card
     hash = {
       'merchantId'=>'101',
-      'proxy_addr' => '10.1.2.254',
-      'proxy_port' => '8080',
       'version'=>'8.8',
       'reportGroup'=>'Planets',
       'litleTxnId'=>'123456',

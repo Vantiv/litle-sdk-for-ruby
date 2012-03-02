@@ -38,7 +38,7 @@ class Configuration
       end
       return YAML.load_file(config_file)
     rescue
-      raise 'Cannot find  the configuration file, ' + config_file + ', Please run Setup.rb first'
+      return {}
     end
 
   end

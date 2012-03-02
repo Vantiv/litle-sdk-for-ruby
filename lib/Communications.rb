@@ -33,12 +33,11 @@ class Communications
   ##For http or https post with or without a proxy
   def Communications.http_post(post_data,config_hash)
 
-    #setup optional proxy
-    proxy_addr = (config_hash['proxy_addr'] or nil)
-    proxy_port = ((config_hash['proxy_port']).to_i or nil)
+    proxy_addr = config_hash['proxy_addr']
+    proxy_port = config_hash['proxy_port']
+    litle_url = config_hash['url']
 
     # setup https or http post
-    litle_url = (config_hash['url'] or 'https://cert.litle.com/vap/communicator/online')
     uri = URI.parse(litle_url)
 
     http_post = Net::HTTP::Post.new(uri.request_uri)
