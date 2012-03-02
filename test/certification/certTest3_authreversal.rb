@@ -175,7 +175,7 @@ class Litle_certTest3 < Test::Unit::TestCase
     #test 36A
     auth_reversal_hash =  {'litleTxnId' => auth_response.authorizationResponse.litleTxnId, 'amount' => '10000'}
     hash1a = auth_reversal_hash.merge(@@merchant_hash)
-    auth_reversal_response = LitleOnlineRequest.new.authReversal(hash1a)
+    auth_reversal_response = LitleOnlineRequest.new.auth_reversal(hash1a)
     assert_equal('336', auth_reversal_response.authReversalResponse.response)
     assert_equal('Reversal Amount does not match Authorization amount', auth_reversal_response.authReversalResponse.message)
   end

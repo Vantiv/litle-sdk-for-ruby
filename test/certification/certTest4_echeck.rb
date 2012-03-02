@@ -24,7 +24,7 @@ class Litle_certTest4 < Test::Unit::TestCase
         'routingNum' => '053100300'}
       }
       hash = customer_hash.merge(@@merchant_hash)
-      echeck_response = LitleOnlineRequest.new.echeckVerification(hash)
+      echeck_response = LitleOnlineRequest.new.echeck_verification(hash)
       assert_equal('301', echeck_response.echeckVerificationResponse.response)
       assert_equal('Invalid Account Number', echeck_response.echeckVerificationResponse.message)
     end
@@ -46,7 +46,7 @@ class Litle_certTest4 < Test::Unit::TestCase
       'routingNum' => '053000219'}
     }
     hash = customer_hash.merge(@@merchant_hash)
-    echeck_response = LitleOnlineRequest.new.echeckVerification(hash)
+    echeck_response = LitleOnlineRequest.new.echeck_verification(hash)
     assert_equal('000', echeck_response.echeckVerificationResponse.response)
     assert_equal('Approved', echeck_response.echeckVerificationResponse.message)
   end
@@ -69,7 +69,7 @@ class Litle_certTest4 < Test::Unit::TestCase
         'routingNum' => '053100300'}
       }
       hash = customer_hash.merge(@@merchant_hash)
-      echeck_response = LitleOnlineRequest.new.echeckVerification(hash)
+      echeck_response = LitleOnlineRequest.new.echeck_verification(hash)
       assert_equal('950', echeck_response.echeckVerificationResponse.response)
       assert_equal('Declined - Negative Information on File', echeck_response.echeckVerificationResponse.message)
     end
@@ -92,7 +92,7 @@ class Litle_certTest4 < Test::Unit::TestCase
         'routingNum' => '063102152'}
       }
       hash = customer_hash.merge(@@merchant_hash)
-      echeck_response = LitleOnlineRequest.new.echeckVerification(hash)
+      echeck_response = LitleOnlineRequest.new.echeck_verification(hash)
       assert_equal('951', echeck_response.echeckVerificationResponse.response)
       assert_equal('Absolute Decline', echeck_response.echeckVerificationResponse.message)
     end
@@ -114,7 +114,7 @@ class Litle_certTest4 < Test::Unit::TestCase
         'routingNum' => '053100300'}
       }
       hash = customer_hash.merge(@@merchant_hash)
-      echeck_response = LitleOnlineRequest.new.echeckSale(hash)
+      echeck_response = LitleOnlineRequest.new.echeck_sale(hash)
   
       assert_equal('301', echeck_response.echeckSalesResponse.response)
       assert_equal('Invalid Account Number', echeck_response.echeckSalesResponse.message)
@@ -135,7 +135,7 @@ class Litle_certTest4 < Test::Unit::TestCase
         'routingNum' => '211370545'}
       }
       hash = customer_hash.merge(@@merchant_hash)
-      echeck_response = LitleOnlineRequest.new.echeckSale(hash)
+      echeck_response = LitleOnlineRequest.new.echeck_sale(hash)
   
       assert_equal('000', echeck_response.echeckSalesResponse.response)
       assert_equal('Approved', echeck_response.echeckSalesResponse.message)
@@ -158,7 +158,7 @@ class Litle_certTest4 < Test::Unit::TestCase
         'routingNum' => '211370545'}
       }
       hash = customer_hash.merge(@@merchant_hash)
-      echeck_response = LitleOnlineRequest.new.echeckSale(hash)
+      echeck_response = LitleOnlineRequest.new.echeck_sale(hash)
   
       assert_equal('000', echeck_response.echeckSalesResponse.response)
       assert_equal('Approved', echeck_response.echeckSalesResponse.message)
@@ -181,7 +181,7 @@ class Litle_certTest4 < Test::Unit::TestCase
         'routingNum' => '053133052'}
       }
       hash = customer_hash.merge(@@merchant_hash)
-      echeck_response = LitleOnlineRequest.new.echeckSale(hash)
+      echeck_response = LitleOnlineRequest.new.echeck_sale(hash)
   
       assert_equal('900', echeck_response.echeckSalesResponse.response)
       assert_equal('Invalid Bank Routing Number', echeck_response.echeckSalesResponse.message)
@@ -203,7 +203,7 @@ class Litle_certTest4 < Test::Unit::TestCase
         'routingNum' => '053100300'}
       }
       hash = customer_hash.merge(@@merchant_hash)
-      echeck_response = LitleOnlineRequest.new.echeckCredit(hash)
+      echeck_response = LitleOnlineRequest.new.echeck_credit(hash)
   
       assert_equal('301', echeck_response.echeckCreditResponse.response)
     end
@@ -224,7 +224,7 @@ class Litle_certTest4 < Test::Unit::TestCase
         'routingNum' => '063102152'}
       }
       hash = customer_hash.merge(@@merchant_hash)
-      echeck_response = LitleOnlineRequest.new.echeckCredit(hash)
+      echeck_response = LitleOnlineRequest.new.echeck_credit(hash)
   
       assert_equal('000', echeck_response.echeckCreditResponse.response)
       assert_equal('Approved', echeck_response.echeckCreditResponse.message)
@@ -246,7 +246,7 @@ class Litle_certTest4 < Test::Unit::TestCase
         'routingNum' => '211370545'}
       }
       hash = customer_hash.merge(@@merchant_hash)
-      echeck_response = LitleOnlineRequest.new.echeckCredit(hash)
+      echeck_response = LitleOnlineRequest.new.echeck_credit(hash)
   
       assert_equal('000', echeck_response.echeckCreditResponse.response)
       assert_equal('Approved', echeck_response.echeckCreditResponse.message)
@@ -257,7 +257,7 @@ class Litle_certTest4 < Test::Unit::TestCase
       'litleTxnId' => '430000000000000001'
     }
     hash = customer_hash.merge(@@merchant_hash)
-    echeck_response = LitleOnlineRequest.new.echeckCredit(hash)
+    echeck_response = LitleOnlineRequest.new.echeck_credit(hash)
 
     assert_equal('000', echeck_response.echeckCreditResponse.response)
     assert_equal('Approved', echeck_response.echeckCreditResponse.message)
@@ -268,7 +268,7 @@ class Litle_certTest4 < Test::Unit::TestCase
       'litleTxnId' => '2'
     }
     hash = customer_hash.merge(@@merchant_hash)
-    echeck_response = LitleOnlineRequest.new.echeckCredit(hash)
+    echeck_response = LitleOnlineRequest.new.echeck_credit(hash)
 
     assert_equal('360', echeck_response.echeckCreditResponse.response)
     assert_equal('No transaction found with specified litleTxnId', echeck_response.echeckCreditResponse.message)

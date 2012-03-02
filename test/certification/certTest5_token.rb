@@ -116,23 +116,6 @@ class Litle_certTest5 < Test::Unit::TestCase
     assert_equal('MC', token_response.authorizationResponse.tokenResponse.type)
     assert_equal('543510', token_response.authorizationResponse.tokenResponse.bin)
   end
-
-  def test_58
-    customer_hash = {
-      'orderId' => '58',
-      'amount' => '15000',
-      'orderSource' => 'ecommerce',
-      'card' => {'expDate' => '1112', 'cardValidationNum' => '987'}
-    }
-    hash = customer_hash.merge(@@merchant_hash)
-    token_response = LitleOnlineRequest.new.authorization(hash)
-    assert_equal('000', token_response.authorizationResponse.response)
-    assert_equal('Approved', token_response.authorizationResponse.message)
-    assert_equal('801', token_response.authorizationResponse.tokenResponse.tokenResponseCode)
-    assert_equal('Account number was successfully registered', token_response.authorizationResponse.tokenResponse.tokenMessage)
-    assert_equal('MC', token_response.authorizationResponse.tokenResponse.type)
-    assert_equal('543510', token_response.authorizationResponse.tokenResponse.bin)
-  end
   
   def test_59
     customer_hash = {

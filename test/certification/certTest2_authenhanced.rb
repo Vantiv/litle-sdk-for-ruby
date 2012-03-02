@@ -431,7 +431,7 @@ class Litle_certTest2 < Test::Unit::TestCase
     #test 32B
     authReversal_hash =  {'litleTxnId' => authorization_response.authorizationResponse.litleTxnId}
     hash1b = authReversal_hash.merge(@@merchant_hash)
-    authReversal_response = LitleOnlineRequest.new.authReversal(hash1b)
+    authReversal_response = LitleOnlineRequest.new.auth_reversal(hash1b)
     assert_equal('111', authReversal_response.authReversalResponse.response)
     assert_equal('Authorization amount has already been depleted', authReversal_response.authReversalResponse.message)
   end
@@ -467,7 +467,7 @@ class Litle_certTest2 < Test::Unit::TestCase
     #test 33A
     authReversal_hash =  {'litleTxnId' => authorization_response.authorizationResponse.litleTxnId}
     hash1b = authReversal_hash.merge(@@merchant_hash)
-    authReversal_response = LitleOnlineRequest.new.authReversal(hash1b)
+    authReversal_response = LitleOnlineRequest.new.auth_reversal(hash1b)
     assert_equal('000', authReversal_response.authReversalResponse.response)
     assert_equal('Approved', authReversal_response.authReversalResponse.message)
   end
@@ -501,7 +501,7 @@ class Litle_certTest2 < Test::Unit::TestCase
     #test 34A
     authReversal_hash =  {'litleTxnId' => authorization_response.authorizationResponse.litleTxnId}
     hash1b = authReversal_hash.merge(@@merchant_hash)
-    authReversal_response = LitleOnlineRequest.new.authReversal(hash1b)
+    authReversal_response = LitleOnlineRequest.new.auth_reversal(hash1b)
     assert_equal('000', authReversal_response.authReversalResponse.response)
     assert_equal('Approved', authReversal_response.authReversalResponse.message)
   end
@@ -540,7 +540,7 @@ class Litle_certTest2 < Test::Unit::TestCase
     #test 35B
     authReversal_hash =  {'litleTxnId' => authorization_response.authorizationResponse.litleTxnId, 'amount' => '20020'}
     hash1b = authReversal_hash.merge(@@merchant_hash)
-    authReversal_response = LitleOnlineRequest.new.authReversal(hash1b)
+    authReversal_response = LitleOnlineRequest.new.auth_reversal(hash1b)
     assert_equal('000', authReversal_response.authReversalResponse.response)
     assert_equal('Approved', authReversal_response.authReversalResponse.message)
   end
@@ -563,7 +563,7 @@ class Litle_certTest2 < Test::Unit::TestCase
     #test 36A
     authReversal_hash =  {'litleTxnId' => authorization_response.authorizationResponse.litleTxnId, 'amount' => '10000'}
     hash1b = authReversal_hash.merge(@@merchant_hash)
-    authReversal_response = LitleOnlineRequest.new.authReversal(hash1b)
+    authReversal_response = LitleOnlineRequest.new.auth_reversal(hash1b)
     assert_equal('336', authReversal_response.authReversalResponse.response)
     assert_equal('Reversal Amount does not match Authorization amount', authReversal_response.authReversalResponse.message)
   end
