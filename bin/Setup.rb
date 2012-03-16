@@ -70,8 +70,6 @@ class Setup
       return 'https://precert.litle.com/' + litle_online_ctx
     elsif litle_env == "production1\n"
       return 'https://payments.litle.com/' + litle_online_ctx
-    elsif litle_env == "production2\n"
-      return 'https://payments2.litle.com/' + litle_online_ctx
     else
       return 'https://www.testlitle.com/sandbox/communicator/online'
     end
