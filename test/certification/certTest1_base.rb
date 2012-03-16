@@ -59,7 +59,7 @@ class Litle_certTest < Test::Unit::TestCase
   def test_1_AVS
     customer_hash = {
       'orderId' => '1',
-      'amount' => '000',
+      'amount' => '0',
       'orderSource'=>'ecommerce',
       'billToAddress'=>{
       'name' => 'John Smith',
@@ -178,7 +178,7 @@ class Litle_certTest < Test::Unit::TestCase
   def test_2_avs
     customer_hash = {
       'orderId' => '2',
-      'amount' => '000',
+      'amount' => '0',
       'orderSource'=>'ecommerce',
       'billToAddress'=>{
       'name' => 'Mike J. Hammer',
@@ -300,7 +300,7 @@ class Litle_certTest < Test::Unit::TestCase
   def test_3_avs
     customer_hash = {
       'orderId' => '3',
-      'amount' => '000',
+      'amount' => '0',
       'orderSource'=>'ecommerce',
       'billToAddress'=>{
       'name' => 'Eileen Jones',
@@ -414,7 +414,7 @@ class Litle_certTest < Test::Unit::TestCase
   def test_4_avs
     customer_hash = {
       'orderId' => '4',
-      'amount' => '000',
+      'amount' => '0',
       'orderSource'=>'ecommerce',
       'billToAddress'=>{
       'name' => 'Bob Black',
@@ -522,7 +522,7 @@ class Litle_certTest < Test::Unit::TestCase
   def test_5_avs
     customer_hash = {
       'orderId' => '5',
-      'amount' => '000',
+      'amount' => '0',
       'orderSource'=>'ecommerce',
       'card'=>{
       'number' =>'4457010200000007',
@@ -663,7 +663,7 @@ class Litle_certTest < Test::Unit::TestCase
   def test_7_avs
     customer_hash = {
       'orderId' => '7',
-      'amount' => '000',
+      'amount' => '0',
       'orderSource'=>'ecommerce',
       'billToAddress'=>{
       'name' => 'Jane Murray',
@@ -741,7 +741,7 @@ class Litle_certTest < Test::Unit::TestCase
   def test_8_avs
     customer_hash = {
       'orderId' => '8',
-      'amount' => '000',
+      'amount' => '0',
       'orderSource'=>'ecommerce',
       'billToAddress'=>{
       'name' => 'Mark Johnson',
@@ -819,7 +819,7 @@ class Litle_certTest < Test::Unit::TestCase
   def test_9_avs
     customer_hash = {
       'orderId' => '9',
-      'amount' => '000',
+      'amount' => '0',
       'orderSource'=>'ecommerce',
       'billToAddress'=>{
       'name' => 'James Miller',
