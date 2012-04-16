@@ -66,4 +66,4 @@ puts "Litle Transaction ID: "+ response.saleResponse.litleTxnId
     Litle Transaction ID: <your-numeric-litle-txn-id>
 
 
-Please contact Lilte & Co. with any further questions.   You can reach us at RubySupport@litle.com.
+Please contact Lilte & Co. with any further questions.   You can reach us at sdksupport@litle.com.
