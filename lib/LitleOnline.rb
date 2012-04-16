@@ -29,7 +29,6 @@ OTHER DEALINGS IN THE SOFTWARE.
 #
 require 'rubygems'
 require 'xmlsimple'
-require 'active_support/core_ext'
 require 'net/http'
 require 'xml-object'
 require 'yaml'
