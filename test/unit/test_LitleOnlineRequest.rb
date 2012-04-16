@@ -294,4 +294,13 @@ end
     assert_nothing_raised {LitleOnlineRequest.new.authorization(start_hash.merge({'customerInfo'=>{'ssn'=>'000112222'} }))}
   end
 
+  def test_set_merchant_sdk
+    litle = LitleOnlineRequest.new
+    #Explicit - used for integrations
+    assert_equal 'ActiveMerchant;3.2', litle.send(:get_merchant_sdk, {'merchantSdk'=>'ActiveMerchant;3.2'})
+    #Implicit - used raw when nothing is specified
+    assert_equal 'Ruby;8.12.0', litle.send(:get_merchant_sdk, {'NotMerchantSdk'=>'ActiveMerchant;3.2'})
+  end
+
+  
 end

@@ -64,7 +64,7 @@ class LitleOnlineRequest
         :allowPartialAuth=>hash_in['allowPartialAuth'],
         :healthcareIIAS=>XMLFields.healthcare_iias(optional_field(hash_in['healthcareIIAS'])),
         :filtering=>XMLFields.filtering_type(optional_field(hash_in['filtering'])),
-        :merchantData=>XMLFields.filtering_type(optional_field(hash_in['merchantData'])),
+        :merchantData=>XMLFields.merchant_data(optional_field(hash_in['merchantData'])),
         :recyclingRequest=>XMLFields.recycling_request_type(optional_field(hash_in['recyclingRequest']))
       }
     end
@@ -108,7 +108,7 @@ class LitleOnlineRequest
       :allowPartialAuth=>hash_in['allowPartialAuth'],
       :healthcareIIAS=>XMLFields.healthcare_iias(optional_field(hash_in['healthcareIIAS'])),
       :filtering=>XMLFields.filtering_type(optional_field(hash_in['filtering'])),
-      :merchantData=>XMLFields.filtering_type(optional_field(hash_in['merchantData'])),
+      :merchantData=>XMLFields.merchant_data(optional_field(hash_in['merchantData'])),
       :recyclingRequest=>XMLFields.recycling_request_type(optional_field(hash_in['recyclingRequest']))
     }
     hash_out.merge!(get_common_attributes(hash_in))
@@ -156,7 +156,8 @@ class LitleOnlineRequest
       :processingInstructions=>XMLFields.processing_instructions(optional_field(hash_in['processingInstructions'])),
       :pos=>XMLFields.pos(optional_field(hash_in['pos'])),
       :amexAggregatorData=>XMLFields.amex_aggregator_data(optional_field(hash_in['amexAggregatorData'])),
-      :payPalNotes =>hash_in['payPalNotes']
+      :payPalNotes =>hash_in['payPalNotes'],
+      :actionReason=>hash_in['actionReason']
     }
     hash_out.merge!(get_common_attributes(hash_in))
     Checker.purge_null(hash_out)
@@ -362,6 +363,14 @@ class LitleOnlineRequest
       return hash_in['merchantId']
     end
   end
+  
+  def get_merchant_sdk(hash_in)
+    if(hash_in['merchantSdk'] == nil)
+      return 'Ruby;8.12.0'
+    else
+      return hash_in['merchantSdk']
+    end    
+  end
 
   def get_report_group(hash_in)
     if (hash_in['reportGroup'] == nil)
@@ -410,6 +419,7 @@ class LitleOnlineRequest
       "@version"=> required_field(version),
       "@xmlns"=> "http://www.litle.com/schema",
       "@merchantId"=> get_merchant_id(hash_in),
+      "@merchantSdk"=> get_merchant_sdk(hash_in),
       :authentication => authentication(hash_in)
     }
     return litle_online_hash.merge(merge_hash)

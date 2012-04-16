@@ -341,6 +341,17 @@ class XMLFields
     Checker.required_missing(hash_out)
     return hash_out
   end
+  
+  def XMLFields.merchant_data(hash_in)
+    hash_out = {
+      :campaign=>hash_in['campaign'],
+      :affiliate=>hash_in['affiliate'],
+      :merchnatGroupingId=>hash_in['merchantGroupingIdType']
+    }
+    Checker.purge_null(hash_out)
+    Checker.required_missing(hash_out)
+    return hash_out
+  end
 
   def XMLFields.echeck_type(hash_in)
     hash_out= {

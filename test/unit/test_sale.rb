@@ -245,5 +245,23 @@ class TestSale < Test::Unit::TestCase
     assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
 
+  def test_merchant_data_sale
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.12',
+      'orderId'=>'1',
+      'amount'=>'0',
+      'orderSource'=>'ecommerce',
+      'reportGroup'=>'Planets',
+      'merchantData'=> {
+        'affiliate'=>'bar'
+      }
+    }
+  
+    XMLObject.expects(:new)
+    Communications.expects(:http_post).with(regexp_matches(/.*<merchantData>.*?<affiliate>bar<\/affiliate>.*?<\/merchantData>.*/m),kind_of(Hash))
+    LitleOnlineRequest.new.sale(hash)
+  end
+
 end
 

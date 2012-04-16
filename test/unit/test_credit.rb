@@ -111,4 +111,20 @@ class TestCredit < Test::Unit::TestCase
     exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
     assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
+  
+  def test_action_reason_on_orphaned_refund
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.12',
+      'orderId'=>'1',
+      'amount'=>'2',
+      'orderSource'=>'ecommerce',
+      'reportGroup'=>'Planets',
+      'actionReason'=> 'SUSPECT_FRAUD'
+    }
+    XMLObject.expects(:new)
+    Communications.expects(:http_post).with(regexp_matches(/.*<actionReason>SUSPECT_FRAUD<\/actionReason>.*/m),kind_of(Hash))
+    LitleOnlineRequest.new.credit(hash)
+  end
+
 end
