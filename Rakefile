@@ -30,7 +30,7 @@ require 'rake/clean'
 spec = Gem::Specification.new do |s|
   FileUtils.rm_rf('pkg')
   s.name = "LitleOnline"
-  s.summary = "Ruby SDK produced by Litle & Co. for online transaction processing using Litle XML format v8.10"
+  s.summary = "Ruby SDK produced by Litle & Co. for online transaction processing using Litle XML format v8.12"
   s.description = File.read(File.join(File.dirname(__FILE__), 'DESCRIPTION'))
   s.requirements =
   [ 'Contact sdksupport@litle.com for more information' ]
