@@ -37,7 +37,7 @@ class TestAuth < Test::Unit::TestCase
       'orderSource'=>'ecommerce',
       'card'=>{
       'type'=>'VI',
-      'number' =>'4100000000000002',
+      'number' =>'4100000000000000',
       'expDate' =>'1210'
       }}
     response= LitleOnlineRequest.new.authorization(hash)
@@ -86,7 +86,7 @@ class TestAuth < Test::Unit::TestCase
       'orderId'=>'12344',
       'card'=>{
       'type'=>'VI',
-      'number' =>'4100000000000002',
+      'number' =>'4100000000000000',
       'expDate' =>'1210'
       },
       'orderSource'=>'ecommerce',
@@ -107,7 +107,7 @@ class TestAuth < Test::Unit::TestCase
       'card'=>{
       'NOexistantField' => 'ShouldNotCauseError',
       'type'=>'VI',
-      'number' =>'4100000000000002',
+      'number' =>'4100000000000000',
       'expDate' =>'1210'
       }}
     response= LitleOnlineRequest.new.authorization(hash)

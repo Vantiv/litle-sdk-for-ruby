@@ -56,7 +56,7 @@ class TestXmlfields < Test::Unit::TestCase
       'customBilling'=>{'phone'=>'123456789','descriptor'=>'good'},
       'card'=>{
       'type'=>'VI',
-      'number' =>'4100000000000001',
+      'number' =>'4100000000000000',
       'expDate' =>'1210'
       }}
     response= LitleOnlineRequest.new.sale(hash)
@@ -76,7 +76,7 @@ class TestXmlfields < Test::Unit::TestCase
       'customerPhoneChnaged'=>'False','itemCategoryCode'=>'2'},
       'card'=>{
       'type'=>'VI',
-      'number' =>'4100000000000002',
+      'number' =>'4100000000000000',
       'expDate' =>'1210'
       }}
     response= LitleOnlineRequest.new.sale(hash)
@@ -95,7 +95,7 @@ class TestXmlfields < Test::Unit::TestCase
       'CustomerInfo'=>{'ssn'=>'12345','incomeAmount'=>'12345','incomeCurrency'=>'dollar','yearsAtResidence'=>'2'},
       'card'=>{
       'type'=>'VI',
-      'number' =>'4100000000000001',
+      'number' =>'4100000000000000',
       'expDate' =>'1210'
       }}
     response= LitleOnlineRequest.new.sale(hash)
@@ -113,7 +113,7 @@ class TestXmlfields < Test::Unit::TestCase
       'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'},
       'card'=>{
       'type'=>'VI',
-      'number' =>'4100000000000001',
+      'number' =>'4100000000000000',
       'expDate' =>'1210'
       }}
     response= LitleOnlineRequest.new.authorization(hash)
@@ -131,7 +131,7 @@ class TestXmlfields < Test::Unit::TestCase
       'processingInstructions'=>{'bypassVelocityCheck'=>'true'},
       'card'=>{
       'type'=>'VI',
-      'number' =>'4100000000000001',
+      'number' =>'4100000000000000',
       'expDate' =>'1210'
       }}
     response= LitleOnlineRequest.new.authorization(hash)
@@ -149,7 +149,7 @@ class TestXmlfields < Test::Unit::TestCase
       'pos'=>{'capability'=>'notused','entryMode'=>'track1','cardholderId'=>'pin'},
       'card'=>{
       'type'=>'VI',
-      'number' =>'4100000000000001',
+      'number' =>'4100000000000000',
       'expDate' =>'1210'
       }}
     response= LitleOnlineRequest.new.authorization(hash)
@@ -183,7 +183,7 @@ class TestXmlfields < Test::Unit::TestCase
       'amount'=>'106',
       'card'=>{
       'type'=>'VI',
-      'number' =>'4100000000000001',
+      'number' =>'4100000000000000',
       'expDate' =>'1210'},
       'orderSource'=>'ecommerce',
       'amexAggregatorData'=>{'sellerMerchantCategoryCode'=>'1234','sellerId'=>'1234Id'}
@@ -219,7 +219,7 @@ class TestXmlfields < Test::Unit::TestCase
       'amount'=>'106',
       'card'=>{
       'type'=>'VI',
-      'number' =>'4100000000000001',
+      'number' =>'4100000000000000',
       'expDate' =>'1210'},
       'orderSource'=>'ecommerce',
       'enhancedData'=>{
@@ -267,7 +267,7 @@ class TestXmlfields < Test::Unit::TestCase
       'amount'=>'106',
       'card'=>{
       'type'=>'VI',
-      'number' =>'4100000000000001',
+      'number' =>'4100000000000000',
       'expDate' =>'1210'},
       'orderSource'=>'ecommerce',
       'enhancedData'=>{
@@ -292,7 +292,7 @@ class TestXmlfields < Test::Unit::TestCase
       'amount'=>'106',
       'card'=>{
       'type'=>'VI',
-      'number' =>'4100000000000001',
+      'number' =>'4100000000000000',
       'expDate' =>'1210'}, 'processingInstructions'=>{'bypassVelocityCheck'=>'true'},
       'orderSource'=>'ecommerce',
       'lineItemData'=>{

@@ -40,7 +40,7 @@ class TestcaptureGivenAuth < Test::Unit::TestCase
       'orderSource'=>'ecommerce',
       'card'=>{
       'type'=>'VI',
-      'number' =>'4100000000000001',
+      'number' =>'4100000000000000',
       'expDate' =>'1210'
       }}
     response= LitleOnlineRequest.new.capture_given_auth(hash)
@@ -81,7 +81,7 @@ class TestcaptureGivenAuth < Test::Unit::TestCase
       'amount'=>'106',
       'card'=>{
       'type'=>'VI',
-      'number' =>'4100000000000001',
+      'number' =>'4100000000000000',
       'expDate' =>'1210'
       },
       'reportGroup'=>'Planets',
@@ -106,7 +106,7 @@ class TestcaptureGivenAuth < Test::Unit::TestCase
       'card'=>{
       'NOexistantField' => 'ShouldNotCauseError',
       'type'=>'VI',
-      'number' =>'4100000000000001',
+      'number' =>'4100000000000000',
       'expDate' =>'1210'
       }}
     response= LitleOnlineRequest.new.capture_given_auth(hash)
@@ -129,7 +129,7 @@ class TestcaptureGivenAuth < Test::Unit::TestCase
       'orderSource'=>'ecommerce',
       'card'=>{
       'type'=>'VI',
-      'number' =>'4100000000000001',
+      'number' =>'4100000000000000',
       'expDate' =>'1210'
       }}
     response= LitleOnlineRequest.new.capture_given_auth(hash)
@@ -151,7 +151,7 @@ class TestcaptureGivenAuth < Test::Unit::TestCase
       'orderSource'=>'ecommerce',
       'card'=>{
       'type'=>'VI',
-      'number' =>'4100000000000001',
+      'number' =>'4100000000000000',
       'expDate' =>'1210'
       }}
     response= LitleOnlineRequest.new.capture_given_auth(hash)

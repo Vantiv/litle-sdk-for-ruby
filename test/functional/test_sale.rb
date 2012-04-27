@@ -109,7 +109,7 @@ class TestSale < Test::Unit::TestCase
       'orderSource'=>'ecommerce',
       'card'=>{
       'type'=>'VI',
-      'number' =>'4100000000000002',
+      'number' =>'4100000000000000',
       'expDate' =>'1210'
       }}
     response= LitleOnlineRequest.new.sale(hash)
@@ -125,7 +125,7 @@ class TestSale < Test::Unit::TestCase
       'amount'=>'106',
       'card'=>{
       'type'=>'VI',
-      'number' =>'4100000000000002',
+      'number' =>'4100000000000000',
       'expDate' =>'1210'
       },
       'reportGroup'=>'Planets',
@@ -147,7 +147,7 @@ class TestSale < Test::Unit::TestCase
       'card'=>{
       'NOexistantField' => 'ShouldNotCauseError',
       'type'=>'VI',
-      'number' =>'4100000000000002',
+      'number' =>'4100000000000000',
       'expDate' =>'1210'
       }}
     response= LitleOnlineRequest.new.sale(hash)
@@ -168,7 +168,7 @@ class TestSale < Test::Unit::TestCase
       'cardholderAuthentication'=>'two',
       'card'=>{
       'type'=>'VI',
-      'number' =>'4100000000000002',
+      'number' =>'4100000000000000',
       }}
     response= LitleOnlineRequest.new.sale(hash)
     assert_equal('000', response.saleResponse.response)
@@ -185,7 +185,7 @@ class TestSale < Test::Unit::TestCase
       'orderSource'=>'ecommerce',
       'card'=>{
       'type'=>'VI',
-      'number' =>'4100000000000002',
+      'number' =>'4100000000000000',
       'expDate' =>'1210'
       }}
     response= LitleOnlineRequest.new.sale(hash)
