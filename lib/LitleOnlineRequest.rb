@@ -517,7 +517,7 @@ class LitleOnlineRequest
   
   def get_merchant_sdk(hash_in)
     if(!hash_in['merchantSdk'])
-      return 'Ruby;8.12.0'
+      return 'Ruby;8.12.1'
     else
       return hash_in['merchantSdk']
     end    
