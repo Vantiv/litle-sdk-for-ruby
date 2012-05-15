@@ -67,5 +67,16 @@ class Test_capture < Test::Unit::TestCase
     response= LitleOnlineRequest.new.capture(hash)
     assert_equal('Valid Format', response.message)
   end
-end
+  
+  def test_no_txn_id
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'amount'=>'106',
+    }
+    response= LitleOnlineRequest.new.capture(hash)
+    assert(response.message =~ /Error validating xml data against the schema/)
+  end
 
+end

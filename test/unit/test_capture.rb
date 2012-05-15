@@ -26,15 +26,13 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class Test_capture < Test::Unit::TestCase
-  def test_no_txn_id
+  def test_success_capture
     hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'amount'=>'106',
+      'litleTxnId'=>'123456'
     }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.capture(hash)}
-    assert_match /Missing Required Field: litleTxnId!!!!/, exception.message
+
+    LitleXmlMapper.expects(:request).with(regexp_matches(/.*<litleTxnId>123456<\/litleTxnId>.*/m), is_a(Hash))
+    LitleOnlineRequest.new.capture(hash)
   end
 end
 

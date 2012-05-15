@@ -131,5 +131,108 @@ class TestAuth < Test::Unit::TestCase
     response= LitleOnlineRequest.new.authorization(hash)
     assert(response.message =~ /Error validating xml data against the schema/)
   end
+  
+  def test_no_order_id
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'amount'=>'106',
+      'orderSource'=>'ecommerce',
+      'card'=>{
+      'type'=>'VI',
+      'number' =>'4100000000000001',
+      'expDate' =>'1210'
+      }}
+    response= LitleOnlineRequest.new.authorization(hash)
+    assert(response.message =~ /Error validating xml data against the schema/)
+  end
+  
+  def test_no_amount
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'orderId'=>'12344',
+      'orderSource'=>'ecommerce',
+      'card'=>{
+      'type'=>'VI',
+      'number' =>'4100000000000001',
+      'expDate' =>'1210'
+      }}
+    response= LitleOnlineRequest.new.authorization(hash)
+    assert(response.message =~ /Error validating xml data against the schema/)
+  end
+
+  def test_no_order_source
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      #      'litleTxnId'=>'123456',
+      'orderId'=>'12344',
+      'amount'=>'106',
+      'card'=>{
+      'type'=>'VI',
+      'number' =>'4100000000000001',
+      'expDate' =>'1210'
+      }}
+    response= LitleOnlineRequest.new.authorization(hash)
+    assert(response.message =~ /Error validating xml data against the schema/)
+  end
+
+  def test_authorization_missing_attributes
+    hash={
+      'reportGroup'=>'Planets',
+      'amount'=>'106',
+
+      'orderSource'=>'ecommerce',
+      'card'=>{
+      'type'=>'VI',
+      'number' =>'4100000000000001',
+      'expDate' =>'1210'
+      }}
+
+    response= LitleOnlineRequest.new.authorization(hash)
+    assert(response.message =~ /Error validating xml data against the schema/)
+  end
+
+  def test_orderId_required
+    start_hash = {
+      'merchantId'=>'101',
+      'reportGroup'=>'Planets',
+      'amount'=>'101',
+      'orderSource'=>'ecommerce',
+      'card' => {
+      'type' => 'VI',
+      'number' => '1111222233334444'
+      }
+    }
+    response= LitleOnlineRequest.new.authorization(start_hash)
+    assert(response.message =~ /Error validating xml data against the schema/)
+  
+    response = LitleOnlineRequest.new.authorization(start_hash.merge({'orderId'=>'1234'}))
+    assert_equal('000', response.authorizationResponse.response)
+  end
+
+  def test_ssn_optional
+    start_hash = {
+      'orderId'=>'12344',
+      'merchantId'=>'101',
+      'reportGroup'=>'Planets',
+      'amount'=>'101',
+      'orderSource'=>'ecommerce',
+      'card' => {
+      'type' => 'VI',
+      'number' => '1111222233334444'
+      },
+    }
+    response = LitleOnlineRequest.new.authorization(start_hash)
+    assert_equal('000', response.authorizationResponse.response)
+  
+    response = LitleOnlineRequest.new.authorization(start_hash.merge({'customerInfo'=>{'ssn'=>'000112222'} }))
+    assert_equal('000', response.authorizationResponse.response)
+  end
+  
 end
 

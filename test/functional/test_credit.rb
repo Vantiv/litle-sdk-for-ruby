@@ -56,7 +56,7 @@ class TestCredit < Test::Unit::TestCase
       'transactionId'=>'1234',
       }}
     response= LitleOnlineRequest.new.credit(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
+    assert_equal('Valid Format', response.message)
   end
 
   def test_illegal_order_id

@@ -38,20 +38,22 @@ class Communications
     litle_url = config_hash['url']
 
     # setup https or http post
-    uri = URI.parse(litle_url)
+    url = URI.parse(litle_url)
 
-    http_post = Net::HTTP::Post.new(uri.request_uri)
-    http_post.body = post_data
-    http_post['content-type'] = 'text/xml'
-
-    response_xml = ''
-    begin
-      proxy = Net::HTTP::Proxy(proxy_addr,proxy_port)
-      # See notes below on recommended time outs
-      proxy.start(uri.host, uri.port, :use_ssl => uri.scheme=='https', :read_timeout => config_hash['timeout']) do |http|
-        response_xml = http.request(http_post)
-      end
+    response_xml = nil    
+    https = Net::HTTP.new(url.host, url.port, proxy_addr, proxy_port)
+    if(url.scheme == 'https') 
+      https.use_ssl = url.scheme=='https'
+      https.verify_mode = OpenSSL::SSL::VERIFY_PEER
+      https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
     end
+    https.start { |http|
+      response = http.request_post(url.path, post_data.to_s, {'Content-type'=>'text/xml'})
+      response_xml = response
+    }
+    
+    
+
 
     # validate response, only an HTTP 200 will work, redirects are not followed
     case response_xml

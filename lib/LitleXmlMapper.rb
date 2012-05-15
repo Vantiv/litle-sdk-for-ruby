@@ -28,10 +28,9 @@ OTHER DEALINGS IN THE SOFTWARE.
 # Maps the request to Litle XML -> Sends XML payload to Litle via HTTP(S) -> formats XML response into a Ruby hash and returns it
 #
 class LitleXmlMapper
-  def LitleXmlMapper.request(hash,config_hash)
+  def LitleXmlMapper.request(request_xml, config_hash)
 
     # create a Litle XML request from the nested hashes
-    request_xml = Obj2xml.to_XML(hash)
     if(config_hash['printxml'])
       puts request_xml
     end

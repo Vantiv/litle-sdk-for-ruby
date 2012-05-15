@@ -24,25 +24,10 @@ OTHER DEALINGS IN THE SOFTWARE.
 =end
 require 'lib/LitleOnline'
 require 'test/unit'
+require 'mocha'
 
 #test Authorization Transaction
 class TestAuth < Test::Unit::TestCase
-  def test_no_order_id
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
-    assert_match /Missing Required Field: orderId!!!!/, exception.message
-  end
-
   def test_success_re_auth
     hash = {
       'merchantId' => '101',
@@ -51,44 +36,10 @@ class TestAuth < Test::Unit::TestCase
       'litleTxnId'=>'123456'
     }
 
-    XMLObject.expects(:new)
-    Communications.expects(:http_post).with(regexp_matches(/.*litleTxnId.*/m),kind_of(Hash))
+    LitleXmlMapper.expects(:request).with(regexp_matches(/.*<litleTxnId>123456<\/litleTxnId>.*/m), is_a(Hash))
     LitleOnlineRequest.new.authorization(hash)
   end
 
-  def test_no_amount
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      #      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
-    assert_match /Missing Required Field: amount!!!!/, exception.message
-  end
-
-  def test_no_order_source
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      #      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
-    assert_match /Missing Required Field: orderSource!!!!/, exception.message
-  end
 
   def test_both_choices_card_and_paypal
     hash = {

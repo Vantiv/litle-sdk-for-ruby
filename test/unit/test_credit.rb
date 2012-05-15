@@ -24,6 +24,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 =end
 require 'lib/LitleOnline'
 require 'test/unit'
+require 'mocha'
 
 class TestCredit < Test::Unit::TestCase
   def test_both_choices_card_and_paypal

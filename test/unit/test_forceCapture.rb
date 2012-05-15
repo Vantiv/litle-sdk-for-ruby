@@ -26,41 +26,6 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class TestForceCapture < Test::Unit::TestCase
-  def test_no_order_id
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'token'=> {
-      'litleToken'=>'123456789101112',
-      'expDate'=>'1210',
-      'cardValidationNum'=>'555',
-      'type'=>'VI'
-      }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.force_capture(hash)}
-    assert_match /Missing Required Field: orderId!!!!/, exception.message
-  end
-
-  def test_no_order_source
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.force_capture(hash)}
-    assert_match /Missing Required Field: orderSource!!!!/, exception.message
-  end
-
   def test_both_choices_card_and_token
     hash = {
       'merchantId' => '101',

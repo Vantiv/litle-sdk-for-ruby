@@ -27,7 +27,6 @@ require 'test/unit'
 
 class Test_echeckSale < Test::Unit::TestCase
 
-
   def test_echeck_sale_with_both
     hash = {
       'merchantId' => '101',

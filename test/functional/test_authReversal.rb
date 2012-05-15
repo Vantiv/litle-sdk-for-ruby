@@ -52,17 +52,16 @@ class TestAuthReversal < Test::Unit::TestCase
     assert_equal('Valid Format', response.message)
   end
 
-  def test_invalid_field
+  def test_no_litle_txn_id
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
-      'litleTxnId'=>'12345678000',
-      'NonexistentField'=>'none',
-      'payPalNotes'=>'Notes',
+      'reportGroup'=>'12345678',
       'amount'=>'106',
-      'reportGroup'=>'Planets',
+      'payPalNotes'=>'Notes'
     }
     response= LitleOnlineRequest.new.auth_reversal(hash)
-    assert_equal('Valid Format', response.message)
+    assert(response.message =~ /Error validating xml data against the schema/)
   end
+
 end

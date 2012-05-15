@@ -26,25 +26,6 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class TestcaptureGivenAuth < Test::Unit::TestCase
-  def test_no_amount
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'authInformation' => {
-      'authDate'=>'2002-10-09','authCode'=>'543216',
-      'authAmount'=>'12345'
-      },
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.capture_given_auth(hash)}
-    assert_match /Missing Required Field: amount!!!!/, exception.message
-  end
 
   def test_both_choices_card_and_token
     hash = {

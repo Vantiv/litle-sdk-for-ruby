@@ -26,8 +26,6 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class Test_echeckCredit < Test::Unit::TestCase
-
-
   def test_echeck_credit_with_both
     hash = {
       'merchantId' => '101',

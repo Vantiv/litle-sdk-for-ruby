@@ -26,39 +26,6 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class Test_echeckVerification < Test::Unit::TestCase
-  def test_no_amount
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12345'
-    }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_verification(hash)}
-    assert_match /Missing Required Field: amount!!!!/, exception.message
-  end
-
-  def test_no_order_id
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-    }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_verification(hash)}
-    assert_match /Missing Required Field: orderId!!!!/, exception.message
-  end
-
-  def test_no_order_source
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'amount'=>'123456',
-      'orderId'=>'12345'
-    }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_verification(hash)}
-    assert_match /Missing Required Field: orderSource!!!/, exception.message
-  end
-
   def test_echeck_verification_with_both
     hash = {
       'merchantId' => '101',

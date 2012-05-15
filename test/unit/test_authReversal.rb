@@ -24,18 +24,23 @@ OTHER DEALINGS IN THE SOFTWARE.
 =end
 require 'lib/LitleOnline'
 require 'test/unit'
+require 'mocha'
 
 class TestAuthReversal < Test::Unit::TestCase
-  def test_no_litle_txn_id
+  def test_invalid_field
     hash = {
       'merchantId' => '101',
       'version'=>'8.8',
-      'reportGroup'=>'12345678',
+      'litleTxnId'=>'12345678000',
+      'NonexistentField'=>'none',
+      'payPalNotes'=>'Notes',
       'amount'=>'106',
-      'payPalNotes'=>'Notes'
+      'reportGroup'=>'Planets',
     }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.auth_reversal(hash)}
-    assert_match /Missing Required Field: litleTxnId!!!!/, exception.message
+    LitleXmlMapper.expects(:request).with(regexp_matches(/.*<litleTxnId>12345678000<\/litleTxnId>.*/m), is_a(Hash))
+    LitleOnlineRequest.new.auth_reversal(hash)
+
   end
+  
 
 end

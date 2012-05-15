@@ -26,40 +26,6 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 class Test_echeckRedeposit < Test::Unit::TestCase
-  def test_no_txn_id
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-    }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_redeposit(hash)}
-    assert_match /Missing Required Field: litleTxnId!!!!/, exception.message
-  end
-
-  def test_echeck_redeposit_withecheckmissingfield
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','checkNum'=>'123455'}
-    }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_redeposit(hash)}
-    assert_match /Missing Required Field: routingNum!!!!/, exception.message
-  end
-
-  def test_echeck_redeposit_with_echeck_token_missing_field
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'echeckToken' => {'accType'=>'Checking','litleToken'=>'1234565789012','checkNum'=>'123455'}
-    }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_redeposit(hash)}
-    assert_match /Missing Required Field: routingNum!!!!/, exception.message
-  end
-
   def test_echeck_redeposit_with_both
     hash = {
       'merchantId' => '101',

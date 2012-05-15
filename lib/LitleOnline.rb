@@ -28,18 +28,27 @@ OTHER DEALINGS IN THE SOFTWARE.
 # Defines the Gem
 #
 require 'rubygems'
-require 'xmlsimple'
+#require 'xmlsimple'
 require 'net/http'
 require 'xml-object'
 require 'yaml'
 require 'uri'
 require 'net/https'
+require 'xml/mapping'
+
+unless Kernel.respond_to?(:require_relative)
+  module Kernel
+    def require_relative(path)
+      require File.join(File.dirname(caller[0]), path.to_str)
+    end
+  end
+end
+
 
 require_relative 'Communications'
 require_relative 'Obj2xml'
 require_relative 'LitleXmlMapper'
 require_relative 'XMLFields'
-require_relative 'Checker'
 require_relative 'LitleOnlineRequest'
 require_relative 'Configuration'
 

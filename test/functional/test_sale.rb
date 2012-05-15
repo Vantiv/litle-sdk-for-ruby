@@ -154,26 +154,6 @@ class TestSale < Test::Unit::TestCase
     assert_equal('000', response.saleResponse.response)
   end
 
-  def test_invalid_embedded_field_values
-    #becasue there are sub fields under fraud check that are not specified
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'fraudCheck'=>'one',
-      'cardholderAuthentication'=>'two',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000000',
-      }}
-    response= LitleOnlineRequest.new.sale(hash)
-    assert_equal('000', response.saleResponse.response)
-  end
-
   def test_simple_sale_with_card
     hash = {
       'merchantId'=>'101',
@@ -190,6 +170,58 @@ class TestSale < Test::Unit::TestCase
       }}
     response= LitleOnlineRequest.new.sale(hash)
     assert_equal('000', response.saleResponse.response)
+  end
+
+  
+  def test_no_order_id
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'litleTxnId'=>'123456',
+      'amount'=>'106',
+      'orderSource'=>'ecommerce',
+      'card'=>{
+      'type'=>'VI',
+      'number' =>'4100000000000002',
+      'expDate' =>'1210'
+      }}
+    response= LitleOnlineRequest.new.sale(hash)
+    assert(response.message =~ /Error validating xml data against the schema/)
+  end
+
+  def test_no_amount
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'litleTxnId'=>'123456',
+      'orderId'=>'12344',
+      'orderSource'=>'ecommerce',
+      'card'=>{
+      'type'=>'VI',
+      'number' =>'4100000000000002',
+      'expDate' =>'1210'
+      }}
+    response= LitleOnlineRequest.new.sale(hash)
+    assert(response.message =~ /Error validating xml data against the schema/)
+  end
+
+  def test_no_order_source
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'litleTxnId'=>'123456',
+      'orderId'=>'12344',
+      'amount'=>'106',
+      'card'=>{
+      'type'=>'VI',
+      'number' =>'4100000000000002',
+      'expDate' =>'1210'
+      }}
+    response= LitleOnlineRequest.new.sale(hash)
+    assert(response.message =~ /Error validating xml data against the schema/)
   end
 
 end

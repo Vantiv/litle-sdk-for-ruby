@@ -54,22 +54,6 @@ class Newtest < Test::Unit::TestCase
     response = LitleOnlineRequest.new.authorization(hash)
   end
 
-  def test_authorization_missing_attributes
-    hash={
-      'reportGroup'=>'Planets',
-      'amount'=>'106',
-
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      }}
-
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
-    assert_match /Missing Required Field: orderId!!!!/, exception.message
-  end
-
   def test_authorization_attributes
     Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
     hash={
@@ -84,7 +68,7 @@ class Newtest < Test::Unit::TestCase
       'expDate' =>'1210'
       }}
 
-    Communications.expects(:http_post).with(regexp_matches(/.*<authorization id="003" reportGroup="Planets".*/m),kind_of(Hash))
+    Communications.expects(:http_post).with(regexp_matches(/.*<authorization ((reportGroup="Planets" id="003")|(id="003" reportGroup="Planets")).*/m),kind_of(Hash))
     XMLObject.expects(:new)
 
     response = LitleOnlineRequest.new.authorization(hash)
@@ -252,47 +236,6 @@ def test_choice_between_card_token2
   Communications.expects(:http_post).with(regexp_matches(/.*token.*/m),kind_of(Hash))
   LitleOnlineRequest.new.authorization(start_hash.merge(token_only))
 end
-
-  def test_orderId_required
-    start_hash = {
-      #'orderId'=>'12344',
-      'merchantId'=>'101',
-      'reportGroup'=>'Planets',
-      'amount'=>'101',
-      'orderSource'=>'ecommerce',
-      'card' => {
-      'type' => 'VI',
-      'number' => '1111222233334444'
-      }
-    }
-    exception = assert_raise(RuntimeError) {LitleOnlineRequest.new.authorization(start_hash)}
-    assert_match /Missing Required Field: orderId!!!!/, exception.message
-
-    XMLObject.expects(:new)
-    Communications.expects(:http_post).with(regexp_matches(/.*orderId.*/m),kind_of(Hash))
-    assert_nothing_raised {LitleOnlineRequest.new.authorization(start_hash.merge({'orderId'=>'1234'}))}
-  end
-
-  def test_ssn_optional
-    start_hash = {
-      'orderId'=>'12344',
-      'merchantId'=>'101',
-      'reportGroup'=>'Planets',
-      'amount'=>'101',
-      'orderSource'=>'ecommerce',
-      'card' => {
-      'type' => 'VI',
-      'number' => '1111222233334444'
-      },
-    }
-    XMLObject.expects(:new)
-    Communications.expects(:http_post).with(Not(regexp_matches(/.*ssn.*/m)),kind_of(Hash))
-    assert_nothing_raised {LitleOnlineRequest.new.authorization(start_hash)}
-
-    XMLObject.expects(:new)
-    Communications.expects(:http_post).with(regexp_matches(/.*ssn.*/m),kind_of(Hash))
-    assert_nothing_raised {LitleOnlineRequest.new.authorization(start_hash.merge({'customerInfo'=>{'ssn'=>'000112222'} }))}
-  end
 
   def test_set_merchant_sdk
     litle = LitleOnlineRequest.new

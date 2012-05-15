@@ -87,6 +87,39 @@ class Test_echeckVerification < Test::Unit::TestCase
     response= LitleOnlineRequest.new.echeck_verification(hash)
     assert(response.message =~ /Error validating xml data against the schema/)
   end
+  
+  def test_no_amount
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'orderId'=>'12345'
+    }
+    response= LitleOnlineRequest.new.echeck_verification(hash)
+    assert(response.message =~ /Error validating xml data against the schema/)
+  end
+
+  def test_no_order_id
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+    }
+    response= LitleOnlineRequest.new.echeck_verification(hash)
+    assert(response.message =~ /Error validating xml data against the schema/)
+  end
+
+  def test_no_order_source
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'amount'=>'123456',
+      'orderId'=>'12345'
+    }
+    response= LitleOnlineRequest.new.echeck_verification(hash)
+    assert(response.message =~ /Error validating xml data against the schema/)
+  end
 
 end
 

@@ -14,7 +14,7 @@ class Litle_certTest5 < Test::Unit::TestCase
     hash = customer_hash.merge(@@merchant_hash)
     token_response = LitleOnlineRequest.new.register_token_request(hash)
     assert_equal('445711', token_response.registerTokenResponse.bin)
-    assert_equal('VI', token_response.registerTokenResponse.type)
+    assert_equal('VI', token_response.registerTokenResponse['type'])
     assert_equal('801', token_response.registerTokenResponse.response)
     assert_equal('1111222233330123', token_response.registerTokenResponse.litleToken)
     assert_equal('Account number was successfully registered', token_response.registerTokenResponse.message)
@@ -39,7 +39,7 @@ class Litle_certTest5 < Test::Unit::TestCase
     hash = customer_hash.merge(@@merchant_hash)
     token_response = LitleOnlineRequest.new.register_token_request(hash)
     assert_equal('445711', token_response.registerTokenResponse.bin)
-    assert_equal('VI', token_response.registerTokenResponse.type)
+    assert_equal('VI', token_response.registerTokenResponse['type'])
     assert_equal('802', token_response.registerTokenResponse.response)
     assert_equal('1111222233330123', token_response.registerTokenResponse.litleToken)
     assert_equal('Account number was previously registered', token_response.registerTokenResponse.message)
@@ -52,7 +52,7 @@ class Litle_certTest5 < Test::Unit::TestCase
     }
     hash = customer_hash.merge(@@merchant_hash)
     token_response = LitleOnlineRequest.new.register_token_request(hash)
-    assert_equal('EC', token_response.registerTokenResponse.type)
+    assert_equal('EC', token_response.registerTokenResponse['type'])
     assert_equal('998', token_response.registerTokenResponse.eCheckAccountSuffix)
     assert_equal('801', token_response.registerTokenResponse.response)
     assert_equal('Account number was successfully registered', token_response.registerTokenResponse.message)
@@ -83,7 +83,7 @@ class Litle_certTest5 < Test::Unit::TestCase
     assert_equal('Approved', token_response.authorizationResponse.message)
     assert_equal('801', token_response.authorizationResponse.tokenResponse.tokenResponseCode)
     assert_equal('Account number was successfully registered', token_response.authorizationResponse.tokenResponse.tokenMessage)
-    assert_equal('MC', token_response.authorizationResponse.tokenResponse.type)
+    assert_equal('MC', token_response.authorizationResponse.tokenResponse['type'])
     assert_equal('543510', token_response.authorizationResponse.tokenResponse.bin)
   end
 
@@ -113,7 +113,7 @@ class Litle_certTest5 < Test::Unit::TestCase
     assert_equal('Approved', token_response.authorizationResponse.message)
     assert_equal('802', token_response.authorizationResponse.tokenResponse.tokenResponseCode)
     assert_equal('Account number was previously registered', token_response.authorizationResponse.tokenResponse.tokenMessage)
-    assert_equal('MC', token_response.authorizationResponse.tokenResponse.type)
+    assert_equal('MC', token_response.authorizationResponse.tokenResponse['type'])
     assert_equal('543510', token_response.authorizationResponse.tokenResponse.bin)
   end
   
@@ -157,7 +157,7 @@ class Litle_certTest5 < Test::Unit::TestCase
     token_response = LitleOnlineRequest.new.echeck_sale(hash)
     assert_equal('801', token_response.echeckSalesResponse.tokenResponse.tokenResponseCode)
     assert_equal('Account number was successfully registered', token_response.echeckSalesResponse.tokenResponse.tokenMessage)
-    assert_equal('EC', token_response.echeckSalesResponse.tokenResponse.type)
+    assert_equal('EC', token_response.echeckSalesResponse.tokenResponse['type'])
     assert_equal('003', token_response.echeckSalesResponse.tokenResponse.eCheckAccountSuffix)
     assert_equal('111922223333444003', token_response.echeckSalesResponse.tokenResponse.litleToken)
   end
@@ -176,7 +176,7 @@ class Litle_certTest5 < Test::Unit::TestCase
     token_response = LitleOnlineRequest.new.echeck_sale(hash)
     assert_equal('801', token_response.echeckSalesResponse.tokenResponse.tokenResponseCode)
     assert_equal('Account number was successfully registered', token_response.echeckSalesResponse.tokenResponse.tokenMessage)
-    assert_equal('EC', token_response.echeckSalesResponse.tokenResponse.type)
+    assert_equal('EC', token_response.echeckSalesResponse.tokenResponse['type'])
     assert_equal('999', token_response.echeckSalesResponse.tokenResponse.eCheckAccountSuffix)
     assert_equal('111922223333444999', token_response.echeckSalesResponse.tokenResponse.litleToken)
   end
@@ -195,7 +195,7 @@ class Litle_certTest5 < Test::Unit::TestCase
     token_response = LitleOnlineRequest.new.echeck_sale(hash)
     assert_equal('801', token_response.echeckSalesResponse.tokenResponse.tokenResponseCode)
     assert_equal('Account number was successfully registered', token_response.echeckSalesResponse.tokenResponse.tokenMessage)
-    assert_equal('EC', token_response.echeckSalesResponse.tokenResponse.type)
+    assert_equal('EC', token_response.echeckSalesResponse.tokenResponse['type'])
     assert_equal('999', token_response.echeckSalesResponse.tokenResponse.eCheckAccountSuffix)
     assert_equal('111922223333555999', token_response.echeckSalesResponse.tokenResponse.litleToken)
   end

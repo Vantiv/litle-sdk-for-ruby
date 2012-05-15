@@ -24,59 +24,9 @@ OTHER DEALINGS IN THE SOFTWARE.
 =end
 require 'lib/LitleOnline'
 require 'test/unit'
+require 'mocha'
 
 class TestSale < Test::Unit::TestCase
-
-  def test_no_order_id
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000002',
-      'expDate' =>'1210'
-      }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
-    assert_match /Missing Required Field: orderId!!!!/, exception.message
-  end
-
-  def test_no_amount
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000002',
-      'expDate' =>'1210'
-      }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
-    assert_match /Missing Required Field: amount!!!!/, exception.message
-  end
-
-  def test_no_order_source
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000002',
-      'expDate' =>'1210'
-      }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
-    assert_match /Missing Required Field: orderSource!!!!/, exception.message
-  end
 
   def test_both_choices_fraud_check_and_card_holder
     hash = {
@@ -263,5 +213,24 @@ class TestSale < Test::Unit::TestCase
     LitleOnlineRequest.new.sale(hash)
   end
 
+  def test_invalid_embedded_field_values
+    #becasue there are sub fields under fraud check that are not specified
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'litleTxnId'=>'123456',
+      'orderId'=>'12344',
+      'amount'=>'106',
+      'orderSource'=>'ecommerce',
+      'fraudCheck'=>'one',
+      'cardholderAuthentication'=>'two',
+      'card'=>{
+      'type'=>'VI',
+      'number' =>'4100000000000000',
+      }}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
+    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
+  end
 end
 
