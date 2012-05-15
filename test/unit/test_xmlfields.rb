@@ -24,9 +24,9 @@ OTHER DEALINGS IN THE SOFTWARE.
 =end
 require 'lib/LitleOnline'
 require 'test/unit'
+require 'mocha'
 
 class TestXmlfields < Test::Unit::TestCase
-
   def test_custom_billing_with_two_choices
     hash = {
       'merchantId' => '101',
@@ -64,5 +64,68 @@ class TestXmlfields < Test::Unit::TestCase
     exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
     assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
   end
+
+  def test_line_item_data
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'enhancedData'=>
+      {
+      'lineItemData'=>[
+      {'itemSequenceNumber'=>'1', 'itemDescription'=>'desc1'},
+      {'itemSequenceNumber'=>'2', 'itemDescription'=>'desc2'}
+      ]
+      }
+    }
+
+    LitleXmlMapper.expects(:request).with(regexp_matches(/.*<enhancedData>.*<lineItemData>.*<itemSequenceNumber>1<\/itemSequenceNumber>.*<itemDescription>desc1<\/itemDescription>.*<\/lineItemData>.*<lineItemData>.*<itemSequenceNumber>2<\/itemSequenceNumber>.*<itemDescription>desc2<\/itemDescription>.*<\/lineItemData>.*<\/enhancedData>.*/m), is_a(Hash))
+    LitleOnlineRequest.new.authorization(hash)
+  end
+
+  def test_detail_tax
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'enhancedData'=>
+      {
+      'detailTax'=>[
+      {'taxIncludedInTotal'=>'true', 'taxTypeIdentifier'=>'00'},
+      {'taxIncludedInTotal'=>'false', 'taxTypeIdentifier'=>'01'}
+      ]
+      }
+    }
+
+    LitleXmlMapper.expects(:request).with(regexp_matches(/.*<enhancedData>.*<detailTax>.*<taxIncludedInTotal>true<\/taxIncludedInTotal>.*<taxTypeIdentifier>00<\/taxTypeIdentifier>.*<\/detailTax>.*<detailTax>.*<taxIncludedInTotal>false<\/taxIncludedInTotal>.*<taxTypeIdentifier>01<\/taxTypeIdentifier>.*<\/detailTax>.*<\/enhancedData>.*/m), is_a(Hash))
+    LitleOnlineRequest.new.authorization(hash)
+  end
+
+  def test_detail_tax_in_lineItem
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'enhancedData'=>
+      {
+      'lineItemData'=>[
+      {'itemSequenceNumber'=>'1', 'itemDescription'=>'desc1','detailTax'=>[
+      {'taxAmount'=>'1'},
+      {'taxAmount'=>'2'}]
+      },
+      {'itemSequenceNumber'=>'2', 'itemDescription'=>'desc2','detailTax'=>[
+      {'taxAmount'=>'3'},
+      {'taxAmount'=>'4'}]
+      }],
+      'detailTax'=>[
+      {'taxAmount'=>'5'},
+      {'taxAmount'=>'6'}
+      ]}
+    }
+
+    LitleXmlMapper.expects(:request).with(regexp_matches(/.*<enhancedData>.*<detailTax>.*<taxAmount>5<\/taxAmount>.*<\/detailTax>.*<detailTax>.*<taxAmount>6<\/taxAmount>.*<\/detailTax>.*<lineItemData>.*<itemSequenceNumber>1<\/itemSequenceNumber>.*<itemDescription>desc1<\/itemDescription>.*<detailTax>.*<taxAmount>1<\/taxAmount>.*<\/detailTax>.*<detailTax>.*<taxAmount>2<\/taxAmount>.*<\/detailTax>.*<\/lineItemData>.*<lineItemData>.*<itemSequenceNumber>2<\/itemSequenceNumber>.*<itemDescription>desc2<\/itemDescription>.*<detailTax>.*<taxAmount>3<\/taxAmount>.*<\/detailTax>.*<detailTax>.*<taxAmount>4<\/taxAmount>.*<\/detailTax>.*<\/lineItemData>.*<\/enhancedData>.*/m), is_a(Hash))
+    LitleOnlineRequest.new.authorization(hash)
+  end
+
 end
 

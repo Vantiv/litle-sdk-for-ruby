@@ -503,6 +503,88 @@ class TestXmlfields < Test::Unit::TestCase
     assert(response.message =~ /Error validating xml data against the schema/)
   end
 
+  def test_line_item_data
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'orderId'=>'1',
+      'amount'=>'2',
+      'orderSource'=>'ecommerce',
+      'card'=>{
+      'type'=>'VI',
+      'number' =>'4100000000000001',
+      'expDate' =>'1210'
+      },
+      'enhancedData'=>
+      {
+      'lineItemData'=>[
+      {'itemSequenceNumber'=>'1', 'itemDescription'=>'desc1'},
+      {'itemSequenceNumber'=>'2', 'itemDescription'=>'desc2'}
+      ]
+      }
+    }
+    response= LitleOnlineRequest.new.authorization(hash)
+    assert_equal('Valid Format', response.message)
+  end
 
+  def test_detail_tax
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'orderId'=>'1',
+      'amount'=>'2',
+      'orderSource'=>'ecommerce',
+      'card'=>{
+      'type'=>'VI',
+      'number' =>'4100000000000001',
+      'expDate' =>'1210'
+      },
+      'enhancedData'=>
+      {
+      'detailTax'=>[
+      {'taxIncludedInTotal'=>'true', 'taxAmount'=>'0'},
+      {'taxIncludedInTotal'=>'false', 'taxAmount'=>'1'}
+      ]
+      }
+    }
+    response= LitleOnlineRequest.new.authorization(hash)
+    assert_equal('Valid Format', response.message)
+  end
+
+  def test_detail_tax_in_lineItem
+    hash = {
+      'merchantId' => '101',
+      'version'=>'8.8',
+      'reportGroup'=>'Planets',
+      'orderId'=>'1',
+      'amount'=>'2',
+      'orderSource'=>'ecommerce',
+      'card'=>{
+      'type'=>'VI',
+      'number' =>'4100000000000001',
+      'expDate' =>'1210'
+      },
+      'enhancedData'=>      
+      {
+      'lineItemData'=>[
+      {'itemSequenceNumber'=>'1', 'itemDescription'=>'desc1','detailTax'=>[
+      {'taxAmount'=>'1'},
+      {'taxAmount'=>'2'}]
+      },
+      {'itemSequenceNumber'=>'2', 'itemDescription'=>'desc2','detailTax'=>[
+      {'taxAmount'=>'3'},
+      {'taxAmount'=>'4'}]
+      }],
+      'detailTax'=>[
+      {'taxAmount'=>'5'},
+      {'taxAmount'=>'6'}
+      ]}
+    }
+    response= LitleOnlineRequest.new.authorization(hash)
+    assert_equal('Valid Format', response.message)
+  end
+  
 end
 

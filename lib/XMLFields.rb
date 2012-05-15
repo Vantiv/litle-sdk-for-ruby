@@ -300,8 +300,8 @@ class DetailTax
   text_node :taxRate, "taxRate", :default_value=>nil
   text_node :taxTypeIdentifier, "taxTypeIdentifier", :default_value=>nil
   text_node :cardAcceptorTaxId, "cardAcceptorTaxId", :default_value=>nil
-  def self.from_hash(hash, name='detailTax')
-    base = hash[name]
+  def self.from_hash(hash, index=0, name='detailTax')
+    base = hash[name][index]
     if(base)
       this = DetailTax.new
       this.taxIncludedInTotal = base['taxIncludedInTotal']
@@ -329,9 +329,9 @@ class LineItemData
   text_node :itemDiscountAmount, "itemDiscountAmount", :default_value=>nil
   text_node :commodityCode, "commodityCode", :default_value=>nil
   text_node :unitCost, "unitCost", :default_value=>nil
-  text_node :detailTax, "detailTax", :default_value=>nil
-  def self.from_hash(hash, name='lineItemData')
-    base = hash[name]
+  array_node :detailTax, "", "detailTax", :class=>DetailTax, :default_value=>[]
+  def self.from_hash(hash, index=0, name='lineItemData')
+    base = hash[name][index]
     if(base)
       this = LineItemData.new
       this.itemSequenceNumber = base['itemSequenceNumber']
@@ -345,7 +345,9 @@ class LineItemData
       this.itemDiscountAmount = base['itemDiscountAmount']
       this.commodityCode = base['commodityCode']
       this.unitCost = base['unitCost']
-      this.detailTax = base['detailTax']
+      if(base['detailTax'])
+        base['detailTax'].each_index {|index| this.detailTax << DetailTax.from_hash(base,index)}
+      end
       this
     else
       nil
@@ -367,8 +369,8 @@ class EnhancedData
   text_node :destinationCountryCode, "destinationCountryCode", :default_value=>nil
   text_node :invoiceReferenceNumber, "invoiceReferenceNumber", :default_value=>nil
   text_node :orderDate, "orderDate", :default_value=>nil
-  text_node :detailTax, "detailTax", :default_value=>nil  #TODO array_node
-  text_node :lineItemData, "lineItemData", :default_value=>nil #TODO array_node
+  array_node :detailTax, "", "detailTax", :class=>DetailTax, :default_value=>[]
+  array_node :lineItemData, "", "lineItemData", :class=>LineItemData, :default_value=>[]
   def self.from_hash(hash, name='enhancedData')
     base = hash[name]
     if(base)
@@ -385,8 +387,12 @@ class EnhancedData
       this.destinationCountryCode = base['destinationCountryCode']
       this.invoiceReferenceNumber = base['invoiceReferenceNumber']
       this.orderDate = base['orderDate']
-      this.detailTax = base['detailTax']
-      this.lineItemData = base['lineItemData']
+      if(base['detailTax'])
+        base['detailTax'].each_index {|index| this.detailTax << DetailTax.from_hash(base,index)}
+      end
+      if(base['lineItemData'])
+        base['lineItemData'].each_index {|index| this.lineItemData << LineItemData.from_hash(base,index)}
+      end
       this
     else
       nil
