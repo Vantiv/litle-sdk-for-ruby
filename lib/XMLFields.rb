@@ -958,11 +958,11 @@ class OnlineRequest
   text_node :merchantSdk, "@merchantSdk", :default_vaule=>nil
   object_node :authentication, "authentication", :class=>Authentication
   optional_choice_node   :if,    'authorization', :then, (object_node :authorization, "authorization", :class=>Authorization),
-  :elsif, 'sale', :then, (object_node :sale, "sale", :class=>Sale),
+  :elsif, 'sale',    :then, (object_node :sale,    "sale",    :class=>Sale),
+  :elsif, 'captureTxn', :then, (object_node :captureTxn, "captureTxn", :class=>Capture),
   :elsif, 'captureGivenAuth', :then, (object_node :captureGivenAuth, "captureGivenAuth", :class=>CaptureGivenAuth),
-  :elsif, 'capture', :then, (object_node :capture, "capture", :class=>Capture),
   :elsif, 'void', :then, (object_node :void, "void", :class=>Void),
-  :elsif, 'forceCapture', :then, (object_node :forceCapture, "forceCapture", :class=>Capture),
+  :elsif, 'forceCapture', :then, (object_node :forceCapture, "forceCapture", :class=>ForceCapture),
   :elsif, 'credit', :then, (object_node :credit, "credit", :class=>Credit),
   :elsif, 'authReversal', :then, (object_node :authReversal, "authReversal", :class=>AuthReversal),
   :elsif, 'echeckCredit', :then, (object_node :echeckCredit, "echeckCredit", :class=>EcheckCredit),
@@ -971,6 +971,14 @@ class OnlineRequest
   :elsif, 'echeckVoid', :then, (object_node :echeckVoid, "echeckVoid", :class=>EcheckVoid),
   :elsif, 'echeckVerification', :then, (object_node :echeckVerification, "echeckVerification", :class=>EcheckVerification),
   :elsif, 'registerTokenRequest', :then, (object_node :registerTokenRequest, "registerTokenRequest", :class=>RegisterTokenRequest)
+  def post_save(xml, options={:Mapping=>:_default})
+    xml.each_element() {|el| 
+      if(el.name == 'captureTxn')
+        el.name = 'capture'
+      end      
+    }
+  end
+  
 end
 
 class LitleOnlineResponse

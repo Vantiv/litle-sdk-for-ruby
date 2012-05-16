@@ -284,7 +284,7 @@ class LitleOnlineRequest
     capture.payPalOrderComplete = hash_in['payPalOrderComplete']
     capture.payPalNotes = hash_in['payPalNotes']
 
-    request.capture = capture
+    request.captureTxn = capture
     
     authentication = Authentication.new
     authentication.user = 'PHXMLTEST'
@@ -517,7 +517,7 @@ class LitleOnlineRequest
   
   def get_merchant_sdk(hash_in)
     if(!hash_in['merchantSdk'])
-      return 'Ruby;8.12.1'
+      return 'Ruby;8.12.2'
     else
       return hash_in['merchantSdk']
     end    
