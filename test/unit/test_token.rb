@@ -25,46 +25,48 @@ OTHER DEALINGS IN THE SOFTWARE.
 require 'lib/LitleOnline'
 require 'test/unit'
 
-class TestToken < Test::Unit::TestCase
-  def test_account_num_and_paypage
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'accountNumber'=>'1233456789101112',
-      'paypageRegistrationId'=>'1233456789101112'
-    }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.register_token_request(hash)}
-    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
-  end
-
-  def test_echeckandPaypage
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'echeckForToken'=>{'accNum'=>'12344565','routingNum'=>'123476545'},
-      'paypageRegistrationId'=>'1233456789101112'
-    }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.register_token_request(hash)}
-    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
-  end
-
-  def test_echeckandPaypageandaccountnum
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'accountNumber'=>'1233456789101112',
-      'echeckForToken'=>{'accNum'=>'12344565','routingNum'=>'123476545'},
-      'paypageRegistrationId'=>'1233456789101112'
-    }
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.register_token_request(hash)}
-    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
+module LitleOnline
+  class TestToken < Test::Unit::TestCase
+    def test_account_num_and_paypage
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'accountNumber'=>'1233456789101112',
+        'paypageRegistrationId'=>'1233456789101112'
+      }
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.register_token_request(hash)}
+      assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
+    end
+  
+    def test_echeckandPaypage
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'echeckForToken'=>{'accNum'=>'12344565','routingNum'=>'123476545'},
+        'paypageRegistrationId'=>'1233456789101112'
+      }
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.register_token_request(hash)}
+      assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
+    end
+  
+    def test_echeckandPaypageandaccountnum
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'accountNumber'=>'1233456789101112',
+        'echeckForToken'=>{'accNum'=>'12344565','routingNum'=>'123476545'},
+        'paypageRegistrationId'=>'1233456789101112'
+      }
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.register_token_request(hash)}
+      assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
+    end
+  
   end
 
 end
-

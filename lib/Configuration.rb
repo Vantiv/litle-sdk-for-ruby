@@ -28,18 +28,20 @@ require 'yaml'
 #
 # Loads the configuration from a file
 #
-class Configuration
-  def config
-    begin
-      if !(ENV['LITLE_CONFIG_DIR'].nil?)
-        config_file = ENV['LITLE_CONFIG_DIR'] + "/.litle_SDK_config.yml"
-      else
-        config_file = ENV['HOME'] + "/.litle_SDK_config.yml"
+module LitleOnline
+  class Configuration
+    def config
+      begin
+        if !(ENV['LITLE_CONFIG_DIR'].nil?)
+          config_file = ENV['LITLE_CONFIG_DIR'] + "/.litle_SDK_config.yml"
+        else
+          config_file = ENV['HOME'] + "/.litle_SDK_config.yml"
+        end
+        return YAML.load_file(config_file)
+      rescue
+        return {}
       end
-      return YAML.load_file(config_file)
-    rescue
-      return {}
+  
     end
-
   end
 end

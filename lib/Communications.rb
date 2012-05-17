@@ -29,38 +29,40 @@ OTHER DEALINGS IN THE SOFTWARE.
 #
 # URL and proxy server settings are derived from the configuration file
 #
-class Communications
-  ##For http or https post with or without a proxy
-  def Communications.http_post(post_data,config_hash)
-
-    proxy_addr = config_hash['proxy_addr']
-    proxy_port = config_hash['proxy_port']
-    litle_url = config_hash['url']
-
-    # setup https or http post
-    url = URI.parse(litle_url)
-
-    response_xml = nil    
-    https = Net::HTTP.new(url.host, url.port, proxy_addr, proxy_port)
-    if(url.scheme == 'https') 
-      https.use_ssl = url.scheme=='https'
-      https.verify_mode = OpenSSL::SSL::VERIFY_PEER
-      https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
-    end
-    https.start { |http|
-      response = http.request_post(url.path, post_data.to_s, {'Content-type'=>'text/xml'})
-      response_xml = response
-    }
-    
-    
-
-
-    # validate response, only an HTTP 200 will work, redirects are not followed
-    case response_xml
-    when Net::HTTPOK
-      return response_xml.body
-    else
-      raise("Error with http http_post_request, code:" + response_xml.header.code)
+module LitleOnline
+  class Communications
+    ##For http or https post with or without a proxy
+    def Communications.http_post(post_data,config_hash)
+  
+      proxy_addr = config_hash['proxy_addr']
+      proxy_port = config_hash['proxy_port']
+      litle_url = config_hash['url']
+  
+      # setup https or http post
+      url = URI.parse(litle_url)
+  
+      response_xml = nil    
+      https = Net::HTTP.new(url.host, url.port, proxy_addr, proxy_port)
+      if(url.scheme == 'https') 
+        https.use_ssl = url.scheme=='https'
+        https.verify_mode = OpenSSL::SSL::VERIFY_PEER
+        https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
+      end
+      https.start { |http|
+        response = http.request_post(url.path, post_data.to_s, {'Content-type'=>'text/xml'})
+        response_xml = response
+      }
+      
+      
+  
+  
+      # validate response, only an HTTP 200 will work, redirects are not followed
+      case response_xml
+      when Net::HTTPOK
+        return response_xml.body
+      else
+        raise("Error with http http_post_request, code:" + response_xml.header.code)
+      end
     end
   end
 end

@@ -46,7 +46,6 @@ end
 
 
 require_relative 'Communications'
-require_relative 'Obj2xml'
 require_relative 'LitleXmlMapper'
 require_relative 'XMLFields'
 require_relative 'LitleOnlineRequest'

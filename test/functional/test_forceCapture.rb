@@ -25,116 +25,118 @@ OTHER DEALINGS IN THE SOFTWARE.
 require 'lib/LitleOnline'
 require 'test/unit'
 
-class TestForceCapture < Test::Unit::TestCase
-  def test_simple_force_capture_with_card
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.force_capture(hash)
-    assert_equal('000', response.forceCaptureResponse.response)
-  end
-
-  def test_simple_force_capture_with_token
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'token'=> {
-      'litleToken'=>'123456789101112',
-      'expDate'=>'1210',
-      'cardValidationNum'=>'555',
-      'type'=>'VI'
-      }}
-    response= LitleOnlineRequest.new.force_capture(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_fields_out_of_order
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'orderSource'=>'ecommerce',
-      'litleTxnId'=>'123456',
-      'amount'=>'106',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      },
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344'
-    }
-    response= LitleOnlineRequest.new.force_capture(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_invalid_field
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'NOexistantField' => 'ShouldNotCauseError',
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.force_capture(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_no_order_id
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'token'=> {
-      'litleToken'=>'123456789101112',
-      'expDate'=>'1210',
-      'cardValidationNum'=>'555',
-      'type'=>'VI'
-      }}
-    response= LitleOnlineRequest.new.force_capture(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
-  end
-
-  def test_no_order_source
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.force_capture(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
+module LitleOnline
+  class TestForceCapture < Test::Unit::TestCase
+    def test_simple_force_capture_with_card
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        }}
+      response= LitleOnlineRequest.new.force_capture(hash)
+      assert_equal('000', response.forceCaptureResponse.response)
+    end
+  
+    def test_simple_force_capture_with_token
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'token'=> {
+        'litleToken'=>'123456789101112',
+        'expDate'=>'1210',
+        'cardValidationNum'=>'555',
+        'type'=>'VI'
+        }}
+      response= LitleOnlineRequest.new.force_capture(hash)
+      assert_equal('Valid Format', response.message)
+    end
+  
+    def test_fields_out_of_order
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'orderSource'=>'ecommerce',
+        'litleTxnId'=>'123456',
+        'amount'=>'106',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        },
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344'
+      }
+      response= LitleOnlineRequest.new.force_capture(hash)
+      assert_equal('Valid Format', response.message)
+    end
+  
+    def test_invalid_field
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'NOexistantField' => 'ShouldNotCauseError',
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        }}
+      response= LitleOnlineRequest.new.force_capture(hash)
+      assert_equal('Valid Format', response.message)
+    end
+  
+    def test_no_order_id
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'token'=> {
+        'litleToken'=>'123456789101112',
+        'expDate'=>'1210',
+        'cardValidationNum'=>'555',
+        'type'=>'VI'
+        }}
+      response= LitleOnlineRequest.new.force_capture(hash)
+      assert(response.message =~ /Error validating xml data against the schema/)
+    end
+  
+    def test_no_order_source
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        }}
+      response= LitleOnlineRequest.new.force_capture(hash)
+      assert(response.message =~ /Error validating xml data against the schema/)
+    end
+  
   end
 
 end
-

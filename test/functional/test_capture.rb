@@ -25,58 +25,60 @@ OTHER DEALINGS IN THE SOFTWARE.
 require 'lib/LitleOnline'
 require 'test/unit'
 
-class Test_capture < Test::Unit::TestCase
-  def test_simple_capture
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456000',
-      'amount'=>'106',
-    }
-    response= LitleOnlineRequest.new.capture(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_simple_capture_with_partial
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'partial'=>'true',
-      'litleTxnId'=>'123456000',
-      'amount'=>'106',
-    }
-    response= LitleOnlineRequest.new.capture(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_complex_capture
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456000',
-      'amount'=>'106',
-      'enhancedData'=>{
-      'customerReference'=>'Litle',
-      'salesTax'=>'50',
-      'deliveryType'=>'TBD'},
-      'payPalOrderComplete'=>'true'
-    }
-    response= LitleOnlineRequest.new.capture(hash)
-    assert_equal('Valid Format', response.message)
-  end
+module LitleOnline
+  class Test_capture < Test::Unit::TestCase
+    def test_simple_capture
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456000',
+        'amount'=>'106',
+      }
+      response= LitleOnlineRequest.new.capture(hash)
+      assert_equal('Valid Format', response.message)
+    end
   
-  def test_no_txn_id
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'amount'=>'106',
-    }
-    response= LitleOnlineRequest.new.capture(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
+    def test_simple_capture_with_partial
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'partial'=>'true',
+        'litleTxnId'=>'123456000',
+        'amount'=>'106',
+      }
+      response= LitleOnlineRequest.new.capture(hash)
+      assert_equal('Valid Format', response.message)
+    end
+  
+    def test_complex_capture
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456000',
+        'amount'=>'106',
+        'enhancedData'=>{
+        'customerReference'=>'Litle',
+        'salesTax'=>'50',
+        'deliveryType'=>'TBD'},
+        'payPalOrderComplete'=>'true'
+      }
+      response= LitleOnlineRequest.new.capture(hash)
+      assert_equal('Valid Format', response.message)
+    end
+    
+    def test_no_txn_id
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'amount'=>'106',
+      }
+      response= LitleOnlineRequest.new.capture(hash)
+      assert(response.message =~ /Error validating xml data against the schema/)
+    end
+  
   end
-
 end

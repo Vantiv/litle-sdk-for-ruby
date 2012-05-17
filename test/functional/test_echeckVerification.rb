@@ -25,101 +25,103 @@ OTHER DEALINGS IN THE SOFTWARE.
 require 'lib/LitleOnline'
 require 'test/unit'
 
-class Test_echeckVerification < Test::Unit::TestCase
-
-  def test_simple_echeck_verification
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'amount'=>'123456',
-      'orderId'=>'12345',
-      'orderSource'=>'ecommerce',
-      'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
-      'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
-    }
-    response= LitleOnlineRequest.new.echeck_verification(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_echeck_verification_with_echeck_token
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'amount'=>'123456',
-      'orderId'=>'12345',
-      'orderSource'=>'ecommerce',
-      'echeckToken' => {'accType'=>'Checking','litleToken'=>'1234565789012','routingNum'=>'123456789','checkNum'=>'123455'},
-      'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
-    }
-    response= LitleOnlineRequest.new.echeck_verification(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_extra_field_and_incorrect_order
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'amount'=>'123',
-      'invalidfield'=>'nonexistant',
-      'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
-      'orderId'=>'12345',
-      'orderSource'=>'ecommerce',
-      'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
-    }
-    response= LitleOnlineRequest.new.echeck_verification(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_extra_field_and_missing_billing
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'amount'=>'123',
-      'invalidfield'=>'nonexistant',
-      'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
-      'orderId'=>'12345',
-      'orderSource'=>'ecommerce',
-    }
-    response= LitleOnlineRequest.new.echeck_verification(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
-  end
+module LitleOnline
+  class Test_echeckVerification < Test::Unit::TestCase
   
-  def test_no_amount
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12345'
-    }
-    response= LitleOnlineRequest.new.echeck_verification(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
-  end
-
-  def test_no_order_id
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-    }
-    response= LitleOnlineRequest.new.echeck_verification(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
-  end
-
-  def test_no_order_source
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'amount'=>'123456',
-      'orderId'=>'12345'
-    }
-    response= LitleOnlineRequest.new.echeck_verification(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
+    def test_simple_echeck_verification
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'amount'=>'123456',
+        'orderId'=>'12345',
+        'orderSource'=>'ecommerce',
+        'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
+      }
+      response= LitleOnlineRequest.new.echeck_verification(hash)
+      assert_equal('Valid Format', response.message)
+    end
+  
+    def test_echeck_verification_with_echeck_token
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'amount'=>'123456',
+        'orderId'=>'12345',
+        'orderSource'=>'ecommerce',
+        'echeckToken' => {'accType'=>'Checking','litleToken'=>'1234565789012','routingNum'=>'123456789','checkNum'=>'123455'},
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
+      }
+      response= LitleOnlineRequest.new.echeck_verification(hash)
+      assert_equal('Valid Format', response.message)
+    end
+  
+    def test_extra_field_and_incorrect_order
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'amount'=>'123',
+        'invalidfield'=>'nonexistant',
+        'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
+        'orderId'=>'12345',
+        'orderSource'=>'ecommerce',
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
+      }
+      response= LitleOnlineRequest.new.echeck_verification(hash)
+      assert_equal('Valid Format', response.message)
+    end
+  
+    def test_extra_field_and_missing_billing
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'amount'=>'123',
+        'invalidfield'=>'nonexistant',
+        'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
+        'orderId'=>'12345',
+        'orderSource'=>'ecommerce',
+      }
+      response= LitleOnlineRequest.new.echeck_verification(hash)
+      assert(response.message =~ /Error validating xml data against the schema/)
+    end
+    
+    def test_no_amount
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12345'
+      }
+      response= LitleOnlineRequest.new.echeck_verification(hash)
+      assert(response.message =~ /Error validating xml data against the schema/)
+    end
+  
+    def test_no_order_id
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+      }
+      response= LitleOnlineRequest.new.echeck_verification(hash)
+      assert(response.message =~ /Error validating xml data against the schema/)
+    end
+  
+    def test_no_order_source
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'amount'=>'123456',
+        'orderId'=>'12345'
+      }
+      response= LitleOnlineRequest.new.echeck_verification(hash)
+      assert(response.message =~ /Error validating xml data against the schema/)
+    end
+  
   end
 
 end
-

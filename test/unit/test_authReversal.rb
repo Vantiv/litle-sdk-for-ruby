@@ -26,21 +26,21 @@ require 'lib/LitleOnline'
 require 'test/unit'
 require 'mocha'
 
-class TestAuthReversal < Test::Unit::TestCase
-  def test_invalid_field
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'litleTxnId'=>'12345678000',
-      'NonexistentField'=>'none',
-      'payPalNotes'=>'Notes',
-      'amount'=>'106',
-      'reportGroup'=>'Planets',
-    }
-    LitleXmlMapper.expects(:request).with(regexp_matches(/.*<litleTxnId>12345678000<\/litleTxnId>.*/m), is_a(Hash))
-    LitleOnlineRequest.new.auth_reversal(hash)
-
-  end
+module LitleOnline
+  class TestAuthReversal < Test::Unit::TestCase
+    def test_invalid_field
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'litleTxnId'=>'12345678000',
+        'NonexistentField'=>'none',
+        'payPalNotes'=>'Notes',
+        'amount'=>'106',
+        'reportGroup'=>'Planets',
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<litleTxnId>12345678000<\/litleTxnId>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.auth_reversal(hash)
   
-
+    end  
+  end
 end

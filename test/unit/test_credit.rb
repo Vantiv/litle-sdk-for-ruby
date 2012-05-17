@@ -26,106 +26,109 @@ require 'lib/LitleOnline'
 require 'test/unit'
 require 'mocha'
 
-class TestCredit < Test::Unit::TestCase
-  def test_both_choices_card_and_paypal
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      },
-      'paypal'=>{
-      'payerId'=>'1234',
-      'token'=>'1234',
-      'transactionId'=>'123456'
-      }}
-
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
-    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
-  end
-
-  def test_three_choices_card_and_paypage_and_paypal
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      },
-      'paypage'=> {
-      'paypageRegistrationId'=>'1234',
-      'expDate'=>'1210',
-      'cardValidationNum'=>'555',
-      'type'=>'VI'},
-      'paypal'=>{
-      'payerId'=>'1234',
-      'token'=>'1234',
-      'transactionId'=>'123456'
-      }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
-    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
-  end
-
-  def test_all_choices_card_and_paypage_and_paypal_and_token
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'fraudCheck'=>{'authenticationTransactionId'=>'123'},
-      'bypassVelocityCheckcardholderAuthentication'=>{'authenticationTransactionId'=>'123'},
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      },
-      'paypage'=> {
-      'paypageRegistrationId'=>'1234',
-      'expDate'=>'1210',
-      'cardValidationNum'=>'555',
-      'type'=>'VI'},
-      'paypal'=>{
-      'payerId'=>'1234',
-      'token'=>'1234',
-      'transactionId'=>'123456'},
-      'token'=> {
-      'litleToken'=>'1234',
-      'expDate'=>'1210',
-      'cardValidationNum'=>'555',
-      'type'=>'VI'
-      }}
-
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
-    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
-  end
+module LitleOnline
   
-  def test_action_reason_on_orphaned_refund
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.12',
-      'orderId'=>'1',
-      'amount'=>'2',
-      'orderSource'=>'ecommerce',
-      'reportGroup'=>'Planets',
-      'actionReason'=> 'SUSPECT_FRAUD'
-    }
-    XMLObject.expects(:new)
-    Communications.expects(:http_post).with(regexp_matches(/.*<actionReason>SUSPECT_FRAUD<\/actionReason>.*/m),kind_of(Hash))
-    LitleOnlineRequest.new.credit(hash)
+  class TestCredit < Test::Unit::TestCase
+    def test_both_choices_card_and_paypal
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        },
+        'paypal'=>{
+        'payerId'=>'1234',
+        'token'=>'1234',
+        'transactionId'=>'123456'
+        }}
+  
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
+      assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
+    end
+  
+    def test_three_choices_card_and_paypage_and_paypal
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        },
+        'paypage'=> {
+        'paypageRegistrationId'=>'1234',
+        'expDate'=>'1210',
+        'cardValidationNum'=>'555',
+        'type'=>'VI'},
+        'paypal'=>{
+        'payerId'=>'1234',
+        'token'=>'1234',
+        'transactionId'=>'123456'
+        }}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
+      assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
+    end
+  
+    def test_all_choices_card_and_paypage_and_paypal_and_token
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'fraudCheck'=>{'authenticationTransactionId'=>'123'},
+        'bypassVelocityCheckcardholderAuthentication'=>{'authenticationTransactionId'=>'123'},
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        },
+        'paypage'=> {
+        'paypageRegistrationId'=>'1234',
+        'expDate'=>'1210',
+        'cardValidationNum'=>'555',
+        'type'=>'VI'},
+        'paypal'=>{
+        'payerId'=>'1234',
+        'token'=>'1234',
+        'transactionId'=>'123456'},
+        'token'=> {
+        'litleToken'=>'1234',
+        'expDate'=>'1210',
+        'cardValidationNum'=>'555',
+        'type'=>'VI'
+        }}
+  
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
+      assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
+    end
+    
+    def test_action_reason_on_orphaned_refund
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.12',
+        'orderId'=>'1',
+        'amount'=>'2',
+        'orderSource'=>'ecommerce',
+        'reportGroup'=>'Planets',
+        'actionReason'=> 'SUSPECT_FRAUD'
+      }
+      XMLObject.expects(:new)
+      Communications.expects(:http_post).with(regexp_matches(/.*<actionReason>SUSPECT_FRAUD<\/actionReason>.*/m),kind_of(Hash))
+      LitleOnlineRequest.new.credit(hash)
+    end
+  
   end
-
 end

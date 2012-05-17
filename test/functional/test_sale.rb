@@ -25,204 +25,206 @@ OTHER DEALINGS IN THE SOFTWARE.
 require 'lib/LitleOnline'
 require 'test/unit'
 
-class TestSale < Test::Unit::TestCase
-  def test_simple_sale_with_card
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000002',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.sale(hash)
-    assert_equal('000', response.saleResponse.response)
-  end
-
-  def test_simple_sale_with_paypal
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'paypal'=>{
-      'payerId'=>'1234',
-      'token'=>'1234',
-      'transactionId'=>'123456'
-      }}
-    response= LitleOnlineRequest.new.sale(hash)
-    assert_equal 'Valid Format', response.message
-  end
-
-  def test_illegal_order_source
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecomerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000002',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.sale(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
-  end
-
-  def test_illegal_card_type
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'NO',
-      'number' =>'4100000000000002',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.sale(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
-  end
-
-  def test_no_report_group
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000000',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.sale(hash)
-    assert_equal('000', response.saleResponse.response)
-  end
-
-  def test_fields_out_of_order
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'orderSource'=>'ecommerce',
-      'litleTxnId'=>'123456',
-      'amount'=>'106',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000000',
-      'expDate' =>'1210'
-      },
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344'
-    }
-    response= LitleOnlineRequest.new.sale(hash)
-    assert_equal('000', response.saleResponse.response)
-  end
-
-  def test_invalid_field
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'NOexistantField' => 'ShouldNotCauseError',
-      'type'=>'VI',
-      'number' =>'4100000000000000',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.sale(hash)
-    assert_equal('000', response.saleResponse.response)
-  end
-
-  def test_simple_sale_with_card
-    hash = {
-      'merchantId'=>'101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000000',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.sale(hash)
-    assert_equal('000', response.saleResponse.response)
-  end
-
+module LitleOnline
+  class TestSale < Test::Unit::TestCase
+    def test_simple_sale_with_card
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000002',
+        'expDate' =>'1210'
+        }}
+      response= LitleOnlineRequest.new.sale(hash)
+      assert_equal('000', response.saleResponse.response)
+    end
   
-  def test_no_order_id
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000002',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.sale(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
-  end
-
-  def test_no_amount
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000002',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.sale(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
-  end
-
-  def test_no_order_source
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000002',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.sale(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
+    def test_simple_sale_with_paypal
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'paypal'=>{
+        'payerId'=>'1234',
+        'token'=>'1234',
+        'transactionId'=>'123456'
+        }}
+      response= LitleOnlineRequest.new.sale(hash)
+      assert_equal 'Valid Format', response.message
+    end
+  
+    def test_illegal_order_source
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecomerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000002',
+        'expDate' =>'1210'
+        }}
+      response= LitleOnlineRequest.new.sale(hash)
+      assert(response.message =~ /Error validating xml data against the schema/)
+    end
+  
+    def test_illegal_card_type
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'NO',
+        'number' =>'4100000000000002',
+        'expDate' =>'1210'
+        }}
+      response= LitleOnlineRequest.new.sale(hash)
+      assert(response.message =~ /Error validating xml data against the schema/)
+    end
+  
+    def test_no_report_group
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000000',
+        'expDate' =>'1210'
+        }}
+      response= LitleOnlineRequest.new.sale(hash)
+      assert_equal('000', response.saleResponse.response)
+    end
+  
+    def test_fields_out_of_order
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'orderSource'=>'ecommerce',
+        'litleTxnId'=>'123456',
+        'amount'=>'106',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000000',
+        'expDate' =>'1210'
+        },
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344'
+      }
+      response= LitleOnlineRequest.new.sale(hash)
+      assert_equal('000', response.saleResponse.response)
+    end
+  
+    def test_invalid_field
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'NOexistantField' => 'ShouldNotCauseError',
+        'type'=>'VI',
+        'number' =>'4100000000000000',
+        'expDate' =>'1210'
+        }}
+      response= LitleOnlineRequest.new.sale(hash)
+      assert_equal('000', response.saleResponse.response)
+    end
+  
+    def test_simple_sale_with_card
+      hash = {
+        'merchantId'=>'101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000000',
+        'expDate' =>'1210'
+        }}
+      response= LitleOnlineRequest.new.sale(hash)
+      assert_equal('000', response.saleResponse.response)
+    end
+  
+    
+    def test_no_order_id
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000002',
+        'expDate' =>'1210'
+        }}
+      response= LitleOnlineRequest.new.sale(hash)
+      assert(response.message =~ /Error validating xml data against the schema/)
+    end
+  
+    def test_no_amount
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000002',
+        'expDate' =>'1210'
+        }}
+      response= LitleOnlineRequest.new.sale(hash)
+      assert(response.message =~ /Error validating xml data against the schema/)
+    end
+  
+    def test_no_order_source
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000002',
+        'expDate' =>'1210'
+        }}
+      response= LitleOnlineRequest.new.sale(hash)
+      assert(response.message =~ /Error validating xml data against the schema/)
+    end
+  
   end
 
 end
-

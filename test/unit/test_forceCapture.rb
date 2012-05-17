@@ -25,63 +25,66 @@ OTHER DEALINGS IN THE SOFTWARE.
 require 'lib/LitleOnline'
 require 'test/unit'
 
-class TestForceCapture < Test::Unit::TestCase
-  def test_both_choices_card_and_token
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'fraudCheck'=>{'authenticationTransactionId'=>'123'},
-      'cardholderAuthentication'=>{'authenticationTransactionId'=>'123'},
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      },
-      'token'=> {
-      'litleToken'=>'1234',
-      'expDate'=>'1210',
-      'cardValidationNum'=>'555',
-      'type'=>'VI'
-      }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.force_capture(hash)}
-    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
-  end
-
-  def test_all_choices
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'123456',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'fraudCheck'=>{'authenticationTransactionId'=>'123'},
-      'cardholderAuthentication'=>{'authenticationTransactionId'=>'123'},
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      },
-      'paypage'=> {
-      'paypageRegistrationId'=>'1234',
-      'expDate'=>'1210',
-      'cardValidationNum'=>'555',
-      'type'=>'VI'},
-      'token'=> {
-      'litleToken'=>'1234',
-      'expDate'=>'1210',
-      'cardValidationNum'=>'555',
-      'type'=>'VI'
-      }}
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.force_capture(hash)}
-    assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
+module LitleOnline
+  
+  class TestForceCapture < Test::Unit::TestCase
+    def test_both_choices_card_and_token
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'fraudCheck'=>{'authenticationTransactionId'=>'123'},
+        'cardholderAuthentication'=>{'authenticationTransactionId'=>'123'},
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        },
+        'token'=> {
+        'litleToken'=>'1234',
+        'expDate'=>'1210',
+        'cardValidationNum'=>'555',
+        'type'=>'VI'
+        }}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.force_capture(hash)}
+      assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
+    end
+  
+    def test_all_choices
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'fraudCheck'=>{'authenticationTransactionId'=>'123'},
+        'cardholderAuthentication'=>{'authenticationTransactionId'=>'123'},
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        },
+        'paypage'=> {
+        'paypageRegistrationId'=>'1234',
+        'expDate'=>'1210',
+        'cardValidationNum'=>'555',
+        'type'=>'VI'},
+        'token'=> {
+        'litleToken'=>'1234',
+        'expDate'=>'1210',
+        'cardValidationNum'=>'555',
+        'type'=>'VI'
+        }}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.force_capture(hash)}
+      assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
+    end
+  
   end
 
 end
-

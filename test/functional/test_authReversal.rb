@@ -25,43 +25,45 @@ OTHER DEALINGS IN THE SOFTWARE.
 require 'lib/LitleOnline'
 require 'test/unit'
 
-class TestAuthReversal < Test::Unit::TestCase
-  def test_simple_auth_reversal
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'litleTxnId'=>'12345678000',
-      'amount'=>'106',
-      'payPalNotes'=>'Notes'
-    }
-    response= LitleOnlineRequest.new.auth_reversal(hash)
-    assert_equal('Valid Format', response.message)
+module LitleOnline
+  class TestAuthReversal < Test::Unit::TestCase
+    def test_simple_auth_reversal
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'12345678000',
+        'amount'=>'106',
+        'payPalNotes'=>'Notes'
+      }
+      response= LitleOnlineRequest.new.auth_reversal(hash)
+      assert_equal('Valid Format', response.message)
+    end
+  
+    def test_fields_out_of_order
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'litleTxnId'=>'12345000',
+        'payPalNotes'=>'Notes',
+        'amount'=>'106',
+        'reportGroup'=>'Planets',
+      }
+      response= LitleOnlineRequest.new.auth_reversal(hash)
+      assert_equal('Valid Format', response.message)
+    end
+  
+    def test_no_litle_txn_id
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'12345678',
+        'amount'=>'106',
+        'payPalNotes'=>'Notes'
+      }
+      response= LitleOnlineRequest.new.auth_reversal(hash)
+      assert(response.message =~ /Error validating xml data against the schema/)
+    end
+  
   end
-
-  def test_fields_out_of_order
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'litleTxnId'=>'12345000',
-      'payPalNotes'=>'Notes',
-      'amount'=>'106',
-      'reportGroup'=>'Planets',
-    }
-    response= LitleOnlineRequest.new.auth_reversal(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_no_litle_txn_id
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'12345678',
-      'amount'=>'106',
-      'payPalNotes'=>'Notes'
-    }
-    response= LitleOnlineRequest.new.auth_reversal(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
-  end
-
 end

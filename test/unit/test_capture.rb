@@ -25,14 +25,16 @@ OTHER DEALINGS IN THE SOFTWARE.
 require 'lib/LitleOnline'
 require 'test/unit'
 
-class Test_capture < Test::Unit::TestCase
-  def test_success_capture
-    hash = {
-      'litleTxnId'=>'123456'
-    }
-
-    LitleXmlMapper.expects(:request).with(regexp_matches(/.*<litleTxnId>123456<\/litleTxnId>.*/m), is_a(Hash))
-    LitleOnlineRequest.new.capture(hash)
+module LitleOnline
+  class Test_capture < Test::Unit::TestCase
+    def test_success_capture
+      hash = {
+        'litleTxnId'=>'123456'
+      }
+  
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<litleTxnId>123456<\/litleTxnId>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.capture(hash)
+    end
   end
 end
 

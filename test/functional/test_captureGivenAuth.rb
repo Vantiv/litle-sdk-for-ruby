@@ -25,157 +25,158 @@ OTHER DEALINGS IN THE SOFTWARE.
 require 'lib/LitleOnline'
 require 'test/unit'
 
-class TestcaptureGivenAuth < Test::Unit::TestCase
-  def test_simple_capture_given_auth_with_card
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'authInformation' => {
-      'authDate'=>'2002-10-09','authCode'=>'543216',
-      'authAmount'=>'12345'
-      },
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000000',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.capture_given_auth(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_simple_capture_given_auth_with_token
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'authInformation' => {
-      'authDate'=>'2002-10-09','authCode'=>'543216', 'processingInstructions'=>{'bypassVelocityCheck'=>'true'},
-      'authAmount'=>'12345'
-      },
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'token'=> {
-      'litleToken'=>'123456789101112',
-      'expDate'=>'1210',
-      'cardValidationNum'=>'555',
-      'type'=>'VI'
-      }}
-    response= LitleOnlineRequest.new.capture_given_auth(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_fields_out_of_order
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'orderSource'=>'ecommerce',
-      'authInformation' => {
-      'authDate'=>'2002-10-09','authCode'=>'543216',
-      'authAmount'=>'12345'
-      },
-      'amount'=>'106',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000000',
-      'expDate' =>'1210'
-      },
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344'
-    }
-    response= LitleOnlineRequest.new.capture_given_auth(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_invalid_field
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'authInformation' => {
-      'authDate'=>'2002-10-09','authCode'=>'543216',
-      'authAmount'=>'12345'
-      },
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'NOexistantField' => 'ShouldNotCauseError',
-      'type'=>'VI',
-      'number' =>'4100000000000000',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.capture_given_auth(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_complex_capture_given_auth
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'authInformation' => {
-      'authDate'=>'2002-10-09','authCode'=>'543216',
-      'authAmount'=>'12345'
-      },
-      'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'},
-      'processingInstructions'=>{'bypassVelocityCheck'=>'true'},
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000000',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.capture_given_auth(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_auth_info
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'authInformation' => {
-      'authDate'=>'2002-10-09','authCode'=>'543216',
-      'authAmount'=>'12345','fraudResult'=>{'avsResult'=>'12','cardValidationResult'=>'123','authenticationResult'=>'1',
-      'advancedAVSResult'=>'123'}
-      },
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000000',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.capture_given_auth(hash)
-    assert_equal('Valid Format', response.message)
-  end
+module LitleOnline
+  class TestcaptureGivenAuth < Test::Unit::TestCase
+    def test_simple_capture_given_auth_with_card
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'authInformation' => {
+        'authDate'=>'2002-10-09','authCode'=>'543216',
+        'authAmount'=>'12345'
+        },
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000000',
+        'expDate' =>'1210'
+        }}
+      response= LitleOnlineRequest.new.capture_given_auth(hash)
+      assert_equal('Valid Format', response.message)
+    end
   
-  def test_no_amount
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'authInformation' => {
-      'authDate'=>'2002-10-09','authCode'=>'543216',
-      'authAmount'=>'12345'
-      },
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.capture_given_auth(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
+    def test_simple_capture_given_auth_with_token
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'authInformation' => {
+        'authDate'=>'2002-10-09','authCode'=>'543216', 'processingInstructions'=>{'bypassVelocityCheck'=>'true'},
+        'authAmount'=>'12345'
+        },
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'token'=> {
+        'litleToken'=>'123456789101112',
+        'expDate'=>'1210',
+        'cardValidationNum'=>'555',
+        'type'=>'VI'
+        }}
+      response= LitleOnlineRequest.new.capture_given_auth(hash)
+      assert_equal('Valid Format', response.message)
+    end
+  
+    def test_fields_out_of_order
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'orderSource'=>'ecommerce',
+        'authInformation' => {
+        'authDate'=>'2002-10-09','authCode'=>'543216',
+        'authAmount'=>'12345'
+        },
+        'amount'=>'106',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000000',
+        'expDate' =>'1210'
+        },
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344'
+      }
+      response= LitleOnlineRequest.new.capture_given_auth(hash)
+      assert_equal('Valid Format', response.message)
+    end
+  
+    def test_invalid_field
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'authInformation' => {
+        'authDate'=>'2002-10-09','authCode'=>'543216',
+        'authAmount'=>'12345'
+        },
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'NOexistantField' => 'ShouldNotCauseError',
+        'type'=>'VI',
+        'number' =>'4100000000000000',
+        'expDate' =>'1210'
+        }}
+      response= LitleOnlineRequest.new.capture_given_auth(hash)
+      assert_equal('Valid Format', response.message)
+    end
+  
+    def test_complex_capture_given_auth
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'authInformation' => {
+        'authDate'=>'2002-10-09','authCode'=>'543216',
+        'authAmount'=>'12345'
+        },
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'},
+        'processingInstructions'=>{'bypassVelocityCheck'=>'true'},
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000000',
+        'expDate' =>'1210'
+        }}
+      response= LitleOnlineRequest.new.capture_given_auth(hash)
+      assert_equal('Valid Format', response.message)
+    end
+  
+    def test_auth_info
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'authInformation' => {
+        'authDate'=>'2002-10-09','authCode'=>'543216',
+        'authAmount'=>'12345','fraudResult'=>{'avsResult'=>'12','cardValidationResult'=>'123','authenticationResult'=>'1',
+        'advancedAVSResult'=>'123'}
+        },
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000000',
+        'expDate' =>'1210'
+        }}
+      response= LitleOnlineRequest.new.capture_given_auth(hash)
+      assert_equal('Valid Format', response.message)
+    end
+    
+    def test_no_amount
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'authInformation' => {
+        'authDate'=>'2002-10-09','authCode'=>'543216',
+        'authAmount'=>'12345'
+        },
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        }}
+      response= LitleOnlineRequest.new.capture_given_auth(hash)
+      assert(response.message =~ /Error validating xml data against the schema/)
+    end
   end
 end
-

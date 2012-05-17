@@ -25,130 +25,130 @@ OTHER DEALINGS IN THE SOFTWARE.
 require 'lib/LitleOnline'
 require 'test/unit'
 
-class TestCredit < Test::Unit::TestCase
-  def test_simple_credit_with_card
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.credit(hash)
-    assert_equal('Valid Format', response.message)
+module LitleOnline
+  class TestCredit < Test::Unit::TestCase
+    def test_simple_credit_with_card
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        }}
+      response= LitleOnlineRequest.new.credit(hash)
+      assert_equal('Valid Format', response.message)
+    end
+  
+    def test_simple_credit_with_paypal
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'amount'=>'106',
+        'orderId'=>'123456',
+        'orderSource'=>'ecommerce',
+        'paypal'=>{
+        'payerId'=>'1234',
+        'transactionId'=>'1234',
+        }}
+      response= LitleOnlineRequest.new.credit(hash)
+      assert_equal('Valid Format', response.message)
+    end
+  
+    def test_illegal_order_id
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'litleTxnId' => '12345456',
+        'amount'=>'106',
+        'orderSource'=>'ecomerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        }}
+      response= LitleOnlineRequest.new.credit(hash)
+      assert(response.message =~ /Error validating xml data against the schema/)
+    end
+  
+    def test_fields_out_of_order
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        },
+        'orderSource'=>'ecommerce',
+        'amount'=>'106'
+      }
+      response= LitleOnlineRequest.new.credit(hash)
+      assert_equal('Valid Format', response.message)
+    end
+  
+    def test_invalid_field
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'NOexistantField' => 'ShouldNotCauseError',
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        }}
+      response= LitleOnlineRequest.new.credit(hash)
+      assert_equal('Valid Format', response.message)
+    end
+  
+    def test_pay_pal_notes
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'payPalNotes'=>'Hello',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        }}
+      response= LitleOnlineRequest.new.credit(hash)
+      assert_equal('Valid Format', response.message)
+    end
+  
+    def test_processing_instructions_and_amex_data
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'amount'=>'2000',
+        'orderId'=>'12344',
+        'orderSource'=>'ecommerce',
+        'processingInstuctions'=>{'bypassVelocityCheck'=>'yes'},
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'},
+        'amexAggregatorData'=>{'sellerMerchantCategoryCode'=>'1234','sellerId'=>'1234Id'}
+      }
+      response= LitleOnlineRequest.new.credit(hash)
+      assert_equal('Valid Format', response.message)
+    end
   end
-
-  def test_simple_credit_with_paypal
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'amount'=>'106',
-      'orderId'=>'123456',
-      'orderSource'=>'ecommerce',
-      'paypal'=>{
-      'payerId'=>'1234',
-      'transactionId'=>'1234',
-      }}
-    response= LitleOnlineRequest.new.credit(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_illegal_order_id
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'litleTxnId' => '12345456',
-      'amount'=>'106',
-      'orderSource'=>'ecomerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.credit(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
-  end
-
-  def test_fields_out_of_order
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      },
-      'orderSource'=>'ecommerce',
-      'amount'=>'106'
-    }
-    response= LitleOnlineRequest.new.credit(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_invalid_field
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'NOexistantField' => 'ShouldNotCauseError',
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.credit(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_pay_pal_notes
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'orderId'=>'12344',
-      'amount'=>'106',
-      'payPalNotes'=>'Hello',
-      'orderSource'=>'ecommerce',
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'
-      }}
-    response= LitleOnlineRequest.new.credit(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_processing_instructions_and_amex_data
-    hash = {
-      'merchantId' => '101',
-      'version'=>'8.8',
-      'reportGroup'=>'Planets',
-      'amount'=>'2000',
-      'orderId'=>'12344',
-      'orderSource'=>'ecommerce',
-      'processingInstuctions'=>{'bypassVelocityCheck'=>'yes'},
-      'card'=>{
-      'type'=>'VI',
-      'number' =>'4100000000000001',
-      'expDate' =>'1210'},
-      'amexAggregatorData'=>{'sellerMerchantCategoryCode'=>'1234','sellerId'=>'1234Id'}
-    }
-    response= LitleOnlineRequest.new.credit(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
 end
-

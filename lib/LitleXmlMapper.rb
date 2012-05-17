@@ -27,21 +27,23 @@ OTHER DEALINGS IN THE SOFTWARE.
 # Handles round trip of transactions
 # Maps the request to Litle XML -> Sends XML payload to Litle via HTTP(S) -> formats XML response into a Ruby hash and returns it
 #
-class LitleXmlMapper
-  def LitleXmlMapper.request(request_xml, config_hash)
-
-    # create a Litle XML request from the nested hashes
-    if(config_hash['printxml'])
-      puts request_xml
+module LitleOnline
+  class LitleXmlMapper
+    def LitleXmlMapper.request(request_xml, config_hash)
+  
+      # create a Litle XML request from the nested hashes
+      if(config_hash['printxml'])
+        puts request_xml
+      end
+      # get the Litle Online Response from the API server over HTTP
+      response_xml = Communications.http_post(request_xml,config_hash)
+      if(config_hash['printxml'])
+        puts response_xml
+      end
+      # create response object from xml returned form the Litle API
+      response_object = XMLObject.new(response_xml)
+      
+      return response_object
     end
-    # get the Litle Online Response from the API server over HTTP
-    response_xml = Communications.http_post(request_xml,config_hash)
-    if(config_hash['printxml'])
-      puts response_xml
-    end
-    # create response object from xml returned form the Litle API
-    response_object = XMLObject.new(response_xml)
-    
-    return response_object
   end
 end
