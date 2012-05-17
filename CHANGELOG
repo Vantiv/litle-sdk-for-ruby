@@ -1,5 +1,9 @@
 = LitleOnline CHANGELOG
 
+== Version 8.12.3 (May 17, 2012)
+
+* Bugfix: Allow use without the configuration file
+
 == Version 8.12.2 (May 16, 2012)
 
 * Bugfix: Fix bug where rails "capture" method was interfering with Litle's "capture"

@@ -36,6 +36,10 @@ class LitleOnlineRequest
   end
 
   def authorization(hash_in)
+    @config_hash['proxy_addr'] = hash_in['proxy_addr'].nil? ? @config_hash['proxy_addr'] : hash_in['proxy_addr']
+    @config_hash['proxy_port'] = hash_in['proxy_port'].nil? ? @config_hash['proxy_port'] : hash_in['proxy_port']
+    @config_hash['url'] = hash_in['url'].nil? ? @config_hash['url'] : hash_in['url']
+
     request = OnlineRequest.new
     authorization = Authorization.new
     authorization.reportGroup = get_report_group(hash_in)
@@ -84,6 +88,10 @@ class LitleOnlineRequest
   end
 
   def sale(hash_in)
+    @config_hash['proxy_addr'] = hash_in['proxy_addr'].nil? ? @config_hash['proxy_addr'] : hash_in['proxy_addr']
+    @config_hash['proxy_port'] = hash_in['proxy_port'].nil? ? @config_hash['proxy_port'] : hash_in['proxy_port']
+    @config_hash['url'] = hash_in['url'].nil? ? @config_hash['url'] : hash_in['url']
+
     request = OnlineRequest.new
     sale = Sale.new
     sale.reportGroup = get_report_group(hash_in)
@@ -135,6 +143,10 @@ class LitleOnlineRequest
   end
 
   def auth_reversal(hash_in)
+    @config_hash['proxy_addr'] = hash_in['proxy_addr'].nil? ? @config_hash['proxy_addr'] : hash_in['proxy_addr']
+    @config_hash['proxy_port'] = hash_in['proxy_port'].nil? ? @config_hash['proxy_port'] : hash_in['proxy_port']
+    @config_hash['url'] = hash_in['url'].nil? ? @config_hash['url'] : hash_in['url']
+
     request = OnlineRequest.new
     auth_reversal = AuthReversal.new
     auth_reversal.reportGroup = get_report_group(hash_in)
@@ -163,6 +175,10 @@ class LitleOnlineRequest
   end
 
   def credit(hash_in)
+    @config_hash['proxy_addr'] = hash_in['proxy_addr'].nil? ? @config_hash['proxy_addr'] : hash_in['proxy_addr']
+    @config_hash['proxy_port'] = hash_in['proxy_port'].nil? ? @config_hash['proxy_port'] : hash_in['proxy_port']
+    @config_hash['url'] = hash_in['url'].nil? ? @config_hash['url'] : hash_in['url']
+
     request = OnlineRequest.new
     credit = Credit.new
     credit.reportGroup = get_report_group(hash_in)
@@ -205,6 +221,10 @@ class LitleOnlineRequest
   end
 
   def register_token_request(hash_in)
+    @config_hash['proxy_addr'] = hash_in['proxy_addr'].nil? ? @config_hash['proxy_addr'] : hash_in['proxy_addr']
+    @config_hash['proxy_port'] = hash_in['proxy_port'].nil? ? @config_hash['proxy_port'] : hash_in['proxy_port']
+    @config_hash['url'] = hash_in['url'].nil? ? @config_hash['url'] : hash_in['url']
+
     request = OnlineRequest.new
     token_request = RegisterTokenRequest.new
     token_request.reportGroup = get_report_group(hash_in)
@@ -233,6 +253,10 @@ class LitleOnlineRequest
   end
 
   def force_capture(hash_in)
+    @config_hash['proxy_addr'] = hash_in['proxy_addr'].nil? ? @config_hash['proxy_addr'] : hash_in['proxy_addr']
+    @config_hash['proxy_port'] = hash_in['proxy_port'].nil? ? @config_hash['proxy_port'] : hash_in['proxy_port']
+    @config_hash['url'] = hash_in['url'].nil? ? @config_hash['url'] : hash_in['url']
+
     request = OnlineRequest.new
     force_capture = ForceCapture.new
     force_capture.reportGroup = get_report_group(hash_in)
@@ -270,6 +294,10 @@ class LitleOnlineRequest
   end
 
   def capture(hash_in)
+    @config_hash['proxy_addr'] = hash_in['proxy_addr'].nil? ? @config_hash['proxy_addr'] : hash_in['proxy_addr']
+    @config_hash['proxy_port'] = hash_in['proxy_port'].nil? ? @config_hash['proxy_port'] : hash_in['proxy_port']
+    @config_hash['url'] = hash_in['url'].nil? ? @config_hash['url'] : hash_in['url']
+
     request = OnlineRequest.new
     capture = Capture.new
     capture.reportGroup = get_report_group(hash_in)
@@ -301,6 +329,10 @@ class LitleOnlineRequest
   end
 
   def capture_given_auth(hash_in)
+    @config_hash['proxy_addr'] = hash_in['proxy_addr'].nil? ? @config_hash['proxy_addr'] : hash_in['proxy_addr']
+    @config_hash['proxy_port'] = hash_in['proxy_port'].nil? ? @config_hash['proxy_port'] : hash_in['proxy_port']
+    @config_hash['url'] = hash_in['url'].nil? ? @config_hash['url'] : hash_in['url']
+
     request = OnlineRequest.new
     capture_given_auth = CaptureGivenAuth.new
     capture_given_auth.reportGroup = get_report_group(hash_in)
@@ -341,6 +373,10 @@ class LitleOnlineRequest
   end
 
   def echeck_redeposit(hash_in)
+    @config_hash['proxy_addr'] = hash_in['proxy_addr'].nil? ? @config_hash['proxy_addr'] : hash_in['proxy_addr']
+    @config_hash['proxy_port'] = hash_in['proxy_port'].nil? ? @config_hash['proxy_port'] : hash_in['proxy_port']
+    @config_hash['url'] = hash_in['url'].nil? ? @config_hash['url'] : hash_in['url']
+
     request = OnlineRequest.new
     echeck_redeposit = EcheckRedeposit.new
     echeck_redeposit.reportGroup = get_report_group(hash_in)
@@ -368,6 +404,10 @@ class LitleOnlineRequest
   end
 
   def echeck_sale(hash_in)
+    @config_hash['proxy_addr'] = hash_in['proxy_addr'].nil? ? @config_hash['proxy_addr'] : hash_in['proxy_addr']
+    @config_hash['proxy_port'] = hash_in['proxy_port'].nil? ? @config_hash['proxy_port'] : hash_in['proxy_port']
+    @config_hash['url'] = hash_in['url'].nil? ? @config_hash['url'] : hash_in['url']
+
     request = OnlineRequest.new
     echeck_sale = EcheckSale.new
     echeck_sale.reportGroup = get_report_group(hash_in)
@@ -402,6 +442,10 @@ class LitleOnlineRequest
   end
 
   def echeck_credit(hash_in)
+    @config_hash['proxy_addr'] = hash_in['proxy_addr'].nil? ? @config_hash['proxy_addr'] : hash_in['proxy_addr']
+    @config_hash['proxy_port'] = hash_in['proxy_port'].nil? ? @config_hash['proxy_port'] : hash_in['proxy_port']
+    @config_hash['url'] = hash_in['url'].nil? ? @config_hash['url'] : hash_in['url']
+
     request = OnlineRequest.new
     echeck_credit = EcheckCredit.new
     echeck_credit.reportGroup = get_report_group(hash_in)
@@ -441,6 +485,10 @@ class LitleOnlineRequest
   end
 
   def echeck_verification(hash_in)
+    @config_hash['proxy_addr'] = hash_in['proxy_addr'].nil? ? @config_hash['proxy_addr'] : hash_in['proxy_addr']
+    @config_hash['proxy_port'] = hash_in['proxy_port'].nil? ? @config_hash['proxy_port'] : hash_in['proxy_port']
+    @config_hash['url'] = hash_in['url'].nil? ? @config_hash['url'] : hash_in['url']
+
     request = OnlineRequest.new
     echeck_verification = EcheckVerification.new
     echeck_verification.reportGroup = get_report_group(hash_in)
@@ -472,6 +520,10 @@ class LitleOnlineRequest
   end
 
   def void(hash_in)
+    @config_hash['proxy_addr'] = hash_in['proxy_addr'].nil? ? @config_hash['proxy_addr'] : hash_in['proxy_addr']
+    @config_hash['proxy_port'] = hash_in['proxy_port'].nil? ? @config_hash['proxy_port'] : hash_in['proxy_port']
+    @config_hash['url'] = hash_in['url'].nil? ? @config_hash['url'] : hash_in['url']
+
     request = OnlineRequest.new
     void = Void.new
     void.reportGroup = get_report_group(hash_in)
@@ -517,7 +569,7 @@ class LitleOnlineRequest
   
   def get_merchant_sdk(hash_in)
     if(!hash_in['merchantSdk'])
-      return 'Ruby;8.12.2'
+      return 'Ruby;8.12.3'
     else
       return hash_in['merchantSdk']
     end    
@@ -530,62 +582,4 @@ class LitleOnlineRequest
       return hash_in['reportGroup']
     end
   end
-
-  def authentication(hash_in)
-    if(!hash_in['user'])
-      user = @config_hash['user']
-    else
-      user = hash_in['user']
-    end
-    
-    if(!hash_in['password'])
-      password = @config_hash['password']
-    else
-      password = hash_in['password']
-    end
-    
-    hash_out = {
-      :user =>required_field(user),
-      :password =>required_field(password)
-    }
-    Checker.required_missing(hash_out)
-  end
-
-  def required_field(value)
-    return (value or 'REQUIRED')
-  end
-
-  def optional_field(value)
-    return (value or ' ')
-  end
-
-  def build_full_hash(hash_in, merge_hash)
-    if(hash_in['version'] == nil)
-      version = @config_hash['version']
-    else
-      version = hash_in['version']
-    end
-
-    litle_online_hash = {
-      "@version"=> required_field(version),
-      "@xmlns"=> "http://www.litle.com/schema",
-      "@merchantId"=> get_merchant_id(hash_in),
-      "@merchantSdk"=> get_merchant_sdk(hash_in),
-      :authentication => authentication(hash_in)
-    }
-    return litle_online_hash.merge(merge_hash)
-  end
-
-  def get_common_attributes(hash_in)
-    @config_hash['proxy_addr'] = hash_in['proxy_addr'].nil? ? @config_hash['proxy_addr'] : hash_in['proxy_addr']
-    @config_hash['proxy_port'] = hash_in['proxy_port'].nil? ? @config_hash['proxy_port'] : hash_in['proxy_port']
-    @config_hash['url'] = hash_in['url'].nil? ? @config_hash['url'] : hash_in['url']
-    
-    return {
-      '@id' => hash_in['id'],
-      '@customerId' => hash_in['customerId'],
-      '@reportGroup' => get_report_group(hash_in)
-    }
-  end
-
 end
