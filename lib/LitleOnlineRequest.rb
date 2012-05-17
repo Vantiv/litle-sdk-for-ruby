@@ -577,7 +577,7 @@ class LitleOnlineRequest
 
   def get_report_group(hash_in)
     if (!hash_in['reportGroup'])
-      return required_field(@config_hash['default_report_group'])
+      return @config_hash['default_report_group']
     else
       return hash_in['reportGroup']
     end
