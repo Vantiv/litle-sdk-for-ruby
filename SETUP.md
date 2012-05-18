@@ -40,7 +40,7 @@ Sample configuration file contents
 ```
 user: test_user
 password: test_password
-version: 8.12
+version: 8.13
 url: https://precert.litle.com/vap/communicator/online
 proxy_addr: yourproxyserver
 proxy_port: 8080

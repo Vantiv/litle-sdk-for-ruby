@@ -72,6 +72,7 @@ module LitleOnline
       authorization.filtering = Filtering.from_hash(hash_in)
       authorization.merchantData = MerchantData.from_hash(hash_in)
       authorization.recyclingRequest = RecyclingRequest.from_hash(hash_in)
+      authorization.fraudFilterOverride = hash_in['fraudFilterOverride']
       
       request.authorization = authorization
       
@@ -127,6 +128,7 @@ module LitleOnline
       sale.filtering = Filtering.from_hash(hash_in)
       sale.merchantData = MerchantData.from_hash(hash_in)
       sale.recyclingRequest = RecyclingRequest.from_hash(hash_in)
+      sale.fraudFilterOverride = hash_in['fraudFilterOverride']
       
       request.sale = sale
       
@@ -571,7 +573,7 @@ module LitleOnline
     
     def get_merchant_sdk(hash_in)
       if(!hash_in['merchantSdk'])
-        return 'Ruby;8.12.4'
+        return 'Ruby;8.13.0'
       else
         return hash_in['merchantSdk']
       end    

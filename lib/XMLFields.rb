@@ -717,6 +717,7 @@ module LitleOnline
     object_node :filtering, "filtering", :class=>Filtering, :default_value=>nil
     object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
     object_node :recyclingRequest, "recyclingRequest", :class=>RecyclingRequest, :default_value=>nil
+    text_node :fraudFilterOverride, "fraudFilterOverride", :default_value=>nil
   end
   
   class Sale
@@ -752,6 +753,7 @@ module LitleOnline
     object_node :filtering, "filtering", :class=>Filtering, :default_value=>nil
     object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
     object_node :recyclingRequest, "recyclingRequest", :class=>RecyclingRequest, :default_value=>nil
+    text_node :fraudFilterOverride, "fraudFilterOverride", :default_value=>nil
   end
   
   class Credit

@@ -233,5 +233,21 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
+    
+    def test_fraud_filter_override
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.12',
+        'orderId'=>'1',
+        'amount'=>'0',
+        'orderSource'=>'ecommerce',
+        'reportGroup'=>'Planets',
+        'fraudFilterOverride'=> 'false'
+      }
+    
+      XMLObject.expects(:new)
+      Communications.expects(:http_post).with(regexp_matches(/.*<sale.*?<fraudFilterOverride>false<\/fraudFilterOverride>.*?<\/sale>.*/m),kind_of(Hash))
+      LitleOnlineRequest.new.sale(hash)
+    end          
   end
 end

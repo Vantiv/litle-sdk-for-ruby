@@ -44,7 +44,7 @@ class Setup
       f.puts "currency_merchant_map:"
       f.puts "  DEFAULT: " + gets
       f.puts "default_report_group: 'Default Report Group'"
-      f.puts	"version: '8.12'"
+      f.puts	"version: '8.13'"
       puts "Please choose Litle url from the following list (example: 'cert') or directly input another URL: \nsandbox => https://www.testlitle.com/sandbox/communicator/online \ncert => https://cert.litle.com/vap/communicator/online \nprecert => https://precert.litle.com/vap/communicator/online \nproduction1 => https://payments.litle.com/vap/communicator/online \nproduction2 => https://payments2.litle.com/vap/communicator/online"
       f.puts "url: " + Setup.choice(gets)
       puts "Please input the proxy address, if no proxy hit enter key: "

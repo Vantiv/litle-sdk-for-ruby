@@ -147,6 +147,21 @@ module LitleOnline
       LitleOnlineRequest.new.authorization(hash)
     end
     
+    def test_fraud_filter_override
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.12',
+        'orderId'=>'1',
+        'amount'=>'0',
+        'orderSource'=>'ecommerce',
+        'reportGroup'=>'Planets',
+        'fraudFilterOverride'=> 'true'
+      }
+    
+      XMLObject.expects(:new)
+      Communications.expects(:http_post).with(regexp_matches(/.*<authorization.*?<fraudFilterOverride>true<\/fraudFilterOverride>.*?<\/authorization>.*/m),kind_of(Hash))
+      LitleOnlineRequest.new.authorization(hash)
+    end          
   end
 
 end
