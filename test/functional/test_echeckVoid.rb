@@ -22,21 +22,20 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-
 require 'lib/LitleOnline'
+require 'test/unit'
 
-#test driver for running all tests
-require_relative 'test_xmlfields'
-require_relative 'test_sale'
-require_relative 'test_auth'
-require_relative 'test_authReversal'
-require_relative 'test_credit'
-require_relative 'test_token'
-require_relative 'test_forceCapture'
-require_relative 'test_capture'
-require_relative 'test_captureGivenAuth'
-require_relative 'test_echeckRedeposit'
-require_relative 'test_echeckSale'
-require_relative 'test_echeckCredit'
-require_relative 'test_echeckVerification'
-require_relative 'test_echeckVoid'
+module LitleOnline
+  class TestAuthReversal < Test::Unit::TestCase
+    def test_simple_echeck_void
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'12345678000',
+      }
+      response= LitleOnlineRequest.new.echeck_void(hash)
+      assert_equal('Approved', response.echeckVoidResponse.message)
+    end  
+  end
+end

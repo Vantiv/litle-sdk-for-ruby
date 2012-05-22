@@ -552,6 +552,36 @@ module LitleOnline
       xml = request.save_to_xml.to_s
       LitleXmlMapper.request(xml, @config_hash)
     end
+    
+    def echeck_void(hash_in)
+      @config_hash['proxy_addr'] = hash_in['proxy_addr'].nil? ? @config_hash['proxy_addr'] : hash_in['proxy_addr']
+      @config_hash['proxy_port'] = hash_in['proxy_port'].nil? ? @config_hash['proxy_port'] : hash_in['proxy_port']
+      @config_hash['url'] = hash_in['url'].nil? ? @config_hash['url'] : hash_in['url']
+  
+      request = OnlineRequest.new
+      void = EcheckVoid.new
+      void.reportGroup = get_report_group(hash_in)
+      void.transactionId = hash_in['id']
+      void.customerId = hash_in['customerId']
+  
+      void.litleTxnId = hash_in['litleTxnId']
+  
+      request.echeckVoid = void
+      
+      authentication = Authentication.new
+      authentication.user = 'PHXMLTEST'
+      authentication.password = 'password'
+      request.authentication = authentication
+      
+      request.merchantId = get_merchant_id(hash_in)
+      request.version = get_version(hash_in)
+      request.xmlns = "http://www.litle.com/schema"
+      request.merchantSdk = get_merchant_sdk(hash_in)
+  
+      xml = request.save_to_xml.to_s
+      LitleXmlMapper.request(xml, @config_hash)
+    end
+
   
     private
   
@@ -573,7 +603,7 @@ module LitleOnline
     
     def get_merchant_sdk(hash_in)
       if(!hash_in['merchantSdk'])
-        return 'Ruby;8.13.0'
+        return 'Ruby;8.13.1'
       else
         return hash_in['merchantSdk']
       end    
