@@ -39,6 +39,7 @@ For more details on setup see our instructions [here](https://github.com/LitleCo
 
 ```ruby
 require 'LitleOnline'
+include LitleOnline
 
 # Visa $10 Sale
 litleSaleTxn = {
