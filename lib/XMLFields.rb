@@ -56,6 +56,84 @@ module LitleOnline
     text_node :password, "password"
   end
   
+  class SchemaValidation
+    
+    def self.validate_required(value, required, class_name, field_name)
+      if(required)
+        if(value.nil?)
+          raise "If #{class_name} is specified, it must have a #{field_name}"
+        end
+      end
+    end
+    
+    def self.validate_length(value, required, min, max, class_name, field_name)
+      validate_required(value, required, class_name, field_name)
+      if(value.nil?)
+        return
+      end
+      if(value.length < min || value.length > max)
+        raise "If " + class_name + " " + field_name + " is specified, it must be between " + min.to_s + " and " + max.to_s + " characters long"
+      end
+    end
+    
+    def self.validate_size(value, required, min, max, class_name, field_name)
+      validate_required(value, required, class_name, field_name)
+      if(value.nil?)
+        return
+      end
+      if(value.to_i < min || value.to_i > max || !(/\A\-?\d+\Z/ =~ value))
+        raise "If " + class_name + " " + field_name + " is specified, it must be between " + min.to_s + " and " + max.to_s
+      end
+    end
+    
+    def self.validate_country(value, class_name, field_name)
+      if(value.nil?)
+        return
+      end
+      list = ["USA","AF","AX","AL","DZ","AS","AD","AO","AI","AQ","AG","AR","AM","AW","AU","AT","AZ","BS","BH","BD","BB","BY","BE","BZ","BJ","BM","BT","BO","BQ","BA","BW","BV","BR","IO","BN","BG","BF","BI","KH","CM","CA","CV","KY","CF","TD","CL","CN","CX","CC","CO","KM","CG","CD","CK","CR","CI","HR","CU","CW","CY","CZ","DK","DJ","DM","DO","TL","EC","EG","SV","GQ","ER","EE","ET","FK","FO","FJ","FI","FR","GF","PF","TF","GA","GM","GE","DE","GH","GI","GR","GL","GD","GP","GU","GT","GG","GN","GW","GY","HT","HM","HN","HK","HU","IS","IN","ID","IR","IQ","IE","IM","IL","IT","JM","JP","JE","JO","KZ","KE","KI","KP","KR","KW","KG","LA","LV","LB","LS","LR","LY","LI","LT","LU","MO","MK","MG","MW","MY","MV","ML","MT","MH","MQ","MR","MU","YT","MX","FM","MD","MC","MN","MS","MA","MZ","MM","NA","NR","NP","NL","AN","NC","NZ","NI","NE","NG","NU","NF","MP","NO","OM","PK","PW","PS","PA","PG","PY","PE","PH","PN","PL","PT","PR","QA","RE","RO","RU","RW","BL","KN","LC","MF","VC","WS","SM","ST","SA","SN","SC","SL","SG","SX","SK","SI","SB","SO","ZA","GS","ES","LK","SH","PM","SD","SR","SJ","SZ","SE","CH","SY","TW","TJ","TZ","TH","TG","TK","TO","TT","TN","TR","TM","TC","TV","UG","UA","AE","GB","US","UM","UY","UZ","VU","VA","VE","VN","VG","VI","WF","EH","YE","ZM","ZW","RS","ME"]
+      if(!list.include? value)
+        raise "If " + class_name + " " + field_name + " is specified, it must be valid.  You specified " + value
+      end
+    end
+    
+    def self.validate_regex(value, required,  regex, class_name, field_name)
+      validate_required(value, required, class_name, field_name)
+      if(value.nil?)
+        return
+      end
+      if(!(regex =~ value))
+        raise "If #{class_name} #{field_name} is specified, it must match the regular expression #{regex.inspect}"
+      end
+    end
+    
+    def self.validate_enum(value, required, list, class_name, field_name)
+      validate_required(value, required, class_name, field_name)
+      if(value.nil?)
+        return
+      end
+      if(!list.include?(value))
+        raise "If #{class_name} #{field_name} is specified, it must be in #{list.to_s}"
+      end
+    end
+    
+    def self.validate_long(value, required, class_name, field_name)
+      validate_size(value, required, -9223372036854775808, 9223372036854775807, class_name, field_name)
+    end
+    
+    def self.validate_currency(value, required, class_name, field_name)
+      validate_enum(value, required, ['AUD','CAD','CHF','DKK','EUR','GBP','HKD','JPY','NOK','NZD','SEK','SGD','USD'], class_name, field_name)
+    end
+    
+    def self.validate_boolean(value, required, class_name, field_name)
+      validate_enum(value, required, ['true','false','1','0'], class_name, field_name)
+    end
+    
+    def self.validate_date(value, required, class_name, field_name)
+      validate_regex(value, required, /\A\d{4}-\d{2}-\d{2}\Z/, class_name, field_name)
+    end
+    
+  end
+  
   class Contact
     include XML::Mapping
     text_node :name, "name", :default_value=>nil
@@ -90,6 +168,21 @@ module LitleOnline
         this.country = base['country']
         this.email = base['email']
         this.phone = base['phone']
+        SchemaValidation.validate_length(this.name, false, 1, 100, name, "name")
+        SchemaValidation.validate_length(this.firstName, false, 1, 25, name, "firstName")
+        SchemaValidation.validate_length(this.middleInitial, false, 1, 1, name, "middleInitial")
+        SchemaValidation.validate_length(this.lastName, false, 1, 25, name, "lastName")
+        SchemaValidation.validate_length(this.companyName, false, 1, 40, name, "companyName")
+        SchemaValidation.validate_length(this.addressLine1, false, 1, 35, name, "addressLine1")
+        SchemaValidation.validate_length(this.addressLine2, false, 1, 35, name, "addressLine2")
+        SchemaValidation.validate_length(this.addressLine3, false, 1, 35, name, "addressLine3")
+        SchemaValidation.validate_length(this.city, false, 1, 35, name, "city")
+        SchemaValidation.validate_length(this.state, false, 1, 30, name, "state")
+        SchemaValidation.validate_length(this.zip, false, 1, 20, name, "zip")
+        SchemaValidation.validate_length(this.country, false, 1, 3, name, "country")
+        SchemaValidation.validate_country(this.country, name, "country")
+        SchemaValidation.validate_length(this.email, false, 1, 100, name, "email")
+        SchemaValidation.validate_length(this.phone, false, 1, 20, name, "phone")
         this
       else
         nil
@@ -107,6 +200,7 @@ module LitleOnline
     text_node :incomeCurrency, "incomeCurrency", :default_value=>nil
     text_node :customerCheckingAccount, "customerCheckingAccount", :default_value=>nil
     text_node :customerSavingAccount, "customerSavingAccount", :default_value=>nil
+    text_node :employerName, "employerName", :default_value=>nil
     text_node :customerWorkTelephone, "customerWorkTelephone", :default_value=>nil
     text_node :residenceStatus, "residenceStatus", :default_value=>nil
     text_node :yearsAtResidence, "yearsAtResidence", :default_value=>nil
@@ -123,10 +217,24 @@ module LitleOnline
         this.incomeCurrency = base['incomeCurrency']
         this.customerCheckingAccount = base['customerCheckingAccount']
         this.customerSavingAccount = base['customerSavingAccount']
+        this.employerName = base['employerName']
         this.customerWorkTelephone = base['customerWorkTelephone']
         this.residenceStatus = base['residenceStatus']
         this.yearsAtResidence = base['yearsAtResidence']
         this.yearsAtEmployer = base['yearsAtEmployer']
+        SchemaValidation.validate_regex(this.ssn, false,  /\A\d{9}\Z/, name, 'ssn')
+        SchemaValidation.validate_date(this.dob, false, name, 'dob')
+        SchemaValidation.validate_regex(this.customerRegistrationDate, false, /\A\d{4}-\d{2}-\d{2}/, name, 'customerRegistrationDate')
+        SchemaValidation.validate_enum(this.customerType, false, ['New','Existing'], name, 'customerType')
+        SchemaValidation.validate_long(this.incomeAmount, false, name, 'incomeAmount')
+        SchemaValidation.validate_currency(this.incomeCurrency, false, name, 'incomeCurrency')
+        SchemaValidation.validate_boolean(this.customerCheckingAccount, false, name, 'customerCheckingAccount')
+        SchemaValidation.validate_boolean(this.customerSavingAccount, false, name, 'customerSavingAccount')
+        SchemaValidation.validate_length(this.employerName, false, 1, 20, name, "employerName")
+        SchemaValidation.validate_length(this.customerWorkTelephone, false, 1, 20, name, "customerWorkTelephone")
+        SchemaValidation.validate_enum(this.residenceStatus, false, ['Own','Rent','Other'], name, 'residenceStatus')
+        SchemaValidation.validate_size(this.yearsAtResidence, false, 0, 99, name, 'yearsAtResidence')
+        SchemaValidation.validate_size(this.yearsAtEmployer, false, 0, 99, name, 'yearsAtEmployer')
         this
       else
         nil
@@ -137,10 +245,12 @@ module LitleOnline
   class BillMeLaterRequest
     include XML::Mapping
     text_node :bmlMerchantId, "bmlMerchantId", :default_value=>nil
+    text_node :bmlProductType, "bmlProductType", :default_value=>nil
     text_node :termsAndConditions, "termsAndConditions", :default_value=>nil
     text_node :preapprovalNumber, "preapprovalNumber", :default_value=>nil
     text_node :merchantPromotionalCode, "merchantPromotionalCode", :default_value=>nil
     text_node :customerPasswordChanged, "customerPasswordChanged", :default_value=>nil
+    text_node :customerBillingAddressChanged, "customerBillingAddressChanged", :default_value=>nil
     text_node :customerEmailChanged, "customerEmailChanged", :default_value=>nil
     text_node :customerPhoneChanged, "customerPhoneChanged", :default_value=>nil
     text_node :secretQuestionCode, "secretQuestionCode", :default_value=>nil
@@ -154,9 +264,12 @@ module LitleOnline
       if(base)
         this = BillMeLaterRequest.new
         this.bmlMerchantId = base['bmlMerchantId']
+        this.bmlProductType = base['bmlProductType']
         this.termsAndConditions = base['termsAndConditions']
+        this.preapprovalNumber = base['preapprovalNumber']
         this.merchantPromotionalCode = base['merchantPromotionalCode']
         this.customerPasswordChanged = base['customerPasswordChanged']
+        this.customerBillingAddressChanged = base['customerBillingAddressChanged']
         this.customerEmailChanged = base['customerEmailChanged']
         this.customerPhoneChanged = base['customerPhoneChanged']
         this.secretQuestionCode = base['secretQuestionCode']
@@ -165,6 +278,20 @@ module LitleOnline
         this.virtualAuthenticationKeyData = base['virtualAuthenticationKeyData']
         this.itemCategoryCode = base['itemCategoryCode']
         this.authorizationSourcePlatform = base['authorizationSourcePlatform']
+        SchemaValidation.validate_long(this.bmlMerchantId, false, name, 'bmlMerchantId')
+        SchemaValidation.validate_length(this.bmlProductType, false, 1, 2, name, "bmlProductType")
+        SchemaValidation.validate_size(this.termsAndConditions, false, -99999, 99999, name, 'termsAndConditions')
+        SchemaValidation.validate_length(this.preapprovalNumber, false, 13, 25, name, "preapprovalNumber")
+        SchemaValidation.validate_size(this.merchantPromotionalCode, false, -9999, 9999, name, 'merchantPromotionalCode')
+        SchemaValidation.validate_boolean(this.customerPasswordChanged, false, name, 'customerPasswordChanged')
+        SchemaValidation.validate_boolean(this.customerBillingAddressChanged, false, name, 'customerBillingAddressChanged')
+        SchemaValidation.validate_boolean(this.customerEmailChanged, false, name, 'customerEmailChanged')
+        SchemaValidation.validate_boolean(this.customerPhoneChanged, false, name, 'customerPhoneChanged')
+        SchemaValidation.validate_length(this.secretQuestionCode, false, 1, 2, name, "secretQuestionCode")
+        SchemaValidation.validate_length(this.secretQuestionAnswer, false, 1, 25, name, "secretQuestionAnswer")
+        SchemaValidation.validate_length(this.virtualAuthenticationKeyPresenceIndicator, false, 1, 1, name, "virtualAuthenticationKeyPresenceIndicator")
+        SchemaValidation.validate_length(this.virtualAuthenticationKeyData, false, 1, 4, name, "virtualAuthenticationKeyData")
+        SchemaValidation.validate_size(this.itemCategoryCode, false, -9999, 9999, name, 'itemCategoryCode')
         this
       else
         nil
@@ -186,6 +313,10 @@ module LitleOnline
         this.authenticationTransactionId = base['authenticationTransactionId']
         this.customerIpAddress = base['customerIpAddress']
         this.authenticatedByMerchant = base['authenticatedByMerchant']
+        SchemaValidation.validate_length(this.authenticationValue, false, 1, 32, name, "authenticationValue")
+        SchemaValidation.validate_length(this.authenticationTransactionId, false, 1, 28, name, "authenticationTransactionId")
+        SchemaValidation.validate_regex(this.customerIpAddress, false, /\A(\d{1,3}.){3}\d{1,3}\Z/, name, 'customerIpAddress')
+        SchemaValidation.validate_boolean(this.authenticatedByMerchant, false, name, 'authenticatedByMerchant')
         this
       else
         nil
@@ -207,6 +338,9 @@ module LitleOnline
         this.cardValidationResult = base['cardValidationResult']
         this.authenticationResult = base['authenticationResult']
         this.advancedAVSResult = base['advancedAVSResult']
+        SchemaValidation.validate_length(this.avsResult, false, 1, 2, name, "avsResult")
+        SchemaValidation.validate_length(this.authenticationResult, false, 1, 1, name, "authenticationResult")
+        SchemaValidation.validate_length(this.advancedAVSResult, false, 1, 3, name, "advancedAVSResult")
         this
       else
         nil
@@ -228,6 +362,9 @@ module LitleOnline
         this.authCode = base['authCode']
         this.fraudResult = FraudResult.from_hash(base)
         this.authAmount = base['authAmount']
+        SchemaValidation.validate_date(this.authDate, false, name, 'authDate')
+        SchemaValidation.validate_length(this.authCode, false, 1, 6, name, "authCode")
+        SchemaValidation.validate_size(this.authAmount, false, -999999999999, 999999999999, name, 'authAmount')
         this
       else
         nil
@@ -251,6 +388,11 @@ module LitleOnline
         this.visionAmount = base['visionAmount']
         this.clinicOtherAmount = base['clinicOtherAmount']
         this.dentalAmount = base['dentalAmount']
+        SchemaValidation.validate_size(this.totalHealthcareAmount, true, -999999999999, 999999999999, name, 'totalHealthcareAmount')
+        SchemaValidation.validate_size(this.rxAmount, false, -999999999999, 999999999999, name, 'RxAmount')
+        SchemaValidation.validate_size(this.visionAmount, false, -999999999999, 999999999999, name, 'visionAmount')
+        SchemaValidation.validate_size(this.clinicOtherAmount, false, -999999999999, 999999999999, name, 'clinicOtherAmount')
+        SchemaValidation.validate_size(this.dentalAmount, false, -999999999999, 999999999999, name, 'dentalAmount')
         this
       else
         nil
@@ -268,6 +410,7 @@ module LitleOnline
         this = HealthcareIIAS.new
         this.healthcareAmounts = HealthcareAmounts.from_hash(base)
         this.iiasFlag = base['IIASFlag']
+        SchemaValidation.validate_enum(this.iiasFlag, true, ['Y'], name, 'IIASFlag')
         this
       else
         nil
@@ -287,6 +430,9 @@ module LitleOnline
         this.capability = base['capability']
         this.entryMode = base['entryMode']
         this.cardholderId = base['cardholderId']
+        SchemaValidation.validate_enum(this.capability, true, ['notused','magstripe','keyedonly'], name, 'capability')
+        SchemaValidation.validate_enum(this.entryMode, true, ['notused','keyed','track1','track2','completeread'], name, 'entryMode')
+        SchemaValidation.validate_enum(this.cardholderId, true, ['signature','pin','nopin','directmarket'], name, 'cardholderId')
         this
       else
         nil
@@ -310,6 +456,11 @@ module LitleOnline
         this.taxRate = base['taxRate']
         this.taxTypeIdentifier = base['taxTypeIdentifier']
         this.cardAcceptorTaxId = base['cardAcceptorTaxId']
+        SchemaValidation.validate_boolean(this.taxIncludedInTotal, false, name, 'taxIncludedInTotal')
+        SchemaValidation.validate_size(this.taxAmount, true, -999999999999, 999999999999, name, 'taxAmount')
+        SchemaValidation.validate_regex(this.taxRate, false, /\A(\+|\-)?\d*\.?\d*\Z/, name, 'taxRate')
+        SchemaValidation.validate_enum(this.taxTypeIdentifier, false, ['00','01','02','03','04','05','06','10','11','12','13','14','20','21','22'], name, 'taxTypeIdentifier')
+        SchemaValidation.validate_length(this.cardAcceptorTaxId, false, 1, 20, name, 'cardAcceptorTaxId')
         this
       else
         nil
@@ -349,6 +500,17 @@ module LitleOnline
         if(base['detailTax'])
           base['detailTax'].each_index {|index| this.detailTax << DetailTax.from_hash(base,index)}
         end
+        SchemaValidation.validate_size(this.itemSequenceNumber, false, 1, 99, name, 'itemSequenceNumber')
+        SchemaValidation.validate_length(this.itemDescription, true, 1, 26, name, 'itemDescription')
+        SchemaValidation.validate_length(this.productCode, false, 1, 12, name, 'productCode')
+        SchemaValidation.validate_regex(this.quantity, false, /\A(\+|\-)?\d*\.?\d*\Z/, name, 'quantity')
+        SchemaValidation.validate_length(this.unitOfMeasure, false, 1, 12, name, 'unitOfMeasure')
+        SchemaValidation.validate_size(this.taxAmount, false, -999999999999, 999999999999, name, 'taxAmount')
+        SchemaValidation.validate_size(this.lineItemTotal, false, -999999999999, 999999999999, name, 'lineItemTotal')
+        SchemaValidation.validate_size(this.lineItemTotalWithTax, false, -999999999999, 999999999999, name, 'lineItemTotalWithTax')
+        SchemaValidation.validate_size(this.itemDiscountAmount, false, -999999999999, 999999999999, name, 'itemDiscountAmount')
+        SchemaValidation.validate_length(this.commodityCode, false, 1, 12, name, 'commodityCode')
+        SchemaValidation.validate_regex(this.unitCost, false, /\A(\+|\-)?\d*\.?\d*\Z/, name, 'unitCost')
         this
       else
         nil
@@ -394,6 +556,18 @@ module LitleOnline
         if(base['lineItemData'])
           base['lineItemData'].each_index {|index| this.lineItemData << LineItemData.from_hash(base,index)}
         end
+        SchemaValidation.validate_length(this.customerReference, false, 1, 17, name, 'customerReference')
+        SchemaValidation.validate_size(this.salesTax, false, -999999999999, 999999999999, name, 'salesTax')
+        SchemaValidation.validate_enum(this.deliveryType, false, ['CNC','DIG','PHY','SVC','TBD'], name, 'deliveryType')
+        SchemaValidation.validate_boolean(this.taxExempt, false, name, 'taxExempt')
+        SchemaValidation.validate_size(this.discountAmount, false, -999999999999, 999999999999, name, 'discountAmount')
+        SchemaValidation.validate_size(this.shippingAmount, false, -999999999999, 999999999999, name, 'shippingAmount')
+        SchemaValidation.validate_size(this.dutyAmount, false, -999999999999, 999999999999, name, 'dutyAmount')
+        SchemaValidation.validate_length(this.shipFromPostalCode, false, 1, 20, name, 'shipFromPostalCode')
+        SchemaValidation.validate_length(this.destinationPostalCode, false, 1, 20, name, 'destinationPostalCode')
+        SchemaValidation.validate_country(this.destinationCountryCode, name, 'destinationCountryCode')
+        SchemaValidation.validate_length(this.invoiceReferenceNumber, false, 1, 15, name, 'invoiceReferenceNumber')
+        SchemaValidation.validate_date(this.orderDate, false, name, 'orderDate')
         this
       else
         nil
@@ -411,6 +585,8 @@ module LitleOnline
         this = AmexAggregatorData.new
         this.sellerId = base['sellerId']
         this.sellerMerchantCategoryCode = base['sellerMerchantCategoryCode']
+        SchemaValidation.validate_length(this.sellerId, false, 1, 16, name, 'sellerId')
+        SchemaValidation.validate_length(this.sellerMerchantCategoryCode, false, 1, 4, name, 'sellerMerchantCategoryCode')
         this
       else
         nil
@@ -435,6 +611,11 @@ module LitleOnline
         this.number = base['number']
         this.expDate = base['expDate']
         this.cardValidationNum = base['cardValidationNum']
+        SchemaValidation.validate_enum(this.mop, false, ['','MC','VI','AX','DC','DI','PP','JC','BL','EC'], name, 'type')
+        SchemaValidation.validate_length(this.track, false, 1, 256, name, 'track')
+        SchemaValidation.validate_length(this.number, false, 13, 25, name, 'number')
+        SchemaValidation.validate_length(this.expDate, false, 4, 4, name, 'expDate')
+        SchemaValidation.validate_length(this.cardValidationNum, false, 1, 4, name, 'cardValidationNum')
         this
       else
         nil
@@ -456,6 +637,10 @@ module LitleOnline
         this.expDate = base['expDate']
         this.cardValidationNum = base['cardValidationNum']
         this.mop = base['type']
+        SchemaValidation.validate_length(this.litleToken, true, 13, 25, name, 'litleToken')
+        SchemaValidation.validate_length(this.expDate, false, 4, 4, name, 'expDate')
+        SchemaValidation.validate_length(this.cardValidationNum, false, 1, 4, name, 'cardValidationNum')
+        SchemaValidation.validate_enum(this.mop, false, ['','MC','VI','AX','DC','DI','PP','JC','BL','EC'], name, 'type')
         this
       else
         nil
@@ -477,6 +662,10 @@ module LitleOnline
         this.expDate = base['expDate']
         this.cardValidationNum = base['cardValidationNum']
         this.mop = base['type']
+        SchemaValidation.validate_length(this.paypageRegistrationId, true, 1, 512, name, 'paypageRegistrationId')
+        SchemaValidation.validate_length(this.expDate, false, 4, 4, name, 'expDate')
+        SchemaValidation.validate_length(this.cardValidationNum, false, 1, 4, name, 'cardValidationNum')
+        SchemaValidation.validate_enum(this.mop, false, ['','MC','VI','AX','DC','DI','PP','JC','BL','EC'], name, 'type')
         this
       else
         nil
@@ -496,6 +685,8 @@ module LitleOnline
         this.payerId = base['payerId']
         this.token = base['token']
         this.transactionId = base['transactionId']
+        SchemaValidation.validate_required(this.payerId, true, name, 'payerId')
+        SchemaValidation.validate_required(this.transactionId, true, name, 'transactionId')
         this
       else
         nil
@@ -513,6 +704,8 @@ module LitleOnline
         this = CreditPayPal.new
         this.payerId = base['payerId']
         this.payerEmail = base['payerEmail']
+        SchemaValidation.validate_length(this.payerId, false, 1, 17, name, 'payerId')
+        SchemaValidation.validate_length(this.payerEmail, false, 1, 127, name, 'payerEmail')
         this
       else
         nil
@@ -534,25 +727,10 @@ module LitleOnline
         this.city = base['city']
         this.url = base['url']
         this.descriptor = base['descriptor']
-        this
-      else
-        nil
-      end
-    end
-  end
-  
-  class TaxBilling
-    include XML::Mapping
-    text_node :taxAuthority, "taxAuthority", :default_value=>nil
-    text_node :state, "state", :default_value=>nil
-    text_node :govtTxnType, "govtTxnType", :default_value=>nil
-    def self.from_hash(hash, name='taxBilling')
-      base = hash[name]
-      if(base)
-        this = TaxBilling.new
-        this.taxAuthority = base['taxAuthority']
-        this.state = base['state']
-        this.govtTxnType = base['govtTxnType']
+        SchemaValidation.validate_regex(this.phone, false, /\A\d{1,13}\Z/, name, 'phone')
+        SchemaValidation.validate_length(this.city, false, 1, 35, name, 'city')
+        SchemaValidation.validate_regex(this.url, false, /\A([A-Z,a-z,0-9,\/,\-,_,.]){1,13}\Z/, name, 'url')
+        SchemaValidation.validate_regex(this.descriptor, false, /\A([A-Z,a-z,0-9, ,\*,,,\-,',#,&,.]){4,25}\Z/, name, 'descriptor')
         this
       else
         nil
@@ -568,6 +746,7 @@ module LitleOnline
       if(base)
         this = ProcessingInstructions.new
         this.bypassVelocityCheck = base['bypassVelocityCheck']
+        SchemaValidation.validate_boolean(this.bypassVelocityCheck, false, name, 'bypassVelocityCheck')
         this
       else
         nil
@@ -585,6 +764,8 @@ module LitleOnline
         this = EcheckForToken.new
         this.accNum = base['accNum']
         this.routingNum = base['routingNum']
+        SchemaValidation.validate_length(this.accNum, true, 1, 17, name, 'accNum')
+        SchemaValidation.validate_length(this.routingNum, true, 9, 9, name, 'routingNum')
         this
       else
         nil
@@ -604,6 +785,9 @@ module LitleOnline
         this.prepaid = base['prepaid']
         this.international = base['international']
         this.chargeback = base['chargeback']
+        SchemaValidation.validate_boolean(this.prepaid, false, name, 'prepaid')
+        SchemaValidation.validate_boolean(this.international, false, name, 'international')
+        SchemaValidation.validate_boolean(this.chargeback, false, name, 'chargeback')
         this
       else
         nil
@@ -623,6 +807,9 @@ module LitleOnline
         this.campaign = base['campaign']
         this.affiliate = base['affiliate']
         this.merchantGroupingId = base['merchantGroupingId']
+        SchemaValidation.validate_length(this.campaign, false, 1, 25, name, 'campaign')
+        SchemaValidation.validate_length(this.affiliate, false, 1, 25, name, 'affiliate')
+        SchemaValidation.validate_length(this.merchantGroupingId, false, 1, 25, name, 'merchantGroupingId')
         this
       else
         nil
@@ -644,6 +831,10 @@ module LitleOnline
         this.accNum = base['accNum']
         this.routingNum = base['routingNum']
         this.checkNum = base['checkNum']
+        SchemaValidation.validate_enum(this.accType, true, ['Checking','Savings','Corporate','Corp Savings'], name, 'accType')
+        SchemaValidation.validate_length(this.accNum, true, 1, 17, name, 'accNum')
+        SchemaValidation.validate_length(this.routingNum, true, 9, 9, name, 'routingNum')
+        SchemaValidation.validate_length(this.checkNum, false, 1, 15, name, 'checkNum')
         this
       else
         nil
@@ -665,6 +856,10 @@ module LitleOnline
         this.routingNum = base['routingNum']
         this.accType = base['accType']
         this.checkNum = base['checkNum']
+        SchemaValidation.validate_length(this.litleToken, true, 13, 25, name, 'litleToken')
+        SchemaValidation.validate_length(this.routingNum, true, 9, 9, name, 'routingNum')
+        SchemaValidation.validate_enum(this.accType, true, ['Checking','Savings','Corporate','Corp Savings'], name, 'accType')
+        SchemaValidation.validate_length(this.checkNum, false, 1, 15, name, 'checkNum')
         this
       else
         nil
@@ -674,12 +869,16 @@ module LitleOnline
   
   class RecyclingRequest
     include XML::Mapping
-    text_node :recyleBy, "recyleBy", :default_value=>nil
+    text_node :recycleBy, "recycleBy", :default_value=>nil
+    text_node :recycleId, "recycleId", :default_value=>nil
     def self.from_hash(hash, name='recyclingRequest')
       base = hash[name]
       if(base)
         this = RecyclingRequest.new
-        this.recyleBy = base['recyleBy']
+        this.recycleBy = base['recycleBy']
+        this.recycleId = base['recycleId']
+        SchemaValidation.validate_enum(this.recycleBy, false, ['Merchant','Litle','None'], name, 'recycleBy')
+        SchemaValidation.validate_length(this.recycleId, false, 1, 25, name, 'recycleId')
         this
       else
         nil

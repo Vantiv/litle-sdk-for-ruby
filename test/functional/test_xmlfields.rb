@@ -157,24 +157,6 @@ module LitleOnline
       assert_equal('Valid Format', response.message)
     end
   
-    def test_pos_with_invalid_entry_mode
-      hash = {
-        'merchantId' => '101',
-        'version'=>'8.8',
-        'reportGroup'=>'Planets',
-        'orderId'=>'12344',
-        'amount'=>'106',
-        'orderSource'=>'ecommerce',
-        'pos'=>{'entryMode'=>'none','cardholderId'=>'pin','capability'=>'notused'},
-        'card'=>{
-        'type'=>'VI',
-        'number' =>'4100000000000001',
-        'expDate' =>'1210'
-        }}
-      response= LitleOnlineRequest.new.credit(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
-    end
-  
     def test_amex_data
       hash = {
         'merchantId' => '101',
@@ -233,30 +215,6 @@ module LitleOnline
       }
       response= LitleOnlineRequest.new.credit(hash)
       assert_equal('Valid Format', response.message)
-    end
-  
-    def test_simple_enhanced_data_incorrect_enum_for_country_code
-      hash = {
-        'merchantId' => '101',
-        'version'=>'8.8',
-        'reportGroup'=>'Planets',
-        'orderId'=>'12344',
-        'amount'=>'106',
-        'card'=>{
-        'type'=>'VI',
-        'number' =>'4100000000000001',
-        'expDate' =>'1210'},
-        'orderSource'=>'ecommerce',
-        'enhancedData'=>{
-        'destinationCountryCode'=>'001',
-        'customerReference'=>'Litle',
-        'salesTax'=>'50',
-        'deliveryType'=>'TBD',
-        'shipFromPostalCode'=>'01741',
-        'destinationPostalCode'=>'01742'}
-      }
-      response= LitleOnlineRequest.new.credit(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
     end
   
     def test_enhanced_data_with_detail_tax
@@ -333,24 +291,6 @@ module LitleOnline
       assert_equal('Valid Format', response.message)
     end
   
-    def test_token_with_incorrect_token_Length
-      hash = {
-        'merchantId' => '101',
-        'version'=>'8.8',
-        'reportGroup'=>'Planets',
-        'orderId'=>'12344',
-        'amount'=>'106',
-        'orderSource'=>'ecommerce',
-        'token'=> {
-        'litleToken'=>'123456',
-        'expDate'=>'1210',
-        'cardValidationNum'=>'555',
-        'type'=>'VI'
-        }}
-      response= LitleOnlineRequest.new.credit(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
-    end
-  
     def test_token_missing_exp_dat_and_valid_num
       hash = {
         'merchantId' => '101',
@@ -420,90 +360,6 @@ module LitleOnline
       assert(response.message =~ /Error validating xml data against the schema/)
     end
     
-    def test_paypal_missing_payer_id
-      hash = {
-        'merchantId' => '101',
-        'version'=>'8.8',
-        'reportGroup'=>'Planets',
-        'orderId'=>'12344',
-        'amount'=>'106',
-        'orderSource'=>'ecommerce',
-        'paypal'=>{
-        'token'=>'1234',
-        'transactionId'=>'123456'
-        }}
-      response= LitleOnlineRequest.new.authorization(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
-    end
-  
-    def test_paypal_missing_transaction_id
-      hash = {
-        'merchantId' => '101',
-        'version'=>'8.8',
-        'reportGroup'=>'Planets',
-        'orderId'=>'12344',
-        'amount'=>'106',
-        'orderSource'=>'ecommerce',
-        'paypal'=>{
-        'token'=>'1234',
-        'payerId'=>'123456'
-        }}
-      response= LitleOnlineRequest.new.authorization(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
-    end
-  
-    def test_pos_without_capability
-      hash = {
-        'merchantId' => '101',
-        'version'=>'8.8',
-        'reportGroup'=>'Planets',
-        'orderId'=>'12344',
-        'amount'=>'106',
-        'orderSource'=>'ecommerce',
-        'pos'=>{'entryMode'=>'track1','cardholderId'=>'pin'},
-        'card'=>{
-        'type'=>'VI',
-        'number' =>'4100000000000001',
-        'expDate' =>'1210'
-        }}
-      response= LitleOnlineRequest.new.authorization(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
-    end
-  
-    def test_token_missing_token
-      hash = {
-        'merchantId' => '101',
-        'version'=>'8.8',
-        'reportGroup'=>'Planets',
-        'orderId'=>'12344',
-        'amount'=>'106',
-        'orderSource'=>'ecommerce',
-        'token'=> {
-        'expDate'=>'1210',
-        'cardValidationNum'=>'555',
-        'type'=>'VI'
-        }}
-      response= LitleOnlineRequest.new.credit(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
-    end
-  
-    def test_paypage_missing_id
-      hash = {
-        'merchantId' => '101',
-        'version'=>'8.8',
-        'reportGroup'=>'Planets',
-        'orderId'=>'12344',
-        'amount'=>'106',
-        'orderSource'=>'ecommerce',
-        'paypage'=> {
-        'expDate'=>'1210',
-        'cardValidationNum'=>'555',
-        'type'=>'VI'
-        }}
-      response= LitleOnlineRequest.new.credit(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
-    end
-  
     def test_line_item_data
       hash = {
         'merchantId' => '101',

@@ -93,7 +93,7 @@ module LitleOnline
         'expDate' =>'1210'
         },
         'token'=> {
-        'litleToken'=>'1234',
+        'litleToken'=>'1234567890123',
         'expDate'=>'1210',
         'cardValidationNum'=>'555',
         'type'=>'VI'
@@ -187,7 +187,7 @@ module LitleOnline
         'token'=>'1234',
         'transactionId'=>'123456'},
         'token'=> {
-        'litleToken'=>'1234',
+        'litleToken'=>'1234567890123',
         'expDate'=>'1210',
         'cardValidationNum'=>'555',
         'type'=>'VI'
@@ -248,6 +248,25 @@ module LitleOnline
       XMLObject.expects(:new)
       Communications.expects(:http_post).with(regexp_matches(/.*<sale.*?<fraudFilterOverride>false<\/fraudFilterOverride>.*?<\/sale>.*/m),kind_of(Hash))
       LitleOnlineRequest.new.sale(hash)
-    end          
+    end
+    
+    def test_illegal_card_type
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'NO',
+        'number' =>'4100000000000002',
+        'expDate' =>'1210'
+        }}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
+      assert_match /If card type is specified, it must be in /, exception.message
+    end
+          
   end
 end

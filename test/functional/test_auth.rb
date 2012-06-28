@@ -115,24 +115,6 @@ module LitleOnline
       assert_equal('000', response.authorizationResponse.response)
     end
   
-    def test_pos_without_capability_and_entry_mode
-      hash = {
-        'merchantId' => '101',
-        'version'=>'8.8',
-        'reportGroup'=>'Planets',
-        'orderId'=>'12344',
-        'amount'=>'106',
-        'orderSource'=>'ecommerce',
-        'pos'=>{'cardholderId'=>'pin'},
-        'card'=>{
-        'type'=>'VI',
-        'number' =>'4100000000000001',
-        'expDate' =>'1210'
-        }}
-      response= LitleOnlineRequest.new.authorization(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
-    end
-    
     def test_no_order_id
       hash = {
         'merchantId' => '101',

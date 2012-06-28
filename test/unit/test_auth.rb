@@ -119,7 +119,7 @@ module LitleOnline
         'token'=>'1234',
         'transactionId'=>'123456'},
         'token'=> {
-        'litleToken'=>'1234',
+        'litleToken'=>'1234567890123',
         'expDate'=>'1210',
         'cardValidationNum'=>'555',
         'type'=>'VI'
@@ -161,7 +161,112 @@ module LitleOnline
       XMLObject.expects(:new)
       Communications.expects(:http_post).with(regexp_matches(/.*<authorization.*?<fraudFilterOverride>true<\/fraudFilterOverride>.*?<\/authorization>.*/m),kind_of(Hash))
       LitleOnlineRequest.new.authorization(hash)
-    end          
+    end
+    
+    def test_pos_without_capability
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'pos'=>{'entryMode'=>'track1','cardholderId'=>'pin'},
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        }}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
+      assert_match /If pos is specified, it must have a capability/, exception.message
+    end
+
+    def test_paypal_missing_payer_id
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'paypal'=>{
+        'token'=>'1234',
+        'transactionId'=>'123456'
+        }}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
+      assert_match /If paypal is specified, it must have a payerId/, exception.message
+    end
+    
+    def test_paypal_missing_transaction_id
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'paypal'=>{
+        'token'=>'1234',
+        'payerId'=>'123456'
+        }}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
+      assert_match /If paypal is specified, it must have a transactionId/, exception.message
+    end
+
+    def test_pos_without_capability_and_entry_mode
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'pos'=>{'cardholderId'=>'pin','capability'=>'notused'},
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        }}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
+      assert_match /If pos is specified, it must have a entryMode/, exception.message
+    end
+    
+    def test_auth_override_username
+      hash = {
+        'merchantId' => '101',
+        'user' => 'UNIT',
+        'password' => 'TEST',
+        'version'=>'8.12',
+        'orderId'=>'1',
+        'amount'=>'0',
+        'orderSource'=>'ecommerce',
+        'reportGroup'=>'Planets',
+        'fraudFilterOverride'=> 'true'
+      }
+    
+      XMLObject.expects(:new)
+      Communications.expects(:http_post).with(regexp_matches(/.*<authentication.*?<user>UNIT<\/user>.*?<\/authentication>.*/m),kind_of(Hash))
+      LitleOnlineRequest.new.authorization(hash)
+    end
+
+    def test_auth_override_password
+      hash = {
+        'merchantId' => '101',
+        'user' => 'UNIT',
+        'password' => 'TEST',
+        'version'=>'8.12',
+        'orderId'=>'1',
+        'amount'=>'0',
+        'orderSource'=>'ecommerce',
+        'reportGroup'=>'Planets',
+        'fraudFilterOverride'=> 'true'
+      }
+    
+      XMLObject.expects(:new)
+      Communications.expects(:http_post).with(regexp_matches(/.*<authentication.*?<password>TEST<\/password>.*?<\/authentication>.*/m),kind_of(Hash))
+      LitleOnlineRequest.new.authorization(hash)
+    end
+          
   end
 
 end

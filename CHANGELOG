@@ -1,5 +1,10 @@
 = LitleOnline CHANGELOG
 
+== Version 8.13.2 (June 28, 2012)
+
+* Feature: Most schema validations are now handled by ruby code and throw errors.
+* Bugfix: Remove hardcoded username/password fields
+
 == Version 8.13.1 (May 22, 2012)
 
 * Feature: Echeck Void now supported

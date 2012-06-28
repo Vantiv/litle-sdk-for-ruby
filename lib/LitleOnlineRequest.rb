@@ -77,8 +77,8 @@ module LitleOnline
       request.authorization = authorization
       
       authentication = Authentication.new
-      authentication.user = 'PHXMLTEST'
-      authentication.password = 'password'
+      authentication.user = get_user(hash_in)
+      authentication.password = get_password(hash_in)
       request.authentication = authentication
       
       request.merchantId = get_merchant_id(hash_in)
@@ -133,8 +133,8 @@ module LitleOnline
       request.sale = sale
       
       authentication = Authentication.new
-      authentication.user = 'PHXMLTEST'
-      authentication.password = 'password'
+      authentication.user = get_user(hash_in)
+      authentication.password = get_password(hash_in)
       request.authentication = authentication
       
       request.merchantId = get_merchant_id(hash_in)
@@ -165,8 +165,8 @@ module LitleOnline
       request.authReversal = auth_reversal
       
       authentication = Authentication.new
-      authentication.user = 'PHXMLTEST'
-      authentication.password = 'password'
+      authentication.user = get_user(hash_in)
+      authentication.password = get_password(hash_in)
       request.authentication = authentication
       
       request.merchantId = get_merchant_id(hash_in)
@@ -211,8 +211,8 @@ module LitleOnline
       request.credit = credit
       
       authentication = Authentication.new
-      authentication.user = 'PHXMLTEST'
-      authentication.password = 'password'
+      authentication.user = get_user(hash_in)
+      authentication.password = get_password(hash_in)
       request.authentication = authentication
       
       request.merchantId = get_merchant_id(hash_in)
@@ -243,8 +243,8 @@ module LitleOnline
       request.registerTokenRequest = token_request
       
       authentication = Authentication.new
-      authentication.user = 'PHXMLTEST'
-      authentication.password = 'password'
+      authentication.user = get_user(hash_in)
+      authentication.password = get_password(hash_in)
       request.authentication = authentication
       
       request.merchantId = get_merchant_id(hash_in)
@@ -284,8 +284,8 @@ module LitleOnline
       request.forceCapture = force_capture
       
       authentication = Authentication.new
-      authentication.user = 'PHXMLTEST'
-      authentication.password = 'password'
+      authentication.user = get_user(hash_in)
+      authentication.password = get_password(hash_in)
       request.authentication = authentication
       
       request.merchantId = get_merchant_id(hash_in)
@@ -319,8 +319,8 @@ module LitleOnline
       request.captureTxn = capture
       
       authentication = Authentication.new
-      authentication.user = 'PHXMLTEST'
-      authentication.password = 'password'
+      authentication.user = get_user(hash_in)
+      authentication.password = get_password(hash_in)
       request.authentication = authentication
       
       request.merchantId = get_merchant_id(hash_in)
@@ -363,8 +363,8 @@ module LitleOnline
       request.captureGivenAuth = capture_given_auth
       
       authentication = Authentication.new
-      authentication.user = 'PHXMLTEST'
-      authentication.password = 'password'
+      authentication.user = get_user(hash_in)
+      authentication.password = get_password(hash_in)
       request.authentication = authentication
       
       request.merchantId = get_merchant_id(hash_in)
@@ -394,8 +394,8 @@ module LitleOnline
       request.echeckRedeposit = echeck_redeposit
       
       authentication = Authentication.new
-      authentication.user = 'PHXMLTEST'
-      authentication.password = 'password'
+      authentication.user = get_user(hash_in)
+      authentication.password = get_password(hash_in)
       request.authentication = authentication
       
       request.merchantId = get_merchant_id(hash_in)
@@ -432,8 +432,8 @@ module LitleOnline
       request.echeckSale = echeck_sale
       
       authentication = Authentication.new
-      authentication.user = 'PHXMLTEST'
-      authentication.password = 'password'
+      authentication.user = get_user(hash_in)
+      authentication.password = get_password(hash_in)
       request.authentication = authentication
       
       request.merchantId = get_merchant_id(hash_in)
@@ -468,8 +468,8 @@ module LitleOnline
       request.echeckCredit = echeck_credit
       
       authentication = Authentication.new
-      authentication.user = 'PHXMLTEST'
-      authentication.password = 'password'
+      authentication.user = get_user(hash_in)
+      authentication.password = get_password(hash_in)
       request.authentication = authentication
       
       request.merchantId = get_merchant_id(hash_in)
@@ -510,8 +510,8 @@ module LitleOnline
       request.echeckVerification = echeck_verification
       
       authentication = Authentication.new
-      authentication.user = 'PHXMLTEST'
-      authentication.password = 'password'
+      authentication.user = get_user(hash_in)
+      authentication.password = get_password(hash_in)
       request.authentication = authentication
       
       request.merchantId = get_merchant_id(hash_in)
@@ -540,8 +540,8 @@ module LitleOnline
       request.void = void
       
       authentication = Authentication.new
-      authentication.user = 'PHXMLTEST'
-      authentication.password = 'password'
+      authentication.user = get_user(hash_in)
+      authentication.password = get_password(hash_in)
       request.authentication = authentication
       
       request.merchantId = get_merchant_id(hash_in)
@@ -569,8 +569,8 @@ module LitleOnline
       request.echeckVoid = void
       
       authentication = Authentication.new
-      authentication.user = 'PHXMLTEST'
-      authentication.password = 'password'
+      authentication.user = get_user(hash_in)
+      authentication.password = get_password(hash_in)
       request.authentication = authentication
       
       request.merchantId = get_merchant_id(hash_in)
@@ -603,7 +603,7 @@ module LitleOnline
     
     def get_merchant_sdk(hash_in)
       if(!hash_in['merchantSdk'])
-        return 'Ruby;8.13.1'
+        return 'Ruby;8.13.2'
       else
         return hash_in['merchantSdk']
       end    
@@ -614,6 +614,22 @@ module LitleOnline
         return @config_hash['default_report_group']
       else
         return hash_in['reportGroup']
+      end
+    end
+    
+    def get_user(hash_in)
+      if (hash_in['user'] == nil)
+        return @config_hash['user']
+      else
+        return hash_in['user']
+      end
+    end
+    
+    def get_password(hash_in)
+      if (hash_in['password'] == nil)
+        return @config_hash['password']
+      else
+        return hash_in['password']
       end
     end
   end

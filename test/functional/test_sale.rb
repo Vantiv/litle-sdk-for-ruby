@@ -81,24 +81,6 @@ module LitleOnline
       assert(response.message =~ /Error validating xml data against the schema/)
     end
   
-    def test_illegal_card_type
-      hash = {
-        'merchantId' => '101',
-        'version'=>'8.8',
-        'reportGroup'=>'Planets',
-        'litleTxnId'=>'123456',
-        'orderId'=>'12344',
-        'amount'=>'106',
-        'orderSource'=>'ecommerce',
-        'card'=>{
-        'type'=>'NO',
-        'number' =>'4100000000000002',
-        'expDate' =>'1210'
-        }}
-      response= LitleOnlineRequest.new.sale(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
-    end
-  
     def test_no_report_group
       hash = {
         'merchantId' => '101',

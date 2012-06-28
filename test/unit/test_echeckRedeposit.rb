@@ -39,5 +39,29 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_redeposit(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
+    
+    def test_echeck_redeposit_withecheckmissingfield
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','checkNum'=>'123455'}
+      }
+      exception = assert_raise(RuntimeError) {LitleOnlineRequest.new.echeck_redeposit(hash)}
+      assert_match /If echeck is specified, it must have a routingNum/, exception.message
+    end
+  
+    def test_echeck_redeposit_with_echeck_token_missing_field
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'echeckToken' => {'accType'=>'Checking','litleToken'=>'1234565789012','checkNum'=>'123455'}
+      }
+      exception = assert_raise(RuntimeError) {LitleOnlineRequest.new.echeck_redeposit(hash)}
+      assert_match /If echeckToken is specified, it must have a routingNum/, exception.message
+    end
   end
 end

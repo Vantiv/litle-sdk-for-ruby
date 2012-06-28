@@ -45,7 +45,7 @@ module LitleOnline
         'expDate' =>'1210'
         },
         'token'=> {
-        'litleToken'=>'1234',
+        'litleToken'=>'1234567890123',
         'expDate'=>'1210',
         'cardValidationNum'=>'555',
         'type'=>'VI'
@@ -76,7 +76,7 @@ module LitleOnline
         'cardValidationNum'=>'555',
         'type'=>'VI'},
         'token'=> {
-        'litleToken'=>'1234',
+        'litleToken'=>'1234567890123',
         'expDate'=>'1210',
         'cardValidationNum'=>'555',
         'type'=>'VI'

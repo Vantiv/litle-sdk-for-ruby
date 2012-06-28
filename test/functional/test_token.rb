@@ -63,18 +63,6 @@ module LitleOnline
       assert_equal('Valid Format', response.message)
     end
   
-    def test_token_echeck_missing_required
-      hash = {
-        'merchantId' => '101',
-        'version'=>'8.8',
-        'reportGroup'=>'Planets',
-        'orderId'=>'12344',
-        'echeckForToken'=>{'routingNum'=>'132344565'}
-      }
-      response= LitleOnlineRequest.new.register_token_request(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
-    end
-  
     def test_fields_out_of_order
       hash = {
         'merchantId' => '101',
