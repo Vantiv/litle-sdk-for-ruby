@@ -1151,13 +1151,26 @@ module LitleOnline
     object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
   end
   
+  class UpdateCardValidationNumOnToken
+    include XML::Mapping
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+  
+    text_node :orderId, "orderId", :default_value=>nil
+    text_node :litleToken, "litleToken", :default_value=>nil
+    text_node :cardValidationNum, "cardValidationNum", :default_value=>nil
+  end
+  
+  
   class OnlineRequest
     include XML::Mapping
     root_element_name "litleOnlineRequest"
     text_node :merchantId, "@merchantId", :default_value=>nil
     text_node :version, "@version", :default_value=>nil
     text_node :xmlns, "@xmlns", :default_value=>nil
-    text_node :merchantSdk, "@merchantSdk", :default_vaule=>nil
+    text_node :merchantSdk, "@merchantSdk", :default_value=>nil
+    text_node :loggedInUser, "@loggedInUser", :default_value=>nil
     object_node :authentication, "authentication", :class=>Authentication
     optional_choice_node   :if,    'authorization', :then, (object_node :authorization, "authorization", :class=>Authorization),
     :elsif, 'sale',    :then, (object_node :sale,    "sale",    :class=>Sale),
@@ -1172,7 +1185,8 @@ module LitleOnline
     :elsif, 'echeckSale', :then, (object_node :echeckSale, "echeckSale", :class=>EcheckSale),
     :elsif, 'echeckVoid', :then, (object_node :echeckVoid, "echeckVoid", :class=>EcheckVoid),
     :elsif, 'echeckVerification', :then, (object_node :echeckVerification, "echeckVerification", :class=>EcheckVerification),
-    :elsif, 'registerTokenRequest', :then, (object_node :registerTokenRequest, "registerTokenRequest", :class=>RegisterTokenRequest)
+    :elsif, 'registerTokenRequest', :then, (object_node :registerTokenRequest, "registerTokenRequest", :class=>RegisterTokenRequest),
+    :elsif, 'updateCardValidationNumOnToken', :then, (object_node :updateCardValidationNumOnToken, "updateCardValidationNumOnToken", :class=>UpdateCardValidationNumOnToken)
     def post_save(xml, options={:Mapping=>:_default})
       xml.each_element() {|el| 
         if(el.name == 'captureTxn')

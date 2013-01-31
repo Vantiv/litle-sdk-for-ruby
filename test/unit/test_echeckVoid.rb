@@ -37,5 +37,17 @@ module LitleOnline
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<echeckVoid.*<litleTxnId>123456<\/litleTxnId>.*/m), is_a(Hash))
       LitleOnlineRequest.new.echeck_void(hash)
     end
+    def test_logged_in_user
+      hash = {
+      	'loggedInUser' => 'gdake',
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*loggedInUser="gdake".*merchantSdk="Ruby;8.14.0".*/m), is_a(Hash))
+      LitleOnlineRequest.new.echeck_void(hash)
+    end
+    
   end
 end

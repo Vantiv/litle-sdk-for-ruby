@@ -90,6 +90,19 @@ module LitleOnline
 
       commit(transaction, :registerTokenRequest, options)
     end
+    
+    def update_card_validation_num_on_token(options)
+   	  transaction = UpdateCardValidationNumOnToken.new
+    	
+      transaction.orderId               = options['orderId']
+      transaction.litleToken            = options['litleToken']
+      transaction.cardValidationNum     = options['cardValidationNum']
+      
+      SchemaValidation.validate_length(transaction.litleToken, true, 13, 25, "updateCardValidationNumOnToken", "litleToken")
+      SchemaValidation.validate_length(transaction.cardValidationNum, true, 1, 4, "updateCardValidationNumOnToken", "cardValidationNum")
+      
+      commit(transaction, :updateCardValidationNumOnToken, options)
+    end
 
     def force_capture(options)
       transaction = ForceCapture.new
@@ -253,6 +266,7 @@ module LitleOnline
       request.authentication  = authentication
       request.merchantId      = get_merchant_id(options)
       request.version         = get_config(:version, options)
+      request.loggedInUser    = get_logged_in_user(options)
       request.xmlns           = "http://www.litle.com/schema"
       request.merchantSdk     = get_merchant_sdk(options)
 
@@ -282,7 +296,7 @@ module LitleOnline
     end
 
     def get_merchant_sdk(options)
-      options['merchantSdk'] || 'Ruby;8.13.2'
+      options['merchantSdk'] || 'Ruby;8.14.0'
     end
 
     def get_report_group(options)
@@ -291,6 +305,10 @@ module LitleOnline
 
     def get_config(field, options)
       options[field.to_s] == nil ? @config_hash[field.to_s] : options[field.to_s]
+    end
+    
+    def get_logged_in_user(options)
+      options['loggedInUser'] || nil
     end
   end
 end

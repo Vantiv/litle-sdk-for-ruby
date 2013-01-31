@@ -40,7 +40,19 @@ module LitleOnline
       }
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<litleTxnId>12345678000<\/litleTxnId>.*/m), is_a(Hash))
       LitleOnlineRequest.new.auth_reversal(hash)
-  
+    end  
+
+    def test_logged_in_user
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'litleTxnId'=>'12345678000',
+		'reportGroup'=>'Planets',
+		'amount'=>'5000',
+		'loggedInUser'=>'gdake'
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*loggedInUser="gdake".*merchantSdk="Ruby;8.14.0".*/m), is_a(Hash))
+      LitleOnlineRequest.new.auth_reversal(hash)
     end  
   end
 end

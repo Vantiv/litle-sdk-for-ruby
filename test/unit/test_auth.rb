@@ -266,6 +266,19 @@ module LitleOnline
       Communications.expects(:http_post).with(regexp_matches(/.*<authentication.*?<password>TEST<\/password>.*?<\/authentication>.*/m),kind_of(Hash))
       LitleOnlineRequest.new.authorization(hash)
     end
+    
+    def test_logged_in_user
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'loggedInUser'=>'gdake'
+      }
+  
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*loggedInUser="gdake".*merchantSdk="Ruby;8.14.0".*/m), is_a(Hash))
+      LitleOnlineRequest.new.authorization(hash)
+    end
           
   end
 

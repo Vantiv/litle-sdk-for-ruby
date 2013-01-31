@@ -267,6 +267,26 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
       assert_match /If card type is specified, it must be in /, exception.message
     end
+
+    def test_logged_in_user
+      hash = {
+      	'loggedInUser' => 'gdake',
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000002',
+        'expDate' =>'1210'
+      }}
+    
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*loggedInUser="gdake".*merchantSdk="Ruby;8.14.0".*/m), is_a(Hash))
+      LitleOnlineRequest.new.sale(hash)
+    end
           
   end
 end

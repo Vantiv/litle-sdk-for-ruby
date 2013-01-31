@@ -1,5 +1,10 @@
 = LitleOnline CHANGELOG
 
+== Version 8.14.0 (January 31, 2013)
+
+* Feature: Temporary storage of card validation num on tokens
+* Feature: Updating card validation numbers on tokens
+
 == Version 8.13.2 (June 28, 2012)
 
 * Feature: Most schema validations are now handled by ruby code and throw errors.

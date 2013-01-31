@@ -84,7 +84,27 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.force_capture(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
-  
+    
+    def test_logged_in_user
+      hash = {
+      	'loggedInUser' => 'gdake',
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'fraudCheck'=>{'authenticationTransactionId'=>'123'},
+        'cardholderAuthentication'=>{'authenticationTransactionId'=>'123'},
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        }}
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*loggedInUser="gdake".*merchantSdk="Ruby;8.14.0".*/m), is_a(Hash))
+      LitleOnlineRequest.new.force_capture(hash)
+    end
   end
 
 end

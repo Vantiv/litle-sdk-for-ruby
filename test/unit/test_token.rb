@@ -79,6 +79,19 @@ module LitleOnline
       assert_match /If echeckForToken is specified, it must have a accNum/, exception.message
     end
 
+    def test_logged_in_user
+      hash = {
+      	'loggedInUser'=>'gdake',
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'echeckForToken'=>{'accNum'=>'12344565','routingNum'=>'123476545'}
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*loggedInUser="gdake".*merchantSdk="Ruby;8.14.0".*/m), is_a(Hash))
+      LitleOnlineRequest.new.register_token_request(hash)
+    end
+
   end
 
 end

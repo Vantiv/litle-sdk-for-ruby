@@ -26,24 +26,18 @@ require 'lib/LitleOnline'
 require 'test/unit'
 
 module LitleOnline
-  class Test_capture < Test::Unit::TestCase
-    def test_success_capture
+  class TestUpdateCardValidationNumOnToken < Test::Unit::TestCase
+    def test_simple
       hash = {
-        'litleTxnId'=>'123456'
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'litleToken'=>'1233456789103801',
+		'cardValidationNum'=>'123'
       }
-  
-      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<litleTxnId>123456<\/litleTxnId>.*/m), is_a(Hash))
-      LitleOnlineRequest.new.capture(hash)
-    end
-    def test_logged_in_user
-      hash = {
-        'litleTxnId'=>'123456',
-        'loggedInUser'=>'gdake'
-      }
-  
-      LitleXmlMapper.expects(:request).with(regexp_matches(/.*loggedInUser="gdake".*merchantSdk="Ruby;8.14.0".*/m), is_a(Hash))
-      LitleOnlineRequest.new.capture(hash)
+      response= LitleOnlineRequest.new.update_card_validation_num_on_token(hash)
+      assert_equal('Valid Format', response.message)
     end
   end
 end
-

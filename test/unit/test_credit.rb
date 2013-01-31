@@ -226,5 +226,20 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
       assert_match /If paypage is specified, it must have a paypageRegistrationId/, exception.message
     end
+    
+    def test_logged_in_user
+      hash = {
+      	'loggedInUser' => 'gdake',
+        'merchantId' => '101',
+        'version'=>'8.12',
+        'orderId'=>'1',
+        'amount'=>'2',
+        'orderSource'=>'ecommerce',
+        'reportGroup'=>'Planets'
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*loggedInUser="gdake".*merchantSdk="Ruby;8.14.0".*/m), is_a(Hash))
+      LitleOnlineRequest.new.credit(hash)
+    end
+    
   end
 end
