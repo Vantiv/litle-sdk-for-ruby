@@ -153,6 +153,7 @@ module LitleOnline
       add_echeck(transaction, options)
 
       transaction.litleTxnId = options['litleTxnId']
+      transaction.merchantData              = MerchantData.from_hash(options)
 
       commit(transaction, :echeckRedeposit, options)
     end
@@ -191,6 +192,8 @@ module LitleOnline
 
       add_echeck_order_info(transaction, options)
       add_echeck(transaction, options)
+      transaction.merchantData              = MerchantData.from_hash(options)
+      
 
       commit(transaction, :echeckVerification, options)
     end
@@ -296,7 +299,7 @@ module LitleOnline
     end
 
     def get_merchant_sdk(options)
-      options['merchantSdk'] || 'Ruby;8.14.0'
+      options['merchantSdk'] || 'Ruby;8.15.0'
     end
 
     def get_report_group(options)

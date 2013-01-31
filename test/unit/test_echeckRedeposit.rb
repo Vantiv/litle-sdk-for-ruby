@@ -63,9 +63,11 @@ module LitleOnline
       exception = assert_raise(RuntimeError) {LitleOnlineRequest.new.echeck_redeposit(hash)}
       assert_match /If echeckToken is specified, it must have a routingNum/, exception.message
     end
+    
     def test_logged_in_user
       hash = {
       	'loggedInUser' => 'gdake',
+      	'merchantSdk' => 'Ruby;8.14.0',
         'merchantId' => '101',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
@@ -76,5 +78,17 @@ module LitleOnline
       LitleOnlineRequest.new.echeck_redeposit(hash)
     end
     
+    def test_merchant_data
+      hash = {
+      	'merchantData' => {'campaign'=>'camping'},
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'}
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<\/echeck>.*<merchantData>.*<campaign>camping<\/campaign>.*<\/merchantData>/m), is_a(Hash))
+      LitleOnlineRequest.new.echeck_redeposit(hash)
+    end
   end
 end

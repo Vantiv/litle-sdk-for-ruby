@@ -269,6 +269,7 @@ module LitleOnline
     
     def test_logged_in_user
       hash = {
+      	'merchantSdk' => 'Ruby;8.14.0',
         'merchantId' => '101',
         'version'=>'8.8',
         'reportGroup'=>'Planets',

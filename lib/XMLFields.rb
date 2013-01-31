@@ -1102,6 +1102,7 @@ module LitleOnline
     object_node :shipToAddress, "shipToAddress", :class=>Contact, :default_value=>nil
     optional_choice_node :if,    'echeck', :then, (object_node :echeck, "echeck", :class=>Echeck),
     :elsif, 'echeckToken', :then, (object_node :echeckToken, "echeckToken", :class=>EcheckToken)
+	object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
   end
   
   class EcheckCredit
@@ -1130,6 +1131,7 @@ module LitleOnline
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
     optional_choice_node :if,    'echeck', :then, (object_node :echeck, "echeck", :class=>Echeck, :default_value=>nil),
     :elsif, 'echeckToken', :then, (object_node :echeckToken, "echeckToken", :class=>EcheckToken, :default_value=>nil)
+	object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
   end
   
   class EcheckSale

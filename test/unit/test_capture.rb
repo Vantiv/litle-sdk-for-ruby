@@ -37,6 +37,7 @@ module LitleOnline
     end
     def test_logged_in_user
       hash = {
+      	'merchantSdk' => 'Ruby;8.14.0',
         'litleTxnId'=>'123456',
         'loggedInUser'=>'gdake'
       }
