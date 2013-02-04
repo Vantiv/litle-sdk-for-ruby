@@ -45,10 +45,11 @@ module LitleOnline
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
-        'paypageRegistrationId'=>'1233456789101112'
+        'paypageRegistrationId'=>'QU1pTFZnV2NGQWZrZzRKeTNVR0lzejB1K2Q5VDdWMTVqb2J5WFJ2Snh4U0U4eTBxaFg2cEVWaDBWSlhtMVZTTw=='
       }
       response= LitleOnlineRequest.new.register_token_request(hash)
       assert_equal('Valid Format', response.message)
+      assert_equal('1111222233334444', response.registerTokenResponse.litleToken)
     end
   
     def test_simple_token_echeck

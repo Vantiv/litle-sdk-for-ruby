@@ -216,6 +216,22 @@ module LitleOnline
       response = LitleOnlineRequest.new.authorization(start_hash.merge({'customerInfo'=>{'ssn'=>'000112222'} }))
       assert_equal('000', response.authorizationResponse.response)
     end
+
+    def test_simple_auth_with_paypage
+      hash = {
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'paypage'=>{
+        	'type'=>'VI',
+        	'paypageRegistrationId' =>'QU1pTFZnV2NGQWZrZzRKeTNVR0lzejB1K2Q5VDdWMTVqb2J5WFJ2Snh4U0U4eTBxaFg2cEVWaDBWSlhtMVZTTw==',
+        	'expDate' =>'1210',
+        	'cardValidationNum' => '123'
+        }
+      }
+      response= LitleOnlineRequest.new.authorization(hash)
+      assert_equal('000', response.authorizationResponse.response)
+    end
     
   end
 end  
