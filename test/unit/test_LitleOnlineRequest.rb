@@ -247,6 +247,26 @@ module LitleOnline
       assert_equal 'Ruby;8.15.0', litle.send(:get_merchant_sdk, {'NotMerchantSdk'=>'ActiveMerchant;3.2'})
     end
   
+    def test_sale_paypal_order_complete_typo
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
+      hash={
+        'reportGroup'=>'Planets',
+        'id' => '006',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'payPalOrderComplete'=>'true',
+        'card'=>{
+          'type'=>'VI',
+          'number' =>'4100000000000001',
+          'expDate' =>'1210'
+        }}
+
+      Communications.expects(:http_post).with(regexp_matches(/<litleOnlineRequest.*<sale.*<payPalOrderComplete>true<\/payPalOrderComplete>.*/m),kind_of(Hash))
+      XMLObject.expects(:new)
+ 
+      response = LitleOnlineRequest.new.sale(hash)
+    end
     
   end
 end
