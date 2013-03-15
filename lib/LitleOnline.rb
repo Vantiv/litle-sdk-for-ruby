@@ -28,7 +28,6 @@ OTHER DEALINGS IN THE SOFTWARE.
 # Defines the Gem
 #
 require 'rubygems'
-#require 'xmlsimple'
 require 'net/http'
 require 'xml-object'
 require 'yaml'

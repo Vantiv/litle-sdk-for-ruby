@@ -49,12 +49,9 @@ module LitleOnline
         https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
       end
       https.start { |http|
-        response = http.request_post(url.path, post_data.to_s, {'Content-type'=>'text/xml'})
+        response = http.request_post(url.path, post_data.to_s, {'Content-Type'=>'text/xml','Connection'=>'close'})
         response_xml = response
       }
-      
-      
-  
   
       # validate response, only an HTTP 200 will work, redirects are not followed
       case response_xml
