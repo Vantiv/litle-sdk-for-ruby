@@ -30,6 +30,11 @@ require 'yaml'
 #
 module LitleOnline
   class Configuration
+    class << self
+      # External logger, if specified
+      attr_accessor :logger
+    end
+
     def config
       begin
         if !(ENV['LITLE_CONFIG_DIR'].nil?)
