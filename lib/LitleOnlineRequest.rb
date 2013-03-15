@@ -49,7 +49,7 @@ module LitleOnline
       add_transaction_info(transaction, options)
 
       transaction.fraudCheck          = FraudCheck.from_hash(options,'fraudCheck')
-      transaction.payPalOrderComplete = options['paPpalOrderComplete']
+      transaction.payPalOrderComplete = options['payPalOrderComplete']
       transaction.payPalNotes         = options['payPalNotes']
 
       commit(transaction, :sale, options)
