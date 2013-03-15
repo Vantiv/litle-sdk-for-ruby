@@ -1,4 +1,4 @@
-Litle Online Ruby SDK created for version 8.15 of Litle XML online format, see the XSD schema for specific fields that are supported by this format.
+Litle Online Ruby SDK created for version 8.16 of Litle XML online format, see the XSD schema for specific fields that are supported by this format.
 
 This gem contains an application interface in the Ruby programming language created by Litle & Co.
 
