@@ -56,7 +56,7 @@ module LitleOnline
     def self.default_logger(level) # :nodoc:
       logger = Logger.new(STDOUT)
       logger.level = level
-      # Backward compatible logging format for pre 8.15
+      # Backward compatible logging format for pre 8.16
       logger.formatter = proc { |severity, datetime, progname, msg| "#{msg}\n" }
       logger
     end

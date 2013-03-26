@@ -2,11 +2,11 @@
 
 == Version 8.16.0 (NOT YET RELEASED)
 
+* Feature: Merged pull request #7 from pierre to add external logging support
 * Feature: Add recyling to voidResponse
 * Bugfix: Force the "version" attribute of a LitleOnlineRequest to be the major and minor version of the sdk submitting the transaction instead of using the value from the configuration file
 * Bugfix: Add Connection: close header to reduce the chance of 403s from reaching the ip connection limit
 * Bugfix: Merged pull request #5 from simeonwillbanks to fix a typo in sale when payPalOrderComplete is specified
-
 
 == Version 8.15.0 (January 31, 2013)
 
