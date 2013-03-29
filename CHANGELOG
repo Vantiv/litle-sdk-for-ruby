@@ -1,6 +1,6 @@
 = LitleOnline CHANGELOG
 
-== Version 8.16.0 (NOT YET RELEASED)
+== Version 8.16.0 (March 29, 2013)
 
 * Feature: Merged pull request #7 from pierre to add external logging support
 * Feature: Add recyling to voidResponse
