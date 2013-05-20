@@ -32,6 +32,7 @@ require_relative 'Configuration'
 module LitleOnline
 
   class LitleBatchRequest
+    include XML::Mapping
     def initialize
       #load configuration data
       @config_hash = Configuration.new.config
@@ -52,15 +53,16 @@ module LitleOnline
                       echeckSale:{ echeckSaleCount:0, echeckSaleAmount:0 },
                       updateCCNumOnToken:{ updateCCNumOnTokenCount:0 }
       }
-      @litle_request = LitleRequest.new
+      @litle_request = LitleTransaction.new
+      @path_to_batch = nil
     end
     
     def create_new_batch(path)
       ts = Time::now.to_i.to_s
-      File.open(path + 'batch_' + ts + '.lb', 'w') do |file|
+      @path_to_batch = path + 'batch_' + ts + '.lb'
+      File.open(@path_to_batch, 'a+') do |file|
         file.puts("<litleBatch ")
       end
-      
     end
     
     def authorization(options)
@@ -69,6 +71,7 @@ module LitleOnline
       @txn_counts[:auth][:authAmount] += options['amount'].to_i
         
       #TODO append transaction to file if a batch exists else create a new batch and add this transaction
+      #add_txn_to_batch(transaction, :authorization, options)
     end
     
     def sale(options)
@@ -79,73 +82,24 @@ module LitleOnline
       #TODO append transaction to file if a batch exists else create a new batch and add this transaction
     end
     
-    # def add_txn_to_batch(transaction, options)
-      # case transaction
-      # when Authorization
-        # add_transaction_info(transaction, options)
-        # @txn_counts[:auth][:authCount] += 1
-        # @txn_counts[:auth][:authAmount] += options['amount'].to_i
-#       
-      # when Sale
-        # add_transaction_info(transaction, options)
-        # @txn_counts[:sale][:saleCount] += 1
-        # @txn_counts[:sale][:saleAmount] += options['amount'].to_i
-#       
-      # when Credit
-        # add_transaction_info(transaction, options)
-        # @txn_counts[:credit][:creditCount] += 1
-        # @txn_counts[:credit][:creditAmount] += options['amount'].to_i
-#         
-      # when RegisterTokenRequest
-        # add_transaction_info(transaction, options)
-        # @txn_counts[:registerTokenRequest] += 1
-#       
-      # when CaptureGivenAuth
-        # add_transaction_info(transaction, options)
-        # @txn_counts[:captGivenAuth][:captGivenCount] += 1
-        # @txn_counts[:captGivenAuth][:captGivenAmount] += options['amount'].to_i
-#       
-      # when ForceCapture
-        # add_transaction_info(transaction, options)
-        # @txn_counts[:forceCapture][:forceCaptureCount] += 1
-        # @txn_counts[:forceCapture][:forceCaptureAmount] += options['amount'].to_i
-#       
-      # when AuthReversal
-        # # add_transaction_info(transaction, options)
-        # @txn_counts[:authReversal][:authReversalCount] += 1
-        # @txn_counts[:authReversal][:authReversalAmount] += options['amount'].to_i
-#       
-      # when Capture
-        # add_transaction_info(transaction, options)
-        # @txn_counts[:capture][:captureCount] += 1
-        # @txn_counts[:capture][:captureAmount] += options['amount'].to_i
-#       
-      # when Void
-        # add_transaction_info(transaction, options)
-        # @txn_counts[:void][:voidCount] += 1
-        # @txn_counts[:void][:voidAmount] += options['amount'].to_i
-#         
-      # when EcheckVoid
-        # add_transaction_info(transaction, options)
-        # @txn_counts[:echeckVoid][:echeckVoidCount] += 1
-#         
-      # when EcheckVerification
-        # add_transaction_info(transaction, options)
-        # @txn_counts[:echeckVerification][:echeckVerificationCount] += 1
-        # @txn_counts[:echeckVerification][:echeckVerificationAmount] += options['amount'].to_i
-#       
-      # else
-        # puts 'no txn match'
-      # end
-#     
-#     
-#    end
-    
     def get_counts_and_amounts
       return @txn_counts
     end
     
-   
+    private
     
+    def add_txn_to_batch(transaction, type, options)
+      
+      request.send(:"#{type}=", transaction)  
+      xml = request.save_to_xml.to_s
+      
+      puts "XML in add to batch: " + xml
+      puts "path to file: " + @path_to_batch
+      
+      File.open(@path_to_batch, 'a+') do |file|
+        file.write(xml)
+      end
+    end
+     
   end
 end

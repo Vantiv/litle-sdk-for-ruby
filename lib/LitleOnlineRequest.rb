@@ -33,151 +33,83 @@ module LitleOnline
     def initialize
       #load configuration data
       @config_hash = Configuration.new.config
-      @litle_request = LitleRequest.new
+      @litle_request = LitleTransaction.new
     end
 
     def authorization(options)
       transaction = @litle_request.authorization(options)
-      # transaction = Authorization.new
-      # add_transaction_info(transaction, options)
 
       commit(transaction, :authorization, options)
     end
 
     def sale(options)
       transaction = @litle_request.sale(options)
-      # transaction = Sale.new
-      # add_transaction_info(transaction, options)
-# 
-      # transaction.fraudCheck          = FraudCheck.from_hash(options,'fraudCheck')
-      # transaction.payPalOrderComplete = options['payPalOrderComplete']
-      # transaction.payPalNotes         = options['payPalNotes']
 
       commit(transaction, :sale, options)
     end
 
     def auth_reversal(options)
-      transaction = @litle_request.auth_reversal(options)
-      # transaction = AuthReversal.new
-# 
-      # transaction.litleTxnId    = options['litleTxnId']
-      # transaction.amount        = options['amount']
-      # transaction.payPalNotes   = options['payPalNotes']
-      # transaction.actionReason  = options['actionReason']
+      transaction = @litle_request.auth_reversal(options)      
 
       commit(transaction, :authReversal, options)
     end
 
     def credit(options)
-      transaction = Credit.new
-      add_order_info(transaction, options)
-
-      transaction.litleTxnId          = options['litleTxnId']
-      transaction.customBilling       = CustomBilling.from_hash(options)
-      transaction.billMeLaterRequest  = BillMeLaterRequest.from_hash(options)
-      transaction.payPalNotes         = options['payPalNotes']
-      transaction.actionReason        = options['actionReason']
-      transaction.paypal              = CreditPayPal.from_hash(options,'paypal')
-
+      transaction = @litle_request.credit(options)
+      
       commit(transaction, :credit, options)
     end
 
     def register_token_request(options)
-      transaction = RegisterTokenRequest.new
-
-      transaction.orderId               = options['orderId']
-      transaction.accountNumber         = options['accountNumber']
-      transaction.echeckForToken        = EcheckForToken.from_hash(options)
-      transaction.paypageRegistrationId = options['paypageRegistrationId']
+      transaction = @litle_request.register_token_request(options)
 
       commit(transaction, :registerTokenRequest, options)
     end
     
     def update_card_validation_num_on_token(options)
-   	  transaction = UpdateCardValidationNumOnToken.new
+   	  transaction = @litle_request.update_card_validation_num_on_token(options)
     	
-      transaction.orderId               = options['orderId']
-      transaction.litleToken            = options['litleToken']
-      transaction.cardValidationNum     = options['cardValidationNum']
-      
-      SchemaValidation.validate_length(transaction.litleToken, true, 13, 25, "updateCardValidationNumOnToken", "litleToken")
-      SchemaValidation.validate_length(transaction.cardValidationNum, true, 1, 4, "updateCardValidationNumOnToken", "cardValidationNum")
-      
       commit(transaction, :updateCardValidationNumOnToken, options)
     end
 
     def force_capture(options)
-      transaction = ForceCapture.new
-      transaction.customBilling = CustomBilling.from_hash(options)
-
-      add_order_info(transaction, options)
-
+      transaction = @litle_request.force_capture(options)
+      
       commit(transaction, :forceCapture, options)
     end
 
     def capture(options)
-      transaction = Capture.new
-
-      transaction.partial                 = options['partial']
-      transaction.litleTxnId              = options['litleTxnId']
-      transaction.amount                  = options['amount']
-      transaction.enhancedData            = EnhancedData.from_hash(options)
-      transaction.processingInstructions  = ProcessingInstructions.from_hash(options)
-      transaction.payPalOrderComplete     = options['payPalOrderComplete']
-      transaction.payPalNotes             = options['payPalNotes']
-
+      transaction = @litle_request.capture(options)
+      
       commit(transaction, :captureTxn, options)
     end
 
     def capture_given_auth(options)
-      transaction = CaptureGivenAuth.new
-      add_order_info(transaction, options)
-
-      transaction.authInformation    = AuthInformation.from_hash(options)
-      transaction.shipToAddress      = Contact.from_hash(options,'shipToAddress')
-      transaction.customBilling      = CustomBilling.from_hash(options)
-      transaction.billMeLaterRequest = BillMeLaterRequest.from_hash(options)
-
+      transaction = @litle_request.capture_given_auth(options)
+      
       commit(transaction, :captureGivenAuth, options)
     end
 
     def void(options)
-      transaction = Void.new
-
-      transaction.litleTxnId             = options['litleTxnId']
-      transaction.processingInstructions = ProcessingInstructions.from_hash(options)
+      transaction = @litle_request.void(options)
 
       commit(transaction, :void, options)
     end
 
     def echeck_redeposit(options)
-      transaction = EcheckRedeposit.new
-      add_echeck(transaction, options)
-
-      transaction.litleTxnId = options['litleTxnId']
-      transaction.merchantData              = MerchantData.from_hash(options)
-
+      transaction = @litle_request.echeck_redeposit(options)
+      
       commit(transaction, :echeckRedeposit, options)
     end
 
     def echeck_sale(options)
-      transaction = EcheckSale.new
-      add_echeck(transaction, options)
-      add_echeck_order_info(transaction, options)
-
-      transaction.verify        = options['verify']
-      transaction.shipToAddress = Contact.from_hash(options,'shipToAddress')
-      transaction.customBilling = CustomBilling.from_hash(options)
+      transaction = @litle_request.echeck_sale(options)
 
       commit(transaction, :echeckSale, options)
     end
 
     def echeck_credit(options)
-      transaction = EcheckCredit.new
-      transaction.customBilling = CustomBilling.from_hash(options)
-
-      add_echeck_order_info(transaction, options)
-      add_echeck(transaction, options)
+      transaction = @litle_request.echeck_credit(options)
 
       begin
         commit(transaction, :echeckCredit, options)
@@ -190,20 +122,14 @@ module LitleOnline
     end
 
     def echeck_verification(options)
-      transaction = EcheckVerification.new
-
-      add_echeck_order_info(transaction, options)
-      add_echeck(transaction, options)
-      transaction.merchantData              = MerchantData.from_hash(options)
-      
+      transaction = @litle_request.echeck_verification(options)
 
       commit(transaction, :echeckVerification, options)
     end
 
     def echeck_void(options)
-      transaction = EcheckVoid.new
-      transaction.litleTxnId = options['litleTxnId']
-
+      transaction = @litle_request.echeck_void(options)
+      
       commit(transaction, :echeckVoid, options)
     end
 
@@ -213,52 +139,6 @@ module LitleOnline
       transaction.reportGroup   = get_report_group(options)
       transaction.transactionId = options['id']
       transaction.customerId    = options['customerId']
-    end
-
-    def add_transaction_info(transaction, options)
-      transaction.litleTxnId                = options['litleTxnId']
-      transaction.customerInfo              = CustomerInfo.from_hash(options)
-      transaction.shipToAddress             = Contact.from_hash(options,'shipToAddress')
-      transaction.billMeLaterRequest        = BillMeLaterRequest.from_hash(options)
-      transaction.cardholderAuthentication  = FraudCheck.from_hash(options)
-      transaction.allowPartialAuth          = options['allowPartialAuth']
-      transaction.healthcareIIAS            = HealthcareIIAS.from_hash(options)
-      transaction.filtering                 = Filtering.from_hash(options)
-      transaction.merchantData              = MerchantData.from_hash(options)
-      transaction.recyclingRequest          = RecyclingRequest.from_hash(options)
-      transaction.fraudFilterOverride       = options['fraudFilterOverride']
-      transaction.customBilling             = CustomBilling.from_hash(options)
-      transaction.paypal                    = PayPal.from_hash(options,'paypal')
-
-      add_order_info(transaction, options)
-    end
-
-    def add_order_info(transaction, options)
-      transaction.amount                  = options['amount']
-      transaction.orderId                 = options['orderId']
-      transaction.orderSource             = options['orderSource']
-      transaction.taxType                 = options['taxType']
-      transaction.billToAddress           = Contact.from_hash(options,'billToAddress')
-      transaction.enhancedData            = EnhancedData.from_hash(options)
-      transaction.processingInstructions  = ProcessingInstructions.from_hash(options)
-      transaction.pos                     = Pos.from_hash(options)
-      transaction.amexAggregatorData      = AmexAggregatorData.from_hash(options)
-      transaction.card                    = Card.from_hash(options)
-      transaction.token                   = CardToken.from_hash(options,'token')
-      transaction.paypage                 = CardPaypage.from_hash(options,'paypage')
-    end
-
-    def add_echeck_order_info(transaction, options)
-      transaction.litleTxnId    = options['litleTxnId']
-      transaction.orderId       = options['orderId']
-      transaction.amount        = options['amount']
-      transaction.orderSource   = options['orderSource']
-      transaction.billToAddress = Contact.from_hash(options,'billToAddress')
-    end
-
-    def add_echeck(transaction, options)
-      transaction.echeck      = Echeck.from_hash(options)
-      transaction.echeckToken = EcheckToken.from_hash(options)
     end
 
     def build_request(options)

@@ -33,16 +33,17 @@ module LitleOnline
   class TestLitleBatchRequest < Test::Unit::TestCase
     def test_create_new_batch
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
-      File.expects(:open).with(regexp_matches(/.*batch_.*\d.lb.*/), 'w').once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.lb.*/), 'a+').once
       
       batch = LitleBatchRequest.new
-      batch.create_new_batch('D:\Batches\\')
+      #batch.create_new_batch('D:\Batches\\')
+      batch.create_new_batch('/usr/local/litle-home/barnold/Batches/')
     end
     
-    def test_add_txn_to_batch
+    def test_add_authorization
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
       
-     authHash = {
+      authHash = {
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
         'amount'=>'106',
@@ -52,28 +53,30 @@ module LitleOnline
         'number' =>'4100000000000001',
         'expDate' =>'1210'
       }}
-      saleHash = {
-        'reportGroup'=>'Planets',
-        'id' => '006',
-        'orderId'=>'12344',
-        'amount'=>'106',
-        'orderSource'=>'ecommerce',
-        'card'=>{
-        'type'=>'VI',
-        'number' =>'4100000000000001',
-        'expDate' =>'1210'
-      }}
+      
+      # saleHash = {
+        # 'reportGroup'=>'Planets',
+        # 'id' => '006',
+        # 'orderId'=>'12344',
+        # 'amount'=>'106',
+        # 'orderSource'=>'ecommerce',
+        # 'card'=>{
+        # 'type'=>'VI',
+        # 'number' =>'4100000000000001',
+        # 'expDate' =>'1210'
+      # }}
        
       batch = LitleBatchRequest.new
+      batch.create_new_batch('/usr/local/litle-home/barnold/Batches/')
       
       2.times(){ batch.authorization(authHash) }
-      batch.sale(saleHash)
+     # batch.sale(saleHash)
       counts = batch.get_counts_and_amounts
       
       assert_equal 2, counts[:auth][:authCount]
       assert_equal 212, counts[:auth][:authAmount]
-      assert_equal 1, counts[:sale][:saleCount]
-      assert_equal 106, counts[:sale][:saleAmount]
+      #assert_equal 1, counts[:sale][:saleCount]
+      #assert_equal 106, counts[:sale][:saleAmount]
     end    
   
   

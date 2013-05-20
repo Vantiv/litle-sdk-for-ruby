@@ -141,12 +141,12 @@ module LitleOnline
       hash={
         'id' => '006',
         'reportGroup'=>'Planets',
-        'litleTxnId'=>'123456789012345678',
+        'litleTxnId'=>'123456789012345678'
       }
-  
+      
       Communications.expects(:http_post).with(Not(regexp_matches(/.*amount.*/m)),kind_of(Hash))
       XMLObject.expects(:new)
-  
+
       response = LitleOnlineRequest.new.capture(hash)
     end
   
@@ -157,7 +157,7 @@ module LitleOnline
         'orderId'=>'12344',
         'reportGroup'=>'Planets',
         'orderSource'=>'ecommerce',
-        'litleTxnId'=>'123456789012345678',
+        'litleTxnId'=>'123456789012345678'
       }
   
       Communications.expects(:http_post).with(Not(regexp_matches(/.*amount.*/m)),kind_of(Hash))

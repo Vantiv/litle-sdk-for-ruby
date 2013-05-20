@@ -1199,6 +1199,29 @@ module LitleOnline
     
   end
   
+  class BatchRequest
+    include XML::Mapping
+    root_element_name "litleBatch" 
+
+    text_node :numAuths, "@numAuths", :default_value=>"0"
+    text_node :authsAmount, "@authsAmount", :default_value=>"0"
+    text_node :numSales, "@numSales", :default_value=>"0"
+    text_node :saleAmount, "@saleAmount", :default_value=>"0"
+    text_node :numCredits, "@numCredits", :default_value=>"0"
+    text_node :creditAmount, "@creditAmount", :default_value=>"0"
+    text_node :registerTokenRequests, "@registerTokenRequests", :default_value=>"0"
+    text_node :numCaptureGivenAuths, "@numCaptureGivenAuths", :default_value=>"0"
+    text_node :captureGivenAuthAmount, "@captureGivenAuthAmount", :default_value=>"0"
+    text_node :numForceCaptures, "@numForceCaptures", :default_value=>"0"
+    text_node :authReversal, "@authReversal", :default_value=>"0"
+    text_node :numCaptures, "@xmlns", :default_value=>"0"
+    text_node :numEcheckSales, "@numEcheckSales", :default_value=>"0"
+    text_node :numCaptureGivenAuths, "@numCaptureGivenAuths", :default_value=>"0"
+    text_node :merchantId, "@merchantId", :default_value=>nil
+    
+    
+  end
+   
   class LitleOnlineResponse
     attr_accessor :message
   end

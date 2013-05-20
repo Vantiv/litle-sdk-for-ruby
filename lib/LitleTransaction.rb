@@ -31,7 +31,7 @@ require_relative 'Configuration'
 #
 module LitleOnline
 
-  class LitleRequest
+  class LitleTransaction
     def authorization(options)
       transaction = Authorization.new
       add_transaction_info(transaction, options)
@@ -61,14 +61,139 @@ module LitleOnline
       return transaction
     end
     
-    private
-    
-    def add_account_info(transaction, options)
-      transaction.reportGroup   = get_report_group(options)
-      transaction.transactionId = options['id']
-      transaction.customerId    = options['customerId']
+    def credit(options)
+      transaction = Credit.new
+      add_order_info(transaction, options)
+
+      transaction.litleTxnId          = options['litleTxnId']
+      transaction.customBilling       = CustomBilling.from_hash(options)
+      transaction.billMeLaterRequest  = BillMeLaterRequest.from_hash(options)
+      transaction.payPalNotes         = options['payPalNotes']
+      transaction.actionReason        = options['actionReason']
+      transaction.paypal              = CreditPayPal.from_hash(options,'paypal')
+
+      return transaction
     end
 
+    def register_token_request(options)
+      transaction = RegisterTokenRequest.new
+
+      transaction.orderId               = options['orderId']
+      transaction.accountNumber         = options['accountNumber']
+      transaction.echeckForToken        = EcheckForToken.from_hash(options)
+      transaction.paypageRegistrationId = options['paypageRegistrationId']
+
+      return transaction
+    end
+    
+    def update_card_validation_num_on_token(options)
+      transaction = UpdateCardValidationNumOnToken.new
+      
+      transaction.orderId               = options['orderId']
+      transaction.litleToken            = options['litleToken']
+      transaction.cardValidationNum     = options['cardValidationNum']
+      
+      SchemaValidation.validate_length(transaction.litleToken, true, 13, 25, "updateCardValidationNumOnToken", "litleToken")
+      SchemaValidation.validate_length(transaction.cardValidationNum, true, 1, 4, "updateCardValidationNumOnToken", "cardValidationNum")
+      
+      return transaction
+    end
+
+    def force_capture(options)
+      transaction = ForceCapture.new
+      transaction.customBilling = CustomBilling.from_hash(options)
+
+      add_order_info(transaction, options)
+
+      return transaction
+    end
+
+    def capture(options)
+      transaction = Capture.new
+
+      transaction.partial                 = options['partial']
+      transaction.litleTxnId              = options['litleTxnId']
+      transaction.amount                  = options['amount']
+      transaction.enhancedData            = EnhancedData.from_hash(options)
+      transaction.processingInstructions  = ProcessingInstructions.from_hash(options)
+      transaction.payPalOrderComplete     = options['payPalOrderComplete']
+      transaction.payPalNotes             = options['payPalNotes']
+
+      return transaction
+    end
+
+    def capture_given_auth(options)
+      transaction = CaptureGivenAuth.new
+      add_order_info(transaction, options)
+
+      transaction.authInformation    = AuthInformation.from_hash(options)
+      transaction.shipToAddress      = Contact.from_hash(options,'shipToAddress')
+      transaction.customBilling      = CustomBilling.from_hash(options)
+      transaction.billMeLaterRequest = BillMeLaterRequest.from_hash(options)
+
+      return transaction
+    end
+
+    def void(options)
+      transaction = Void.new
+
+      transaction.litleTxnId             = options['litleTxnId']
+      transaction.processingInstructions = ProcessingInstructions.from_hash(options)
+
+      return transaction
+    end
+
+    def echeck_redeposit(options)
+      transaction = EcheckRedeposit.new
+      add_echeck(transaction, options)
+
+      transaction.litleTxnId = options['litleTxnId']
+      transaction.merchantData              = MerchantData.from_hash(options)
+
+      return transaction
+    end
+
+    def echeck_sale(options)
+      transaction = EcheckSale.new
+      add_echeck(transaction, options)
+      add_echeck_order_info(transaction, options)
+
+      transaction.verify        = options['verify']
+      transaction.shipToAddress = Contact.from_hash(options,'shipToAddress')
+      transaction.customBilling = CustomBilling.from_hash(options)
+
+      return transaction
+    end
+
+    def echeck_credit(options)
+      transaction = EcheckCredit.new
+      transaction.customBilling = CustomBilling.from_hash(options)
+
+      add_echeck_order_info(transaction, options)
+      add_echeck(transaction, options)
+
+      return transaction
+    end
+
+    def echeck_verification(options)
+      transaction = EcheckVerification.new
+
+      add_echeck_order_info(transaction, options)
+      add_echeck(transaction, options)
+      transaction.merchantData              = MerchantData.from_hash(options)
+
+      return transaction
+    end
+
+    def echeck_void(options)
+      transaction = EcheckVoid.new
+      transaction.litleTxnId = options['litleTxnId']
+
+      return transaction
+    end
+    
+    private
+    
     def add_transaction_info(transaction, options)
       transaction.litleTxnId                = options['litleTxnId']
       transaction.customerInfo              = CustomerInfo.from_hash(options)
