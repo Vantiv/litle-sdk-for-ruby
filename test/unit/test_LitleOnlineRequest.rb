@@ -25,7 +25,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 require 'lib/LitleOnline'
 require 'lib/LitleOnlineRequest'
 require 'test/unit'
-require 'mocha'
+require 'mocha/setup'
 
 module LitleOnline
 
@@ -118,7 +118,7 @@ module LitleOnline
   
     def test_sale_card_field
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
-      hash={
+      hash = {
         'reportGroup'=>'Planets',
         'id' => '006',
         'orderId'=>'12344',

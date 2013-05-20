@@ -47,6 +47,8 @@ end
 require_relative 'Communications'
 require_relative 'LitleXmlMapper'
 require_relative 'XMLFields'
+require_relative 'LitleRequest'
+require_relative 'LitleBatchRequest'
 require_relative 'LitleOnlineRequest'
 require_relative 'Configuration'
 

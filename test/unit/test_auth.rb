@@ -24,7 +24,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 =end
 require 'lib/LitleOnline'
 require 'test/unit'
-require 'mocha'
+require 'mocha/setup'
 
 #test Authorization Transaction
 module LitleOnline

@@ -25,9 +25,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 require_relative 'Configuration'
 
 #
-# This class does all the heavy lifting of mapping the Ruby hash into Litle XML format
-# It also handles validation looking for missing or incorrect fields
-#contains the methods to properly create each transaction type
+# This class handles sending the Litle online request
 #
 module LitleOnline
 
@@ -35,33 +33,37 @@ module LitleOnline
     def initialize
       #load configuration data
       @config_hash = Configuration.new.config
+      @litle_request = LitleRequest.new
     end
 
     def authorization(options)
-      transaction = Authorization.new
-      add_transaction_info(transaction, options)
+      transaction = @litle_request.authorization(options)
+      # transaction = Authorization.new
+      # add_transaction_info(transaction, options)
 
       commit(transaction, :authorization, options)
     end
 
     def sale(options)
-      transaction = Sale.new
-      add_transaction_info(transaction, options)
-
-      transaction.fraudCheck          = FraudCheck.from_hash(options,'fraudCheck')
-      transaction.payPalOrderComplete = options['payPalOrderComplete']
-      transaction.payPalNotes         = options['payPalNotes']
+      transaction = @litle_request.sale(options)
+      # transaction = Sale.new
+      # add_transaction_info(transaction, options)
+# 
+      # transaction.fraudCheck          = FraudCheck.from_hash(options,'fraudCheck')
+      # transaction.payPalOrderComplete = options['payPalOrderComplete']
+      # transaction.payPalNotes         = options['payPalNotes']
 
       commit(transaction, :sale, options)
     end
 
     def auth_reversal(options)
-      transaction = AuthReversal.new
-
-      transaction.litleTxnId    = options['litleTxnId']
-      transaction.amount        = options['amount']
-      transaction.payPalNotes   = options['payPalNotes']
-      transaction.actionReason  = options['actionReason']
+      transaction = @litle_request.auth_reversal(options)
+      # transaction = AuthReversal.new
+# 
+      # transaction.litleTxnId    = options['litleTxnId']
+      # transaction.amount        = options['amount']
+      # transaction.payPalNotes   = options['payPalNotes']
+      # transaction.actionReason  = options['actionReason']
 
       commit(transaction, :authReversal, options)
     end

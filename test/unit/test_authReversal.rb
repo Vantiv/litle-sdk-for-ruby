@@ -24,7 +24,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 =end
 require 'lib/LitleOnline'
 require 'test/unit'
-require 'mocha'
+require 'mocha/setup'
 
 module LitleOnline
   class TestAuthReversal < Test::Unit::TestCase
@@ -48,9 +48,9 @@ module LitleOnline
         'merchantId' => '101',
         'version'=>'8.8',
         'litleTxnId'=>'12345678000',
-		'reportGroup'=>'Planets',
-		'amount'=>'5000',
-		'loggedInUser'=>'gdake'
+		    'reportGroup'=>'Planets',
+		    'amount'=>'5000',
+		    'loggedInUser'=>'gdake'
       }
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*loggedInUser="gdake".*merchantSdk="Ruby;8.14.0".*/m), is_a(Hash))
       LitleOnlineRequest.new.auth_reversal(hash)
