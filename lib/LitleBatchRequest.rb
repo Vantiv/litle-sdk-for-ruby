@@ -61,7 +61,7 @@ module LitleOnline
       ts = Time::now.to_i.to_s
       @path_to_batch = path + 'batch_' + ts + '.lb'
       File.open(@path_to_batch, 'a+') do |file|
-        file.puts("<litleBatch ")
+        file.puts("Empty Batch")
       end
     end
     
@@ -70,8 +70,7 @@ module LitleOnline
       @txn_counts[:auth][:authCount] += 1
       @txn_counts[:auth][:authAmount] += options['amount'].to_i
         
-      #TODO append transaction to file if a batch exists else create a new batch and add this transaction
-      #add_txn_to_batch(transaction, :authorization, options)
+      add_txn_to_batch(transaction, :authorization, options)
     end
     
     def sale(options)
@@ -80,6 +79,7 @@ module LitleOnline
       @txn_counts[:sale][:saleAmount] += options['amount'].to_i
       
       #TODO append transaction to file if a batch exists else create a new batch and add this transaction
+      add_txn_to_batch(transaction, :sale, options)
     end
     
     def get_counts_and_amounts
@@ -89,12 +89,7 @@ module LitleOnline
     private
     
     def add_txn_to_batch(transaction, type, options)
-      
-      request.send(:"#{type}=", transaction)  
-      xml = request.save_to_xml.to_s
-      
-      puts "XML in add to batch: " + xml
-      puts "path to file: " + @path_to_batch
+      xml = transaction.save_to_xml.to_s
       
       File.open(@path_to_batch, 'a+') do |file|
         file.write(xml)

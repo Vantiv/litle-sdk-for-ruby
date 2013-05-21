@@ -1218,8 +1218,6 @@ module LitleOnline
     text_node :numEcheckSales, "@numEcheckSales", :default_value=>"0"
     text_node :numCaptureGivenAuths, "@numCaptureGivenAuths", :default_value=>"0"
     text_node :merchantId, "@merchantId", :default_value=>nil
-    
-    
   end
    
   class LitleOnlineResponse
