@@ -49,18 +49,7 @@ module LitleOnline
 
       return transaction
     end
-    
-    def auth_reversal(options)
-      transaction = AuthReversal.new
 
-      transaction.litleTxnId    = options['litleTxnId']
-      transaction.amount        = options['amount']
-      transaction.payPalNotes   = options['payPalNotes']
-      transaction.actionReason  = options['actionReason']
-
-      return transaction
-    end
-    
     def credit(options)
       transaction = Credit.new
       add_order_info(transaction, options)
@@ -71,6 +60,17 @@ module LitleOnline
       transaction.payPalNotes         = options['payPalNotes']
       transaction.actionReason        = options['actionReason']
       transaction.paypal              = CreditPayPal.from_hash(options,'paypal')
+
+      return transaction
+    end
+    
+    def auth_reversal(options)
+      transaction = AuthReversal.new
+
+      transaction.litleTxnId    = options['litleTxnId']
+      transaction.amount        = options['amount']
+      transaction.payPalNotes   = options['payPalNotes']
+      transaction.actionReason  = options['actionReason']
 
       return transaction
     end

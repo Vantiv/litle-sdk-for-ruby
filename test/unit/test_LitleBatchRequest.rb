@@ -32,8 +32,8 @@ module LitleOnline
 
   class TestLitleBatchRequest < Test::Unit::TestCase
     def test_create_new_batch
-      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
-      File.expects(:open).with(regexp_matches(/.*batch_.*\d.lb.*/), 'a+').once
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once
       
       batch = LitleBatchRequest.new
       batch.create_new_batch('D:\Batches\\')
@@ -41,8 +41,340 @@ module LitleOnline
     end
     
     def test_add_authorization
-      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
-      #File.expects(:open).with(regexp_matches(/.*batch_.*\d.lb.*/), 'a+').once
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').at_most(3)
+      
+      authHash = {
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+      }}
+      
+      batch = LitleBatchRequest.new
+      #batch.create_new_batch('D:\Batches\\')
+      batch.create_new_batch('/usr/local/litle-home/barnold/Batches/')
+      
+      2.times(){ batch.authorization(authHash) }
+      counts = batch.get_counts_and_amounts
+      
+      assert_equal 2, counts[:auth][:numAuths]
+      assert_equal 212, counts[:auth][:authAmount]
+    end    
+    
+    def test_add_sale
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').at_most(2)
+      
+      saleHash = {
+        'reportGroup'=>'Planets',
+        'id' => '006',
+        'orderId'=>'12344',
+        'amount'=>'6000',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+      }}
+       
+      batch = LitleBatchRequest.new
+      batch.create_new_batch('D:\Batches\\')
+      batch.sale(saleHash)
+      
+      counts = batch.get_counts_and_amounts
+      assert_equal 1, counts[:sale][:numSales]
+      assert_equal 6000, counts[:sale][:saleAmount]
+    end
+    
+    def test_add_credit
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').twice
+      
+      creditHash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        }}
+       
+      batch = LitleBatchRequest.new
+      batch.create_new_batch('D:\Batches\\')
+      batch.credit(creditHash)
+      
+      counts = batch.get_counts_and_amounts
+      assert_equal 1, counts[:credit][:numCredits]
+      assert_equal 106, counts[:credit][:creditAmount]
+    end
+    
+    def test_add_auth_reversal
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').twice
+      
+      authReversalHash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'12345678000',
+        'amount'=>'106',
+        'payPalNotes'=>'Notes'
+        }
+       
+      batch = LitleBatchRequest.new
+      batch.create_new_batch('D:\Batches\\')
+      batch.auth_reversal(authReversalHash)
+      
+      counts = batch.get_counts_and_amounts
+      assert_equal 1, counts[:authReversal][:numAuthReversals]
+      assert_equal 106, counts[:authReversal][:authReversalAmount]
+    end
+    
+    def test_add_register_token_request
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').twice
+      
+      registerTokenHash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'accountNumber'=>'1233456789103801'
+      }
+       
+      batch = LitleBatchRequest.new
+      batch.create_new_batch('D:\Batches\\')
+      batch.register_token_request(registerTokenHash)
+      
+      counts = batch.get_counts_and_amounts
+      assert_equal 1, counts[:numTokenReqistrations]
+    end
+    
+    def test_add_update_card_validation_num_on_token
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').twice
+      
+      updateCardHash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'litleToken'=>'1233456789103801',
+        'cardValidationNum'=>'123'
+      }
+       
+      batch = LitleBatchRequest.new
+      batch.create_new_batch('D:\Batches\\')
+      batch.update_card_validation_num_on_token(updateCardHash)
+      
+      counts = batch.get_counts_and_amounts
+      assert_equal 1, counts[:numUpdateCardValidationNumOnTokens]
+    end
+    
+    def test_add_force_capture
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').twice
+      
+      forceCaptHash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        }}
+       
+      batch = LitleBatchRequest.new
+      batch.create_new_batch('D:\Batches\\')
+      batch.force_capture(forceCaptHash)
+      
+      counts = batch.get_counts_and_amounts
+      assert_equal 1, counts[:forceCapture][:numForceCaptures]
+      assert_equal 106, counts[:forceCapture][:forceCaptureAmount]
+    end
+    
+    def test_add_capture
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').twice
+      
+      captHash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456000',
+        'amount'=>'106',
+      }
+       
+      batch = LitleBatchRequest.new
+      batch.create_new_batch('D:\Batches\\')
+      batch.capture(captHash)
+      
+      counts = batch.get_counts_and_amounts
+      assert_equal 1, counts[:capture][:numCaptures]
+      assert_equal 106, counts[:capture][:captureAmount]
+    end
+    
+    def test_add_capture_given_auth
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').twice
+      
+      captGivenAuthHash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'authInformation' => {
+        'authDate'=>'2002-10-09','authCode'=>'543216',
+        'authAmount'=>'12345'
+        },
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000000',
+        'expDate' =>'1210'
+        }}
+       
+      batch = LitleBatchRequest.new
+      batch.create_new_batch('D:\Batches\\')
+      batch.capture_given_auth(captGivenAuthHash)
+      
+      counts = batch.get_counts_and_amounts
+      assert_equal 1, counts[:captureGivenAuth][:numCaptureGivenAuths]
+      assert_equal 106, counts[:captureGivenAuth][:captureGivenAmount]
+    end
+    
+    def test_add_echeck_verification
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').twice
+      
+      echeckVerificationHash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'amount'=>'123456',
+        'orderId'=>'12345',
+        'orderSource'=>'ecommerce',
+        'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
+      }
+       
+      batch = LitleBatchRequest.new
+      batch.create_new_batch('D:\Batches\\')
+      batch.echeck_verification(echeckVerificationHash)
+      
+      counts = batch.get_counts_and_amounts
+      assert_equal 1, counts[:echeckVerification][:numEcheckVerification]
+      assert_equal 123456, counts[:echeckVerification][:echeckVerificationAmount]
+    end
+    
+    def test_add_echeck_credit
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').twice
+      
+      echeckCreditHash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456789101112',
+        'amount'=>'12'
+      }
+       
+      batch = LitleBatchRequest.new
+      batch.create_new_batch('D:\Batches\\')
+      batch.echeck_credit(echeckCreditHash)
+      
+      counts = batch.get_counts_and_amounts
+      assert_equal 1, counts[:echeckCredit][:numEcheckCredit]
+      assert_equal 12, counts[:echeckCredit][:echeckCreditAmount]
+    end
+    
+    def test_add_echeck_redeposit
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').twice
+      
+      echeckRedeopsitHash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456'
+      }
+       
+      batch = LitleBatchRequest.new
+      batch.create_new_batch('D:\Batches\\')
+      batch.echeck_redeposit(echeckRedeopsitHash)
+      
+      counts = batch.get_counts_and_amounts
+      assert_equal 1, counts[:numEcheckRedeposit]
+    end
+    
+    def test_add_echeck_sale
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').twice
+      
+      echeckSaleHash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'amount'=>'123456',
+        'verify'=>'true',
+        'orderId'=>'12345',
+        'orderSource'=>'ecommerce',
+        'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
+      }
+       
+      batch = LitleBatchRequest.new
+      batch.create_new_batch('D:\Batches\\')
+      batch.echeck_sale(echeckSaleHash)
+      
+      counts = batch.get_counts_and_amounts
+      assert_equal 1, counts[:echeckSale][:numEcheckSales]
+      assert_equal 123456, counts[:echeckSale][:echeckSaleAmount]
+    end
+      
+    def test_close_batch
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').twice
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.closed.*/), 'w').once
+      File.expects(:delete).once
+      
+      saleHash = {
+        'reportGroup'=>'Planets',
+        'id' => '006',
+        'orderId'=>'12344',
+        'amount'=>'6000',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+      }}
+
+      batch = LitleBatchRequest.new
+      batch.create_new_batch('D:\Batches\\')      
+
+      batch.sale(saleHash)
+      batch.close_batch()
+    end  
+  
+    def test_complete_batch
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
+      #File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').at_most(3)
       
       authHash = {
         'reportGroup'=>'Planets',
@@ -59,28 +391,31 @@ module LitleOnline
         'reportGroup'=>'Planets',
         'id' => '006',
         'orderId'=>'12344',
-        'amount'=>'106',
+        'amount'=>'6000',
         'orderSource'=>'ecommerce',
         'card'=>{
         'type'=>'VI',
         'number' =>'4100000000000001',
         'expDate' =>'1210'
       }}
-       
-      batch = LitleBatchRequest.new
-      batch.create_new_batch('D:\Batches\\')
-      #batch.create_new_batch('/usr/local/litle-home/barnold/Batches/')
       
-      2.times(){ batch.authorization(authHash) }
-      batch.sale(saleHash)
+      batch = LitleBatchRequest.new
+      #batch.create_new_batch('D:\Batches\\')
+      batch.create_new_batch('/usr/local/litle-home/barnold/Batches/')
+      
+      5.times(){ batch.authorization(authHash) }
+      2.times(){ batch.sale(saleHash) }
+      #pid, size = `ps ax -o pid,rss | grep -E "^[[:space:]]*#{$$}"`.strip.split.map(&:to_i)
+      #puts "PID: " + pid.to_s + " size: " + size.to_s
+      batch.close_batch()
+
       counts = batch.get_counts_and_amounts
       
-      assert_equal 2, counts[:auth][:authCount]
-      assert_equal 212, counts[:auth][:authAmount]
-      assert_equal 1, counts[:sale][:saleCount]
-      assert_equal 106, counts[:sale][:saleAmount]
-    end    
-  
+      assert_equal 5, counts[:auth][:numAuths]
+      #assert_equal 212, counts[:auth][:authAmount]
+      assert_equal 2, counts[:sale][:numSales]
+      #assert_equal 6000, counts[:sale][:saleAmount]
+    end  
   
   end
 end

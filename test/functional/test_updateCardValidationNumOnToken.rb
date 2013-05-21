@@ -34,7 +34,7 @@ module LitleOnline
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
         'litleToken'=>'1233456789103801',
-		'cardValidationNum'=>'123'
+		    'cardValidationNum'=>'123'
       }
       response= LitleOnlineRequest.new.update_card_validation_num_on_token(hash)
       assert_equal('Valid Format', response.message)

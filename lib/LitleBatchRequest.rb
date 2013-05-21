@@ -37,49 +37,148 @@ module LitleOnline
       #load configuration data
       @config_hash = Configuration.new.config
       
-      @txn_counts = { auth:{ authCount:0, authAmount:0 },
-                      sale:{ saleCount:0, saleAmount:0 },
-                      credit:{ creditCount:0, creditAmount:0 },
-                      registerTokenRequest:0,
-                      captGivenAuth:{ captGivenCount:0, captGivenAmount:0 },
-                      forceCapture:{ forceCaptCount:0, forceCaptAmount:0 },
-                      authReversal:{ authReversalCount:0, authReversalAmount:0 },
-                      capture:{ captureCount:0, captureAmount:0 },
-                      void:{ voidCount:0, voidAmount:0 },
-                      echeckVoid:0,
-                      echeckVerification:{ echeckVerificationCount:0, echeckVerificationAmount:0 },
-                      echeckCredit:{ echeckCreditCount:0, echeckCreditAmount:0 },
-                      echeckRedeposit:{ echeckRedepositCount:0, echeckRedepositAmount:0 },
-                      echeckSale:{ echeckSaleCount:0, echeckSaleAmount:0 },
-                      updateCCNumOnToken:{ updateCCNumOnTokenCount:0 }
+      @txn_counts = { id:nil,
+                      merchantId:nil,
+                      auth:{ numAuths:0, authAmount:0 },
+                      sale:{ numSales:0, saleAmount:0 },
+                      credit:{ numCredits:0, creditAmount:0 },
+                      numTokenReqistrations:0,
+                      captureGivenAuth:{ numCaptureGivenAuths:0, captureGivenAmount:0 },
+                      forceCapture:{ numForceCaptures:0, forceCaptureAmount:0 },
+                      authReversal:{ numAuthReversals:0, authReversalAmount:0 },
+                      capture:{ numCaptures:0, captureAmount:0 },
+                      echeckVerification:{ numEcheckVerification:0, echeckVerificationAmount:0 },
+                      echeckCredit:{ numEcheckCredit:0, echeckCreditAmount:0 },
+                      numEcheckRedeposit:0,
+                      echeckSale:{ numEcheckSales:0, echeckSaleAmount:0 },
+                      numUpdateCardValidationNumOnTokens:0,
+                      total:0
       }
-      @litle_request = LitleTransaction.new
+      @litle_txn = LitleTransaction.new
       @path_to_batch = nil
     end
     
     def create_new_batch(path)
       ts = Time::now.to_i.to_s
-      @path_to_batch = path + 'batch_' + ts + '.lb'
+      @path_to_batch = path + 'batch_' + ts
       File.open(@path_to_batch, 'a+') do |file|
-        file.puts("Empty Batch")
+        file.write("")
       end
     end
     
+    def close_batch(path = @path_to_batch)
+      header = build_batch_header(@txn_counts)
+      File.open(path + '.closed', 'w') do |fo|
+        fo.puts header
+        File.foreach(path) do |li|
+          fo.puts li
+        end
+        fo.puts('</batchRequest>')
+      end
+      File.delete(path)
+    end
+    
     def authorization(options)
-      transaction = @litle_request.authorization(options)
-      @txn_counts[:auth][:authCount] += 1
+      transaction = @litle_txn.authorization(options)
+      @txn_counts[:auth][:numAuths] += 1
       @txn_counts[:auth][:authAmount] += options['amount'].to_i
+      
+      #TODO need to set the account info needed for each txn
         
       add_txn_to_batch(transaction, :authorization, options)
     end
     
     def sale(options)
-      transaction = @litle_request.sale(options)
-      @txn_counts[:sale][:saleCount] += 1
+      transaction = @litle_txn.sale(options)
+      @txn_counts[:sale][:numSales] += 1
       @txn_counts[:sale][:saleAmount] += options['amount'].to_i
       
-      #TODO append transaction to file if a batch exists else create a new batch and add this transaction
       add_txn_to_batch(transaction, :sale, options)
+    end
+
+    def credit(options)
+      transaction = @litle_txn.sale(options)
+      @txn_counts[:credit][:numCredits] += 1
+      @txn_counts[:credit][:creditAmount] += options['amount'].to_i
+      
+      add_txn_to_batch(transaction, :credit, options)
+    end
+    
+    def auth_reversal(options)
+      transaction = @litle_txn.auth_reversal(options)
+      @txn_counts[:authReversal][:numAuthReversals] += 1
+      @txn_counts[:authReversal][:authReversalAmount] += options['amount'].to_i
+      
+      add_txn_to_batch(transaction, :authReversal, options)
+    end
+    
+    def register_token_request(options)
+      transaction = @litle_txn.register_token_request(options)
+      @txn_counts[:numTokenReqistrations] += 1
+      
+      add_txn_to_batch(transaction, :numTokenReqistrations, options)
+    end
+    
+    def update_card_validation_num_on_token(options)
+      transaction = @litle_txn.update_card_validation_num_on_token(options)
+      @txn_counts[:numUpdateCardValidationNumOnTokens] += 1
+      
+      add_txn_to_batch(transaction, :numUpdateCardValidationNumOnTokens, options)
+    end
+    
+    def force_capture(options)
+      transaction = @litle_txn.force_capture(options)
+      @txn_counts[:forceCapture][:numForceCaptures] += 1
+      @txn_counts[:forceCapture][:forceCaptureAmount] += options['amount'].to_i
+      
+      add_txn_to_batch(transaction, :forceCapture, options)
+    end
+    
+    def capture(options)
+      transaction = @litle_txn.capture(options)
+      @txn_counts[:capture][:numCaptures] += 1
+      @txn_counts[:capture][:captureAmount] += options['amount'].to_i
+      
+      add_txn_to_batch(transaction, :capture, options)
+    end
+    
+    def capture_given_auth(options)
+      transaction = @litle_txn.capture_given_auth(options)
+      @txn_counts[:captureGivenAuth][:numCaptureGivenAuths] += 1
+      @txn_counts[:captureGivenAuth][:captureGivenAmount] += options['amount'].to_i
+      
+      add_txn_to_batch(transaction, :captureGivenAuth, options)
+    end
+    
+    def echeck_verification(options)
+      transaction = @litle_txn.echeck_verification(options)
+      @txn_counts[:echeckVerification][:numEcheckVerification] += 1
+      @txn_counts[:echeckVerification][:echeckVerificationAmount] += options['amount'].to_i
+      
+      add_txn_to_batch(transaction, :echeckVerification, options)
+    end
+    
+    def echeck_credit(options)
+      transaction = @litle_txn.echeck_credit(options)
+      @txn_counts[:echeckCredit][:numEcheckCredit] += 1
+      @txn_counts[:echeckCredit][:echeckCreditAmount] += options['amount'].to_i
+      
+      add_txn_to_batch(transaction, :echeckCredit, options)
+    end
+    
+    def echeck_redeposit(options)
+      transaction = @litle_txn.echeck_redeposit(options)
+      @txn_counts[:numEcheckRedeposit] += 1
+      
+      add_txn_to_batch(transaction, :echeckRedeposit, options)
+    end
+    
+    def echeck_sale(options)
+      transaction = @litle_txn.echeck_sale(options)
+      @txn_counts[:echeckSale][:numEcheckSales] += 1
+      @txn_counts[:echeckSale][:echeckSaleAmount] += options['amount'].to_i
+      
+      add_txn_to_batch(transaction, :echeckSale, options)
     end
     
     def get_counts_and_amounts
@@ -89,11 +188,50 @@ module LitleOnline
     private
     
     def add_txn_to_batch(transaction, type, options)
-      xml = transaction.save_to_xml.to_s
+      @txn_counts[:total] += 1
+      xml = transaction.save_to_xml
       
       File.open(@path_to_batch, 'a+') do |file|
         file.write(xml)
       end
+    end
+    
+    def build_batch_header(options)
+      request = BatchRequest.new
+      
+      @txn_counts.sort_by { |txn,val| txn }
+      
+      request.numAuths                 = @txn_counts[:auth][:numAuths]
+      request.authAmount               = @txn_counts[:auth][:authAmount]
+      request.numSales                 = @txn_counts[:sale][:numSales]
+      request.saleAmount               = @txn_counts[:sale][:saleAmount]
+      request.numCredits               = @txn_counts[:credit][:numCredits]
+      request.creditAmount             = @txn_counts[:credit][:creditAmount]
+      request.numTokenRegistrations    = @txn_counts[:numTokenRegistrations]
+      request.numCaptureGivenAuths     = @txn_counts[:captureGivenAuth][:numCaptureGivenAuths]
+      request.captureGivenAuthAmount   = @txn_counts[:captureGivenAuth][:captureGivenAuthAmount]
+      request.numForceCaptures         = @txn_counts[:forceCapture][:numForceCaptures]
+      request.forceCaptureAmount       = @txn_counts[:forceCapture][:forceCaptureAmount]
+      request.numAuthReversals         = @txn_counts[:authReversal][:numAuthReversals]
+      request.authReversalAmount       = @txn_counts[:authReversal][:authReversalAmount]
+      request.numCaptures              = @txn_counts[:capture][:numCaptures]
+      request.captureAmount            = @txn_counts[:capture][:captureAmount]
+      request.numEcheckSales           = @txn_counts[:echeckSale][:numEcheckSale]
+      request.echeckSaleAmount         = @txn_counts[:echeckSale][:echeckSaleAmount]
+      request.numEcheckRedeposit       = @txn_counts[:numEcheckredeposit]
+      request.numEcheckCredit          = @txn_counts[:echeckCredit][:numEcheckCredit]
+      request.echeckCreditAmount       = @txn_counts[:echeckCredit][:echeckCreditAmount]
+      request.numEcheckVerification    = @txn_counts[:echeckVerification][:numEcheckverification]
+      request.echeckVerificationAmount = @txn_counts[:echeckVerification][:echeckVerificationAmount]
+      request.numUpdateCardValidationNumOnTokens = @txn_counts[:numUpdateCardValidationNumOnTokens]
+      #TODO nned to set these fields on the batchRequest
+      request.merchantId             = @txn_counts[:merchantId]
+      request.id                     = @txn_counts[:id]
+      
+      header = request.save_to_xml.to_s
+      header['/>']= '>' 
+
+      return header
     end
      
   end

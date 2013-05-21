@@ -1201,23 +1201,33 @@ module LitleOnline
   
   class BatchRequest
     include XML::Mapping
-    root_element_name "litleBatch" 
+    root_element_name "batchRequest" 
 
     text_node :numAuths, "@numAuths", :default_value=>"0"
-    text_node :authsAmount, "@authsAmount", :default_value=>"0"
+    text_node :authAmount, "@authsAmount", :default_value=>"0"
     text_node :numSales, "@numSales", :default_value=>"0"
     text_node :saleAmount, "@saleAmount", :default_value=>"0"
     text_node :numCredits, "@numCredits", :default_value=>"0"
     text_node :creditAmount, "@creditAmount", :default_value=>"0"
-    text_node :registerTokenRequests, "@registerTokenRequests", :default_value=>"0"
+    text_node :numTokenRegistrations, "@numTokenRegistrations", :default_value=>"0"
     text_node :numCaptureGivenAuths, "@numCaptureGivenAuths", :default_value=>"0"
     text_node :captureGivenAuthAmount, "@captureGivenAuthAmount", :default_value=>"0"
     text_node :numForceCaptures, "@numForceCaptures", :default_value=>"0"
-    text_node :authReversal, "@authReversal", :default_value=>"0"
-    text_node :numCaptures, "@xmlns", :default_value=>"0"
+    text_node :forceCaptureAmount, "@forceCaptureAmount", :default_value=>"0"
+    text_node :numAuthReversals, "@numAuthReversals", :default_value=>"0"
+    text_node :authReversalAmount, "@authReversalAmount", :default_value=>"0"
+    text_node :numCaptures, "@numCaptures", :default_value=>"0"
+    text_node :captureAmount, "@captureAmount", :default_value=>"0"
     text_node :numEcheckSales, "@numEcheckSales", :default_value=>"0"
-    text_node :numCaptureGivenAuths, "@numCaptureGivenAuths", :default_value=>"0"
+    text_node :echeckSaleAmount, "@echeckSaleAmount", :default_value=>"0"
+    text_node :numEcheckRedeposit, "@numEcheckRedeposit", :default_value=>"0"
+    text_node :numEcheckCredit, "@numEcheckCredit", :default_value=>"0"
+    text_node :echeckCreditAmount, "@echeckCreditAmount", :default_value=>"0"
+    text_node :numEcheckVerification, "@numEcheckVerification", :default_value=>"0"
+    text_node :echeckVerificationAmount, "@echeckVerificationAmount", :default_value=>"0"
+    text_node :numUpdateCardValidationNumOnTokens, "@numUpdateCardValidationNumOnTokens", :default_value=>"0"
     text_node :merchantId, "@merchantId", :default_value=>nil
+    text_node :id, "@id", :default_value=>nil
   end
    
   class LitleOnlineResponse
