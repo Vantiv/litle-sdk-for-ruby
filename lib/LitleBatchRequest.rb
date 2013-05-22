@@ -93,14 +93,24 @@ module LitleOnline
       @litle_txn = LitleTransaction.new
       @path_to_batch = nil
       @txn_file = nil
+      @MAX_TXNS_IN_BATCH = 500000
     end
     
     def create_new_batch(path)
       ts = Time::now.to_i.to_s
       ts += Time::now.nsec.to_s
-      
-      @path_to_batch = path + 'batch_' + ts
+      if(File.file?(path)) then
+        raise RuntimeError, "Entered a file not a path."
+      end
+      if(path[-1,1] != '/' && path[-1,1] != '\\') then
+        path = path + File::SEPARATOR
+      end  
+      @path_to_batch = path + 'batch_' + ts      
       @txn_file = @path_to_batch + '_txns'
+      if(File.file?(@path_to_batch)) then
+        create_new_batch(path)
+        return
+      end
       File.open(@path_to_batch, 'a+') do |file|
         file.write("")
       end
@@ -254,6 +264,12 @@ module LitleOnline
       end
       # save counts and amounts to batch file
       File.open(@path_to_batch, 'wb'){|f| Marshal.dump(@txn_counts, f)}
+      if(@txn_counts[:total] >= @MAX_TXNS_IN_BATCH) then
+        close_batch()
+        path = File.dirname(@path_to_batch)
+        initialize
+        create_new_batch(path)
+      end
     end
     
     def build_batch_header(options)

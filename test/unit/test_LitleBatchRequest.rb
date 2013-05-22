@@ -442,6 +442,34 @@ module LitleOnline
       batch.close_batch()
     end
     
+    def test_create_new_batch_missing_separator
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').once
+      
+      batch = LitleBatchRequest.new
+      batch.create_new_batch('/usr/local')
+      
+      assert batch.get_batch_name.include?('/usr/local/')
+    end
+    
+    def test_create_new_batch_name_collision
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
+      
+      fileExists = sequence('fileExists')
+      #mockFile = mock(File)
+      File.expects(:file?).with(regexp_matches(/.*\/usr\/local\//)).returns(false).in_sequence(fileExists)
+      File.expects(:file?).with(regexp_matches(/.*batch_.*\d.*/)).returns(true).in_sequence(fileExists)
+      File.expects(:file?).with(regexp_matches(/.*\/usr\/local\//)).returns(false).in_sequence(fileExists)
+      File.expects(:file?).with(regexp_matches(/.*batch_.*\d.*/)).returns(false).in_sequence(fileExists)
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').in_sequence(fileExists)
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').in_sequence(fileExists)
+      
+      
+      batch = LitleBatchRequest.new
+      batch.create_new_batch('/usr/local/')
+    end
+    
     def test_complete_batch
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').at_most(9)
