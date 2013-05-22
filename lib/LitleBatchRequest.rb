@@ -31,6 +31,42 @@ require_relative 'Configuration'
 #
 module LitleOnline
 
+  class LitleRequest
+    include XML::Mapping
+    def initialize
+      #load configuration data
+      @config_hash = Configuration.new.config
+      @numBatchRequests
+    end
+    
+    def create_new_litle_request(path)
+      ts = Time::now.to_i.to_s
+      @path_to_batch = path + 'litle_request_' + ts
+      File.open(@path_to_batch, 'a+') do |file|
+        file.write("")
+      end
+    end  
+    
+    def send_litle_request(*batches)
+      
+    end
+
+    private
+    
+    def build_request_header(options)
+      header = LitleRequest.new
+      
+      authentication = Authentication.new
+      authenticatio.user
+      #request.version =       
+    end
+    
+    def get_config(field, options)
+      options[field.to_s] == nil ? @config_hash[field.to_s] : options[field.to_s]
+    end
+     
+  end
+  
   class LitleBatchRequest
     include XML::Mapping
     def initialize
@@ -66,6 +102,7 @@ module LitleOnline
       end
     end
     
+    
     def close_batch(path = @path_to_batch)
       header = build_batch_header(@txn_counts)
       File.open(path + '.closed', 'w') do |fo|
@@ -76,6 +113,11 @@ module LitleOnline
         fo.puts('</batchRequest>')
       end
       File.delete(path)
+    end
+    
+    def send_litle_request
+      header = build_request_header(options)
+        
     end
     
     def authorization(options)
@@ -224,7 +266,7 @@ module LitleOnline
       request.numEcheckVerification    = @txn_counts[:echeckVerification][:numEcheckverification]
       request.echeckVerificationAmount = @txn_counts[:echeckVerification][:echeckVerificationAmount]
       request.numUpdateCardValidationNumOnTokens = @txn_counts[:numUpdateCardValidationNumOnTokens]
-      #TODO nned to set these fields on the batchRequest
+      #TODO need to set these fields on the batchRequest
       request.merchantId             = @txn_counts[:merchantId]
       request.id                     = @txn_counts[:id]
       
@@ -233,6 +275,5 @@ module LitleOnline
 
       return header
     end
-     
   end
 end

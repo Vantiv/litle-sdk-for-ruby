@@ -374,7 +374,7 @@ module LitleOnline
   
     def test_complete_batch
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
-      #File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').at_most(3)
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').at_most(3)
       
       authHash = {
         'reportGroup'=>'Planets',
@@ -400,8 +400,8 @@ module LitleOnline
       }}
       
       batch = LitleBatchRequest.new
-      #batch.create_new_batch('D:\Batches\\')
-      batch.create_new_batch('/usr/local/litle-home/barnold/Batches/')
+      batch.create_new_batch('D:\Batches\\')
+      #batch.create_new_batch('/usr/local/litle-home/barnold/Batches/')
       
       5.times(){ batch.authorization(authHash) }
       2.times(){ batch.sale(saleHash) }

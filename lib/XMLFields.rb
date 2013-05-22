@@ -1204,7 +1204,7 @@ module LitleOnline
     root_element_name "batchRequest" 
 
     text_node :numAuths, "@numAuths", :default_value=>"0"
-    text_node :authAmount, "@authsAmount", :default_value=>"0"
+    text_node :authAmount, "@authAmount", :default_value=>"0"
     text_node :numSales, "@numSales", :default_value=>"0"
     text_node :saleAmount, "@saleAmount", :default_value=>"0"
     text_node :numCredits, "@numCredits", :default_value=>"0"
@@ -1229,6 +1229,21 @@ module LitleOnline
     text_node :merchantId, "@merchantId", :default_value=>nil
     text_node :id, "@id", :default_value=>nil
   end
+  
+  # class LitleRequest
+    # include XML::Mapping
+    # # version="6.0" xmlns="http://www.litle.com/schema" numBatchRequests = "1">
+    # # <authentication>
+        # # <user>XMLTESTV6ORG14</user>
+        # # <password>password</password>
+    # # </authentication>
+    # root_node "litleRequest"
+#     
+    # text_node :version, "@version", default_value:"0"
+    # text_node :xmlns, "@xmlns", default_value:nil
+    # text_node :numBatchRequests, "@numBatchRequests", default_value:"0"
+    # object_node :authentication, "authentication", :class=>Authentication    
+  # end
    
   class LitleOnlineResponse
     attr_accessor :message
