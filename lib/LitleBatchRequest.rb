@@ -92,27 +92,40 @@ module LitleOnline
       }
       @litle_txn = LitleTransaction.new
       @path_to_batch = nil
+      @txn_file = nil
     end
     
     def create_new_batch(path)
       ts = Time::now.to_i.to_s
+      ts += Time::now.nsec.to_s
+      
       @path_to_batch = path + 'batch_' + ts
+      @txn_file = @path_to_batch + '_txns'
       File.open(@path_to_batch, 'a+') do |file|
+        file.write("")
+      end
+      File.open(@txn_file, 'a+') do |file|
         file.write("")
       end
     end
     
+    def open_existing_batch(pathToBatchFile)
+      @txn_file = pathToBatchFile + '_txns'
+      @path_to_batch = pathToBatchFile
+      @txn_counts = File.open(@path_to_batch, "rb") { |f| Marshal.load(f) }
+    end
     
-    def close_batch(path = @path_to_batch)
+    def close_batch(txn_location = @txn_file)
       header = build_batch_header(@txn_counts)
-      File.open(path + '.closed', 'w') do |fo|
+      File.rename(@path_to_batch, @path_to_batch + '.closed')
+      File.open(@path_to_batch + '.closed', 'w') do |fo|
         fo.puts header
-        File.foreach(path) do |li|
+        File.foreach(txn_location) do |li|
           fo.puts li
         end
         fo.puts('</batchRequest>')
       end
-      File.delete(path)
+      File.delete(txn_location)
     end
     
     def send_litle_request
@@ -226,6 +239,9 @@ module LitleOnline
     def get_counts_and_amounts
       return @txn_counts
     end
+    def get_batch_name
+      return @path_to_batch
+    end
     
     private
     
@@ -233,9 +249,11 @@ module LitleOnline
       @txn_counts[:total] += 1
       xml = transaction.save_to_xml
       
-      File.open(@path_to_batch, 'a+') do |file|
+      File.open(@txn_file, 'a+') do |file|
         file.write(xml)
       end
+      # save counts and amounts to batch file
+      File.open(@path_to_batch, 'wb'){|f| Marshal.dump(@txn_counts, f)}
     end
     
     def build_batch_header(options)
@@ -266,7 +284,6 @@ module LitleOnline
       request.numEcheckVerification    = @txn_counts[:echeckVerification][:numEcheckverification]
       request.echeckVerificationAmount = @txn_counts[:echeckVerification][:echeckVerificationAmount]
       request.numUpdateCardValidationNumOnTokens = @txn_counts[:numUpdateCardValidationNumOnTokens]
-      #TODO need to set these fields on the batchRequest
       request.merchantId             = @txn_counts[:merchantId]
       request.id                     = @txn_counts[:id]
       

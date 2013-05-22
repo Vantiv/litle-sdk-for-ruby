@@ -33,83 +33,83 @@ module LitleOnline
     def initialize
       #load configuration data
       @config_hash = Configuration.new.config
-      @litle_request = LitleTransaction.new
+      @litle_transaction = LitleTransaction.new
     end
 
     def authorization(options)
-      transaction = @litle_request.authorization(options)
+      transaction = @litle_transaction.authorization(options)
 
       commit(transaction, :authorization, options)
     end
 
     def sale(options)
-      transaction = @litle_request.sale(options)
+      transaction = @litle_transaction.sale(options)
 
       commit(transaction, :sale, options)
     end
 
     def auth_reversal(options)
-      transaction = @litle_request.auth_reversal(options)      
+      transaction = @litle_transaction.auth_reversal(options)      
 
       commit(transaction, :authReversal, options)
     end
 
     def credit(options)
-      transaction = @litle_request.credit(options)
+      transaction = @litle_transaction.credit(options)
       
       commit(transaction, :credit, options)
     end
 
     def register_token_request(options)
-      transaction = @litle_request.register_token_request(options)
+      transaction = @litle_transaction.register_token_request(options)
 
       commit(transaction, :registerTokenRequest, options)
     end
     
     def update_card_validation_num_on_token(options)
-   	  transaction = @litle_request.update_card_validation_num_on_token(options)
+   	  transaction = @litle_transaction.update_card_validation_num_on_token(options)
     	
       commit(transaction, :updateCardValidationNumOnToken, options)
     end
 
     def force_capture(options)
-      transaction = @litle_request.force_capture(options)
+      transaction = @litle_transaction.force_capture(options)
       
       commit(transaction, :forceCapture, options)
     end
 
     def capture(options)
-      transaction = @litle_request.capture(options)
+      transaction = @litle_transaction.capture(options)
       
       commit(transaction, :captureTxn, options)
     end
 
     def capture_given_auth(options)
-      transaction = @litle_request.capture_given_auth(options)
+      transaction = @litle_transaction.capture_given_auth(options)
       
       commit(transaction, :captureGivenAuth, options)
     end
 
     def void(options)
-      transaction = @litle_request.void(options)
+      transaction = @litle_transaction.void(options)
 
       commit(transaction, :void, options)
     end
 
     def echeck_redeposit(options)
-      transaction = @litle_request.echeck_redeposit(options)
+      transaction = @litle_transaction.echeck_redeposit(options)
       
       commit(transaction, :echeckRedeposit, options)
     end
 
     def echeck_sale(options)
-      transaction = @litle_request.echeck_sale(options)
+      transaction = @litle_transaction.echeck_sale(options)
 
       commit(transaction, :echeckSale, options)
     end
 
     def echeck_credit(options)
-      transaction = @litle_request.echeck_credit(options)
+      transaction = @litle_transaction.echeck_credit(options)
 
       begin
         commit(transaction, :echeckCredit, options)
@@ -122,13 +122,13 @@ module LitleOnline
     end
 
     def echeck_verification(options)
-      transaction = @litle_request.echeck_verification(options)
+      transaction = @litle_transaction.echeck_verification(options)
 
       commit(transaction, :echeckVerification, options)
     end
 
     def echeck_void(options)
-      transaction = @litle_request.echeck_void(options)
+      transaction = @litle_transaction.echeck_void(options)
       
       commit(transaction, :echeckVoid, options)
     end

@@ -71,7 +71,8 @@ module LitleOnline
       transaction.amount        = options['amount']
       transaction.payPalNotes   = options['payPalNotes']
       transaction.actionReason  = options['actionReason']
-
+      
+      add_account_info(transaction, options)
       return transaction
     end
 
@@ -82,7 +83,8 @@ module LitleOnline
       transaction.accountNumber         = options['accountNumber']
       transaction.echeckForToken        = EcheckForToken.from_hash(options)
       transaction.paypageRegistrationId = options['paypageRegistrationId']
-
+      
+      add_account_info(transaction, options)
       return transaction
     end
     
@@ -96,6 +98,7 @@ module LitleOnline
       SchemaValidation.validate_length(transaction.litleToken, true, 13, 25, "updateCardValidationNumOnToken", "litleToken")
       SchemaValidation.validate_length(transaction.cardValidationNum, true, 1, 4, "updateCardValidationNumOnToken", "cardValidationNum")
       
+      add_account_info(transaction, options)
       return transaction
     end
 
@@ -119,6 +122,7 @@ module LitleOnline
       transaction.payPalOrderComplete     = options['payPalOrderComplete']
       transaction.payPalNotes             = options['payPalNotes']
 
+      add_account_info(transaction, options)
       return transaction
     end
 
@@ -139,7 +143,8 @@ module LitleOnline
 
       transaction.litleTxnId             = options['litleTxnId']
       transaction.processingInstructions = ProcessingInstructions.from_hash(options)
-
+      
+      add_account_info(transaction, options)
       return transaction
     end
 
@@ -180,7 +185,7 @@ module LitleOnline
 
       add_echeck_order_info(transaction, options)
       add_echeck(transaction, options)
-      transaction.merchantData              = MerchantData.from_hash(options)
+      transaction.merchantData = MerchantData.from_hash(options)
 
       return transaction
     end
@@ -188,11 +193,18 @@ module LitleOnline
     def echeck_void(options)
       transaction = EcheckVoid.new
       transaction.litleTxnId = options['litleTxnId']
-
+      
+      add_account_info(transaction, options)
       return transaction
     end
     
     private
+    
+    def add_account_info(transaction, options)
+      transaction.reportGroup   = get_report_group(options)
+      transaction.transactionId = options['id']
+      transaction.customerId    = options['customerId']
+    end
     
     def add_transaction_info(transaction, options)
       transaction.litleTxnId                = options['litleTxnId']
@@ -225,6 +237,8 @@ module LitleOnline
       transaction.card                    = Card.from_hash(options)
       transaction.token                   = CardToken.from_hash(options,'token')
       transaction.paypage                 = CardPaypage.from_hash(options,'paypage')
+      
+      add_account_info(transaction, options)
     end
 
     def add_echeck_order_info(transaction, options)
@@ -238,7 +252,13 @@ module LitleOnline
     def add_echeck(transaction, options)
       transaction.echeck      = Echeck.from_hash(options)
       transaction.echeckToken = EcheckToken.from_hash(options)
+      
+      add_account_info(transaction, options)
     end
     
+    def get_report_group(options)
+      #options['reportGroup'] || @config_hash['default_report_group']
+      options['reportGroup']
+    end
   end    
 end
