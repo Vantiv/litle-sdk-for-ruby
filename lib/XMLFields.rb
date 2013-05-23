@@ -1230,26 +1230,27 @@ module LitleOnline
     text_node :id, "@id", :default_value=>nil
   end
   
-  # class LitleRequest
-    # include XML::Mapping
-    # # version="6.0" xmlns="http://www.litle.com/schema" numBatchRequests = "1">
-    # # <authentication>
-        # # <user>XMLTESTV6ORG14</user>
-        # # <password>password</password>
-    # # </authentication>
-    # root_node "litleRequest"
-#     
-    # text_node :version, "@version", default_value:"0"
-    # text_node :xmlns, "@xmlns", default_value:nil
-    # text_node :numBatchRequests, "@numBatchRequests", default_value:"0"
-    # object_node :authentication, "authentication", :class=>Authentication    
+  class LitleRequest
+    include XML::Mapping
+    # version="6.0" xmlns="http://www.litle.com/schema" numBatchRequests = "1">
+    # <authentication>
+        # <user>XMLTESTV6ORG14</user>
+        # <password>password</password>
+    # </authentication>
+    root_element_name "litleRequest"
+    
+    text_node :version, "@version", default_value:"0"
+    text_node :xmlns, "@xmlns", default_value:nil
+    text_node :numBatchRequests, "@numBatchRequests", default_value:"0"
+    object_node :authentication, "authentication", :class=>Authentication    
+  end
+  
+# begin   
+  # class LitleOnlineResponse
+    # attr_accessor :message
   # end
-   
-  class LitleOnlineResponse
-    attr_accessor :message
-  end
-  
-  class XMLFields
-  
-  end
+#   
+  # class XMLFields
+#   
+  # end
 end

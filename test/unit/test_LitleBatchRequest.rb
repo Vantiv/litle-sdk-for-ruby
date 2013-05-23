@@ -40,6 +40,11 @@ module LitleOnline
       #batch.create_new_batch('/usr/local/litle-home/barnold/Batches/')
     end
     
+    #TODO: add test passing a file to create
+    def test_create_new_batch_on_file
+      
+    end
+    
     def test_add_authorization
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once

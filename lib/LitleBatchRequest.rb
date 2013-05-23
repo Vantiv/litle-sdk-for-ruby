@@ -30,42 +30,6 @@ require_relative 'Configuration'
 # to Litle.
 #
 module LitleOnline
-
-  class LitleRequest
-    include XML::Mapping
-    def initialize
-      #load configuration data
-      @config_hash = Configuration.new.config
-      @numBatchRequests
-    end
-    
-    def create_new_litle_request(path)
-      ts = Time::now.to_i.to_s
-      @path_to_batch = path + 'litle_request_' + ts
-      File.open(@path_to_batch, 'a+') do |file|
-        file.write("")
-      end
-    end  
-    
-    def send_litle_request(*batches)
-      
-    end
-
-    private
-    
-    def build_request_header(options)
-      header = LitleRequest.new
-      
-      authentication = Authentication.new
-      authenticatio.user
-      #request.version =       
-    end
-    
-    def get_config(field, options)
-      options[field.to_s] == nil ? @config_hash[field.to_s] : options[field.to_s]
-    end
-     
-  end
   
   class LitleBatchRequest
     include XML::Mapping
@@ -99,6 +63,7 @@ module LitleOnline
     def create_new_batch(path)
       ts = Time::now.to_i.to_s
       ts += Time::now.nsec.to_s
+      puts path
       if(File.file?(path)) then
         raise RuntimeError, "Entered a file not a path."
       end
@@ -128,7 +93,9 @@ module LitleOnline
     def close_batch(txn_location = @txn_file)
       header = build_batch_header(@txn_counts)
       File.rename(@path_to_batch, @path_to_batch + '.closed')
-      File.open(@path_to_batch + '.closed', 'w') do |fo|
+      @path_to_batch = @path_to_batch + '.closed-' + @txn_counts[:total].to_s
+      
+      File.open(@path_to_batch, 'w') do |fo|
         fo.puts header
         File.foreach(txn_location) do |li|
           fo.puts li
