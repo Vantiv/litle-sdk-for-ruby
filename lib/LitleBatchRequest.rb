@@ -93,7 +93,7 @@ module LitleOnline
       @litle_txn = LitleTransaction.new
       @path_to_batch = nil
       @txn_file = nil
-      @MAX_TXNS_IN_BATCH = 500000
+      @MAX_TXNS_IN_BATCH = 100000
     end
     
     def create_new_batch(path)

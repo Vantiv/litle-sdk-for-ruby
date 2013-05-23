@@ -438,7 +438,7 @@ module LitleOnline
       batch.get_counts_and_amounts.expects(:[]).returns(hash = Hash.new).at_least(25)
       hash.expects(:[]).returns('a').at_least(20)
       
-      batch.create_new_batch('/usr/local/litle-home/barnold/Batches/')
+      batch.create_new_batch('/usr/local/litle-home/ahammond/batches')
       batch.close_batch()
     end
     
@@ -470,6 +470,46 @@ module LitleOnline
       batch.create_new_batch('/usr/local/')
     end
     
+    def test_create_new_batch_when_full
+      
+      
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
+      
+      batch = LitleBatchRequest.new
+      
+      addTxn = sequence('addTxn')
+      
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').in_sequence(addTxn)
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').in_sequence(addTxn)
+      batch.create_new_batch('/usr/local')
+      
+      
+      batch.get_counts_and_amounts.expects(:[]).with(:sale).returns({:numSales => 10, :saleAmount => 20}).twice.in_sequence(addTxn)
+      batch.get_counts_and_amounts.expects(:[]).with(:total).returns(499999).in_sequence(addTxn)
+      
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').in_sequence(addTxn)
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').in_sequence(addTxn)
+      batch.get_counts_and_amounts.expects(:[]).with(:total).returns(100000).in_sequence(addTxn)
+      
+      batch.expects(:close_batch).once.in_sequence(addTxn)
+      batch.expects(:initialize).once.in_sequence(addTxn)
+      batch.expects(:create_new_batch).once.in_sequence(addTxn)
+      
+      saleHash = {
+        'reportGroup'=>'Planets',
+        'id' => '006',
+        'orderId'=>'12344',
+        'amount'=>'6000',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+      }}
+      
+      batch.sale(saleHash)
+        
+    end
     def test_complete_batch
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').at_most(9)
@@ -516,7 +556,9 @@ module LitleOnline
       #assert_equal 212, counts[:auth][:authAmount]
       assert_equal 2, counts[:sale][:numSales]
       #assert_equal 6000, counts[:sale][:saleAmount]
-    end  
+    end
+    
+      
   
   end
 end
