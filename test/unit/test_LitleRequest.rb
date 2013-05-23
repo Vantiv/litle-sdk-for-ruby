@@ -34,27 +34,96 @@ module LitleOnline
   class TestLitleRequest < Test::Unit::TestCase
     
     def test_create_with_file
+      request = LitleRequest.new({'sessionId'=>'8675309', 
+                                       'user'=>'john', 
+                                       'password'=>'tinkleberry'}) 
+      message = ""
+      File.expects(:file?).with('/durrrrrr').returns(true).once
+      request.create_new_litle_request('/durrrrrr')
       
+      rescue RuntimeError=> e
+        message = e.message
+      
+      assert_equal message, "Entered a file not a path."
     end
     
     def test_create_with_no_sep
-      
+      request = LitleRequest.new({'sessionId'=>'8675309', 
+                                        'user'=>'john', 
+                                        'password'=>'tinkleberry'})
+      File.expects(:open).twice  
+      request.create_new_litle_request('/usr/local')    
+      assert request.get_path_to_batches.include?('/usr/local/')
     end
     
     def test_create_name_collision
+      request = LitleRequest.new({'sessionId'=>'8675309', 
+                                        'user'=>'john', 
+                                        'password'=>'tinkleberry'})
+                                        
+      create_new = sequence('create_new')
+      File.expects(:file?).returns(false).in_sequence(create_new)
+      File.expects(:file?).returns(true).once.in_sequence(create_new) #yayay short circuiting
+      File.expects(:file?).returns(false).once.in_sequence(create_new)
+      File.expects(:file?).returns(false).twice.in_sequence(create_new) #or's don't quit
+      File.expects(:open).twice.in_sequence(create_new)
       
+      request.create_new_litle_request('/usr/local')                         
     end
     
     def test_create_normal
+      request = LitleRequest.new({'sessionId'=>'8675309', 
+                                        'user'=>'john', 
+                                        'password'=>'tinkleberry'})
       
+      create_new = sequence('create_new')
+      File.expects(:file?).returns(false).once.in_sequence(create_new)
+      File.expects(:file?).returns(false).twice.in_sequence(create_new)
+      File.expects(:open).once.in_sequence(create_new)
+      File.expects(:open).once.in_sequence(create_new)
+      
+      request.create_new_litle_request('/usr/local') 
     end
     
-    def test_add_batch_request
-      
+    def test_commit_batch_with_batch
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).times(2)
+
+      request = LitleRequest.new({'sessionId'=>'8675309',
+        'user'=>'john',
+        'password'=>'tinkleberry'})
+      File.expects(:file?).returns(false).once
+      File.expects(:file?).returns(false).twice #or's don't quit
+      File.expects(:open).twice
+      request.create_new_litle_request("/usr/srv/batches")
+
+      batch = LitleBatchRequest.new
+      File.expects(:open).twice
+      File.expects(:file?).returns(false).twice
+      batch.create_new_batch('/usr/srv/batches')
+      File.expects(:rename).once
+      File.expects(:open).once
+      File.expects(:delete).once
+      batch.close_batch()
+
+      File.expects(:open).with(regexp_matches(/.*_batches.*/), 'a+')
+      File.expects(:rename).with(regexp_matches(/.*\.closed.*/), regexp_matches(/.*\.sent.*/))
+      request.commit_batch(batch)  
     end
     
-    def test_add_path_to_batch
-      
+    def test_commit_batch_with_path
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).times(1)
+
+      request = LitleRequest.new({'sessionId'=>'8675309',
+        'user'=>'john',
+        'password'=>'tinkleberry'})
+      File.expects(:file?).returns(false).once
+      File.expects(:file?).returns(false).twice #or's don't quit
+      File.expects(:open).twice
+      request.create_new_litle_request("/usr/srv/batches")
+
+      File.expects(:open).with(regexp_matches(/.*_batches.*/), 'a+')
+      File.expects(:rename).with(regexp_matches(/.*\.closed.*/), regexp_matches(/.*\.sent.*/))
+      request.commit_batch("/usr/srv/batches/batch_123123131231.closed-100000")
     end
     
     def test_add_bad_object
@@ -72,7 +141,9 @@ module LitleOnline
       File.expects(:open).with(regexp_matches(/\/usr\/srv\/.*/), 'a+').times(2)
       batch = LitleBatchRequest.new
       batch.create_new_batch('/usr/srv/batches')  
-      request = LitleRequest.new({})
+      request = LitleRequest.new({'sessionId'=>'8675309', 
+                                        'user'=>'john', 
+                                        'password'=>'tinkleberry'})
       
       close_and_add = sequence('close_and_add')
       batch.expects(:get_batch_name).returns("/usr/srv/batches/batch_123123131231").once.in_sequence(close_and_add)
@@ -82,16 +153,40 @@ module LitleOnline
       File.expects(:open).once.in_sequence(close_and_add)
       File.expects(:rename).once.in_sequence(close_and_add)
       request.commit_batch(batch)
-      
-      
-      
-     
     end
     
     def test_batch_too_big
-      
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).times(1)
+
+      request = LitleRequest.new({'sessionId'=>'8675309',
+        'user'=>'john',
+        'password'=>'tinkleberry'})
+      File.expects(:file?).returns(false).once
+      File.expects(:file?).returns(false).twice #or's don't quit
+      File.expects(:open).twice
+      request.create_new_litle_request("/usr/srv/batches")
+      create_new = sequence('create_new')
+
+      File.expects(:open).with(regexp_matches(/.*_batches.*/), 'a+').times(5)
+      File.expects(:rename).with(regexp_matches(/.*\.closed.*/), regexp_matches(/.*\.sent.*/)).times(5)
+      5.times {
+
+        request.commit_batch("/usr/srv/batches/batch_123123131231.closed-100000")
+      }
+
+      request.expects(:finish_request).once
+      request.expects(:initialize).once
+      request.expects(:create_new_litle_request).once
+      request.commit_batch("/usr/srv/batches/batch_123123131231.closed-100000")
     end
 
+    #TODO: test the xml generated on disk for correct form / visually check for accuracy
+    # i.e. create a new litle request, create a new litle batch, create a new transaction, 
+    # add it to the batch, add the batch to the request, call finish_request, check for appropos
+    # open and close tags in the generated xml doc
+    def test_finish_request_xml
+      
+    end
     
     
     

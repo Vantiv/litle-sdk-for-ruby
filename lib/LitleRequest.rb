@@ -40,12 +40,11 @@ require_relative 'Configuration'
         @path_to_request = ""
         @path_to_batches = ""
         @num_total_transactions = 0
-        @MAX_NUM_TRANSACTIONS = 0
+        @MAX_NUM_TRANSACTIONS = 500000
         @options = options
       end
       
-      def create_new_litle_request(path, options)
-        @options = options
+      def create_new_litle_request(path)
         ts = Time::now.to_i.to_s
         ts += Time::now.nsec.to_s
         if(File.file?(path)) then
@@ -84,7 +83,7 @@ require_relative 'Configuration'
           raise RuntimeError, "You entered neither a path nor a batch. Game over :("
         end
         #the batch isn't closed. let's help a brother out
-        if (ind = path_to_batch.index(/.*\.closed.*/)) == nil then
+        if (ind = path_to_batch.index(/\.closed/)) == nil then
           if arg.kind_of?(String) then
             new_batch = LitleBatchRequest.new
             new_batch.open_existing_batch(path_to_batch)
@@ -94,7 +93,7 @@ require_relative 'Configuration'
             arg.close_batch()
             path_to_batch = arg.get_batch_name  
           end
-          ind = path_to_batch.index(/.*\.closed.*/)
+          ind = path_to_batch.index(/\.closed/)
         end 
         transactions_in_batch = path_to_batch[ind+8..path_to_batch.length].to_i
         
@@ -123,9 +122,12 @@ require_relative 'Configuration'
         #SFTP EVERYTHING
       end
       
+     def get_path_to_batches
+       return @path_to_batches
+     end 
       
      
-      private
+      
       #writes the batches in the file at path_to_batches to an appropriately formatted .xml
       def finish_request
         # populate the header
@@ -149,6 +151,8 @@ require_relative 'Configuration'
         File.delete(@path_to_batches)
       end
       
+      private 
+      
       def build_request_header(options = @options)
         litle_request = LitleRequest.new
         
@@ -159,7 +163,7 @@ require_relative 'Configuration'
         litle_request.authentication = authentication
         litle_request.version         = '8.16'
         litle_request.xmlns           = "http://www.litle.com/schema"
-        litle_request.id              = options['sessionId']
+        litle_request.id              = get_config(:sessionId, options)
         litle_request.numBatchRequests = num_batch_requests
         
         xml = litle_request.save_to_xml.to_s
