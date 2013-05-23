@@ -114,7 +114,6 @@ module LitleOnline
       begin
         commit(transaction, :echeckCredit, options)
       rescue XML::MappingError => e
-        puts e
         response = LitleOnlineResponse.new
         response.message = "The content of element 'echeckCredit' is not complete"
         return response

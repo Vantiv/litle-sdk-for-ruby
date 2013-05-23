@@ -439,6 +439,13 @@ module LitleOnline
     end
     
     def test_build_batch_header
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').once
+      File.expects(:rename).once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'w').once
+      File.expects(:delete).once
+      
       batch = LitleBatchRequest.new
       batch.get_counts_and_amounts.expects(:[]).returns(hash = Hash.new).at_least(25)
       hash.expects(:[]).returns('a').at_least(20)

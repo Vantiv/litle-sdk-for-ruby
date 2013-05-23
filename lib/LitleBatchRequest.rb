@@ -37,22 +37,22 @@ module LitleOnline
       #load configuration data
       @config_hash = Configuration.new.config
       
-      @txn_counts = { id:nil,
-                      merchantId:nil,
-                      auth:{ numAuths:0, authAmount:0 },
-                      sale:{ numSales:0, saleAmount:0 },
-                      credit:{ numCredits:0, creditAmount:0 },
-                      numTokenReqistrations:0,
-                      captureGivenAuth:{ numCaptureGivenAuths:0, captureGivenAmount:0 },
-                      forceCapture:{ numForceCaptures:0, forceCaptureAmount:0 },
-                      authReversal:{ numAuthReversals:0, authReversalAmount:0 },
-                      capture:{ numCaptures:0, captureAmount:0 },
-                      echeckVerification:{ numEcheckVerification:0, echeckVerificationAmount:0 },
-                      echeckCredit:{ numEcheckCredit:0, echeckCreditAmount:0 },
-                      numEcheckRedeposit:0,
-                      echeckSale:{ numEcheckSales:0, echeckSaleAmount:0 },
-                      numUpdateCardValidationNumOnTokens:0,
-                      total:0
+      @txn_counts = { :id=>nil,
+                      :merchantId=>nil,
+                      :auth=>{ :numAuths=>0, :authAmount=>0 },
+                      :sale=>{ :numSales=>0, :saleAmount=>0 },
+                      :credit=>{ :numCredits=>0, :creditAmount=>0 },
+                      :numTokenReqistrations=>0,
+                      :captureGivenAuth=>{ :numCaptureGivenAuths=>0, :captureGivenAmount=>0 },
+                      :forceCapture=>{ :numForceCaptures=>0, :forceCaptureAmount=>0 },
+                      :authReversal=>{ :numAuthReversals=>0, :authReversalAmount=>0 },
+                      :capture=>{ :numCaptures=>0, :captureAmount=>0 },
+                      :echeckVerification=>{ :numEcheckVerification=>0, :echeckVerificationAmount=>0 },
+                      :echeckCredit=>{ :numEcheckCredit=>0, :echeckCreditAmount=>0 },
+                      :numEcheckRedeposit=>0,
+                      :echeckSale=>{ :numEcheckSales=>0, :echeckSaleAmount=>0 },
+                      :numUpdateCardValidationNumOnTokens=>0,
+                      :total=>0
       }
       @litle_txn = LitleTransaction.new
       @path_to_batch = nil
@@ -63,7 +63,6 @@ module LitleOnline
     def create_new_batch(path)
       ts = Time::now.to_i.to_s
       ts += Time::now.nsec.to_s
-      puts path
       if(File.file?(path)) then
         raise RuntimeError, "Entered a file not a path."
       end
