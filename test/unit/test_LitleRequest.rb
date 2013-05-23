@@ -59,8 +59,8 @@ module LitleOnline
     
     def test_add_bad_object
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
-      request = LitleRequest.new
-      request.add_batch({:apple => "pear"})
+      request = LitleRequest.new({})
+      request.commit_batch({:apple => "pear"})
       test = ""
       rescue RuntimeError => e
         test = e.message
@@ -72,7 +72,7 @@ module LitleOnline
       File.expects(:open).with(regexp_matches(/\/usr\/srv\/.*/), 'a+').times(2)
       batch = LitleBatchRequest.new
       batch.create_new_batch('/usr/srv/batches')  
-      request = LitleRequest.new
+      request = LitleRequest.new({})
       
       close_and_add = sequence('close_and_add')
       batch.expects(:get_batch_name).returns("/usr/srv/batches/batch_123123131231").once.in_sequence(close_and_add)
@@ -81,11 +81,11 @@ module LitleOnline
       str.expects(:index).returns(7).once.in_sequence(close_and_add)
       File.expects(:open).once.in_sequence(close_and_add)
       File.expects(:rename).once.in_sequence(close_and_add)
-      request.add_batch(batch)
+      request.commit_batch(batch)
       
       
       
-      
+     
     end
     
     def test_batch_too_big
