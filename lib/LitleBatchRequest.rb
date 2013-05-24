@@ -91,9 +91,9 @@ module LitleOnline
     
     def close_batch(txn_location = @txn_file)
       header = build_batch_header(@txn_counts)
-      File.rename(@path_to_batch, @path_to_batch + '.closed')
-      @path_to_batch = @path_to_batch + '.closed-' + @txn_counts[:total].to_s
       
+      File.rename(@path_to_batch, @path_to_batch + '.closed-' + @txn_counts[:total].to_s)
+      @path_to_batch = @path_to_batch + '.closed-' + @txn_counts[:total].to_s
       File.open(@path_to_batch, 'w') do |fo|
         fo.puts header
         File.foreach(txn_location) do |li|
@@ -104,8 +104,10 @@ module LitleOnline
       File.delete(txn_location)
     end
     
-    def send_litle_request
+    def send_litle_request()
       header = build_request_header(options)
+      
+      
         
     end
     

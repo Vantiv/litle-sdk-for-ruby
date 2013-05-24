@@ -106,7 +106,7 @@ module LitleOnline
       batch.close_batch()
 
       File.expects(:open).with(regexp_matches(/.*_batches.*/), 'a+')
-      File.expects(:rename).with(regexp_matches(/.*\.closed.*/), regexp_matches(/.*\.sent.*/))
+      File.expects(:delete).with(regexp_matches(/.*\.closed.*/))
       request.commit_batch(batch)  
     end
     
@@ -122,7 +122,7 @@ module LitleOnline
       request.create_new_litle_request("/usr/srv/batches")
 
       File.expects(:open).with(regexp_matches(/.*_batches.*/), 'a+')
-      File.expects(:rename).with(regexp_matches(/.*\.closed.*/), regexp_matches(/.*\.sent.*/))
+      File.expects(:delete).with(regexp_matches(/.*\.closed.*/))
       request.commit_batch("/usr/srv/batches/batch_123123131231.closed-100000")
     end
     
@@ -148,10 +148,10 @@ module LitleOnline
       close_and_add = sequence('close_and_add')
       batch.expects(:get_batch_name).returns("/usr/srv/batches/batch_123123131231").once.in_sequence(close_and_add)
       batch.expects(:close_batch).once.in_sequence(close_and_add)
-      batch.expects(:get_batch_name).returns(str = "/usr/srv/batches/batch_123123131231").once.in_sequence(close_and_add)
+      batch.expects(:get_batch_name).returns(str = "/usr/srv/batches/batch_123123131231.closed-1000").once.in_sequence(close_and_add)
       str.expects(:index).returns(7).once.in_sequence(close_and_add)
       File.expects(:open).once.in_sequence(close_and_add)
-      File.expects(:rename).once.in_sequence(close_and_add)
+      File.expects(:delete).once.in_sequence(close_and_add)
       request.commit_batch(batch)
     end
     
@@ -168,7 +168,7 @@ module LitleOnline
       create_new = sequence('create_new')
 
       File.expects(:open).with(regexp_matches(/.*_batches.*/), 'a+').times(5)
-      File.expects(:rename).with(regexp_matches(/.*\.closed.*/), regexp_matches(/.*\.sent.*/)).times(5)
+      File.expects(:delete).with(regexp_matches(/.*\.closed.*/)).times(5)
       5.times {
 
         request.commit_batch("/usr/srv/batches/batch_123123131231.closed-100000")
@@ -180,12 +180,43 @@ module LitleOnline
       request.commit_batch("/usr/srv/batches/batch_123123131231.closed-100000")
     end
 
-    #TODO: test the xml generated on disk for correct form / visually check for accuracy
-    # i.e. create a new litle request, create a new litle batch, create a new transaction, 
-    # add it to the batch, add the batch to the request, call finish_request, check for appropos
-    # open and close tags in the generated xml doc
-    def test_finish_request_xml
+    #Outputs an example LitleRequest doc in the current directory
+    def test_finish_request_xml! #that's why the name has a bang
+      # see the bang up there ^^^ that means we ACTUALLY edit the file system
+      # make sure to clear this; otherwise, you're gonna have a bad time.      
+      path = Dir.pwd
       
+      saleHash = {
+        'reportGroup'=>'Planets',
+        'id' => '006',
+        'orderId'=>'12344',
+        'amount'=>'6000',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+      }}
+      
+      request = LitleRequest.new({'sessionId'=>'8675309',
+        'user'=>'john',
+        'password'=>'tinkleberry'})
+      request.create_new_litle_request(path)
+      
+      
+      5.times{
+        batch = LitleBatchRequest.new
+        batch.create_new_batch(path)
+        puts "Batch is at: " + batch.get_batch_name
+        
+        10.times{
+          batch.sale(saleHash)
+        }
+        
+        batch.close_batch()
+        request.commit_batch(batch)
+      }
+      request.finish_request
     end
     
     

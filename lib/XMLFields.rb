@@ -1241,6 +1241,8 @@ module LitleOnline
     
     text_node :version, "@version", default_value:"0"
     text_node :xmlns, "@xmlns", default_value:nil
+    #TODO: ask greg about sessionId
+    #text_node :sessionId, "@id", default_vale:nil
     text_node :numBatchRequests, "@numBatchRequests", default_value:"0"
     object_node :authentication, "authentication", :class=>Authentication    
   end
