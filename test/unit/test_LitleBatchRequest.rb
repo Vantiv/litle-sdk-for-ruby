@@ -375,7 +375,7 @@ module LitleOnline
       
       counts = batch.get_counts_and_amounts
       assert_equal 1, counts[:echeckSale][:numEcheckSales]
-      assert_equal 123456, counts[:echeckSale][:echeckSaleAmount]
+      assert_equal 123456, counts[:echeckSale][:echeckSalesAmount]
     end
       
     def test_close_batch

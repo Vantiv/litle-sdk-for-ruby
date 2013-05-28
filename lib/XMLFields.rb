@@ -1219,7 +1219,7 @@ module LitleOnline
     text_node :numCaptures, "@numCaptures", :default_value=>"0"
     text_node :captureAmount, "@captureAmount", :default_value=>"0"
     text_node :numEcheckSales, "@numEcheckSales", :default_value=>"0"
-    text_node :echeckSaleAmount, "@echeckSaleAmount", :default_value=>"0"
+    text_node :echeckSalesAmount, "@echeckSalesAmount", :default_value=>"0"
     text_node :numEcheckRedeposit, "@numEcheckRedeposit", :default_value=>"0"
     text_node :numEcheckCredit, "@numEcheckCredit", :default_value=>"0"
     text_node :echeckCreditAmount, "@echeckCreditAmount", :default_value=>"0"
