@@ -214,12 +214,16 @@ module LitleOnline
         }
         
         batch.close_batch()
-        request.commit_batch(batch)
+        request.commit_batch(batch, {})
       }
       request.finish_request
     end
     
-    
-    
-  end
+    def test_process_response
+      request = LitleRequest.new({})
+      puts "STARTING A TEST WOOO"
+      request.process_response('/usr/local/litle-home/ahammond/example.xml')
+      puts "FINISHING A TEST WOOO"
+    end
+   end
 end

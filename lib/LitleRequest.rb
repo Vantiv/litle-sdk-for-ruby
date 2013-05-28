@@ -24,7 +24,8 @@ OTHER DEALINGS IN THE SOFTWARE.
 =end
 require_relative 'Configuration'
 require 'net/sftp'
-
+require 'libxml'
+require 'crack/xml'
 #
 # This class handles sending the Litle Request (which is actually a series of batches!)
 #
@@ -41,6 +42,9 @@ module LitleOnline
       @num_total_transactions = 0
       @MAX_NUM_TRANSACTIONS = 500000
       @options = options
+      # current time out set to one hour
+      # this value is in seconds
+      @RESPONSE_TIME_OUT = 3600
     end
 
     # Creates the necessary files for the LitleRequest at the path specified. path/request_(TIMESTAMP) will be
@@ -127,7 +131,8 @@ module LitleOnline
     # FTPs all previously unsent LitleRequests located in the folder denoted by path to the server
     # Params:
     # +path+:: A +String+ containing the path to the folder on disc where LitleRequests are located.
-    # This should be the same location where the LitleRequests were written to.
+    # This should be the same location where the LitleRequests were written to. If no path is explicitly
+    # provided, then we use the directory where the current working batches file is stored.
     def send_to_litle(path = (File.dir_name(@path_to_batches)))
       #finish off what we're working on
       finish_request()
@@ -135,13 +140,16 @@ module LitleOnline
       Net::SFTP.start('cert1.litle.com:30438', 'PHXMLTEST', :password => 'password') do |stfp|
         
         # our folder is /SHORTNAME/SHORTNAME/INBOUND
-        Dir.foreach(path) do |filename| {
+        responses_expected = 0
+        Dir.foreach(path) do |filename| 
           #we have a complete report according to filename regex
           if((filename =~ /request_\d\.complete/) != nil) then
             # adding .prg extension per the XML 
             File.rename(filename, filename + '.prg')
             # upload the file
+            #TODO: figure out how to get to the inbound
             sftp.upload!(filename + '.prg', '/'+ filename+'.prg')
+            responses_expected += 1
             # rename now that we're done
             sftp.rename!('/'+ filename+'.prg', '/'+ filename+'.asc')
             
@@ -156,10 +164,84 @@ module LitleOnline
           # otherwise, we need to figure out how we're handling checking for responses. It should be noted that
           # the XML doc states that old repsonses will be cleared from the merchant's dir 24 hours after they
           # were loaded.
-        }
+        end  
+        
       end
     end
+    
+    # Grabs response files over SFTP from Litle.
+    # Params:
+    # +responses_expected+:: number of responses the method expects to read from the server
+    # +response_path+:: the local directory where responses should be saved to
+     def get_responses_from_server(responses_expected, response_path = (File.dir_name(@path_to_batches) + '/responses/'))
 
+      Net::SFTP.start('cert1.litle.com:30438', 'PHXMLTEST', :password => 'password') do |stfp|
+        time_begin = Time.now
+        responses_grabbed = 0
+        while((Time.now - time_begin) < @RESPONSE_TIME_OUT && responses_grabbed < responses_expected)
+          #sleep for 30 seconds
+          sleep(30)
+          sftp.dir.foreach('/') do |entry|
+            if((entry.name =~ /request_\d\.complete.asc/) != nil) then
+              sftp.download!(entry.name, response_path + entry.name)
+              responses_grabbed += 1
+              begin
+                sftp.remove!(entry.name)
+              rescue StatusException
+                #oh noes
+              end
+            end
+          end
+        end
+        #if our timeout timed out, we're having problems
+        if responses_grabbed < response_expected then
+          raise RuntimeError, "We timed out in waiting for a response from the server. :("
+        end
+      end
+    end
+    
+    # Params:
+    # +path_to_responses+:: The directory location of the .asc responses from the Litle server
+    def process_responses(path_to_responses = (File.dir_name(@path_to_batches) + '/responses/'), transaction_listener, batch_listener)
+      Dir.foreach(path_to_resonses) do |filename|
+        if ((filename =~ /request_\d\.complete.asc/) != nil) then
+          process_response(filename, transaction_listener, batch_listener)
+        end 
+      end
+    end
+    
+    #
+    # Params:
+    # +path_to_response+:: The path to a specific .asc file to process
+    # +
+    # +batch_listener+:: An (optional) listener to be applied to the hash of each batch. 
+    # Note that this will om-nom-nom quite a bit of memory
+    def process_response(path_to_response, transaction_listener, batch_listener = nil)
+      doc = LibXML::XML::Document.file(path_to_response)
+      reader = LibXML::XML::Reader.document(doc)
+      reader.read # read into the root node
+      reader.node.each do |batch_node|
+        if(batch_node.node_type_name == "element") then
+          if(batch_listener != nil)
+            batch_xml = batch_node.to_s
+            duck = Crack::XML.parse(xml)
+            duck = duck[duck.keys[0]]
+            batch_listener.apply(duck)
+          end
+          reader.node.each do |trans_node|
+            if(trans_node.node_type_name == "element") then
+              xml = trans_node.to_s
+              #$puts str
+              duck = Crack::XML.parse(xml)
+              duck[duck.keys[0]]["type"] = duck.keys[0]
+              duck = duck[duck.keys[0]]
+              transaction_listener.apply(duck)
+            end 
+          end
+        end
+      end
+    end
+  
     def get_path_to_batches
       return @path_to_batches
     end
