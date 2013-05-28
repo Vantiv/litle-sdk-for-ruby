@@ -221,17 +221,17 @@ module LitleOnline
       reader = LibXML::XML::Reader.document(doc)
       reader.read # read into the root node
       reader.node.each do |batch_node|
+        
         if(batch_node.node_type_name == "element") then
-          if(batch_listener != nil)
+          if(batch_listener != nil) then
             batch_xml = batch_node.to_s
-            duck = Crack::XML.parse(xml)
-            duck = duck[duck.keys[0]]
+            duck = Crack::XML.parse(batch_xml)
             batch_listener.apply(duck)
           end
-          reader.node.each do |trans_node|
+          
+           batch_node.each do |trans_node|
             if(trans_node.node_type_name == "element") then
               xml = trans_node.to_s
-              #$puts str
               duck = Crack::XML.parse(xml)
               duck[duck.keys[0]]["type"] = duck.keys[0]
               duck = duck[duck.keys[0]]

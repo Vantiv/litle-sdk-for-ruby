@@ -26,6 +26,7 @@ require 'lib/LitleOnline'
 require 'lib/LitleOnlineRequest'
 require 'lib/LitleRequest'
 require 'lib/LitleBatchRequest'
+require 'lib/LitleListeners'
 require 'test/unit'
 require 'mocha/setup'
 
@@ -214,16 +215,16 @@ module LitleOnline
         }
         
         batch.close_batch()
-        request.commit_batch(batch, {})
+        request.commit_batch(batch)
       }
       request.finish_request
     end
     
     def test_process_response
       request = LitleRequest.new({})
-      puts "STARTING A TEST WOOO"
-      request.process_response('/usr/local/litle-home/ahammond/example.xml')
-      puts "FINISHING A TEST WOOO"
+      request.process_response('/usr/local/litle-home/ahammond/example.xml', 
+      DefaultLitleListener.new{|txn| } ,
+      DefaultLitleListener.new{|batch|} )
     end
    end
 end
