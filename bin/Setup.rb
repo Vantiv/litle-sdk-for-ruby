@@ -41,17 +41,27 @@ class Setup
       puts "Please input your password:"
       f.puts	"password: " + gets
       puts "Please input your merchantId:"
+      
       f.puts "currency_merchant_map:"
       f.puts "  DEFAULT: " + gets
       f.puts "default_report_group: 'Default Report Group'"
+      
       puts "Please choose Litle url from the following list (example: 'cert') or directly input another URL: \nsandbox => https://www.testlitle.com/sandbox/communicator/online \ncert => https://cert.litle.com/vap/communicator/online \nprecert => https://precert.litle.com/vap/communicator/online \nproduction1 => https://payments.litle.com/vap/communicator/online \nproduction2 => https://payments2.litle.com/vap/communicator/online"
       f.puts "url: " + Setup.choice(gets)
       puts "Please input the proxy address, if no proxy hit enter key: "
       f.puts	"proxy_addr: " + gets
       puts "Please input the proxy port, if no proxy hit enter key: "
       f.puts	"proxy_port: " + gets
+      puts "Please input your sFTP username for batch processing; if no sFTP, hit enter key: "
+      f.puts "sftp_username: " + gets
+      puts "Please input your sFTP password for batch processing; if no sFTP, hit enter key: "
+      f.puts "sftp_password: " + gets
+      puts "Please input your sFTP url for batch processing; if no sFTP, hit enter key: "
+      f.puts "sftp_url: " + gets
+      
       f.puts "printxml: false"
       f.puts "timeout: 65"
+      
     end
   end
 

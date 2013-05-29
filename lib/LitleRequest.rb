@@ -67,7 +67,7 @@ module LitleOnline
 
       if File.file?(@path_to_request) or File.file?(@path_to_batches) then
         create_new_litle_request(path)
-      return
+        return
       end
 
       File.open(@path_to_request, 'a+') do |file|
@@ -94,12 +94,11 @@ module LitleOnline
       end
       #the batch isn't closed. let's help a brother out
       if (ind = path_to_batch.index(/\.closed/)) == nil then
-        puts 'We received a path of a batch that was not closed: ' + path_to_batch
         if arg.kind_of?(String) then
           new_batch = LitleBatchRequest.new
-        new_batch.open_existing_batch(path_to_batch)
-        new_batch.close_batch()
-        path_to_batch = new_batch.get_batch_name
+          new_batch.open_existing_batch(path_to_batch)
+          new_batch.close_batch()
+          path_to_batch = new_batch.get_batch_name
         elsif arg.kind_of?(LitleBatchRequest) then
         arg.close_batch()
         path_to_batch = arg.get_batch_name
@@ -117,7 +116,6 @@ module LitleOnline
         @num_batch_requests += 1
         @num_total_transactions += transactions_in_batch
 
-        puts "At location " + @path_to_batches + " we are writing the file from " + path_to_batch
         File.open(@path_to_batches, 'a+') do |fo|
           File.foreach(path_to_batch) do |li|
             fo.puts li
@@ -133,38 +131,37 @@ module LitleOnline
     # +path+:: A +String+ containing the path to the folder on disc where LitleRequests are located.
     # This should be the same location where the LitleRequests were written to. If no path is explicitly
     # provided, then we use the directory where the current working batches file is stored.
-    def send_to_litle(path = (File.dir_name(@path_to_batches)))
-      #finish off what we're working on
-      finish_request()
+    def send_to_litle(path = (File.dirname(@path_to_batches)), options = {})
+      username = get_config(:sftp_username, options)
+      password = get_config(:sftp_password, options)
+      url = get_config(:sftp_url, options)
+      if(username == nil or password == nil or url == nil) then
+        raise ConfigurationException, "You are not configured to use sFTP for batch processing. Please run /bin/Setup.rb again!"
+      end
       
-      Net::SFTP.start('cert1.litle.com:30438', 'PHXMLTEST', :password => 'password') do |stfp|
-        
+      if path[-1,1] != '/' then
+        path = path + '/'
+      end
+      
+      Net::SFTP.start(url, username, :password => password) do |sftp|
         # our folder is /SHORTNAME/SHORTNAME/INBOUND
         responses_expected = 0
         Dir.foreach(path) do |filename| 
           #we have a complete report according to filename regex
-          if((filename =~ /request_\d\.complete/) != nil) then
+          if((filename =~ /request_\d+.complete\z/) != nil) then
             # adding .prg extension per the XML 
-            File.rename(filename, filename + '.prg')
+            File.rename(path + filename, path + filename + '.prg')
             # upload the file
             #TODO: figure out how to get to the inbound
-            sftp.upload!(filename + '.prg', '/'+ filename+'.prg')
+            sftp.upload!(path + filename + '.prg', '/inbound/'+ filename+'.prg')
             responses_expected += 1
             # rename now that we're done
-            sftp.rename!('/'+ filename+'.prg', '/'+ filename+'.asc')
+            sftp.rename!('/inbound/'+ filename+'.prg', '/inbound/'+ filename+'.asc')
             
             #INSERT LITLE MAGIC HERE
           end
-          
-          #TODO: Check the behavior of the cert server with a large batch or two. If the more complicated
-          # transactions still return an immediate preliminary response, we should now poll the remote destination
-          # every thirty seconds or so to check whether we've gotten a batch response back yet. The XML doc says
-          # that a response should be available within 10 minutes, but this spec definitely needs to be verified
-          
-          # otherwise, we need to figure out how we're handling checking for responses. It should be noted that
-          # the XML doc states that old repsonses will be cleared from the merchant's dir 24 hours after they
-          # were loaded.
-        end  
+         
+        end
         
       end
     end
@@ -173,28 +170,50 @@ module LitleOnline
     # Params:
     # +responses_expected+:: number of responses the method expects to read from the server
     # +response_path+:: the local directory where responses should be saved to
-     def get_responses_from_server(responses_expected, response_path = (File.dir_name(@path_to_batches) + '/responses/'))
+     def get_responses_from_server(responses_expected, response_path = (File.dirname(@path_to_batches) + '/responses/'), options = {})
 
-      Net::SFTP.start('cert1.litle.com:30438', 'PHXMLTEST', :password => 'password') do |stfp|
+      username = get_config(:sftp_username, options)
+      password = get_config(:sftp_password, options)
+      url = get_config(:sftp_url, options)
+      if(username == nil or password == nil or url == nil) then
+        raise ConfigurationException, "You are not configured to use sFTP for batch processing. Please run /bin/Setup.rb again!"
+      end
+      
+      if response_path[-1,1] != '/' then
+        response_path = response_path + '/'
+      end
+      
+      if(!File.directory?(response_path)) then
+        Dir.mkdir(response_path)
+      end 
+      Net::SFTP.start(url, username, :password => password) do |sftp|
         time_begin = Time.now
         responses_grabbed = 0
         while((Time.now - time_begin) < @RESPONSE_TIME_OUT && responses_grabbed < responses_expected)
           #sleep for 30 seconds
-          sleep(30)
-          sftp.dir.foreach('/') do |entry|
-            if((entry.name =~ /request_\d\.complete.asc/) != nil) then
-              sftp.download!(entry.name, response_path + entry.name)
+          sleep(2)
+          sftp.dir.foreach('/outbound/') do |entry|
+            puts "Considering file: " + entry.name
+            if((entry.name =~ /request_\d+.complete.asc\z/) != nil) then
+              puts "We are going to be downloading: " + entry.name
+              sftp.download!('/outbound/' + entry.name, response_path + entry.name)
               responses_grabbed += 1
-              begin
-                sftp.remove!(entry.name)
-              rescue StatusException
-                #oh noes
-              end
+              3.times{
+                begin 
+                  sftp.remove!('/outbound/' + entry.name)
+                  puts "We removed it!"
+                  break
+                rescue Net::SFTP::StatusException
+                  #try, try, try again
+                  puts "We couldn't remove it! Try again"
+                end  
+                puts "We're giving up :("
+              }
             end
           end
         end
         #if our timeout timed out, we're having problems
-        if responses_grabbed < response_expected then
+        if responses_grabbed < responses_expected then
           raise RuntimeError, "We timed out in waiting for a response from the server. :("
         end
       end
@@ -202,10 +221,14 @@ module LitleOnline
     
     # Params:
     # +path_to_responses+:: The directory location of the .asc responses from the Litle server
-    def process_responses(path_to_responses = (File.dir_name(@path_to_batches) + '/responses/'), transaction_listener, batch_listener)
-      Dir.foreach(path_to_resonses) do |filename|
-        if ((filename =~ /request_\d\.complete.asc/) != nil) then
-          process_response(filename, transaction_listener, batch_listener)
+    def process_responses(args = {})
+      transaction_listener = args[:transaction_listener]
+      batch_listener = args[:batch_listener] ||= nil
+      path_to_responses = args[:path_to_responses] ||= (File.dirname(@path_to_batches) + '/responses/')
+      
+      Dir.foreach(path_to_responses) do |filename|
+        if ((filename =~ /request_\d+.complete.asc/) != nil) then
+          process_response(path_to_responses + filename, transaction_listener, batch_listener)
         end 
       end
     end
@@ -217,6 +240,7 @@ module LitleOnline
     # +batch_listener+:: An (optional) listener to be applied to the hash of each batch. 
     # Note that this will om-nom-nom quite a bit of memory
     def process_response(path_to_response, transaction_listener, batch_listener = nil)
+      
       doc = LibXML::XML::Document.file(path_to_response)
       reader = LibXML::XML::Reader.document(doc)
       reader.read # read into the root node

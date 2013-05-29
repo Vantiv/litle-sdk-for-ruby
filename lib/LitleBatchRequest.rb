@@ -268,7 +268,7 @@ module LitleOnline
       request.numEcheckVerification    = @txn_counts[:echeckVerification][:numEcheckverification]
       request.echeckVerificationAmount = @txn_counts[:echeckVerification][:echeckVerificationAmount]
       request.numUpdateCardValidationNumOnTokens = @txn_counts[:numUpdateCardValidationNumOnTokens]
-      request.merchantId             = get_config(:merchantId, options)
+      request.merchantId             = get_merchant_id(options)
       request.id                     = @txn_counts[:id]
       
       header = request.save_to_xml.to_s
@@ -279,6 +279,10 @@ module LitleOnline
     
     def get_config(field, options)
       options[field.to_s] == nil ? @config_hash[field.to_s] : options[field.to_s]
+    end
+    
+    def get_merchant_id(options)
+      options['merchantId'] || @config_hash['currency_merchant_map']['DEFAULT']
     end
   end
   

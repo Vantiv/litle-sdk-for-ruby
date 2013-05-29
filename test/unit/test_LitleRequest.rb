@@ -205,26 +205,27 @@ module LitleOnline
       request.create_new_litle_request(path)
       
       
-      5.times{
+      #5.times{
         batch = LitleBatchRequest.new
         batch.create_new_batch(path)
         puts "Batch is at: " + batch.get_batch_name
         
-        10.times{
+        #10.times{
           batch.sale(saleHash)
-        }
+          batch.update_card_validation_num_on_token
+        #}
         
         batch.close_batch()
         request.commit_batch(batch)
-      }
+      #}
       request.finish_request
     end
     
     def test_process_response
       request = LitleRequest.new({})
-      request.process_response('/usr/local/litle-home/ahammond/example.xml', 
-      DefaultLitleListener.new{|txn| } ,
-      DefaultLitleListener.new{|batch|} )
+      request.process_response('/usr/local/litle-home/ahammond/murrburr.from.server', 
+      DefaultLitleListener.new{|txn| puts txn["type"]} ,
+      DefaultLitleListener.new{|batch| } )
     end
    end
 end

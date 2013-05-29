@@ -24,7 +24,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 =end
 
 #Sample Driver
-require 'LitleOnline'
+require_relative '../lib/LitleOnline'
 
 saleHash = {
         'reportGroup'=>'Planets',
@@ -37,16 +37,16 @@ saleHash = {
         'number' =>'4100000000000001',
         'expDate' =>'1210'
       }}
-path = '/usr/local/YOUR PATH HERE'
+path = '/usr/local/litle-home/ahammond/batch-test'
       
-request = LitleRequest.new({'sessionId'=>'8675309',
-        'user'=>'john',
-        'password'=>'tinkleberry'})
+
+request = LitleOnline::LitleRequest.new({'sessionId'=>'8675309'})
 request.create_new_litle_request(path)
+puts "Created new LitleRequest at location: " + path
 
 #create five batches, each with 10 sales
 5.times{
-  batch = LitleBatchRequest.new
+  batch = LitleOnline::LitleBatchRequest.new
   batch.create_new_batch(path)
 
   #add the same sale ten times
@@ -59,14 +59,19 @@ request.create_new_litle_request(path)
   #add the batch to the LitleRequest
   request.commit_batch(batch)
 }
+puts "Finished adding batches to LitleRequest at " + request.get_path_to_batches
 #finish the Litle Request, indicating we plan to add no more batches
 request.finish_request
+puts "Generated final XML markup of the LitleRequest"
+
 #send the batch files at the given directory over sFTP
-request.send_to_litle(path)
+request.send_to_litle
+puts "Dropped off the XML of the LitleRequest over FTP"
 #grab the expected number of responses from the sFTP server and save them to the given path
-request.get_responses_from_server(1, path)
-#proces the responses from the server with a listener which applies the given block
-request.process_responses(path, DefaultLitleListener.new) do |transaction|
-  puts transaction.type
-end
+request.get_responses_from_server(1)
+puts "Received the LitleRequest responses from the server"
+#process the responses from the server with a listener which applies the given block
+request.process_responses({:transaction_listener => LitleOnline::DefaultLitleListener.new do |transaction|
+  puts transaction["type"]
+end})
 
