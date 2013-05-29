@@ -1,2 +1,0 @@
-Empty Batch
-<authorization><orderId>12344</orderId><amount>106</amount><orderSource>ecommerce</orderSource><card><type>VI</type><number>4100000000000001</number><expDate>1210</expDate></card></authorization><authorization><orderId>12344</orderId><amount>106</amount><orderSource>ecommerce</orderSource><card><type>VI</type><number>4100000000000001</number><expDate>1210</expDate></card></authorization><sale><orderId>12344</orderId><amount>106</amount><orderSource>ecommerce</orderSource><card><type>VI</type><number>4100000000000001</number><expDate>1210</expDate></card></sale>

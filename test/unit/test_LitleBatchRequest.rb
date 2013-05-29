@@ -483,18 +483,14 @@ module LitleOnline
     end
     
     def test_create_new_batch_when_full
-      
-      
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
       
       batch = LitleBatchRequest.new
-      
       addTxn = sequence('addTxn')
       
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').in_sequence(addTxn)
       File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').in_sequence(addTxn)
       batch.create_new_batch('/usr/local')
-      
       
       batch.get_counts_and_amounts.expects(:[]).with(:sale).returns({:numSales => 10, :saleAmount => 20}).twice.in_sequence(addTxn)
       batch.get_counts_and_amounts.expects(:[]).with(:total).returns(499999).in_sequence(addTxn)
@@ -553,12 +549,25 @@ module LitleOnline
         'expDate' =>'1210'
       }}
       
+      updateCardHash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'id'=>'12345',
+        'customerId'=>'0987',
+        'orderId'=>'12344',
+        'litleToken'=>'1233456789103801',
+        'cardValidationNum'=>'123'
+      }
+      
       batch = LitleBatchRequest.new
       #batch.create_new_batch('D:\Batches\\')
       batch.create_new_batch('/usr/local/litle-home/barnold/Batches/')
       
-      5.times(){ batch.authorization(authHash) }
-      2.times(){ batch.sale(saleHash) }
+      # 5.times(){ batch.authorization(authHash) }
+      # 2.times(){ batch.sale(saleHash) }
+      batch.update_card_validation_num_on_token(updateCardHash)
+      
       #pid, size = `ps ax -o pid,rss | grep -E "^[[:space:]]*#{$$}"`.strip.split.map(&:to_i)
       #puts "PID: " + pid.to_s + " size: " + size.to_s
       batch.close_batch()

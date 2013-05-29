@@ -106,9 +106,6 @@ module LitleOnline
     
     def send_litle_request()
       header = build_request_header(options)
-      
-      
-        
     end
     
     def authorization(options)
@@ -116,8 +113,6 @@ module LitleOnline
       @txn_counts[:auth][:numAuths] += 1
       @txn_counts[:auth][:authAmount] += options['amount'].to_i
       
-      #TODO need to set the account info needed for each txn
-        
       add_txn_to_batch(transaction, :authorization, options)
     end
     
@@ -226,7 +221,6 @@ module LitleOnline
     def add_txn_to_batch(transaction, type, options)
       @txn_counts[:total] += 1
       xml = transaction.save_to_xml
-      
       File.open(@txn_file, 'a+') do |file|
         file.write(xml)
       end

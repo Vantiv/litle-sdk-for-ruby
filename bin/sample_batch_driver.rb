@@ -37,7 +37,19 @@ saleHash = {
         'number' =>'4100000000000001',
         'expDate' =>'1210'
       }}
-path = '/usr/local/litle-home/ahammond/batch-test'
+      
+updateCardHash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'id'=>'12345',
+        'customerId'=>'0987',
+        'orderId'=>'12344',
+        'litleToken'=>'1233456789103801',
+        'cardValidationNum'=>'123'
+      }      
+      
+path = Dir.pwd
       
 
 request = LitleOnline::LitleRequest.new({'sessionId'=>'8675309'})
@@ -45,13 +57,13 @@ request.create_new_litle_request(path)
 puts "Created new LitleRequest at location: " + path
 
 #create five batches, each with 10 sales
-5.times{
+2.times{
   batch = LitleOnline::LitleBatchRequest.new
   batch.create_new_batch(path)
 
   #add the same sale ten times
-  10.times{
-    batch.sale(saleHash)
+  3.times{
+    batch.update_card_validation_num_on_token(updateCardHash)
   }
 
   #close the batch, indicating we plan to add no more transactions
