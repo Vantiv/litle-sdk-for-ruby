@@ -198,6 +198,17 @@ module LitleOnline
       return transaction
     end
     
+    def account_update(options)
+      transaction = AccountUpdate.new
+      transaction.card = Card.from_hash(options)
+      transaction.token = CardToken.from_hash(options,'token')
+      transaction.orderId = options['orderId']
+      
+      add_account_info(transaction, options)
+      
+      return transaction
+    end
+    
     private
     
     def add_account_info(transaction, options)

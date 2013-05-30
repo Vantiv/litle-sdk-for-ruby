@@ -166,7 +166,6 @@ module LitleOnline
       request.send(:"#{type}=", transaction)
 
       xml = request.save_to_xml.to_s
-      puts xml
       LitleXmlMapper.request(xml, @config_hash)
     end
 

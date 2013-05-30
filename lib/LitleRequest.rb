@@ -45,6 +45,7 @@ module LitleOnline
       # current time out set to one hour
       # this value is in seconds
       @RESPONSE_TIME_OUT = 3600
+      @responses_expected = 0
     end
 
     # Creates the necessary files for the LitleRequest at the path specified. path/request_(TIMESTAMP) will be
@@ -145,24 +146,26 @@ module LitleOnline
       
       Net::SFTP.start(url, username, :password => password) do |sftp|
         # our folder is /SHORTNAME/SHORTNAME/INBOUND
-        responses_expected = 0
         Dir.foreach(path) do |filename| 
           #we have a complete report according to filename regex
           if((filename =~ /request_\d+.complete\z/) != nil) then
             # adding .prg extension per the XML 
             File.rename(path + filename, path + filename + '.prg')
-            # upload the file
-            #TODO: figure out how to get to the inbound
-            sftp.upload!(path + filename + '.prg', '/inbound/'+ filename+'.prg')
-            responses_expected += 1
-            # rename now that we're done
-            sftp.rename!('/inbound/'+ filename+'.prg', '/inbound/'+ filename+'.asc')
-            
-            #INSERT LITLE MAGIC HERE
           end
-         
         end
         
+        @responses_expected = 0
+        Dir.foreach(path) do |filename|
+          if((filename =~ /request_\d+.complete.prg\z/) != nil) then
+            # upload the file
+            sftp.upload!(path + filename, '/inbound/' + filename)
+            @responses_expected += 1
+            # rename now that we're done
+            sftp.rename!('/inbound/'+ filename, '/inbound/' + filename.gsub('prg', 'asc'))
+            File.rename(path + filename, path + filename.gsub('prg','sent'))
+          #INSERT LITLE MAGIC HERE
+          end
+        end
       end
     end
     
@@ -170,11 +173,13 @@ module LitleOnline
     # Params:
     # +responses_expected+:: number of responses the method expects to read from the server
     # +response_path+:: the local directory where responses should be saved to
-     def get_responses_from_server(responses_expected, response_path = (File.dirname(@path_to_batches) + '/responses/'), options = {})
-
-      username = get_config(:sftp_username, options)
-      password = get_config(:sftp_password, options)
-      url = get_config(:sftp_url, options)
+    def get_responses_from_server(args = {})
+      @responses_expected = args[:responses_expected] ||= @responses_expected
+      response_path = args[:response_path] ||= (File.dirname(@path_to_batches) + '/responses/') 
+      username = get_config(:sftp_username, args)
+      password = get_config(:sftp_password, args)
+      url = get_config(:sftp_url, args)
+      
       if(username == nil or password == nil or url == nil) then
         raise ConfigurationException, "You are not configured to use sFTP for batch processing. Please run /bin/Setup.rb again!"
       end
@@ -189,31 +194,43 @@ module LitleOnline
       Net::SFTP.start(url, username, :password => password) do |sftp|
         time_begin = Time.now
         responses_grabbed = 0
-        while((Time.now - time_begin) < @RESPONSE_TIME_OUT && responses_grabbed < responses_expected)
-          #sleep for 30 seconds
-          sleep(2)
-          sftp.dir.foreach('/outbound/') do |entry|
-            puts "Considering file: " + entry.name
-            if((entry.name =~ /request_\d+.complete.asc\z/) != nil) then
-              puts "We are going to be downloading: " + entry.name
-              sftp.download!('/outbound/' + entry.name, response_path + entry.name)
-              responses_grabbed += 1
+        # clear out the sFTP outbound dir prior to checking for new files, avoids leaving files on the server
+        # if files are left behind we are not counting then towards the expected total
+        sftp.dir.foreach('/outbound/') do |entry|
+          if((entry.name =~ /request_\d+.complete.asc\z/) != nil) then
+            sftp.download!('/outbound/' + entry.name, response_path + entry.name.gsub('request', 'response') + '.received')
               3.times{
                 begin 
                   sftp.remove!('/outbound/' + entry.name)
-                  puts "We removed it!"
                   break
                 rescue Net::SFTP::StatusException
                   #try, try, try again
                   puts "We couldn't remove it! Try again"
                 end  
-                puts "We're giving up :("
+              }
+          end
+        end
+        while((Time.now - time_begin) < @RESPONSE_TIME_OUT && responses_grabbed < @responses_expected)
+          #sleep for 30 seconds
+          sleep(2)
+          sftp.dir.foreach('/outbound/') do |entry|
+            if((entry.name =~ /request_\d+.complete.asc\z/) != nil) then
+              sftp.download!('/outbound/' + entry.name, response_path + entry.name.gsub('request', 'response') + '.received')
+              responses_grabbed += 1
+              3.times{
+                begin 
+                  sftp.remove!('/outbound/' + entry.name)
+                  break
+                rescue Net::SFTP::StatusException
+                  #try, try, try again
+                  puts "We couldn't remove it! Try again"
+                end  
               }
             end
           end
         end
         #if our timeout timed out, we're having problems
-        if responses_grabbed < responses_expected then
+        if responses_grabbed < @responses_expected then
           raise RuntimeError, "We timed out in waiting for a response from the server. :("
         end
       end
@@ -227,8 +244,9 @@ module LitleOnline
       path_to_responses = args[:path_to_responses] ||= (File.dirname(@path_to_batches) + '/responses/')
       
       Dir.foreach(path_to_responses) do |filename|
-        if ((filename =~ /request_\d+.complete.asc/) != nil) then
+        if ((filename =~ /request_\d+.complete.asc.received\z/) != nil) then
           process_response(path_to_responses + filename, transaction_listener, batch_listener)
+          File.rename(path_to_responses + filename, path_to_responses + filename + '.processed')
         end 
       end
     end
@@ -244,6 +262,9 @@ module LitleOnline
       doc = LibXML::XML::Document.file(path_to_response)
       reader = LibXML::XML::Reader.document(doc)
       reader.read # read into the root node
+      if reader.get_attribute('response') != 0 then
+        raise RuntimeError,  "Error parsing Litle Request: " + reader.get_attribute("message")
+      end
       reader.node.each do |batch_node|
         
         if(batch_node.node_type_name == "element") then
@@ -312,7 +333,13 @@ module LitleOnline
     end
 
     def get_config(field, options)
-      options[field.to_s] == nil ? @config_hash[field.to_s] : options[field.to_s]
+      if options[field.to_s] == nil and options[field] == nil then
+        return @config_hash[field.to_s]
+      elsif options[field.to_s] != nil then
+        return options[field.to_s]
+      else
+        return options[field]
+      end
     end
   end
 end

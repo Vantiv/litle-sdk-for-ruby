@@ -888,6 +888,7 @@ module LitleOnline
   
   class Authorization
     include XML::Mapping
+    root_element_name "authorization"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
@@ -921,6 +922,7 @@ module LitleOnline
   
   class Sale
     include XML::Mapping
+    root_element_name "sale"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
@@ -957,6 +959,7 @@ module LitleOnline
   
   class Credit
     include XML::Mapping
+    root_element_name "credit"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
@@ -984,6 +987,7 @@ module LitleOnline
   
   class RegisterTokenRequest
     include XML::Mapping
+    root_element_name "registerTokenRequest"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
@@ -996,6 +1000,7 @@ module LitleOnline
   
   class CaptureGivenAuth
     include XML::Mapping
+    root_element_name "captureGivenAuth"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
@@ -1021,6 +1026,7 @@ module LitleOnline
   
   class ForceCapture
     include XML::Mapping
+    root_element_name "forceCapture"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
@@ -1043,6 +1049,7 @@ module LitleOnline
   
   class AuthReversal
     include XML::Mapping
+    root_element_name "authReversal"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
@@ -1056,6 +1063,7 @@ module LitleOnline
   
   class Capture
     include XML::Mapping
+    root_element_name "capture"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
@@ -1071,6 +1079,7 @@ module LitleOnline
   
   class Void
     include XML::Mapping
+    root_element_name "void"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
@@ -1081,6 +1090,7 @@ module LitleOnline
   
   class EcheckVoid
     include XML::Mapping
+    root_element_name "echeckVoid"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
@@ -1090,6 +1100,7 @@ module LitleOnline
   
   class EcheckVerification
     include XML::Mapping
+    root_element_name "echeckVerification"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
@@ -1107,6 +1118,7 @@ module LitleOnline
   
   class EcheckCredit
     include XML::Mapping
+    root_element_name "echeckCredit"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
@@ -1124,6 +1136,7 @@ module LitleOnline
   
   class EcheckRedeposit
     include XML::Mapping
+    root_element_name "echeckRedeposit"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
@@ -1136,6 +1149,7 @@ module LitleOnline
   
   class EcheckSale
     include XML::Mapping
+    root_element_name "echeckSale"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
@@ -1155,6 +1169,7 @@ module LitleOnline
   
   class UpdateCardValidationNumOnToken
     include XML::Mapping
+    root_element_name "updateCardValidationNumOnToken"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
@@ -1164,6 +1179,17 @@ module LitleOnline
     text_node :cardValidationNum, "cardValidationNum", :default_value=>nil
   end
   
+  class AccountUpdate
+    include XML::Mapping
+    root_element_name "accountUpdate"
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+  
+    text_node :orderId, "orderId", :default_value=>nil
+    optional_choice_node :if,    'card', :then, (object_node :card, "card", :class=>Card),
+    :else, (object_node :token, "token", :class=>CardToken)
+  end
   
   class OnlineRequest
     include XML::Mapping
@@ -1226,6 +1252,7 @@ module LitleOnline
     text_node :numEcheckVerification, "@numEcheckVerification", :default_value=>"0"
     text_node :echeckVerificationAmount, "@echeckVerificationAmount", :default_value=>"0"
     text_node :numUpdateCardValidationNumOnTokens, "@numUpdateCardValidationNumOnTokens", :default_value=>"0"
+    text_node :numAccountUpdates, "@numAccountUpdates", :default_value=>"0"
     text_node :merchantId, "@merchantId", :default_value=>nil
     text_node :id, "@id", :default_value=>nil
   end
