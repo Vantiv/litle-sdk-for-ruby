@@ -434,8 +434,8 @@ module LitleOnline
       File.expects(:delete).with(regexp_matches(/.*batch_.*\d_txns.*/)).once.in_sequence(open)
       batch1 = LitleBatchRequest.new
       batch2 = LitleBatchRequest.new
+      batch2.expects(:build_batch_header).returns("foo")
       batch1.create_new_batch('/usr/local/litle-home/barnold/Batches/')
-      
       batch2.open_existing_batch(batch1.get_batch_name)
       batch2.close_batch()
     end
