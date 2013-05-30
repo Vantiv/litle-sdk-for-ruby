@@ -180,6 +180,65 @@ module LitleOnline
       request.expects(:create_new_litle_request).once
       request.commit_batch("/usr/srv/batches/batch_123123131231.closed-100000")
     end
+    
+    #TODO: see of we can get deeper with mocking the node returned
+    def test_process_response_success
+      xml = sequence("xml")
+      LibXML::XML::Document.expects(:file).with(regexp_matches(/.*responses\/good_xml.xml\z/)).once.in_sequence(xml)
+      LibXML::XML::Reader.expects(:document).once.returns(reader = LibXML::XML::Reader.new).in_sequence(xml)
+      reader.expects(:read).once.in_sequence(xml)
+      reader.expects(:get_attribute).with('response').returns(0).in_sequence(xml)
+      reader.expects(:node).returns(node = LibXML::XML::Node.new("stuff")).in_sequence(xml)
+      node.expects(:each).once.in_sequence(xml)
+      
+      request = LitleRequest.new({})
+      request.process_response(Dir.pwd + '/responses/good_xml.xml' , 
+      DefaultLitleListener.new{|txn| puts txn["type"]} ,
+      DefaultLitleListener.new{|batch| } )
+    end
+    
+    def test_process_response_xml_error
+      LibXML::XML::Document.expects(:file).with(regexp_matches(/.*responses\/bad_xml.xml\z/)).once
+      LibXML::XML::Reader.expects(:document).once.returns(reader = LibXML::XML::Reader.new)
+      reader.expects(:read).once
+      reader.expects(:get_attribute).with('response').returns(4)
+      reader.expects(:get_attribute).with("message").returns("Error validating xml data against the schema")
+      
+      request = LitleRequest.new({})
+      response = ''
+      begin
+        request.process_response(Dir.pwd + '/responses/bad_xml.xml' , 
+        DefaultLitleListener.new{|txn| puts txn["type"]} ,
+        DefaultLitleListener.new{|batch| } )
+      rescue Exception => e
+          response = e.message
+      end
+      assert_equal "Error parsing Litle Request: Error validating xml data against the schema", response.to_s
+    end      
+
+    def test_process_responses
+      request = LitleRequest.new({})
+      listener = DefaultLitleListener.new
+      args = {:transaction_listener=>listener,:path_to_responses=>"fake/path/"}
+      args.expects(:[]).with(:transaction_listener)
+      args.expects(:[]).with(:batch_listener).returns(nil)
+      args.expects(:[]).with(:path_to_responses).returns("fake/path/")
+      Dir.expects(:foreach).with("fake/path/")      
+      
+      request.process_responses(args)
+    end
+
+    def test_get_responses_from_server
+      request = LitleRequest.new({})
+      resp_seq = sequence("resp_seq")
+      args = {:responses_expected=>4, :response_path=>"new/path", :sftp_username=>"periwinkle",:sftp_password=>"password", :sftp_url=>"reddit.com"}
+      
+      File.expects(:directory?).with("new/path/").returns(false).once.in_sequence(resp_seq)
+      Dir.expects(:mkdir).with("new/path/").once.in_sequence(resp_seq)
+      Net::SFTP.expects(:start).with("reddit.com", "periwinkle", :password=>"password")
+      
+      request.get_responses_from_server(args)
+    end
 
     #Outputs an example LitleRequest doc in the current directory
     def test_finish_request_xml! #that's why the name has a bang
@@ -212,7 +271,7 @@ module LitleOnline
         
         #10.times{
           batch.sale(saleHash)
-          batch.update_card_validation_num_on_token
+          #batch.update_card_validation_num_on_token(options)
         #}
         
         batch.close_batch()
@@ -221,11 +280,6 @@ module LitleOnline
       request.finish_request
     end
     
-    def test_process_response
-      request = LitleRequest.new({})
-      request.process_response('/usr/local/litle-home/ahammond/murrburr.from.server', 
-      DefaultLitleListener.new{|txn| puts txn["type"]} ,
-      DefaultLitleListener.new{|batch| } )
-    end
+    
    end
 end

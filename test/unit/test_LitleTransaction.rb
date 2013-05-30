@@ -170,6 +170,7 @@ module LitleOnline
       }
       
       result = ltlTxn.update_card_validation_num_on_token(updateCardHash)
+      puts result.save_to_xml.to_s
       assert_equal 'Planets', result.reportGroup
       assert_equal '12345', result.transactionId
       assert_equal '0987', result.customerId
@@ -373,5 +374,26 @@ module LitleOnline
       assert_equal 'MA', result.billToAddress.state
       assert_equal 'litle.com', result.billToAddress.email
     end
+    
+    def test_account_update
+      ltlTxn = LitleTransaction.new
+      accountUpdateHash = {
+        'reportGroup'=>'Planets',
+        'id'=>'12345',
+        'customerId'=>'0987',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+      }}
+      
+      result = ltlTxn.account_update(accountUpdateHash)
+      assert_equal 'Planets', result.reportGroup
+      assert_equal '12345', result.transactionId
+      assert_equal '0987', result.customerId
+      assert_equal "4100000000000001", result.card.number
+      assert_equal "VI", result.card.mop
+      assert_equal "1210", result.card.expDate
+    end    
   end
 end

@@ -52,6 +52,7 @@ module LitleOnline
                       :numEcheckRedeposit=>0,
                       :echeckSale=>{ :numEcheckSales=>0, :echeckSalesAmount=>0 },
                       :numUpdateCardValidationNumOnTokens=>0,
+                      :numAccountUpdates=>0,
                       :total=>0
       }
       @litle_txn = LitleTransaction.new
@@ -106,9 +107,6 @@ module LitleOnline
     
     def send_litle_request()
       header = build_request_header(options)
-      
-      
-        
     end
     
     def authorization(options)
@@ -116,8 +114,6 @@ module LitleOnline
       @txn_counts[:auth][:numAuths] += 1
       @txn_counts[:auth][:authAmount] += options['amount'].to_i
       
-      #TODO need to set the account info needed for each txn
-        
       add_txn_to_batch(transaction, :authorization, options)
     end
     
@@ -214,6 +210,13 @@ module LitleOnline
       add_txn_to_batch(transaction, :echeckSale, options)
     end
     
+    def account_update(options)
+      transaction = @litle_txn.account_update(options)
+      @txn_counts[:numAccountUpdates] += 1
+      
+      add_txn_to_batch(transaction, :authorization, options)
+    end
+    
     def get_counts_and_amounts
       return @txn_counts
     end
@@ -225,8 +228,7 @@ module LitleOnline
     
     def add_txn_to_batch(transaction, type, options)
       @txn_counts[:total] += 1
-      xml = transaction.save_to_xml
-      
+      xml = transaction.save_to_xml.to_s
       File.open(@txn_file, 'a+') do |file|
         file.write(xml)
       end
@@ -261,15 +263,16 @@ module LitleOnline
       request.numCaptures              = @txn_counts[:capture][:numCaptures]
       request.captureAmount            = @txn_counts[:capture][:captureAmount]
       request.numEcheckSales           = @txn_counts[:echeckSale][:numEcheckSale]
-      request.echeckSalesAmount         = @txn_counts[:echeckSale][:echeckSalesAmount]
+      request.echeckSalesAmount        = @txn_counts[:echeckSale][:echeckSalesAmount]
       request.numEcheckRedeposit       = @txn_counts[:numEcheckredeposit]
       request.numEcheckCredit          = @txn_counts[:echeckCredit][:numEcheckCredit]
       request.echeckCreditAmount       = @txn_counts[:echeckCredit][:echeckCreditAmount]
       request.numEcheckVerification    = @txn_counts[:echeckVerification][:numEcheckverification]
       request.echeckVerificationAmount = @txn_counts[:echeckVerification][:echeckVerificationAmount]
+      request.numAccountUpdates        = @txn_counts[:numAccountUpdates]
+      request.merchantId               = get_merchant_id(options)
+      request.id                       = @txn_counts[:id]
       request.numUpdateCardValidationNumOnTokens = @txn_counts[:numUpdateCardValidationNumOnTokens]
-      request.merchantId             = get_merchant_id(options)
-      request.id                     = @txn_counts[:id]
       
       header = request.save_to_xml.to_s
       header['/>']= '>' 
