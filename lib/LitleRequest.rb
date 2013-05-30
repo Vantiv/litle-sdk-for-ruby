@@ -33,7 +33,7 @@ require 'crack/xml'
 module LitleOnline
   class LitleRequest
     include XML::Mapping
-    def initialize(options)
+    def initialize(options = {})
       #load configuration data
       @config_hash = Configuration.new.config
       @num_batch_requests = 0
@@ -267,8 +267,8 @@ module LitleOnline
     # (see +DefaultLitleListener+)
     # +batch_listener+:: An (optional) listener to be applied to the hash of each batch. 
     # Note that this will om-nom-nom quite a bit of memory
-    def process_response(path_to_response, transaction_listener, batch_listener = nil)
-      
+     def process_response(path_to_response, transaction_listener, batch_listener = nil)
+
       doc = LibXML::XML::Document.file(path_to_response)
       reader = LibXML::XML::Reader.document(doc)
       reader.read # read into the root node
@@ -276,22 +276,22 @@ module LitleOnline
         raise RuntimeError,  "Error parsing Litle Request: " + reader.get_attribute("message")
       end
       reader.node.each do |batch_node|
-        
+
         if(batch_node.node_type_name == "element") then
           if(batch_listener != nil) then
             batch_xml = batch_node.to_s
             duck = Crack::XML.parse(batch_xml)
             batch_listener.apply(duck)
           end
-          
-           batch_node.each do |trans_node|
+
+          batch_node.each do |trans_node|
             if(trans_node.node_type_name == "element") then
               xml = trans_node.to_s
               duck = Crack::XML.parse(xml)
               duck[duck.keys[0]]["type"] = duck.keys[0]
               duck = duck[duck.keys[0]]
               transaction_listener.apply(duck)
-            end 
+            end
           end
         end
       end

@@ -118,10 +118,6 @@ module LitleOnline
       File.delete(txn_location)
     end
     
-    def send_litle_request()
-      header = build_request_header(options)
-    end
-    
     def authorization(options)
       transaction = @litle_txn.authorization(options)
       @txn_counts[:auth][:numAuths] += 1
