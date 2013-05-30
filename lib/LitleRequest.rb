@@ -139,8 +139,8 @@ module LitleOnline
         raise ConfigurationException, "You are not configured to use sFTP for batch processing. Please run /bin/Setup.rb again!"
       end
       
-      if path[-1,1] != '/' then
-        path = path + '/'
+      if(path[-1,1] != '/' && path[-1,1] != '\\') then
+        path = path + File::SEPARATOR
       end
       
       Net::SFTP.start(url, username, :password => password) do |sftp|
@@ -179,8 +179,8 @@ module LitleOnline
         raise ConfigurationException, "You are not configured to use sFTP for batch processing. Please run /bin/Setup.rb again!"
       end
       
-      if response_path[-1,1] != '/' then
-        response_path = response_path + '/'
+      if(path[-1,1] != '/' && path[-1,1] != '\\') then
+        path = path + File::SEPARATOR
       end
       
       if(!File.directory?(response_path)) then
