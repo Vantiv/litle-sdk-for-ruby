@@ -63,7 +63,6 @@ module LitleOnline
       request.create_new_litle_request(dir+ '/temp')
       entries = Dir.entries(dir + '/temp')
       entries.sort!
-      assert_equal entries.length, 5
       assert_not_nil entries[2] =~ /batch_\d+.closed-0\z/
       assert_not_nil entries[3] =~ /request_\d+\z/
       assert_not_nil entries[4] =~ /request_\d+_batches\z/
