@@ -114,6 +114,53 @@ module LitleOnline
       File.delete(dir + '/temp/' + entries[2])
       Dir.delete(dir + '/temp')
     end
+    
+    def test_commit_batch_with_batch_and_au
+      dir = Dir.pwd
+      Dir.mkdir(dir + '/temp')
+
+      batch = LitleBatchRequest.new
+      batch.create_new_batch(dir + '/temp')
+      accountUpdateHash = {
+        'reportGroup'=>'Planets',
+        'id'=>'12345',
+        'customerId'=>'0987',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+      }}
+      batch.account_update(accountUpdateHash)
+      batch.close_batch
+
+      entries = Dir.entries(dir + '/temp')
+
+      assert_equal entries.length, 4
+      entries.sort!
+      assert_not_nil entries[2] =~ /batch_\d+.closed-0\z/
+      assert_not_nil entries[3] =~ /batch_\d+.closed-1\z/
+
+      request = LitleRequest.new
+      request.create_new_litle_request(dir+ '/temp')
+      entries = Dir.entries(dir + '/temp')
+      entries.sort!
+      assert_equal entries.length, 6
+      assert_not_nil entries[2] =~ /batch_\d+.closed-0\z/
+      assert_not_nil entries[3] =~ /batch_\d+.closed-1\z/
+      assert_not_nil entries[4] =~ /request_\d+\z/
+      assert_not_nil entries[5] =~ /request_\d+_batches\z/
+
+      request.commit_batch(batch)
+      entries = Dir.entries(dir + '/temp')
+      entries.sort!
+      assert_equal entries.length, 4
+      assert_not_nil entries[2] =~ /request_\d+\z/
+      assert_not_nil entries[3] =~ /request_\d+_batches\z/
+
+      File.delete(dir + '/temp/' + entries[3])
+      File.delete(dir + '/temp/' + entries[2])
+      Dir.delete(dir + '/temp')
+    end
 
     def test_finish_request
       dir = Dir.pwd

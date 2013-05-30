@@ -49,6 +49,47 @@ module LitleOnline
       Dir.delete(dir + '/temp')
     end
     
+    def test_batch_file_creation_account_update
+      dir = Dir.pwd
+      Dir.mkdir(dir + '/temp')
+      
+      
+      batch = LitleBatchRequest.new
+      batch.create_new_batch(dir + '/temp')
+      
+      entries = Dir.entries(dir + '/temp')
+      
+      assert_equal entries.length, 4
+      entries.sort!
+      assert_not_nil entries[2] =~ /batch_\d+\z/
+      assert_not_nil entries[3] =~ /batch_\d+_txns\z/ 
+      
+      accountUpdateHash = {
+        'reportGroup'=>'Planets',
+        'id'=>'12345',
+        'customerId'=>'0987',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+      }}
+      batch.account_update(accountUpdateHash)
+      
+      entries = Dir.entries(dir + '/temp')
+      assert_equal entries.length, 6
+      entries.sort!
+      assert_not_nil entries[2] =~ /batch_\d+\z/
+      assert_not_nil entries[3] =~ /batch_\d+_txns\z/
+      assert_not_nil entries[4] =~ /batch_\d+\z/
+      assert_not_nil entries[5] =~ /batch_\d+_txns\z/ 
+      
+      File.delete(dir + '/temp/' + entries[3])
+      File.delete(dir + '/temp/' + entries[2])
+      File.delete(dir + '/temp/' + entries[4])
+      File.delete(dir + '/temp/' + entries[5])
+      Dir.delete(dir + '/temp')
+    end
+    
     def test_batch_file_creation_on_file
       dir = Dir.pwd
       

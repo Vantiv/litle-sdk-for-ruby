@@ -108,7 +108,9 @@ module LitleOnline
         au_batch.open_existing_batch(pathToBatchFile)
         initialize()
         create_new_batch(File.dirname(pathToBatchFile))
-        @au_batch = au_batch  
+        @au_batch = au_batch
+      elsif
+        @txn_counts = temp_counts  
       end 
     end
     
@@ -340,6 +342,9 @@ module LitleOnline
     def create_new_batch(path)
       ts = Time::now.to_i.to_s
       ts += Time::now.nsec.to_s
+      
+      
+      
       if(File.file?(path)) then
         raise ArgumentError, "Entered a file not a path."
       end
