@@ -88,6 +88,12 @@ module LitleOnline
       #they passed a batch
       if arg.kind_of?(LitleBatchRequest) then
         path_to_batch = arg.get_batch_name
+        if((au = arg.get_au_batch) != nil) then 
+          # also commit the account updater batch
+          commit_batch(au)
+        end
+      elsif arg.kind_of?(LitleAUBatch) then
+        path_to_batch = arg.get_batch_name
       elsif arg.kind_of?(String) then
         path_to_batch = arg
       else
@@ -100,9 +106,18 @@ module LitleOnline
           new_batch.open_existing_batch(path_to_batch)
           new_batch.close_batch()
           path_to_batch = new_batch.get_batch_name
+          # if we passed a path to an AU batch, then new_batch will be a new, empty batch and the batch we passed
+          # will be in the AU batch variable. thus, we wanna grab that file name and remove the empty batch.
+          if(new_batch.get_au_batch != nil) then
+            File.remove(path_to_batch)
+            path_to_batch = new_batch.get_au_batch.get_batch_name
+          end 
         elsif arg.kind_of?(LitleBatchRequest) then
-        arg.close_batch()
-        path_to_batch = arg.get_batch_name
+          arg.close_batch()
+          path_to_batch = arg.get_batch_name
+        elsif arg.kind_of?(LitleAUBatch) then
+          arg.close_batch()
+          path_to_batch = arg.get_batch_name 
         end
         ind = path_to_batch.index(/\.closed/)
       end

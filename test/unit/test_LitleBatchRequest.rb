@@ -34,23 +34,19 @@ module LitleOnline
     def test_create_new_batch
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').twice
+      Dir.expects(:mkdir).with('/usr/local/litle-home/barnold/Batches/').once
       
       batch = LitleBatchRequest.new
-      batch.create_new_batch('D:\Batches\\')
-      #batch.create_new_batch('/usr/local/litle-home/barnold/Batches/')
+      batch.create_new_batch('/usr/local/litle-home/barnold/Batches/')
     end
     
-    #TODO: add test passing a file to create
-    def test_create_new_batch_on_file
-      
-    end
     
     def test_add_authorization
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').at_most(3)
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').twice
-      
+      Dir.expects(:mkdir).with('/usr/local/litle-home/barnold/Batches/').once
       authHash = {
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -407,14 +403,6 @@ module LitleOnline
     end  
   
     def test_open_existing_batch
-      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).twice
-      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once
-      File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').at_most(3)
-      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').twice
-      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'rb').returns(Hash.new)
-      File.expects(:rename).once
-      File.expects(:open).with(regexp_matches(/.*batch_.*\d.closed.*/), 'w').once
-      File.expects(:delete).with(regexp_matches(/.*batch_.*\d_txns.*/)).once
       
       saleHash = {
         'reportGroup'=>'Planets',
@@ -428,11 +416,25 @@ module LitleOnline
         'expDate' =>'1210'
       }}
       
+      open = sequence('open')
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).times(2).in_sequence(open)
+      
+      File.expects(:file?).returns(false).once.in_sequence(open)
+      File.expects(:directory?).returns(true).in_sequence(open)
+      File.expects(:file?).returns(false).in_sequence(open)
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').in_sequence(open)
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').in_sequence(open)
+      File.expects(:file?).returns(true).in_sequence(open)
+      
+      
+      
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'rb').returns({:numAccountUpdates => 0}).once.in_sequence(open)
+      File.expects(:rename).once.in_sequence(open)
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.closed.*/), 'w').once.in_sequence(open)
+      File.expects(:delete).with(regexp_matches(/.*batch_.*\d_txns.*/)).once.in_sequence(open)
       batch1 = LitleBatchRequest.new
       batch2 = LitleBatchRequest.new
-      batch2.expects(:build_batch_header).returns("foo")
       batch1.create_new_batch('/usr/local/litle-home/barnold/Batches/')
-      2.times(){ batch1.sale(saleHash) }
       
       batch2.open_existing_batch(batch1.get_batch_name)
       batch2.close_batch()
@@ -525,6 +527,7 @@ module LitleOnline
       File.expects(:rename).once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.closed.*/), 'w').once
       File.expects(:delete).with(regexp_matches(/.*batch_.*\d_txns.*/)).once
+      Dir.expects(:mkdir).with('/usr/local/litle-home/barnold/Batches/').once
       
       authHash = {
         'reportGroup'=>'Planets',
@@ -564,9 +567,9 @@ module LitleOnline
       #batch.create_new_batch('D:\Batches\\')
       batch.create_new_batch('/usr/local/litle-home/barnold/Batches/')
       
-      # 5.times(){ batch.authorization(authHash) }
-      # 2.times(){ batch.sale(saleHash) }
-      batch.update_card_validation_num_on_token(updateCardHash)
+      5.times(){ batch.authorization(authHash) }
+      2.times(){ batch.sale(saleHash) }
+
       
       #pid, size = `ps ax -o pid,rss | grep -E "^[[:space:]]*#{$$}"`.strip.split.map(&:to_i)
       #puts "PID: " + pid.to_s + " size: " + size.to_s

@@ -100,6 +100,7 @@ module LitleOnline
       batch = LitleBatchRequest.new
       File.expects(:open).twice
       File.expects(:file?).returns(false).twice
+      Dir.expects(:mkdir).once
       batch.create_new_batch('/usr/srv/batches')
       File.expects(:rename).once
       File.expects(:open).once
@@ -140,6 +141,8 @@ module LitleOnline
     def test_add_open_batch
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).times(2)
       File.expects(:open).with(regexp_matches(/\/usr\/srv\/.*/), 'a+').times(2)
+      
+      Dir.expects(:mkdir).with('/usr/srv/batches/').once
       batch = LitleBatchRequest.new
       batch.create_new_batch('/usr/srv/batches')  
       request = LitleRequest.new({'sessionId'=>'8675309', 
@@ -187,7 +190,7 @@ module LitleOnline
       LibXML::XML::Document.expects(:file).with(regexp_matches(/.*responses\/good_xml.xml\z/)).once.in_sequence(xml)
       LibXML::XML::Reader.expects(:document).once.returns(reader = LibXML::XML::Reader.new).in_sequence(xml)
       reader.expects(:read).once.in_sequence(xml)
-      reader.expects(:get_attribute).with('response').returns(0).in_sequence(xml)
+      reader.expects(:get_attribute).with('response').returns("0").in_sequence(xml)
       reader.expects(:node).returns(node = LibXML::XML::Node.new("stuff")).in_sequence(xml)
       node.expects(:each).once.in_sequence(xml)
       

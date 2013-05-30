@@ -59,6 +59,7 @@ module LitleOnline
       @path_to_batch = nil
       @txn_file = nil
       @MAX_TXNS_IN_BATCH = 100000
+      @au_batch = nil
     end
     
     def create_new_batch(path)
@@ -100,7 +101,15 @@ module LitleOnline
       
       @txn_file = pathToBatchFile + '_txns'
       @path_to_batch = pathToBatchFile
-      @txn_counts = File.open(@path_to_batch, "rb") { |f| Marshal.load(f) }
+      temp_counts = File.open(@path_to_batch, "rb") { |f| Marshal.load(f) }
+      # woops, they opened an AU batch
+      if(temp_counts[:numAccountUpdates] != 0) then
+        au_batch = LitleAUBatch.new
+        au_batch.open_existing_batch(pathToBatchFile)
+        initialize()
+        create_new_batch(File.dirname(pathToBatchFile))
+        @au_batch = au_batch  
+      end 
     end
     
     def close_batch(txn_location = @txn_file)
@@ -116,6 +125,9 @@ module LitleOnline
         fo.puts('</batchRequest>')
       end
       File.delete(txn_location)
+      if(@au_batch != nil) then
+        @au_batch.close_batch
+      end 
     end
     
     def authorization(options)
@@ -220,10 +232,12 @@ module LitleOnline
     end
     
     def account_update(options)
-      transaction = @litle_txn.account_update(options)
-      @txn_counts[:numAccountUpdates] += 1
-      
-      add_txn_to_batch(transaction, :authorization, options)
+       
+      if(@au_batch == nil) then
+        @au_batch = LitleAUBatch.new
+        @au_batch.create_new_batch(File.dirname(@path_to_batch))
+      end 
+      @au_batch.account_update(options)
     end
     
     def get_counts_and_amounts
@@ -232,6 +246,10 @@ module LitleOnline
     def get_batch_name
       return @path_to_batch
     end
+    def get_au_batch
+      return @au_batch
+    end
+    
     
     private
     
@@ -298,5 +316,143 @@ module LitleOnline
     end
   end
   
+  private
   
+  # IF YOU ARE A MERCHANT, DON'T LOOK HERE. IT'S SCARY!
+  
+  class LitleAUBatch
+    include XML::Mapping
+    def initialize
+      #load configuration data
+      @config_hash = Configuration.new.config
+      
+      @txn_counts = { :id=>nil,
+                      :merchantId=>nil,
+                      :numAccountUpdates=>0,
+                      :total=>0
+      }
+      @litle_txn = LitleTransaction.new
+      @path_to_batch = nil
+      @txn_file = nil
+      @MAX_TXNS_IN_BATCH = 100000
+    end
+    
+    def create_new_batch(path)
+      ts = Time::now.to_i.to_s
+      ts += Time::now.nsec.to_s
+      if(File.file?(path)) then
+        raise ArgumentError, "Entered a file not a path."
+      end
+     
+      if(path[-1,1] != '/' && path[-1,1] != '\\') then
+        path = path + File::SEPARATOR
+      end
+      if(!File.directory?(path)) then
+        Dir.mkdir(path)
+      end 
+        
+      @path_to_batch = path + 'batch_' + ts      
+      @txn_file = @path_to_batch + '_txns'
+      if(File.file?(@path_to_batch)) then
+        create_new_batch(path)
+        return
+      end
+      File.open(@path_to_batch, 'a+') do |file|
+        file.write("")
+      end
+      File.open(@txn_file, 'a+') do |file|
+        file.write("")
+      end
+    end
+    
+    def open_existing_batch(pathToBatchFile)
+      if(!File.file?(pathToBatchFile)) then
+        raise ArgumentError, "No batch file exists at the passed location!"
+      end 
+      
+      if((pathToBatchFile =~ /batch_\d+.closed-\d+\z/) != nil) then
+        raise ArgumentError, "The passed batch file is closed!"  
+      end   
+      
+      @txn_file = pathToBatchFile + '_txns'
+      @path_to_batch = pathToBatchFile
+      temp_counts = File.open(@path_to_batch, "rb") { |f| Marshal.load(f) }
+      if(temp_counts.keys.size > 4) then
+        raise RuntimeException, "Tried to open an AU batch with a non-AU batch file"
+      end 
+      
+      @txn_counts[:id] = temp_counts[:id]
+      @txn_counts[:merchantId] = temp_counts[:merchantId]
+      @txn_counts[:numAccountUpdates] = temp_counts[:numAccountUpdates]
+      @txn_counts[:total] = temp_counts[:total]
+    end
+    
+    def close_batch(txn_location = @txn_file)
+      header = build_batch_header(@txn_counts)
+      
+      File.rename(@path_to_batch, @path_to_batch + '.closed-' + @txn_counts[:total].to_s)
+      @path_to_batch = @path_to_batch + '.closed-' + @txn_counts[:total].to_s
+      File.open(@path_to_batch, 'w') do |fo|
+        fo.puts header
+        File.foreach(txn_location) do |li|
+          fo.puts li
+        end
+        fo.puts('</batchRequest>')
+      end
+      File.delete(txn_location)
+    end
+    
+    def account_update(options)
+      transaction = @litle_txn.account_update(options)
+      @txn_counts[:numAccountUpdates] += 1
+      
+      add_txn_to_batch(transaction, :authorization, options)
+    end
+    
+    def get_counts_and_amounts
+      return @txn_counts
+    end
+    def get_batch_name
+      return @path_to_batch
+    end
+    
+    private
+    
+    def add_txn_to_batch(transaction, type, options)
+      @txn_counts[:total] += 1
+      xml = transaction.save_to_xml.to_s
+      File.open(@txn_file, 'a+') do |file|
+        file.write(xml)
+      end
+      # save counts and amounts to batch file
+      File.open(@path_to_batch, 'wb'){|f| Marshal.dump(@txn_counts, f)}
+      if(@txn_counts[:total] >= @MAX_TXNS_IN_BATCH) then
+        close_batch()
+        path = File.dirname(@path_to_batch)
+        initialize
+        create_new_batch(path)
+      end
+    end
+    
+    def build_batch_header(options)
+      request = BatchRequest.new
+      
+      request.numAccountUpdates        = @txn_counts[:numAccountUpdates]
+      request.merchantId               = get_merchant_id(options)
+      request.id                       = @txn_counts[:id]
+      
+      header = request.save_to_xml.to_s
+      header['/>']= '>' 
+
+      return header
+    end
+    
+    def get_config(field, options)
+      options[field.to_s] == nil ? @config_hash[field.to_s] : options[field.to_s]
+    end
+    
+    def get_merchant_id(options)
+      options['merchantId'] || @config_hash['currency_merchant_map']['DEFAULT']
+    end
+  end
 end
