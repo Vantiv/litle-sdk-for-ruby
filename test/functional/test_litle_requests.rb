@@ -22,24 +22,34 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-
 require 'lib/LitleOnline'
+require 'test/unit'
 
-#test driver for running all tests
-require_relative 'test_xmlfields'
-require_relative 'test_sale'
-require_relative 'test_auth'
-require_relative 'test_authReversal'
-require_relative 'test_credit'
-require_relative 'test_token'
-require_relative 'test_forceCapture'
-require_relative 'test_capture'
-require_relative 'test_captureGivenAuth'
-require_relative 'test_echeckRedeposit'
-require_relative 'test_echeckSale'
-require_relative 'test_echeckCredit'
-require_relative 'test_echeckVerification'
-require_relative 'test_echeckVoid'
-require_relative 'test_updateCardValidationNumOnToken'
-require_relative 'test_litle_requests'
-require_relative 'test_batch'
+module LitleOnline
+  class TestLitleRequest < Test::Unit::TestCase
+    
+    def test_request_creation
+      
+    end
+    
+    def test_commit_batch_with_path
+      
+    end
+    
+    def test_commit_batch_with_batch
+      
+    end
+    
+    def test_finish_request
+      
+    end
+    
+    def test_send_to_litle
+      
+    end
+    
+    def test_full_flow
+      
+    end
+  end
+end

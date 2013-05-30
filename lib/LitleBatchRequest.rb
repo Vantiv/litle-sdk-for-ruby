@@ -65,11 +65,16 @@ module LitleOnline
       ts = Time::now.to_i.to_s
       ts += Time::now.nsec.to_s
       if(File.file?(path)) then
-        raise RuntimeError, "Entered a file not a path."
+        raise ArgumentError, "Entered a file not a path."
       end
+     
       if(path[-1,1] != '/' && path[-1,1] != '\\') then
         path = path + File::SEPARATOR
-      end  
+      end
+      if(!File.directory?(path)) then
+        Dir.mkdir(path)
+      end 
+        
       @path_to_batch = path + 'batch_' + ts      
       @txn_file = @path_to_batch + '_txns'
       if(File.file?(@path_to_batch)) then
@@ -85,6 +90,14 @@ module LitleOnline
     end
     
     def open_existing_batch(pathToBatchFile)
+      if(!File.file?(pathToBatchFile)) then
+        raise ArgumentError, "No batch file exists at the passed location!"
+      end 
+      
+      if((pathToBatchFile =~ /batch_\d+.closed-\d+\z/) != nil) then
+        raise ArgumentError, "The passed batch file is closed!"  
+      end   
+      
       @txn_file = pathToBatchFile + '_txns'
       @path_to_batch = pathToBatchFile
       @txn_counts = File.open(@path_to_batch, "rb") { |f| Marshal.load(f) }
