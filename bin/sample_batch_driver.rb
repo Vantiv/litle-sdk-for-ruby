@@ -64,6 +64,9 @@ path = Dir.pwd
       
 
 request = LitleOnline::LitleRequest.new({'sessionId'=>'8675309'})
+
+ 
+  
 request.create_new_litle_request(path)
 puts "Created new LitleRequest at location: " + path
 start = Time::now
@@ -98,6 +101,21 @@ stop = Time::now
 puts "Total time: " + (stop - start).to_s  
 #process the responses from the server with a listener which applies the given block
 request.process_responses({:transaction_listener => LitleOnline::DefaultLitleListener.new do |transaction|
-  puts transaction["type"]
+  type = transaction["type"]
+  puts type
+  #if we're dealing with a saleResponse (check the Litle XML Reference Guide!)
+  if(type == "saleResponse") then
+    #grab an attribute of the parent of the response
+    puts "Report Group: " + transaction["reportGroup"]
+    
+    #grab some child elements of the transaction
+    puts "Litle Txn Id: " + transaction["litleTxnId"]
+    puts "Order Id: " + transaction["orderId"]
+    puts "Response: " + transaction["response"]
+    
+    #grab a child element of a child element of the transation
+    puts "AVS Result: " + transaction["fraudResult"]["avsResult"]
+    puts "Token Response Message: " + transaction["tokenResponse"]["tokenMessage"]    
+  end
 end})
 

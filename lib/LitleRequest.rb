@@ -163,10 +163,8 @@ module LitleOnline
             sftp.upload!(path + filename, '/inbound/' + filename)
             @responses_expected += 1
             # rename now that we're done
-
             sftp.rename!('/inbound/'+ filename, '/inbound/' + filename.gsub('prg', 'asc'))
             File.rename(path + filename, path + filename.gsub('prg','sent'))
-          #INSERT LITLE MAGIC HERE
           end
         end
       end
@@ -174,8 +172,10 @@ module LitleOnline
     
     # Grabs response files over SFTP from Litle.
     # Params:
-    # +responses_expected+:: number of responses the method expects to read from the server
-    # +response_path+:: the local directory where responses should be saved to
+    # +args+:: An (optional) +Hash+ containing values for the number of responses expected, the
+    # path to the folder on disk to write the responses from the Litle server to, the username and
+    # password with which to connect ot the sFTP server, and the URL to connect over sFTP. Values not
+    # provided in the hash will be populate automatically based on our best guess
     def get_responses_from_server(args = {})
       @responses_expected = args[:responses_expected] ||= @responses_expected
       response_path = args[:response_path] ||= (File.dirname(@path_to_batches) + '/responses/') 
@@ -187,8 +187,8 @@ module LitleOnline
         raise ConfigurationException, "You are not configured to use sFTP for batch processing. Please run /bin/Setup.rb again!"
       end
       
-      if(path[-1,1] != '/' && path[-1,1] != '\\') then
-        path = path + File::SEPARATOR
+      if(response_path[-1,1] != '/' && response_path[-1,1] != '\\') then
+        response_path = response_path + File::SEPARATOR
       end
       
       if(!File.directory?(response_path)) then
@@ -240,24 +240,31 @@ module LitleOnline
     end
     
     # Params:
-    # +path_to_responses+:: The directory location of the .asc responses from the Litle server
-    def process_responses(args = {})
+    # +args+:: A +Hash+ containing arguments for the processing process. This hash MUST contain an entry
+    # for a transaction listener (see +DefaultLitleListener+). It may also include a batch listener and a
+    # custom path where response files from the server are located (if it is not provided, we'll guess the position)
+    def process_responses(args)
+      #the transaction listener is required
+      if(!args.has_key?(:transaction_listener)) then
+        raise ArgumentError, "The arguments hash must contain an entry for transaction listener!"
+      end
+      
       transaction_listener = args[:transaction_listener]
       batch_listener = args[:batch_listener] ||= nil
       path_to_responses = args[:path_to_responses] ||= (File.dirname(@path_to_batches) + '/responses/')
       
       Dir.foreach(path_to_responses) do |filename|
-        if ((filename =~ /request_\d+.complete.asc.received\z/) != nil) then
+        if ((filename =~ /response_\d+.complete.asc.received\z/) != nil) then
           process_response(path_to_responses + filename, transaction_listener, batch_listener)
           File.rename(path_to_responses + filename, path_to_responses + filename + '.processed')
         end 
       end
     end
     
-    #
     # Params:
     # +path_to_response+:: The path to a specific .asc file to process
-    # +
+    # +transaction_listener+:: A listener to be applied to the hash of each transaction 
+    # (see +DefaultLitleListener+)
     # +batch_listener+:: An (optional) listener to be applied to the hash of each batch. 
     # Note that this will om-nom-nom quite a bit of memory
     def process_response(path_to_response, transaction_listener, batch_listener = nil)
@@ -265,7 +272,7 @@ module LitleOnline
       doc = LibXML::XML::Document.file(path_to_response)
       reader = LibXML::XML::Reader.document(doc)
       reader.read # read into the root node
-      if reader.get_attribute('response') != 0 then
+      if reader.get_attribute('response') != "0" then
         raise RuntimeError,  "Error parsing Litle Request: " + reader.get_attribute("message")
       end
       reader.node.each do |batch_node|
@@ -297,7 +304,6 @@ module LitleOnline
     # Called when you wish to finish adding batches to your request, this method rewrites the aggregate
     # batch file to the final LitleRequest xml doc with the appropos LitleRequest tags.
     def finish_request
-      
       File.open(@path_to_request, 'w') do |f|
         #jam dat header in there
         f.puts(build_request_header())
