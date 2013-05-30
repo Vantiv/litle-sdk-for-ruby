@@ -131,6 +131,8 @@ module LitleOnline
     # +path+:: A +String+ containing the path to the folder on disc where LitleRequests are located.
     # This should be the same location where the LitleRequests were written to. If no path is explicitly
     # provided, then we use the directory where the current working batches file is stored.
+    # +options+:: An (option) +Hash+ containing the username, password, and URL to attempt to sFTP to.
+    # If not provided, the values will be populated from the configuration file.
     def send_to_litle(path = (File.dirname(@path_to_batches)), options = {})
       username = get_config(:sftp_username, options)
       password = get_config(:sftp_password, options)
@@ -157,8 +159,6 @@ module LitleOnline
             responses_expected += 1
             # rename now that we're done
             sftp.rename!('/inbound/'+ filename+'.prg', '/inbound/'+ filename+'.asc')
-            
-            #INSERT LITLE MAGIC HERE
           end
          
         end
