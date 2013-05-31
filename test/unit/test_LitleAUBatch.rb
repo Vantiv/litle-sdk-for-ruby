@@ -33,11 +33,11 @@ module LitleOnline
     def test_create_new_batch
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').twice
-      Dir.expects(:mkdir).with('/usr/local/litle-home/barnold/Batches/').once
+      Dir.expects(:mkdir).with('/usr/local/Batches/').once
       File.expects(:directory?).returns(false).once
       
       batch = LitleAUBatch.new
-      batch.create_new_batch('/usr/local/litle-home/barnold/Batches/')
+      batch.create_new_batch('/usr/local/Batches/')
     end
     
     def test_account_update
@@ -45,6 +45,7 @@ module LitleOnline
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').twice
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').once
+      File.expects(:directory?).returns(true).once
       
       accountUpdateHash = {
         'reportGroup'=>'Planets',
@@ -72,7 +73,7 @@ module LitleOnline
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.closed.*/), 'w').once
       File.expects(:rename).once
       File.expects(:delete).once
-      
+      File.expects(:directory?).returns(true).once
 
       batch = LitleAUBatch.new
       batch.create_new_batch('D:\Batches\\')      
@@ -99,7 +100,7 @@ module LitleOnline
       File.expects(:delete).with(regexp_matches(/.*batch_.*\d_txns.*/)).once.in_sequence(open)
       batch1 = LitleAUBatch.new
       batch2 = LitleAUBatch.new
-      batch1.create_new_batch('/usr/local/litle-home/barnold/Batches/')
+      batch1.create_new_batch('/usr/local/Batches/')
       
       batch2.open_existing_batch(batch1.get_batch_name)
       batch2.close_batch()
@@ -112,12 +113,12 @@ module LitleOnline
       File.expects(:rename).once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'w').once
       File.expects(:delete).once
-      Dir.expects(:mkdir).once
+      File.expects(:directory?).returns(true).once
       
       batch = LitleAUBatch.new
       batch.get_counts_and_amounts.expects(:[]).returns(hash = Hash.new).at_least(5)
       
-      batch.create_new_batch('/usr/local/litle-home/ahammond/batches')
+      batch.create_new_batch('/usr/local/batches')
       batch.close_batch()
     end
     
@@ -136,7 +137,6 @@ module LitleOnline
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
       
       fileExists = sequence('fileExists')
-      #mockFile = mock(File)
       File.expects(:file?).with(regexp_matches(/.*\/usr\/local\//)).returns(false).in_sequence(fileExists)
       File.expects(:file?).with(regexp_matches(/.*batch_.*\d.*/)).returns(true).in_sequence(fileExists)
       File.expects(:file?).with(regexp_matches(/.*\/usr\/local\//)).returns(false).in_sequence(fileExists)
@@ -181,6 +181,7 @@ module LitleOnline
       
       batch.account_update(accountUpdateHash)
     end
+    
     def test_complete_batch
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').at_most(7)
@@ -188,12 +189,11 @@ module LitleOnline
       File.expects(:rename).once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.closed.*/), 'w').once
       File.expects(:delete).with(regexp_matches(/.*batch_.*\d_txns.*/)).once
-      Dir.expects(:mkdir).with('/usr/local/litle-home/barnold/Batches/').once
+      Dir.expects(:mkdir).with('/usr/local/Batches/').once
       File.expects(:directory?).returns(false).once      
       
       batch = LitleAUBatch.new
-      #batch.create_new_batch('D:\Batches\\')
-      batch.create_new_batch('/usr/local/litle-home/barnold/Batches/')
+      batch.create_new_batch('/usr/local/Batches/')
       
       accountUpdateHash = {
         'reportGroup'=>'Planets',
@@ -205,10 +205,8 @@ module LitleOnline
         'expDate' =>'1210'
       }}
       
-      
       5.times(){ batch.account_update(accountUpdateHash ) }
 
-      
       #pid, size = `ps ax -o pid,rss | grep -E "^[[:space:]]*#{$$}"`.strip.split.map(&:to_i)
       #puts "PID: " + pid.to_s + " size: " + size.to_s
       batch.close_batch()
@@ -216,8 +214,5 @@ module LitleOnline
       
       assert_equal 5, counts[:numAccountUpdates]
     end
-    
-      
-  
   end
 end

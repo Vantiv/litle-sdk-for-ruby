@@ -34,11 +34,11 @@ module LitleOnline
     def test_create_new_batch
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').twice
-      Dir.expects(:mkdir).with('/usr/local/litle-home/barnold/Batches/').once
+      Dir.expects(:mkdir).with('/usr/local/Batches/').once
       File.expects(:directory?).returns(false).once
       
       batch = LitleBatchRequest.new
-      batch.create_new_batch('/usr/local/litle-home/barnold/Batches/')
+      batch.create_new_batch('/usr/local/Batches/')
     end
     
     
@@ -47,7 +47,7 @@ module LitleOnline
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').at_most(3)
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').twice
-      Dir.expects(:mkdir).with('/usr/local/litle-home/barnold/Batches/').once
+      Dir.expects(:mkdir).with('/usr/local/Batches/').once
       File.expects(:directory?).returns(false).once
       authHash = {
         'reportGroup'=>'Planets',
@@ -61,8 +61,7 @@ module LitleOnline
       }}
       
       batch = LitleBatchRequest.new
-      #batch.create_new_batch('D:\Batches\\')
-      batch.create_new_batch('/usr/local/litle-home/barnold/Batches/')
+      batch.create_new_batch('/usr/local/Batches/')
       
       2.times(){ batch.authorization(authHash) }
       counts = batch.get_counts_and_amounts
@@ -76,6 +75,7 @@ module LitleOnline
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').twice
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').once
+      File.expects(:directory?).returns(true).once
       
       saleHash = {
         'reportGroup'=>'Planets',
@@ -103,6 +103,7 @@ module LitleOnline
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').twice
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').once
+      File.expects(:directory?).returns(true).once
       
       creditHash = {
         'merchantId' => '101',
@@ -131,6 +132,7 @@ module LitleOnline
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').twice
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').once
+      File.expects(:directory?).returns(true).once
       
       authReversalHash = {
         'merchantId' => '101',
@@ -155,6 +157,7 @@ module LitleOnline
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').twice
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').once
+      File.expects(:directory?).returns(true).once
       
       registerTokenHash = {
         'merchantId' => '101',
@@ -177,6 +180,7 @@ module LitleOnline
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').twice
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').once
+      File.expects(:directory?).returns(true).once
       
       updateCardHash = {
         'merchantId' => '101',
@@ -200,6 +204,7 @@ module LitleOnline
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').twice
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').once
+      File.expects(:directory?).returns(true).once
       
       forceCaptHash = {
         'merchantId' => '101',
@@ -229,6 +234,7 @@ module LitleOnline
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').twice
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').once
+      File.expects(:directory?).returns(true).once
       
       captHash = {
         'merchantId' => '101',
@@ -252,6 +258,7 @@ module LitleOnline
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').twice
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').once
+      File.expects(:directory?).returns(true).once
       
       captGivenAuthHash = {
         'merchantId' => '101',
@@ -284,6 +291,7 @@ module LitleOnline
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').twice
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').once
+      File.expects(:directory?).returns(true).once
       
       echeckVerificationHash = {
         'merchantId' => '101',
@@ -310,6 +318,7 @@ module LitleOnline
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').twice
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').once
+      File.expects(:directory?).returns(true).once
       
       echeckCreditHash = {
         'merchantId' => '101',
@@ -333,6 +342,7 @@ module LitleOnline
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').twice
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').once
+      File.expects(:directory?).returns(true).once
       
       echeckRedeopsitHash = {
         'merchantId' => '101',
@@ -354,6 +364,7 @@ module LitleOnline
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').twice
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').once
+      File.expects(:directory?).returns(true).once
       
       echeckSaleHash = {
         'merchantId' => '101',
@@ -384,6 +395,7 @@ module LitleOnline
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.closed.*/), 'w').once
       File.expects(:rename).once
       File.expects(:delete).once
+      File.expects(:directory?).returns(true).once
       
       saleHash = {
         'reportGroup'=>'Planets',
@@ -437,7 +449,7 @@ module LitleOnline
       batch1 = LitleBatchRequest.new
       batch2 = LitleBatchRequest.new
       batch2.expects(:build_batch_header).returns("foo")
-      batch1.create_new_batch('/usr/local/litle-home/barnold/Batches/')
+      batch1.create_new_batch('/usr/local/Batches/')
       batch2.open_existing_batch(batch1.get_batch_name)
       batch2.close_batch()
     end
@@ -455,7 +467,7 @@ module LitleOnline
       batch.get_counts_and_amounts.expects(:[]).returns(hash = Hash.new).at_least(25)
       hash.expects(:[]).returns('a').at_least(20)
       
-      batch.create_new_batch('/usr/local/litle-home/ahammond/batches')
+      batch.create_new_batch('/usr/local/Batches')
       batch.close_batch()
     end
     
@@ -474,7 +486,6 @@ module LitleOnline
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
       
       fileExists = sequence('fileExists')
-      #mockFile = mock(File)
       File.expects(:file?).with(regexp_matches(/.*\/usr\/local\//)).returns(false).in_sequence(fileExists)
       File.expects(:file?).with(regexp_matches(/.*batch_.*\d.*/)).returns(true).in_sequence(fileExists)
       File.expects(:file?).with(regexp_matches(/.*\/usr\/local\//)).returns(false).in_sequence(fileExists)
@@ -523,6 +534,7 @@ module LitleOnline
       batch.sale(saleHash)
         
     end
+    
     def test_complete_batch
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').at_most(9)
@@ -530,7 +542,7 @@ module LitleOnline
       File.expects(:rename).once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.closed.*/), 'w').once
       File.expects(:delete).with(regexp_matches(/.*batch_.*\d_txns.*/)).once
-      Dir.expects(:mkdir).with('/usr/local/litle-home/barnold/Batches/').once
+      Dir.expects(:mkdir).with('/usr/local/Batches/').once
       File.expects(:directory?).returns(false).once
       
       authHash = {
@@ -568,8 +580,7 @@ module LitleOnline
       }
       
       batch = LitleBatchRequest.new
-      #batch.create_new_batch('D:\Batches\\')
-      batch.create_new_batch('/usr/local/litle-home/barnold/Batches/')
+      batch.create_new_batch('/usr/local/Batches/')
       
       5.times(){ batch.authorization(authHash) }
       2.times(){ batch.sale(saleHash) }

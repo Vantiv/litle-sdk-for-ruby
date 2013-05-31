@@ -245,43 +245,43 @@ module LitleOnline
     end
 
     #Outputs an example LitleRequest doc in the current directory
-    def test_finish_request_xml! #that's why the name has a bang
-      # see the bang up there ^^^ that means we ACTUALLY edit the file system
-      # make sure to clear this; otherwise, you're gonna have a bad time.      
-      path = Dir.pwd
-      
-      saleHash = {
-        'reportGroup'=>'Planets',
-        'id' => '006',
-        'orderId'=>'12344',
-        'amount'=>'6000',
-        'orderSource'=>'ecommerce',
-        'card'=>{
-        'type'=>'VI',
-        'number' =>'4100000000000001',
-        'expDate' =>'1210'
-      }}
-      
-      request = LitleRequest.new({'sessionId'=>'8675309',
-        'user'=>'john',
-        'password'=>'tinkleberry'})
-      request.create_new_litle_request(path)
-      
-      
-      #5.times{
-        batch = LitleBatchRequest.new
-        batch.create_new_batch(path)
-        puts "Batch is at: " + batch.get_batch_name
-        
-        #10.times{
-          batch.sale(saleHash)
-          #batch.update_card_validation_num_on_token(options)
-        #}
-        
-        batch.close_batch()
-        request.commit_batch(batch)
-      #}
-      request.finish_request
-    end
+    # def test_finish_request_xml! #that's why the name has a bang
+      # # see the bang up there ^^^ that means we ACTUALLY edit the file system
+      # # make sure to clear this; otherwise, you're gonna have a bad time.      
+      # path = Dir.pwd
+#       
+      # saleHash = {
+        # 'reportGroup'=>'Planets',
+        # 'id' => '006',
+        # 'orderId'=>'12344',
+        # 'amount'=>'6000',
+        # 'orderSource'=>'ecommerce',
+        # 'card'=>{
+        # 'type'=>'VI',
+        # 'number' =>'4100000000000001',
+        # 'expDate' =>'1210'
+      # }}
+#       
+      # request = LitleRequest.new({'sessionId'=>'8675309',
+        # 'user'=>'john',
+        # 'password'=>'tinkleberry'})
+      # request.create_new_litle_request(path)
+#       
+#       
+      # #5.times{
+        # batch = LitleBatchRequest.new
+        # batch.create_new_batch(path)
+        # puts "Batch is at: " + batch.get_batch_name
+#         
+        # #10.times{
+          # batch.sale(saleHash)
+          # #batch.update_card_validation_num_on_token(options)
+        # #}
+#         
+        # batch.close_batch()
+        # request.commit_batch(batch)
+      # #}
+      # request.finish_request
+    # end
    end
 end

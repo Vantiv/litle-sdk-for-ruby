@@ -242,7 +242,7 @@ module LitleOnline
             end
           end
           #wait until a response has a possibility of being there
-          sleep(POLL_DELAY)
+          sleep(@POLL_DELAY)
           time_begin = Time.now
           while((Time.now - time_begin) < @RESPONSE_TIME_OUT && responses_grabbed < @responses_expected)
             #sleep for 60 seconds, ¿no es bueno?
