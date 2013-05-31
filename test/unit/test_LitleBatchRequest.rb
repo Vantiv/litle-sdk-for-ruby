@@ -570,7 +570,6 @@ module LitleOnline
       5.times(){ batch.authorization(authHash) }
       2.times(){ batch.sale(saleHash) }
 
-      
       #pid, size = `ps ax -o pid,rss | grep -E "^[[:space:]]*#{$$}"`.strip.split.map(&:to_i)
       #puts "PID: " + pid.to_s + " size: " + size.to_s
       batch.close_batch()
@@ -581,8 +580,5 @@ module LitleOnline
       assert_equal 2, counts[:sale][:numSales]
       #assert_equal 6000, counts[:sale][:saleAmount]
     end
-    
-      
-  
   end
 end

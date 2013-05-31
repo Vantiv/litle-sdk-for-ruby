@@ -42,8 +42,8 @@ module LitleOnline
                       :auth=>{ :numAuths=>0, :authAmount=>0 },
                       :sale=>{ :numSales=>0, :saleAmount=>0 },
                       :credit=>{ :numCredits=>0, :creditAmount=>0 },
-                      :numTokenReqistrations=>0,
-                      :captureGivenAuth=>{ :numCaptureGivenAuths=>0, :captureGivenAmount=>0 },
+                      :numTokenRegistrations=>0,
+                      :captureGivenAuth=>{ :numCaptureGivenAuths=>0, :captureGivenAuthAmount=>0 },
                       :forceCapture=>{ :numForceCaptures=>0, :forceCaptureAmount=>0 },
                       :authReversal=>{ :numAuthReversals=>0, :authReversalAmount=>0 },
                       :capture=>{ :numCaptures=>0, :captureAmount=>0 },
@@ -149,7 +149,7 @@ module LitleOnline
     end
 
     def credit(options)
-      transaction = @litle_txn.sale(options)
+      transaction = @litle_txn.credit(options)
       @txn_counts[:credit][:numCredits] += 1
       @txn_counts[:credit][:creditAmount] += options['amount'].to_i
       
@@ -166,9 +166,9 @@ module LitleOnline
     
     def register_token_request(options)
       transaction = @litle_txn.register_token_request(options)
-      @txn_counts[:numTokenReqistrations] += 1
+      @txn_counts[:numTokenRegistrations] += 1
       
-      add_txn_to_batch(transaction, :numTokenReqistrations, options)
+      add_txn_to_batch(transaction, :numTokenRegistrations, options)
     end
     
     def update_card_validation_num_on_token(options)
@@ -197,7 +197,7 @@ module LitleOnline
     def capture_given_auth(options)
       transaction = @litle_txn.capture_given_auth(options)
       @txn_counts[:captureGivenAuth][:numCaptureGivenAuths] += 1
-      @txn_counts[:captureGivenAuth][:captureGivenAmount] += options['amount'].to_i
+      @txn_counts[:captureGivenAuth][:captureGivenAuthAmount] += options['amount'].to_i
       
       add_txn_to_batch(transaction, :captureGivenAuth, options)
     end
@@ -291,12 +291,12 @@ module LitleOnline
       request.authReversalAmount       = @txn_counts[:authReversal][:authReversalAmount]
       request.numCaptures              = @txn_counts[:capture][:numCaptures]
       request.captureAmount            = @txn_counts[:capture][:captureAmount]
-      request.numEcheckSales           = @txn_counts[:echeckSale][:numEcheckSale]
+      request.numEcheckSales           = @txn_counts[:echeckSale][:numEcheckSales]
       request.echeckSalesAmount        = @txn_counts[:echeckSale][:echeckSalesAmount]
-      request.numEcheckRedeposit       = @txn_counts[:numEcheckredeposit]
+      request.numEcheckRedeposit       = @txn_counts[:numEcheckRedeposit]
       request.numEcheckCredit          = @txn_counts[:echeckCredit][:numEcheckCredit]
       request.echeckCreditAmount       = @txn_counts[:echeckCredit][:echeckCreditAmount]
-      request.numEcheckVerification    = @txn_counts[:echeckVerification][:numEcheckverification]
+      request.numEcheckVerification    = @txn_counts[:echeckVerification][:numEcheckVerification]
       request.echeckVerificationAmount = @txn_counts[:echeckVerification][:echeckVerificationAmount]
       request.numAccountUpdates        = @txn_counts[:numAccountUpdates]
       request.merchantId               = get_merchant_id(options)

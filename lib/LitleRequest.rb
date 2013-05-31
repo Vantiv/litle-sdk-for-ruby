@@ -45,6 +45,7 @@ module LitleOnline
       # current time out set to 2 mins
       # this value is in seconds
       @RESPONSE_TIME_OUT = 120
+      @POLL_DELAY = 0
       @responses_expected = 0
     end
 
@@ -59,10 +60,14 @@ module LitleOnline
         raise RuntimeError, "Entered a file not a path."
       end
 
-      if(path[-1,1] != '/' && path[-1,1] != '\\') then
+      if(path[-1,1] != '/' and path[-1,1] != '\\') then
         path = path + File::SEPARATOR
       end
 
+      if !File.directory?(path) then
+        Dir.mkdir(path)
+      end
+      
       @path_to_request = path + 'request_' + ts
       @path_to_batches = @path_to_request + '_batches'
 
@@ -130,7 +135,10 @@ module LitleOnline
         create_new_litle_request
       else #otherwise, let's add it line by line to the request doc
         @num_batch_requests += 1
+        #how long we wnat to wait around for the FTP server to get us a response
         @RESPONSE_TIME_OUT += 90 + (transactions_in_batch * 0.25)
+        #don't start looking until there could possibly be a response
+        @POLL_DELAY += 30 +(transactions_in_batch  * 0.02)
         @num_total_transactions += transactions_in_batch
 
         File.open(@path_to_batches, 'a+') do |fo|
@@ -162,27 +170,31 @@ module LitleOnline
         path = path + File::SEPARATOR
       end
       
-      Net::SFTP.start(url, username, :password => password) do |sftp|
-        # our folder is /SHORTNAME/SHORTNAME/INBOUND
-        Dir.foreach(path) do |filename| 
-          #we have a complete report according to filename regex
-          if((filename =~ /request_\d+.complete\z/) != nil) then
-            # adding .prg extension per the XML 
-            File.rename(path + filename, path + filename + '.prg')
+      begin 
+        Net::SFTP.start(url, username, :password => password) do |sftp|
+          # our folder is /SHORTNAME/SHORTNAME/INBOUND
+          Dir.foreach(path) do |filename| 
+            #we have a complete report according to filename regex
+            if((filename =~ /request_\d+.complete\z/) != nil) then
+              # adding .prg extension per the XML 
+              File.rename(path + filename, path + filename + '.prg')
+            end
+          end
+          
+          @responses_expected = 0
+          Dir.foreach(path) do |filename|
+            if((filename =~ /request_\d+.complete.prg\z/) != nil) then
+              # upload the file
+              sftp.upload!(path + filename, '/inbound/' + filename)
+              @responses_expected += 1
+              # rename now that we're done
+              sftp.rename!('/inbound/'+ filename, '/inbound/' + filename.gsub('prg', 'asc'))
+              File.rename(path + filename, path + filename.gsub('prg','sent'))
+            end
           end
         end
-        
-        @responses_expected = 0
-        Dir.foreach(path) do |filename|
-          if((filename =~ /request_\d+.complete.prg\z/) != nil) then
-            # upload the file
-            sftp.upload!(path + filename, '/inbound/' + filename)
-            @responses_expected += 1
-            # rename now that we're done
-            sftp.rename!('/inbound/'+ filename, '/inbound/' + filename.gsub('prg', 'asc'))
-            File.rename(path + filename, path + filename.gsub('prg','sent'))
-          end
-        end
+      rescue Net::SSH::AuthenticationFailed
+        raise ArgumentError, "The sFTP credentials provided were incorrect. Try again!"
       end
     end
     
@@ -192,67 +204,72 @@ module LitleOnline
     # path to the folder on disk to write the responses from the Litle server to, the username and
     # password with which to connect ot the sFTP server, and the URL to connect over sFTP. Values not
     # provided in the hash will be populate automatically based on our best guess
-    def get_responses_from_server(args = {})
+     def get_responses_from_server(args = {})
       @responses_expected = args[:responses_expected] ||= @responses_expected
-      response_path = args[:response_path] ||= (File.dirname(@path_to_batches) + '/responses/') 
+      response_path = args[:response_path] ||= (File.dirname(@path_to_batches) + '/responses/')
       username = get_config(:sftp_username, args)
       password = get_config(:sftp_password, args)
       url = get_config(:sftp_url, args)
-      
+
       if(username == nil or password == nil or url == nil) then
         raise ConfigurationException, "You are not configured to use sFTP for batch processing. Please run /bin/Setup.rb again!"
       end
-      
+
       if(response_path[-1,1] != '/' && response_path[-1,1] != '\\') then
         response_path = response_path + File::SEPARATOR
       end
-      
+
       if(!File.directory?(response_path)) then
         Dir.mkdir(response_path)
-      end 
-      Net::SFTP.start(url, username, :password => password) do |sftp|
-        time_begin = Time.now
-        responses_grabbed = 0
-        # clear out the sFTP outbound dir prior to checking for new files, avoids leaving files on the server
-        # if files are left behind we are not counting then towards the expected total
-        sftp.dir.foreach('/outbound/') do |entry|
-          if((entry.name =~ /request_\d+.complete.asc\z/) != nil) then
-            sftp.download!('/outbound/' + entry.name, response_path + entry.name.gsub('request', 'response') + '.received')
-              3.times{
-                begin 
-                  sftp.remove!('/outbound/' + entry.name)
-                  break
-                rescue Net::SFTP::StatusException
-                  #try, try, try again
-                  puts "We couldn't remove it! Try again"
-                end  
-              }
-          end
-        end
-        #TODO: don't start lookin' 'til a file might be there
-        while((Time.now - time_begin) < @RESPONSE_TIME_OUT && responses_grabbed < @responses_expected)
-          #sleep for 60 seconds, ¿no es bueno?
-          sleep(60)
+      end
+      begin
+        Net::SFTP.start(url, username, :password => password) do |sftp|
+          responses_grabbed = 0
+          # clear out the sFTP outbound dir prior to checking for new files, avoids leaving files on the server
+          # if files are left behind we are not counting then towards the expected total
           sftp.dir.foreach('/outbound/') do |entry|
             if((entry.name =~ /request_\d+.complete.asc\z/) != nil) then
               sftp.download!('/outbound/' + entry.name, response_path + entry.name.gsub('request', 'response') + '.received')
-              responses_grabbed += 1
               3.times{
-                begin 
+                begin
                   sftp.remove!('/outbound/' + entry.name)
                   break
                 rescue Net::SFTP::StatusException
-                  #try, try, try again
+                #try, try, try again
                   puts "We couldn't remove it! Try again"
-                end  
+                end
               }
             end
           end
+          #wait until a response has a possibility of being there
+          sleep(POLL_DELAY)
+          time_begin = Time.now
+          while((Time.now - time_begin) < @RESPONSE_TIME_OUT && responses_grabbed < @responses_expected)
+            #sleep for 60 seconds, ¿no es bueno?
+            sleep(60)
+            sftp.dir.foreach('/outbound/') do |entry|
+              if((entry.name =~ /request_\d+.complete.asc\z/) != nil) then
+                sftp.download!('/outbound/' + entry.name, response_path + entry.name.gsub('request', 'response') + '.received')
+                responses_grabbed += 1
+                3.times{
+                  begin
+                    sftp.remove!('/outbound/' + entry.name)
+                    break
+                  rescue Net::SFTP::StatusException
+                  #try, try, try again
+                    puts "We couldn't remove it! Try again"
+                  end
+                }
+              end
+            end
+          end
+          #if our timeout timed out, we're having problems
+          if responses_grabbed < @responses_expected then
+            raise RuntimeError, "We timed out in waiting for a response from the server. :("
+          end
         end
-        #if our timeout timed out, we're having problems
-        if responses_grabbed < @responses_expected then
-          raise RuntimeError, "We timed out in waiting for a response from the server. :("
-        end
+      rescue Net::SSH::AuthenticationFailed
+        raise ArgumentError, "The sFTP credentials provided were incorrect. Try again!"
       end
     end
     
@@ -288,7 +305,6 @@ module LitleOnline
       
       #doc = LibXML::XML::Document.file(path_to_response)
       reader = LibXML::XML::Reader.file(path_to_response)
-      puts "made reader!"
       reader.read # read into the root node
       if reader.get_attribute('response') != "0" then
         raise RuntimeError,  "Error parsing Litle Request: " + reader.get_attribute("message")
@@ -297,15 +313,19 @@ module LitleOnline
       reader.read
       count = 0
       while true and count < 500001 do
+        
         count += 1
-        puts reader.node.name.to_s
+        if(reader.node == nil) then
+          return false
+        end 
+        
         case reader.node.name.to_s
         when "batchResponse"
           reader.read
+        when "litleResponse"
+          return false
         when "text"
           reader.read
-        when ''
-          return false
         else
           xml = reader.read_outer_xml
           duck = Crack::XML.parse(xml)
