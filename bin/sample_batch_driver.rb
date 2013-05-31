@@ -63,62 +63,64 @@ accountUpdateHash = {
 path = Dir.pwd
       
 
-request = LitleOnline::LitleRequest.new({'sessionId'=>'8675309'})
-
- 
-  
-request.create_new_litle_request(path)
-puts "Created new LitleRequest at location: " + path
-start = Time::now
-#create five batches, each with 10 sales
-5.times{
-  batch = LitleOnline::LitleBatchRequest.new
-  batch.create_new_batch(path)
-
-  #add the same sale ten times
-  50000.times{
-    batch.account_update(accountUpdateHash)
-    batch.sale(saleHash)
-  }
-
-  #close the batch, indicating we plan to add no more transactions
-  batch.close_batch()
-  #add the batch to the LitleRequest
-  request.commit_batch(batch)
-}
-
-
-
-puts "Finished adding batches to LitleRequest at " + request.get_path_to_batches
-#finish the Litle Request, indicating we plan to add no more batches
-request.finish_request
-puts "Generated final XML markup of the LitleRequest"
-
-#send the batch files at the given directory over sFTP
-#request.send_to_litle
-puts "Dropped off the XML of the LitleRequest over FTP"
-#grab the expected number of responses from the sFTP server and save them to the given path
-#request.get_responses_from_server()
-puts "Received the LitleRequest responses from the server"
-stop = Time::now
-puts "Total time: " + (stop - start).to_s  
+ request = LitleOnline::LitleRequest.new({'sessionId'=>'8675309'})
+# 
+#  
+#   
+# request.create_new_litle_request(path)
+# puts "Created new LitleRequest at location: " + path
+# start = Time::now
+# #create five batches, each with 10 sales
+# 5.times{
+  # batch = LitleOnline::LitleBatchRequest.new
+  # batch.create_new_batch(path)
+# 
+  # #add the same sale ten times
+  # 50000.times{
+    # batch.account_update(accountUpdateHash)
+    # batch.sale(saleHash)
+  # }
+# 
+  # #close the batch, indicating we plan to add no more transactions
+  # batch.close_batch()
+  # #add the batch to the LitleRequest
+  # request.commit_batch(batch)
+# }
+# 
+# 
+# 
+# puts "Finished adding batches to LitleRequest at " + request.get_path_to_batches
+# #finish the Litle Request, indicating we plan to add no more batches
+# request.finish_request
+# puts "Generated final XML markup of the LitleRequest"
+# 
+# #send the batch files at the given directory over sFTP
+# #request.send_to_litle
+# puts "Dropped off the XML of the LitleRequest over FTP"
+# #grab the expected number of responses from the sFTP server and save them to the given path
+# #request.get_responses_from_server()
+# puts "Received the LitleRequest responses from the server"
+# stop = Time::now
+# puts "Total time: " + (stop - start).to_s  
 #process the responses from the server with a listener which applies the given block
-# request.process_responses({:transaction_listener => LitleOnline::DefaultLitleListener.new do |transaction|
-  # type = transaction["type"]
-  # puts type
-  # #if we're dealing with a saleResponse (check the Litle XML Reference Guide!)
-  # if(type == "saleResponse") then
-    # #grab an attribute of the parent of the response
-    # puts "Report Group: " + transaction["reportGroup"]
-#     
-    # #grab some child elements of the transaction
-    # puts "Litle Txn Id: " + transaction["litleTxnId"]
-    # puts "Order Id: " + transaction["orderId"]
-    # puts "Response: " + transaction["response"]
-#     
-    # #grab a child element of a child element of the transation
-    # puts "AVS Result: " + transaction["fraudResult"]["avsResult"]
-    # puts "Token Response Message: " + transaction["tokenResponse"]["tokenMessage"]    
-  # end
-# end})
+start = Time::now
+request.process_responses({:path_to_responses=>"/usr/local/litle-home/barnold/Documents/Aptana Studio 3 Workspace/litle-sdk-for-ruby/responses/",:transaction_listener => LitleOnline::DefaultLitleListener.new do |transaction|
+  type = transaction["type"]
+  #if we're dealing with a saleResponse (check the Litle XML Reference Guide!)
+  if(type == "saleResponse") then
+    #grab an attribute of the parent of the response
+    puts "Report Group: " + transaction["reportGroup"]
+    
+    #grab some child elements of the transaction
+    puts "Litle Txn Id: " + transaction["litleTxnId"]
+    puts "Order Id: " + transaction["orderId"]
+    puts "Response: " + transaction["response"]
+    
+    #grab a child element of a child element of the transation
+    puts "AVS Result: " + transaction["fraudResult"]["avsResult"]
+    puts "Token Response Message: " + transaction["tokenResponse"]["tokenMessage"] 
+  end
+end})
+stop = Time::now
+puts "Total time: " + (stop - start).to_s
 

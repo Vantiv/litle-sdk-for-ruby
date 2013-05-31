@@ -42,9 +42,9 @@ module LitleOnline
       @num_total_transactions = 0
       @MAX_NUM_TRANSACTIONS = 500000
       @options = options
-      # current time out set to one hour
+      # current time out set to 2 mins
       # this value is in seconds
-      @RESPONSE_TIME_OUT = 3600
+      @RESPONSE_TIME_OUT = 120
       @responses_expected = 0
     end
 
@@ -130,6 +130,7 @@ module LitleOnline
         create_new_litle_request
       else #otherwise, let's add it line by line to the request doc
         @num_batch_requests += 1
+        @RESPONSE_TIME_OUT += 90 + (transactions_in_batch * 0.25)
         @num_total_transactions += transactions_in_batch
 
         File.open(@path_to_batches, 'a+') do |fo|
@@ -228,9 +229,10 @@ module LitleOnline
               }
           end
         end
+        #TODO: don't start lookin' 'til a file might be there
         while((Time.now - time_begin) < @RESPONSE_TIME_OUT && responses_grabbed < @responses_expected)
-          #sleep for 30 seconds
-          sleep(2)
+          #sleep for 60 seconds, ¿no es bueno?
+          sleep(60)
           sftp.dir.foreach('/outbound/') do |entry|
             if((entry.name =~ /request_\d+.complete.asc\z/) != nil) then
               sftp.download!('/outbound/' + entry.name, response_path + entry.name.gsub('request', 'response') + '.received')
@@ -281,33 +283,36 @@ module LitleOnline
     # +transaction_listener+:: A listener to be applied to the hash of each transaction 
     # (see +DefaultLitleListener+)
     # +batch_listener+:: An (optional) listener to be applied to the hash of each batch. 
-    # Note that this will om-nom-nom quite a bit of memory
-     def process_response(path_to_response, transaction_listener, batch_listener = nil)
-
-      doc = LibXML::XML::Document.file(path_to_response)
-      reader = LibXML::XML::Reader.document(doc)
+    # Note that this will om-nom-nom quite a bit of memory    
+    def process_response(path_to_response, transaction_listener, batch_listener = nil)
+      
+      #doc = LibXML::XML::Document.file(path_to_response)
+      reader = LibXML::XML::Reader.file(path_to_response)
+      puts "made reader!"
       reader.read # read into the root node
       if reader.get_attribute('response') != "0" then
         raise RuntimeError,  "Error parsing Litle Request: " + reader.get_attribute("message")
       end
-      reader.node.each do |batch_node|
-
-        if(batch_node.node_type_name == "element") then
-          if(batch_listener != nil) then
-            batch_xml = batch_node.to_s
-            duck = Crack::XML.parse(batch_xml)
-            batch_listener.apply(duck)
-          end
-
-          batch_node.each do |trans_node|
-            if(trans_node.node_type_name == "element") then
-              xml = trans_node.to_s
-              duck = Crack::XML.parse(xml)
-              duck[duck.keys[0]]["type"] = duck.keys[0]
-              duck = duck[duck.keys[0]]
-              transaction_listener.apply(duck)
-            end
-          end
+      
+      reader.read
+      count = 0
+      while true and count < 500001 do
+        count += 1
+        puts reader.node.name.to_s
+        case reader.node.name.to_s
+        when "batchResponse"
+          reader.read
+        when "text"
+          reader.read
+        when ''
+          return false
+        else
+          xml = reader.read_outer_xml
+          duck = Crack::XML.parse(xml)
+          duck[duck.keys[0]]["type"] = duck.keys[0]
+          duck = duck[duck.keys[0]]
+          transaction_listener.apply(duck)
+          reader.next
         end
       end
     end
