@@ -98,7 +98,7 @@ request.get_responses_from_server()
 puts "Received the LitleRequest responses from the server"
 #process the responses from the server with a listener which applies the given block
 start = Time::now
-request.process_responses({:path_to_responses=>"/usr/local/litle-home/barnold/Documents/Aptana Studio 3 Workspace/litle-sdk-for-ruby/responses/",:transaction_listener => LitleOnline::DefaultLitleListener.new do |transaction|
+request.process_responses({:transaction_listener => LitleOnline::DefaultLitleListener.new do |transaction|
   type = transaction["type"]
   #if we're dealing with a saleResponse (check the Litle XML Reference Guide!)
   if(type == "saleResponse") then

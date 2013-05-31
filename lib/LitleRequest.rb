@@ -302,8 +302,6 @@ module LitleOnline
     # +batch_listener+:: An (optional) listener to be applied to the hash of each batch. 
     # Note that this will om-nom-nom quite a bit of memory    
     def process_response(path_to_response, transaction_listener, batch_listener = nil)
-      
-      #doc = LibXML::XML::Document.file(path_to_response)
       reader = LibXML::XML::Reader.file(path_to_response)
       reader.read # read into the root node
       if reader.get_attribute('response') != "0" then

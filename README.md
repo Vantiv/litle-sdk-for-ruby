@@ -66,6 +66,6 @@ puts "Litle Transaction ID: "+ response.saleResponse.litleTxnId
     Message: Valid Format
     Litle Transaction ID: <your-numeric-litle-txn-id>
  
-More examples can be found here [Ruby Gists](https://gist.github.com/gists/search?q=Litle+Ruby+SDK&page=1)
+More examples (including batch processing with sFTP) can be found here [Ruby Gists](https://gist.github.com/litleSDK)
 
-Please contact Lilte & Co. with any further questions.   You can reach us at sdksupport@litle.com.
+Please contact Litle & Co. with any further questions. You can reach us at sdksupport@litle.com.
