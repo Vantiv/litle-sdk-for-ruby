@@ -343,8 +343,6 @@ module LitleOnline
       ts = Time::now.to_i.to_s
       ts += Time::now.nsec.to_s
       
-      
-      
       if(File.file?(path)) then
         raise ArgumentError, "Entered a file not a path."
       end

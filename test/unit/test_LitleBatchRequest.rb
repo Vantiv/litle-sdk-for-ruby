@@ -35,6 +35,7 @@ module LitleOnline
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').twice
       Dir.expects(:mkdir).with('/usr/local/litle-home/barnold/Batches/').once
+      File.expects(:directory?).returns(false).once
       
       batch = LitleBatchRequest.new
       batch.create_new_batch('/usr/local/litle-home/barnold/Batches/')
@@ -47,6 +48,7 @@ module LitleOnline
       File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').at_most(3)
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').twice
       Dir.expects(:mkdir).with('/usr/local/litle-home/barnold/Batches/').once
+      File.expects(:directory?).returns(false).once
       authHash = {
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -167,7 +169,7 @@ module LitleOnline
       batch.register_token_request(registerTokenHash)
       
       counts = batch.get_counts_and_amounts
-      assert_equal 1, counts[:numTokenReqistrations]
+      assert_equal 1, counts[:numTokenRegistrations]
     end
     
     def test_add_update_card_validation_num_on_token
@@ -274,7 +276,7 @@ module LitleOnline
       
       counts = batch.get_counts_and_amounts
       assert_equal 1, counts[:captureGivenAuth][:numCaptureGivenAuths]
-      assert_equal 106, counts[:captureGivenAuth][:captureGivenAmount]
+      assert_equal 106, counts[:captureGivenAuth][:captureGivenAuthAmount]
     end
     
     def test_add_echeck_verification
@@ -447,6 +449,7 @@ module LitleOnline
       File.expects(:rename).once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'w').once
       File.expects(:delete).once
+      File.expects(:directory?).returns(true).once
       
       batch = LitleBatchRequest.new
       batch.get_counts_and_amounts.expects(:[]).returns(hash = Hash.new).at_least(25)
@@ -528,6 +531,7 @@ module LitleOnline
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.closed.*/), 'w').once
       File.expects(:delete).with(regexp_matches(/.*batch_.*\d_txns.*/)).once
       Dir.expects(:mkdir).with('/usr/local/litle-home/barnold/Batches/').once
+      File.expects(:directory?).returns(false).once
       
       authHash = {
         'reportGroup'=>'Planets',

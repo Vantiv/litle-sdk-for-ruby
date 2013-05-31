@@ -95,12 +95,13 @@ module LitleOnline
       File.expects(:file?).returns(false).once
       File.expects(:file?).returns(false).twice #or's don't quit
       File.expects(:open).twice
+      File.expects(:directory?).returns(true).once
       request.create_new_litle_request("/usr/srv/batches")
 
       batch = LitleBatchRequest.new
       File.expects(:open).twice
       File.expects(:file?).returns(false).twice
-      Dir.expects(:mkdir).once
+      File.expects(:directory?).returns(true).once
       batch.create_new_batch('/usr/srv/batches')
       File.expects(:rename).once
       File.expects(:open).once
@@ -121,6 +122,7 @@ module LitleOnline
       File.expects(:file?).returns(false).once
       File.expects(:file?).returns(false).twice #or's don't quit
       File.expects(:open).twice
+      File.expects(:directory?).returns(true).once
       request.create_new_litle_request("/usr/srv/batches")
 
       File.expects(:open).with(regexp_matches(/.*_batches.*/), 'a+')
@@ -168,6 +170,7 @@ module LitleOnline
       File.expects(:file?).returns(false).once
       File.expects(:file?).returns(false).twice #or's don't quit
       File.expects(:open).twice
+      File.expects(:directory?).returns(true).once
       request.create_new_litle_request("/usr/srv/batches")
       create_new = sequence('create_new')
 
@@ -187,12 +190,11 @@ module LitleOnline
     #TODO: see of we can get deeper with mocking the node returned
     def test_process_response_success
       xml = sequence("xml")
-      LibXML::XML::Document.expects(:file).with(regexp_matches(/.*responses\/good_xml.xml\z/)).once.in_sequence(xml)
-      LibXML::XML::Reader.expects(:document).once.returns(reader = LibXML::XML::Reader.new).in_sequence(xml)
+      LibXML::XML::Reader.expects(:file).once.returns(reader = LibXML::XML::Reader.new).in_sequence(xml)
       reader.expects(:read).once.in_sequence(xml)
       reader.expects(:get_attribute).with('response').returns("0").in_sequence(xml)
-      reader.expects(:node).returns(node = LibXML::XML::Node.new("stuff")).in_sequence(xml)
-      node.expects(:each).once.in_sequence(xml)
+      reader.expects(:read).once.in_sequence(xml)
+      reader.expects(:node).returns(node = LibXML::XML::Node.new("litleResponse")).twice.in_sequence(xml)
       
       request = LitleRequest.new({})
       request.process_response(Dir.pwd + '/responses/good_xml.xml' , 
@@ -201,8 +203,7 @@ module LitleOnline
     end
     
     def test_process_response_xml_error
-      LibXML::XML::Document.expects(:file).with(regexp_matches(/.*responses\/bad_xml.xml\z/)).once
-      LibXML::XML::Reader.expects(:document).once.returns(reader = LibXML::XML::Reader.new)
+      LibXML::XML::Reader.expects(:file).once.returns(reader = LibXML::XML::Reader.new)
       reader.expects(:read).once
       reader.expects(:get_attribute).with('response').returns(4)
       reader.expects(:get_attribute).with("message").returns("Error validating xml data against the schema")
@@ -282,7 +283,5 @@ module LitleOnline
       #}
       request.finish_request
     end
-    
-    
    end
 end
