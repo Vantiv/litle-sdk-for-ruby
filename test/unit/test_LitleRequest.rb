@@ -244,6 +244,24 @@ module LitleOnline
       request.get_responses_from_server(args)
     end
 
+    def test_send_over_stream
+      request = LitleRequest.new({})
+      req_seq = sequence('request')
+      
+      File.expects(:directory?).with(regexp_matches(/responses\//)).once.returns(false).in_sequence(req_seq)
+      Dir.expects(:mkdir).with(regexp_matches(/responses\//)).once.in_sequence(req_seq)
+      Dir.expects(:foreach).once.in_sequence(req_seq)
+      
+      request.send_to_litle_stream() 
+    end
+    
+    def test_send_over_stream_bad_crds
+      request = LitleRequest.new({})
+      
+      assert_raise ArgumentError do
+        request.send_to_litle_stream({:fast_url=>"", :fast_port=>""})
+      end 
+    end
     #Outputs an example LitleRequest doc in the current directory
     # def test_finish_request_xml! #that's why the name has a bang
       # # see the bang up there ^^^ that means we ACTUALLY edit the file system

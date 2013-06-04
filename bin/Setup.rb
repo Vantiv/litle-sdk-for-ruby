@@ -58,6 +58,10 @@ class Setup
       f.puts "sftp_password: " + gets
       puts "Please input your sFTP url for batch processing; if no sFTP, hit enter key: "
       f.puts "sftp_url: " + gets
+      puts "Please input your url for fast batch processing; if no fast batch, hit enter key: "
+      f.puts "fast_url: "  + gets
+      puts "Please input your port for fast batch processing; if no fast batch, hit enter key: "
+      f.puts "fast_port: "  + gets
       
       f.puts "printxml: false"
       f.puts "timeout: 65"

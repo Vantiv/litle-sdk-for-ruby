@@ -22,7 +22,7 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require 'lib/LitleOnline'
+require '../../lib/LitleOnline'
 require 'test/unit'
 
 module LitleOnline
@@ -86,7 +86,6 @@ module LitleOnline
       batch = LitleBatchRequest.new
       batch.create_new_batch(dir + '/temp')
       batch.close_batch
-
       entries = Dir.entries(dir + '/temp')
 
       assert_equal entries.length, 3
@@ -227,6 +226,35 @@ module LitleOnline
         assert_equal ents[2], uploaded_file.gsub('sent', 'asc')
         sftp.remove('/inbound/' + ents[2])  
       end
+    end
+
+    def test_send_to_litle_stream
+      @config_hash = Configuration.new.config
+
+      dir = Dir.pwd
+      Dir.mkdir(dir + '/temp')
+
+      request = LitleRequest.new()
+      request.create_new_litle_request(dir + '/temp')
+      request.finish_request
+      request.send_to_litle_stream
+
+      entries = Dir.entries(dir + '/temp')
+      entries.sort!
+
+      assert_equal entries.size, 4
+      assert_not_nil entries[2] =~ /request_\d+.complete.sent\z/
+      File.delete(dir + '/temp/' + entries[2])
+   
+      entries = Dir.entries(dir + '/temp/responses')
+      entries.sort!
+      
+      assert_equal entries.size, 3
+      assert_not_nil entries[2] =~ /response_\d+.complete.asc.received\z/
+      File.delete(dir + '/temp/responses/' + entries[2])
+      
+      Dir.rmdir(dir + '/temp/responses')
+      Dir.rmdir(dir + '/temp')
     end
 
     def test_full_flow

@@ -26,6 +26,9 @@ require_relative 'Configuration'
 require 'net/sftp'
 require 'libxml'
 require 'crack/xml'
+require 'socket'
+
+include Socket::Constants
 #
 # This class handles sending the Litle Request (which is actually a series of batches!)
 #
@@ -163,7 +166,7 @@ module LitleOnline
       password = get_config(:sftp_password, options)
       url = get_config(:sftp_url, options)
       if(username == nil or password == nil or url == nil) then
-        raise ConfigurationException, "You are not configured to use sFTP for batch processing. Please run /bin/Setup.rb again!"
+        raise ArgumentError, "You are not configured to use sFTP for batch processing. Please run /bin/Setup.rb again!"
       end
       
       if(path[-1,1] != '/' && path[-1,1] != '\\') then
@@ -197,6 +200,52 @@ module LitleOnline
         raise ArgumentError, "The sFTP credentials provided were incorrect. Try again!"
       end
     end
+    
+    # Sends all previously unsent LitleRequests in the specified directory to the Litle server
+    # by use of fast batch. All results will be written to disk as we get them. Note that use
+    # of fastbatch is strongly discouraged!
+    def send_to_litle_stream(path = (File.dirname(@path_to_batches)), options = {})
+      url = get_config(:fast_url, options)
+      port = get_config(:fast_port, options)
+      
+      if(url == nil or url == "") then
+        raise ArgumentError, "A URL for fastbatch was not specified in the config file or passed options. Reconfigure and try again."
+      end 
+        
+      if(port == "" or port == nil) then
+        raise ArgumentError, "A port number for fastbatch was not specified in the config file or passed options. Reconfigure and try again."
+      end        
+      
+      if(path[-1,1] != '/' && path[-1,1] != '\\') then
+        path = path + File::SEPARATOR
+      end
+      
+      if (!File.directory?(path + 'responses/')) then
+        Dir.mkdir(path + 'responses/')
+      end
+          
+      Dir.foreach(path) do |filename|
+        if((filename =~ /request_\d+.complete\z/) != nil) then
+          begin 
+            socket = Socket.new( AF_INET, SOCK_STREAM, 0 )
+            sockaddr = Socket.pack_sockaddr_in( port.to_i, url )
+            socket.connect( sockaddr )
+           rescue => e 
+            raise "A connection couldn't be established. Are you sure you have the correct credentials? Exception: " + e.message
+           end 
+            
+            File.foreach(path + filename) do |li|
+              socket.write(li)
+            end
+            File.rename(path + filename, path + filename + '.sent')
+            File.open(path + 'responses/' + (filename + '.asc.received').gsub("request", "response"), 'a+') do |fo|
+              fo.puts(socket.read)
+            end
+               
+        end
+      end    
+    end
+    
     
     # Grabs response files over SFTP from Litle.
     # Params:
