@@ -178,7 +178,6 @@ module LitleOnline
         'expDate' =>'1210'
       }}
       
-      
       batch.account_update(accountUpdateHash)
     end
     
