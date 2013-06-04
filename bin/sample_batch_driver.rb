@@ -36,18 +36,7 @@ saleHash = {
         'type'=>'VI',
         'number' =>'4100000000000001',
         'expDate' =>'1210'
-      }}
-      
-updateCardHash = {
-        'merchantId' => '101',
-        'version'=>'8.8',
-        'reportGroup'=>'Planets',
-        'id'=>'12345',
-        'customerId'=>'0987',
-        'orderId'=>'12344',
-        'litleToken'=>'1233456789103801',
-        'cardValidationNum'=>'123'
-      }      
+      }}     
       
 accountUpdateHash = {
         'reportGroup'=>'Planets',
@@ -60,6 +49,11 @@ accountUpdateHash = {
         'expDate' =>'1210'
       }}
       
+rfrHash = {
+        'merchantId'=>101,
+        'postDay'=>'2013-06-04'  
+}
+      
 path = Dir.pwd
 
 request = LitleOnline::LitleRequest.new({'sessionId'=>'8675309'})
@@ -68,20 +62,23 @@ request.create_new_litle_request(path)
 puts "Created new LitleRequest at location: " + path
 start = Time::now
 #create five batches, each with 10 sales
-5.times{
+#5.times{
   batch = LitleOnline::LitleBatchRequest.new
   batch.create_new_batch(path)
 
   #add the same sale ten times
-  10.times{
+  #10.times{
     batch.sale(saleHash)
-  }
+  #}
+  batch.account_update(accountUpdateHash)
 
   #close the batch, indicating we plan to add no more transactions
   batch.close_batch()
   #add the batch to the LitleRequest
   request.commit_batch(batch)
-}
+#}
+
+request.add_rfr_request(rfrHash)
 
 
  
@@ -114,6 +111,11 @@ request.process_responses({:transaction_listener => LitleOnline::DefaultLitleLis
     puts "AVS Result: " + transaction["fraudResult"]["avsResult"]
     puts "Token Response Message: " + transaction["tokenResponse"]["tokenMessage"] 
   end
+  
+  if(type == "RFRResponse") then
+    puts "RFR Response Code: " + transaction["response"]
+    puts "RFR Response Message: " + transaction["message"]  
+  end 
 end})
 stop = Time::now
 puts "Total time: " + (stop - start).to_s

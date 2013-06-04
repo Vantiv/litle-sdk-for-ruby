@@ -47,7 +47,7 @@ module LitleOnline
       @options = options
       # current time out set to 2 mins
       # this value is in seconds
-      @RESPONSE_TIME_OUT = 120
+      @RESPONSE_TIME_OUT = 360
       @POLL_DELAY = 0
       @responses_expected = 0
     end
@@ -154,6 +154,66 @@ module LitleOnline
       end
     end
 
+    # Adds an RFRRequest to the LitleRequest.
+    # params: 
+    # +options+:: a required +Hash+ containing configuration info for the RFRRequest. If the RFRRequest is for a batch, then the 
+    # litleSessionId is required as a key/val pair. If the RFRRequest is for account updater, then merchantId and postDay are required
+    # as key/val pairs.
+    # +path+:: optional path to save the new litle request containing the RFRRequest at
+    def add_rfr_request(options, path = (File.dirname(@path_to_batches)))
+     
+      rfrrequest = LitleRFRRequest.new
+      if(options['litleSessionId'] != nil) then
+        rfrrequest.litleSessionId = options['litleSessionId']
+      elsif(options['merchantId'] != nil and options['postDay'] != nil) then
+        accountUpdate = AccountUpdateFileRequestData.new
+        accountUpdate.merchantId = options['merchantId']
+        accountUpdate.postDay = options['postDay']
+        rfrrequest.accountUpdateFileRequestData = accountUpdate
+      else
+        raise ArgumentError, "For an RFR Request, you must specify either a litleSessionId for an RFRRequest for batch or a merchantId 
+        and a postDay for an RFRRequest for account updater."
+      end 
+      
+      litleRequest = LitleRequestForRFR.new
+      litleRequest.rfrRequest = rfrrequest
+      
+      authentication = Authentication.new
+      authentication.user = get_config(:user, options)
+      authentication.password = get_config(:password, options)
+
+      litleRequest.authentication = authentication
+      litleRequest.numBatchRequests = "0"
+      
+      litleRequest.version         = '8.16'
+      litleRequest.xmlns           = "http://www.litle.com/schema"
+      
+      
+      xml = litleRequest.save_to_xml.to_s
+      
+      ts = Time::now.to_i.to_s
+      ts += Time::now.nsec.to_s
+      if(File.file?(path)) then
+        raise RuntimeError, "Entered a file not a path."
+      end
+
+      if(path[-1,1] != '/' and path[-1,1] != '\\') then
+        path = path + File::SEPARATOR
+      end
+
+      if !File.directory?(path) then
+        Dir.mkdir(path)
+      end
+      
+      path_to_request = path + 'request_' + ts
+
+      File.open(path_to_request, 'a+') do |file|
+        file.write xml
+      end
+      File.rename(path_to_request, path_to_request + '.complete')
+      @RESPONSE_TIME_OUT += 90   
+    end
+
     # FTPs all previously unsent LitleRequests located in the folder denoted by path to the server
     # Params:
     # +path+:: A +String+ containing the path to the folder on disc where LitleRequests are located.
@@ -253,7 +313,7 @@ module LitleOnline
     # path to the folder on disk to write the responses from the Litle server to, the username and
     # password with which to connect ot the sFTP server, and the URL to connect over sFTP. Values not
     # provided in the hash will be populate automatically based on our best guess
-     def get_responses_from_server(args = {})
+    def get_responses_from_server(args = {})
       @responses_expected = args[:responses_expected] ||= @responses_expected
       response_path = args[:response_path] ||= (File.dirname(@path_to_batches) + '/responses/')
       username = get_config(:sftp_username, args)
@@ -272,8 +332,8 @@ module LitleOnline
         Dir.mkdir(response_path)
       end
       begin
+        responses_grabbed = 0
         Net::SFTP.start(url, username, :password => password) do |sftp|
-          responses_grabbed = 0
           # clear out the sFTP outbound dir prior to checking for new files, avoids leaving files on the server
           # if files are left behind we are not counting then towards the expected total
           sftp.dir.foreach('/outbound/') do |entry|
@@ -290,9 +350,11 @@ module LitleOnline
               }
             end
           end
-          #wait until a response has a possibility of being there
-          sleep(@POLL_DELAY)
-          time_begin = Time.now
+        end
+        #wait until a response has a possibility of being there
+        sleep(@POLL_DELAY)
+        time_begin = Time.now
+        Net::SFTP.start(url, username, :password => password) do |sftp|
           while((Time.now - time_begin) < @RESPONSE_TIME_OUT && responses_grabbed < @responses_expected)
             #sleep for 60 seconds, ¿no es bueno?
             sleep(60)
@@ -353,7 +415,8 @@ module LitleOnline
     def process_response(path_to_response, transaction_listener, batch_listener = nil)
       reader = LibXML::XML::Reader.file(path_to_response)
       reader.read # read into the root node
-      if reader.get_attribute('response') != "0" then
+      #if the response attribute is nil, we're dealing with an RFR and everything is a-okay
+      if reader.get_attribute('response') != "0" and reader.get_attribute('response') != nil then
         raise RuntimeError,  "Error parsing Litle Request: " + reader.get_attribute("message")
       end
       

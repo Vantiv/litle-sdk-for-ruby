@@ -1274,6 +1274,30 @@ module LitleOnline
     object_node :authentication, "authentication", :class=>Authentication    
   end
   
+  class AccountUpdateFileRequestData
+    include XML::Mapping
+    root_element_name "accountUpdateFileRequestData"
+    
+    text_node :merchantId, "merchantId", default_value:nil
+    text_node :postDay, "postDay", default_value:nil
+  end
+  
+  class LitleRFRRequest
+    include XML::Mapping
+    root_element_name "RFRRequest"
+    optional_choice_node   :if,    'litleSessionId', :then, (text_node :litleSessionId, "litleSessionId"),
+    :elsif, 'accountUpdateFileRequestData',    :then, (object_node :accountUpdateFileRequestData,    "accountUpdateFileRequestData",    :class=>AccountUpdateFileRequestData)
+  end
+  
+  class LitleRequestForRFR
+    include XML::Mapping
+    root_element_name "litleRequest"
+    text_node :version, "@version", default_value:"0"
+    text_node :xmlns, "@xmlns", default_value:nil
+    text_node :numBatchRequests, "@numBatchRequests", default_value:nil
+    object_node :authentication, "authentication", :class=>Authentication    
+    object_node :rfrRequest, 'RFRRequest', :class=>LitleRFRRequest
+  end
 # begin   
   # class LitleOnlineResponse
     # attr_accessor :message
