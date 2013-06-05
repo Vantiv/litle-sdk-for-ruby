@@ -185,6 +185,26 @@ module LitleOnline
       File.delete(dir + '/temp/' + entries[2])
       Dir.delete(dir + '/temp')
     end
+    
+    def test_add_rfr
+      @config_hash = Configuration.new.config
+      
+      dir = Dir.pwd
+      temp = dir + '/temp/'
+      Dir.mkdir(temp)
+      
+      request = LitleRequest.new()
+      request.add_rfr_request({'litleSessionId' => '137813712'}, temp)
+      
+      entries = Dir.entries(temp)
+      entries.sort!
+      
+      assert_equal entries.size, 3
+      assert_not_nil entries[2] =~ /request_\d+.complete\z/
+      
+      File.delete(temp + entries[2])
+      Dir.delete(temp)
+    end
 
     def test_send_to_litle
       @config_hash = Configuration.new.config

@@ -86,6 +86,21 @@ module LitleOnline
       request.create_new_litle_request('/usr/local') 
     end
     
+    def test_add_rfr_request_litle_session
+      add_rfr = sequence('add_rfr')
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).times(1).in_sequence(add_rfr)
+      
+      File.expects(:file?).with('/usr/srv').returns(false).in_sequence(add_rfr)
+      File.expects(:directory?).with('/usr/srv/').returns(true).in_sequence(add_rfr)
+      File.expects(:open).with(regexp_matches(/request_\d+\z/), 'a+').in_sequence(add_rfr)
+      File.expects(:rename).with(regexp_matches(/request_\d+\z/), regexp_matches(/request_\d+.complete\z/)).in_sequence(add_rfr)
+      
+      request = LitleRequest.new({'sessionId'=>'8675309', 
+                                        'user'=>'john', 
+                                        'password'=>'tinkleberry'})
+      request.add_rfr_request({'litleSessionId' => '137813712'}, '/usr/srv')
+    end
+    
     def test_commit_batch_with_batch
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).times(2)
 
@@ -205,7 +220,7 @@ module LitleOnline
     def test_process_response_xml_error
       LibXML::XML::Reader.expects(:file).once.returns(reader = LibXML::XML::Reader.new)
       reader.expects(:read).once
-      reader.expects(:get_attribute).with('response').returns(4)
+      reader.expects(:get_attribute).with('response').twice.returns(4)
       reader.expects(:get_attribute).with("message").returns("Error validating xml data against the schema")
       
       request = LitleRequest.new({})
@@ -239,7 +254,7 @@ module LitleOnline
       
       File.expects(:directory?).with("new/path/").returns(false).once.in_sequence(resp_seq)
       Dir.expects(:mkdir).with("new/path/").once.in_sequence(resp_seq)
-      Net::SFTP.expects(:start).with("reddit.com", "periwinkle", :password=>"password")
+      Net::SFTP.expects(:start).twice.with("reddit.com", "periwinkle", :password=>"password")
       
       request.get_responses_from_server(args)
     end
@@ -252,7 +267,7 @@ module LitleOnline
       Dir.expects(:mkdir).with(regexp_matches(/responses\//)).once.in_sequence(req_seq)
       Dir.expects(:foreach).once.in_sequence(req_seq)
       
-      request.send_to_litle_stream() 
+      request.send_to_litle_stream({:fast_url=>"www.redit.com", :fast_port=>"2313"}) 
     end
     
     def test_send_over_stream_bad_crds

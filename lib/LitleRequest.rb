@@ -264,7 +264,7 @@ module LitleOnline
     # Sends all previously unsent LitleRequests in the specified directory to the Litle server
     # by use of fast batch. All results will be written to disk as we get them. Note that use
     # of fastbatch is strongly discouraged!
-    def send_to_litle_stream(path = (File.dirname(@path_to_batches)), options = {})
+    def send_to_litle_stream(options = {}, path = (File.dirname(@path_to_batches)))
       url = get_config(:fast_url, options)
       port = get_config(:fast_port, options)
       
