@@ -27,74 +27,82 @@ require 'test/unit'
 
 module LitleOnline
   class TestLitleRequest < Test::Unit::TestCase
+  
+    def setup
+      dir = '/tmp/litle-sdk-for-ruby-test'
+      entries = Dir.entries(dir)
+      Dir.foreach('/tmp/litle-sdk-for-ruby-test') { |x| File.delete(x) }
+      Dir.delete('/tmp/litle-sdk-for-ruby-test')
+    end
+  
     def test_request_creation
-      dir = Dir.pwd
-      Dir.mkdir(dir + '/temp')
+      dir = '/tmp'
+      Dir.mkdir(dir + '/litle-sdk-for-ruby-test')
 
       request = LitleRequest.new()
-      request.create_new_litle_request(dir + '/temp')
+      request.create_new_litle_request(dir + '/litle-sdk-for-ruby-test')
 
-      entries = Dir.entries(dir + '/temp')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       entries.sort!
 
       assert_equal entries.size, 4
       assert_not_nil entries[2] =~ /request_\d+\z/
       assert_not_nil entries[3] =~ /request_\d+_batches\z/
 
-      File.delete(dir + '/temp/' + entries[3])
-      File.delete(dir + '/temp/' + entries[2])
-      Dir.delete(dir + '/temp')
+      File.delete(dir + '/litle-sdk-for-ruby-test/' + entries[3])
+      File.delete(dir + '/litle-sdk-for-ruby-test/' + entries[2])
+      Dir.delete(dir + '/litle-sdk-for-ruby-test')
     end
 
     def test_commit_batch_with_path
-      dir = Dir.pwd
-      Dir.mkdir(dir + '/temp')
+      dir = '/tmp'
+      Dir.mkdir(dir + '/litle-sdk-for-ruby-test')
 
       batch = LitleBatchRequest.new
-      batch.create_new_batch(dir + '/temp')
+      batch.create_new_batch(dir + '/litle-sdk-for-ruby-test')
       batch.close_batch
-      entries = Dir.entries(dir + '/temp')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
 
       assert_equal entries.length, 3
       entries.sort!
       assert_not_nil entries[2] =~ /batch_\d+.closed-0\z/
 
       request = LitleRequest.new
-      request.create_new_litle_request(dir+ '/temp')
-      entries = Dir.entries(dir + '/temp')
+      request.create_new_litle_request(dir+ '/litle-sdk-for-ruby-test')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       entries.sort!
       assert_not_nil entries[2] =~ /batch_\d+.closed-0\z/
       assert_not_nil entries[3] =~ /request_\d+\z/
       assert_not_nil entries[4] =~ /request_\d+_batches\z/
 
       request.commit_batch(batch.get_batch_name)
-      entries = Dir.entries(dir + '/temp')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       entries.sort!
       assert_equal entries.length, 4
       assert_not_nil entries[2] =~ /request_\d+\z/
       assert_not_nil entries[3] =~ /request_\d+_batches\z/
 
-      File.delete(dir + '/temp/' + entries[3])
-      File.delete(dir + '/temp/' + entries[2])
-      Dir.delete(dir + '/temp')
+      File.delete(dir + '/litle-sdk-for-ruby-test/' + entries[3])
+      File.delete(dir + '/litle-sdk-for-ruby-test/' + entries[2])
+      Dir.delete(dir + '/litle-sdk-for-ruby-test')
     end
 
     def test_commit_batch_with_batch
-      dir = Dir.pwd
-      Dir.mkdir(dir + '/temp')
+      dir = '/tmp'
+      Dir.mkdir(dir + '/litle-sdk-for-ruby-test')
 
       batch = LitleBatchRequest.new
-      batch.create_new_batch(dir + '/temp')
+      batch.create_new_batch(dir + '/litle-sdk-for-ruby-test')
       batch.close_batch
-      entries = Dir.entries(dir + '/temp')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
 
       assert_equal entries.length, 3
       entries.sort!
       assert_not_nil entries[2] =~ /batch_\d+.closed-0\z/
 
       request = LitleRequest.new
-      request.create_new_litle_request(dir+ '/temp')
-      entries = Dir.entries(dir + '/temp')
+      request.create_new_litle_request(dir+ '/litle-sdk-for-ruby-test')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       entries.sort!
       assert_equal entries.length, 5
       assert_not_nil entries[2] =~ /batch_\d+.closed-0\z/
@@ -102,23 +110,23 @@ module LitleOnline
       assert_not_nil entries[4] =~ /request_\d+_batches\z/
 
       request.commit_batch(batch)
-      entries = Dir.entries(dir + '/temp')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       entries.sort!
       assert_equal entries.length, 4
       assert_not_nil entries[2] =~ /request_\d+\z/
       assert_not_nil entries[3] =~ /request_\d+_batches\z/
 
-      File.delete(dir + '/temp/' + entries[3])
-      File.delete(dir + '/temp/' + entries[2])
-      Dir.delete(dir + '/temp')
+      File.delete(dir + '/litle-sdk-for-ruby-test/' + entries[3])
+      File.delete(dir + '/litle-sdk-for-ruby-test/' + entries[2])
+      Dir.delete(dir + '/litle-sdk-for-ruby-test')
     end
     
     def test_commit_batch_with_batch_and_au
-      dir = Dir.pwd
-      Dir.mkdir(dir + '/temp')
+      dir = '/tmp'
+      Dir.mkdir(dir + '/litle-sdk-for-ruby-test')
 
       batch = LitleBatchRequest.new
-      batch.create_new_batch(dir + '/temp')
+      batch.create_new_batch(dir + '/litle-sdk-for-ruby-test')
       accountUpdateHash = {
         'reportGroup'=>'Planets',
         'id'=>'12345',
@@ -131,7 +139,7 @@ module LitleOnline
       batch.account_update(accountUpdateHash)
       batch.close_batch
 
-      entries = Dir.entries(dir + '/temp')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
 
       assert_equal entries.length, 4
       entries.sort!
@@ -139,8 +147,8 @@ module LitleOnline
       assert_not_nil entries[3] =~ /batch_\d+.closed-1\z/
 
       request = LitleRequest.new
-      request.create_new_litle_request(dir+ '/temp')
-      entries = Dir.entries(dir + '/temp')
+      request.create_new_litle_request(dir+ '/litle-sdk-for-ruby-test')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       entries.sort!
       assert_equal entries.length, 6
       assert_not_nil entries[2] =~ /batch_\d+.closed-0\z/
@@ -149,25 +157,25 @@ module LitleOnline
       assert_not_nil entries[5] =~ /request_\d+_batches\z/
 
       request.commit_batch(batch)
-      entries = Dir.entries(dir + '/temp')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       entries.sort!
       assert_equal entries.length, 4
       assert_not_nil entries[2] =~ /request_\d+\z/
       assert_not_nil entries[3] =~ /request_\d+_batches\z/
 
-      File.delete(dir + '/temp/' + entries[3])
-      File.delete(dir + '/temp/' + entries[2])
-      Dir.delete(dir + '/temp')
+      File.delete(dir + '/litle-sdk-for-ruby-test/' + entries[3])
+      File.delete(dir + '/litle-sdk-for-ruby-test/' + entries[2])
+      Dir.delete(dir + '/litle-sdk-for-ruby-test')
     end
 
     def test_finish_request
-      dir = Dir.pwd
-      Dir.mkdir(dir + '/temp')
+      dir = '/tmp'
+      Dir.mkdir(dir + '/litle-sdk-for-ruby-test')
 
       request = LitleRequest.new()
-      request.create_new_litle_request(dir + '/temp')
+      request.create_new_litle_request(dir + '/litle-sdk-for-ruby-test')
 
-      entries = Dir.entries(dir + '/temp')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       entries.sort!
 
       assert_equal entries.size, 4
@@ -176,21 +184,21 @@ module LitleOnline
 
       request.finish_request
 
-      entries = Dir.entries(dir + '/temp')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       entries.sort!
 
       assert_equal entries.size, 3
       assert_not_nil entries[2] =~ /request_\d+.complete\z/
 
-      File.delete(dir + '/temp/' + entries[2])
-      Dir.delete(dir + '/temp')
+      File.delete(dir + '/litle-sdk-for-ruby-test/' + entries[2])
+      Dir.delete(dir + '/litle-sdk-for-ruby-test')
     end
     
     def test_add_rfr
       @config_hash = Configuration.new.config
       
-      dir = Dir.pwd
-      temp = dir + '/temp/'
+      dir = '/tmp'
+      temp = dir + '/litle-sdk-for-ruby-test/'
       Dir.mkdir(temp)
       
       request = LitleRequest.new()
@@ -209,23 +217,23 @@ module LitleOnline
     def test_send_to_litle
       @config_hash = Configuration.new.config
 
-      dir = Dir.pwd
-      Dir.mkdir(dir + '/temp')
+      dir = '/tmp'
+      Dir.mkdir(dir + '/litle-sdk-for-ruby-test')
 
       request = LitleRequest.new()
-      request.create_new_litle_request(dir + '/temp')
+      request.create_new_litle_request(dir + '/litle-sdk-for-ruby-test')
       request.finish_request
       request.send_to_litle
 
-      entries = Dir.entries(dir + '/temp')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       entries.sort!
 
       assert_equal entries.size, 3
       assert_not_nil entries[2] =~ /request_\d+.complete.sent\z/
 
       uploaded_file = entries[2]
-      File.delete(dir + '/temp/' + entries[2])
-      Dir.delete(dir + '/temp')
+      File.delete(dir + '/litle-sdk-for-ruby-test/' + entries[2])
+      Dir.delete(dir + '/litle-sdk-for-ruby-test')
       
       options = {}
       username = get_config(:sftp_username, options)
@@ -251,30 +259,30 @@ module LitleOnline
     def test_send_to_litle_stream
       @config_hash = Configuration.new.config
 
-      dir = Dir.pwd
-      Dir.mkdir(dir + '/temp')
+      dir = '/tmp'
+      Dir.mkdir(dir + '/litle-sdk-for-ruby-test')
 
       request = LitleRequest.new()
-      request.create_new_litle_request(dir + '/temp')
+      request.create_new_litle_request(dir + '/litle-sdk-for-ruby-test')
       request.finish_request
       request.send_to_litle_stream
 
-      entries = Dir.entries(dir + '/temp')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       entries.sort!
 
       assert_equal entries.size, 4
       assert_not_nil entries[2] =~ /request_\d+.complete.sent\z/
-      File.delete(dir + '/temp/' + entries[2])
+      File.delete(dir + '/litle-sdk-for-ruby-test/' + entries[2])
    
-      entries = Dir.entries(dir + '/temp/responses')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test/responses')
       entries.sort!
       
       assert_equal entries.size, 3
       assert_not_nil entries[2] =~ /response_\d+.complete.asc.received\z/
-      File.delete(dir + '/temp/responses/' + entries[2])
+      File.delete(dir + '/litle-sdk-for-ruby-test/responses/' + entries[2])
       
-      Dir.rmdir(dir + '/temp/responses')
-      Dir.rmdir(dir + '/temp')
+      Dir.rmdir(dir + '/litle-sdk-for-ruby-test/responses')
+      Dir.rmdir(dir + '/litle-sdk-for-ruby-test')
     end
 
     def test_full_flow
@@ -290,13 +298,13 @@ module LitleOnline
           'expDate' =>'1210'
         }}
 
-      dir = Dir.pwd
-      Dir.mkdir(dir + '/temp')
+      dir = '/tmp'
+      Dir.mkdir(dir + '/litle-sdk-for-ruby-test')
 
       request = LitleRequest.new()
-      request.create_new_litle_request(dir + '/temp')
+      request.create_new_litle_request(dir + '/litle-sdk-for-ruby-test')
 
-      entries = Dir.entries(dir + '/temp')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       entries.sort!
 
       assert_equal entries.size, 4
@@ -306,9 +314,9 @@ module LitleOnline
       #create five batches, each with 10 sales
       5.times{
         batch = LitleBatchRequest.new
-        batch.create_new_batch(dir + '/temp')
+        batch.create_new_batch(dir + '/litle-sdk-for-ruby-test')
         
-        entries = Dir.entries(dir + '/temp')
+        entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
         
         assert_equal entries.length, 6
         entries.sort!
@@ -324,7 +332,7 @@ module LitleOnline
 
         #close the batch, indicating we plan to add no more transactions
         batch.close_batch()
-        entries = Dir.entries(dir + '/temp')
+        entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
         
         assert_equal entries.length, 5
         entries.sort!
@@ -335,7 +343,7 @@ module LitleOnline
         
         #add the batch to the LitleRequest
         request.commit_batch(batch)
-        entries = Dir.entries(dir + '/temp')
+        entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
         assert_equal entries.length, 4
         entries.sort!
         assert_not_nil entries[2] =~ /request_\d+\z/
@@ -343,14 +351,14 @@ module LitleOnline
       }
       #finish the Litle Request, indicating we plan to add no more batches
       request.finish_request
-      entries = Dir.entries(dir + '/temp')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       assert_equal entries.length, 3
       entries.sort!
       assert_not_nil entries[2] =~ /request_\d+.complete\z/
       
       #send the batch files at the given directory over sFTP
       request.send_to_litle
-      entries = Dir.entries(dir + '/temp')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       assert_equal entries.length, 3
       entries.sort!
       assert_not_nil entries[2] =~ /request_\d+.complete.sent\z/
@@ -359,20 +367,20 @@ module LitleOnline
       #process the responses from the server with a listener which applies the given block
       request.process_responses({:transaction_listener => LitleOnline::DefaultLitleListener.new do |transaction| end})
         
-      entries = Dir.entries(dir + '/temp')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       assert_equal entries.length, 4
       entries.sort!
       assert_not_nil entries[2] =~ /request_\d+.complete.sent\z/
-      File.delete(dir + '/temp/' + entries[2])
+      File.delete(dir + '/litle-sdk-for-ruby-test/' + entries[2])
       
-      entries = Dir.entries(dir + '/temp/' + entries[3])
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test/' + entries[3])
       entries.sort!
       assert_equal entries.length, 3
       assert_not_nil entries[2] =~ /response_\d+.complete.asc.received.processed\z/
       
-      File.delete(dir + '/temp/responses/' + entries[2])
-      Dir.rmdir(dir + '/temp/responses')
-      Dir.rmdir(dir + '/temp')
+      File.delete(dir + '/litle-sdk-for-ruby-test/responses/' + entries[2])
+      Dir.rmdir(dir + '/litle-sdk-for-ruby-test/responses')
+      Dir.rmdir(dir + '/litle-sdk-for-ruby-test')
       
     end
 

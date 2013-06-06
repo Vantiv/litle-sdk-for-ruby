@@ -30,34 +30,34 @@ module LitleOnline
   class TestBatch < Test::Unit::TestCase
   
     def test_batch_file_creation
-      dir = Dir.pwd
-      Dir.mkdir(dir + '/temp')
+      dir = '/tmp'
+      Dir.mkdir(dir + '/litle-sdk-for-ruby-test')
       
       
       batch = LitleBatchRequest.new
-      batch.create_new_batch(dir + '/temp')
+      batch.create_new_batch(dir + '/litle-sdk-for-ruby-test')
       
-      entries = Dir.entries(dir + '/temp')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       
       assert_equal entries.length, 4
       entries.sort!
       assert_not_nil entries[2] =~ /batch_\d+\z/
       assert_not_nil entries[3] =~ /batch_\d+_txns\z/ 
       
-      File.delete(dir + '/temp/' + entries[3])
-      File.delete(dir + '/temp/' + entries[2])
-      Dir.delete(dir + '/temp')
+      File.delete(dir + '/litle-sdk-for-ruby-test/' + entries[3])
+      File.delete(dir + '/litle-sdk-for-ruby-test/' + entries[2])
+      Dir.delete(dir + '/litle-sdk-for-ruby-test')
     end
     
     def test_batch_file_creation_account_update
-      dir = Dir.pwd
-      Dir.mkdir(dir + '/temp')
+      dir = '/tmp'
+      Dir.mkdir(dir + '/litle-sdk-for-ruby-test')
       
       
       batch = LitleBatchRequest.new
-      batch.create_new_batch(dir + '/temp')
+      batch.create_new_batch(dir + '/litle-sdk-for-ruby-test')
       
-      entries = Dir.entries(dir + '/temp')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       
       assert_equal entries.length, 4
       entries.sort!
@@ -75,7 +75,7 @@ module LitleOnline
       }}
       batch.account_update(accountUpdateHash)
       
-      entries = Dir.entries(dir + '/temp')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       assert_equal entries.length, 6
       entries.sort!
       assert_not_nil entries[2] =~ /batch_\d+\z/
@@ -83,62 +83,62 @@ module LitleOnline
       assert_not_nil entries[4] =~ /batch_\d+\z/
       assert_not_nil entries[5] =~ /batch_\d+_txns\z/ 
       
-      File.delete(dir + '/temp/' + entries[3])
-      File.delete(dir + '/temp/' + entries[2])
-      File.delete(dir + '/temp/' + entries[4])
-      File.delete(dir + '/temp/' + entries[5])
-      Dir.delete(dir + '/temp')
+      File.delete(dir + '/litle-sdk-for-ruby-test/' + entries[3])
+      File.delete(dir + '/litle-sdk-for-ruby-test/' + entries[2])
+      File.delete(dir + '/litle-sdk-for-ruby-test/' + entries[4])
+      File.delete(dir + '/litle-sdk-for-ruby-test/' + entries[5])
+      Dir.delete(dir + '/litle-sdk-for-ruby-test')
     end
     
     def test_batch_file_creation_on_file
-      dir = Dir.pwd
+      dir = '/tmp'
       
-      File.open(dir + '/test', 'a+') do |file|
+      File.open(dir + '/litle-sdk-for-ruby-test', 'a+') do |file|
         file.puts("")
       end
       
       assert_raise ArgumentError do
         batch = LitleBatchRequest.new
-        batch.create_new_batch(dir + '/test')
+        batch.create_new_batch(dir + '/litle-sdk-for-ruby-test')
       end
       
-      File.delete(dir+'/test')      
+      File.delete(dir+'/litle-sdk-for-ruby-test')      
     end
     
     def test_batch_file_rename_and_remove
-      dir = Dir.pwd
-      Dir.mkdir(dir + '/temp')
+      dir = '/tmp'
+      Dir.mkdir(dir + '/litle-sdk-for-ruby-test')
       batch = LitleBatchRequest.new
-      batch.create_new_batch(dir + '/temp')
-      assert_equal Dir.entries(dir+'/temp').size, 4
+      batch.create_new_batch(dir + '/litle-sdk-for-ruby-test')
+      assert_equal Dir.entries(dir+'/litle-sdk-for-ruby-test').size, 4
       batch.close_batch
-      entries = Dir.entries(dir + '/temp')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       assert_equal entries.size, 3
       entries.sort!
       assert_not_nil entries[2] =~ /batch_\d+.closed-\d+\z/
       
-      File.delete(dir + '/temp/' + entries[2])
-      Dir.delete(dir + '/temp')
+      File.delete(dir + '/litle-sdk-for-ruby-test/' + entries[2])
+      Dir.delete(dir + '/litle-sdk-for-ruby-test')
     end
     
     def test_batch_file_create_new_dir
-      dir = Dir.pwd
+      dir = '/tmp'
       batch = LitleBatchRequest.new
-      assert !File.directory?(dir + '/temp')
-      batch.create_new_batch(dir + '/temp')
-      assert File.directory?(dir + '/temp')
+      assert !File.directory?(dir + '/litle-sdk-for-ruby-test')
+      batch.create_new_batch(dir + '/litle-sdk-for-ruby-test')
+      assert File.directory?(dir + '/litle-sdk-for-ruby-test')
       
-      entries = Dir.entries(dir + '/temp')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       entries.sort!
-      File.delete(dir + '/temp/' + entries[3])
-      File.delete(dir + '/temp/' + entries[2])
-      Dir.delete(dir + '/temp')
+      File.delete(dir + '/litle-sdk-for-ruby-test/' + entries[3])
+      File.delete(dir + '/litle-sdk-for-ruby-test/' + entries[2])
+      Dir.delete(dir + '/litle-sdk-for-ruby-test')
     end
     
     def test_batch_open_existing
-      dir = Dir.pwd
+      dir = '/tmp'
       batch = LitleBatchRequest.new
-      batch.create_new_batch(dir + '/temp')
+      batch.create_new_batch(dir + '/litle-sdk-for-ruby-test')
       
       hash = {
         'merchantId' => '101',
@@ -156,32 +156,32 @@ module LitleOnline
       
       batch.sale(hash)
 
-      entries = Dir.entries(dir + '/temp')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       entries.sort!
       
       batch2 = LitleBatchRequest.new
-      batch2.open_existing_batch(dir + '/temp/' + entries[2])
+      batch2.open_existing_batch(dir + '/litle-sdk-for-ruby-test/' + entries[2])
       assert_equal batch.get_counts_and_amounts, batch2.get_counts_and_amounts
-      File.delete(dir + '/temp/' + entries[3])
-      File.delete(dir + '/temp/' + entries[2])
-      Dir.delete(dir + '/temp')  
+      File.delete(dir + '/litle-sdk-for-ruby-test/' + entries[3])
+      File.delete(dir + '/litle-sdk-for-ruby-test/' + entries[2])
+      Dir.delete(dir + '/litle-sdk-for-ruby-test')  
     end
     
     def test_batch_open_existing_closed
-      dir = Dir.pwd
+      dir = '/tmp'
       batch = LitleBatchRequest.new
-      batch.create_new_batch(dir + '/temp')
+      batch.create_new_batch(dir + '/litle-sdk-for-ruby-test')
       batch.close_batch
 
-      entries = Dir.entries(dir + '/temp')
+      entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       entries.sort!
       
       batch2 = LitleBatchRequest.new
       assert_raise ArgumentError do
-        batch2.open_existing_batch(dir + '/temp/' + entries[2])  
+        batch2.open_existing_batch(dir + '/litle-sdk-for-ruby-test/' + entries[2])  
       end
-      File.delete(dir + '/temp/' + entries[2])
-      Dir.delete(dir + '/temp')    
+      File.delete(dir + '/litle-sdk-for-ruby-test/' + entries[2])
+      Dir.delete(dir + '/litle-sdk-for-ruby-test')    
     end 
   end
 end 
