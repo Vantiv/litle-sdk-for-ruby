@@ -93,16 +93,16 @@ module LitleOnline
     def test_batch_file_creation_on_file
       dir = Dir.pwd
       
-      File.open(dir + '/test', 'a+') do |file|
+      File.open(dir + '/temp', 'a+') do |file|
         file.puts("")
       end
       
       assert_raise ArgumentError do
         batch = LitleBatchRequest.new
-        batch.create_new_batch(dir + '/test')
+        batch.create_new_batch(dir + '/temp')
       end
       
-      File.delete(dir+'/test')      
+      File.delete(dir+'/temp')      
     end
     
     def test_batch_file_rename_and_remove

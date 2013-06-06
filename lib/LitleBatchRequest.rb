@@ -64,7 +64,11 @@ module LitleOnline
     
     def create_new_batch(path)
       ts = Time::now.to_i.to_s
-      ts += Time::now.nsec.to_s
+      begin
+        ts += Time::now.nsec.to_s
+      rescue NoMethodError # ruby 1.8.7 fix
+        ts += Time::now.usec.to_s
+      end 
       if(File.file?(path)) then
         raise ArgumentError, "Entered a file not a path."
       end
@@ -116,7 +120,6 @@ module LitleOnline
     
     def close_batch(txn_location = @txn_file)
       header = build_batch_header(@txn_counts)
-      
       File.rename(@path_to_batch, @path_to_batch + '.closed-' + @txn_counts[:total].to_s)
       @path_to_batch = @path_to_batch + '.closed-' + @txn_counts[:total].to_s
       File.open(@path_to_batch, 'w') do |fo|
@@ -274,8 +277,6 @@ module LitleOnline
     def build_batch_header(options)
       request = BatchRequest.new
       
-      @txn_counts.sort_by { |txn,val| txn }
-      
       request.numAuths                 = @txn_counts[:auth][:numAuths]
       request.authAmount               = @txn_counts[:auth][:authAmount]
       request.numSales                 = @txn_counts[:sale][:numSales]
@@ -341,7 +342,11 @@ module LitleOnline
     
     def create_new_batch(path)
       ts = Time::now.to_i.to_s
-      ts += Time::now.nsec.to_s
+      begin
+        ts += Time::now.nsec.to_s
+      rescue NoMethodError # ruby 1.8.7 fix
+        ts += Time::now.usec.to_s
+      end 
       
       if(File.file?(path)) then
         raise ArgumentError, "Entered a file not a path."

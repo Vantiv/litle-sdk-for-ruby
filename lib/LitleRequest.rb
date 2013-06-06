@@ -58,7 +58,12 @@ module LitleOnline
     # +path+:: A +String+ containing the path to the folder on disc to write the files to
     def create_new_litle_request(path)
       ts = Time::now.to_i.to_s
-      ts += Time::now.nsec.to_s
+      begin
+        ts += Time::now.nsec.to_s
+      rescue NoMethodError # ruby 1.8.7 fix
+        ts += Time::now.usec.to_s
+      end 
+      
       if(File.file?(path)) then
         raise RuntimeError, "Entered a file not a path."
       end
@@ -192,7 +197,11 @@ module LitleOnline
       xml = litleRequest.save_to_xml.to_s
       
       ts = Time::now.to_i.to_s
-      ts += Time::now.nsec.to_s
+      begin
+        ts += Time::now.nsec.to_s
+      rescue NoMethodError # ruby 1.8.7 fix
+        ts += Time::now.usec.to_s
+      end 
       if(File.file?(path)) then
         raise RuntimeError, "Entered a file not a path."
       end

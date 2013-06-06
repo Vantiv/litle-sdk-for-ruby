@@ -23,7 +23,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
 
-require 'lib/LitleOnline'
+require '../../lib/LitleOnline'
 require 'test/unit'
 
 module LitleOnline
