@@ -23,13 +23,26 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
 
-require '../../lib/LitleOnline'
+require 'lib/LitleOnline'
 require 'test/unit'
+require 'fileutils'
 
 module LitleOnline
   class LitleBatchCertTest < Test::Unit::TestCase
+    def setup
+      path = "/tmp/litle-sdk-for-ruby"
+      FileUtils.rm_rf path
+      if(!File.directory?(path))
+        Dir.mkdir(path)
+      end
+      path = "/tmp/litle-sdk-for-ruby/cert/"
+      if(!File.directory?(path))
+        Dir.mkdir(path)
+      end
+    end
+  
     def test_MEGA_batch
-
+      puts "Time at beginning:       " + Time.new.inspect
       authHash = {
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -181,9 +194,9 @@ module LitleOnline
           'number' =>'4100000000000001',
           'expDate' =>'1210'
         }}
+      puts "All hashes created:        " + Time.new.inspect
       
-      path = Dir.pwd + "/cert/"
-      Dir.mkdir(path)
+      path = "/tmp/litle-sdk-for-ruby/cert/"
 
       request = LitleRequest.new({'sessionId'=>'8675309'})
 
@@ -210,16 +223,19 @@ module LitleOnline
       batch.close_batch()
       #add the batch to the LitleRequest
       request.commit_batch(batch)
-
+      puts "request.commit_batch:       " + Time.new.inspect
       #finish the Litle Request, indicating we plan to add no more batches
       request.finish_request
+      puts "request.finish_request:       " + Time.new.inspect
 
       #send the batch files at the given directory over sFTP
       request.send_to_litle
+      puts "request.send_to_litle:       " + Time.new.inspect
 
       #grab the expected number of responses from the sFTP server and save them to the given path
       request.get_responses_from_server()
-
+      puts "request.get_responses_from_server:       " + Time.new.inspect
+      
       count = 0
       #process the responses from the server with a listener which applies the given block
       request.process_responses({:transaction_listener => LitleOnline::DefaultLitleListener.new do |transaction|
@@ -229,17 +245,6 @@ module LitleOnline
           count+=1
       end})
       assert_equal count, 14
-      
-      entries = Dir.entries(path + 'responses/')
-      entries.sort!
-      File.delete(path + 'responses/' + entries[2]) 
-      
-      entries = Dir.entries(path)
-      entries.sort!
-      File.delete(path + entries[2])
-      
-      Dir.rmdir(path + 'responses/')
-      Dir.rmdir(path)
     end
     
     def test_mini_batch_borked_counts
@@ -255,8 +260,7 @@ module LitleOnline
         'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
       }
       
-      path = Dir.pwd + "/cert/"
-      Dir.mkdir(path)
+      path = "/tmp/litle-sdk-for-ruby/cert/"
 
       request = LitleRequest.new({'sessionId'=>'8675309'})
 
@@ -287,17 +291,6 @@ module LitleOnline
         request.process_responses({:transaction_listener => LitleOnline::DefaultLitleListener.new do |transaction|
         end})
       end
-
-      entries = Dir.entries(path + 'responses/')
-      entries.sort!
-      File.delete(path + 'responses/' + entries[2]) 
-      
-      entries = Dir.entries(path)
-      entries.sort!
-      File.delete(path + entries[2])
-      
-      Dir.rmdir(path + 'responses/')
-      Dir.rmdir(path)
     end
     
     def test_mini_batch_borked_amounts
@@ -313,8 +306,7 @@ module LitleOnline
         'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
       }
       
-      path = Dir.pwd + "/cert/"
-      Dir.mkdir(path)
+      path = "/tmp/litle-sdk-for-ruby/cert/"
 
       request = LitleRequest.new({'sessionId'=>'8675309'})
 
@@ -346,17 +338,6 @@ module LitleOnline
         request.process_responses({:transaction_listener => LitleOnline::DefaultLitleListener.new do |transaction|
         end})
       end
-
-      entries = Dir.entries(path + 'responses/')
-      entries.sort!
-      File.delete(path + 'responses/' + entries[2]) 
-      
-      entries = Dir.entries(path)
-      entries.sort!
-      File.delete(path + entries[2])
-      
-      Dir.rmdir(path + 'responses/')
-      Dir.rmdir(path)
     end
   end
 end

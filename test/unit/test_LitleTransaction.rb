@@ -170,7 +170,6 @@ module LitleOnline
       }
       
       result = ltlTxn.update_card_validation_num_on_token(updateCardHash)
-      puts result.save_to_xml.to_s
       assert_equal 'Planets', result.reportGroup
       assert_equal '12345', result.transactionId
       assert_equal '0987', result.customerId

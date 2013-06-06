@@ -245,10 +245,11 @@ module LitleOnline
       begin 
         Net::SFTP.start(url, username, :password => password) do |sftp|
           # our folder is /SHORTNAME/SHORTNAME/INBOUND
-          Dir.foreach(path) do |filename| 
+          Dir.foreach(path) do |filename|
             #we have a complete report according to filename regex
             if((filename =~ /request_\d+.complete\z/) != nil) then
               # adding .prg extension per the XML 
+              puts "Renaming to .prg " + filename 
               File.rename(path + filename, path + filename + '.prg')
             end
           end
