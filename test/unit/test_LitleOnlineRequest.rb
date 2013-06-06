@@ -292,21 +292,5 @@ module LitleOnline
       assert_equal '65', response.voidResponse.recycling.creditLitleTxnId
     end
     
-    def test_printxml_can_be_turned_on_by_setting_value_to_true
-      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10','printxml'=>true})
-      Communications.expects(:http_post).with(kind_of(String),kind_of(Hash)).returns('<litleOnlineResponse><voidResponse><recycling><creditLitleTxnId>65</creditLitleTxnId></recycling></voidResponse></litleOnlineResponse>')
-      Logger.any_instance.expects(:debug).with(kind_of(String)).twice
-      hash={
-        'litleTxnId' => '123'
-      }
- 
-      response = LitleOnlineRequest.new.void(hash)
-      logger = Logger.new(STDOUT)
-      logger.level = Logger::DEBUG
-      assert_equal logger.level, Configuration.logger.level
-      assert_equal logger.sev_threshold, Configuration.logger.sev_threshold
-      LitleOnline::Configuration.logger = nil
-    end
-    
   end
 end
