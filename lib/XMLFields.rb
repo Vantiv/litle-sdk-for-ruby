@@ -1266,11 +1266,11 @@ module LitleOnline
     # </authentication>
     root_element_name "litleRequest"
     
-    text_node :version, "@version", default_value:"0"
-    text_node :xmlns, "@xmlns", default_value:nil
+    text_node :version, "@version", :default_value=>"0"
+    text_node :xmlns, "@xmlns", :default_value=>nil
     #TODO: ask greg about sessionId
     #text_node :sessionId, "@id", default_vale:nil
-    text_node :numBatchRequests, "@numBatchRequests", default_value:"0"
+    text_node :numBatchRequests, "@numBatchRequests", :default_value=>"0"
     object_node :authentication, "authentication", :class=>Authentication    
   end
   
@@ -1278,8 +1278,8 @@ module LitleOnline
     include XML::Mapping
     root_element_name "accountUpdateFileRequestData"
     
-    text_node :merchantId, "merchantId", default_value:nil
-    text_node :postDay, "postDay", default_value:nil
+    text_node :merchantId, "merchantId", :default_value=>nil
+    text_node :postDay, "postDay", :default_value=>nil
   end
   
   class LitleRFRRequest
@@ -1292,9 +1292,9 @@ module LitleOnline
   class LitleRequestForRFR
     include XML::Mapping
     root_element_name "litleRequest"
-    text_node :version, "@version", default_value:"0"
-    text_node :xmlns, "@xmlns", default_value:nil
-    text_node :numBatchRequests, "@numBatchRequests", default_value:nil
+    text_node :version, "@version", :default_value=>"0"
+    text_node :xmlns, "@xmlns", :default_value=>nil
+    text_node :numBatchRequests, "@numBatchRequests", :default_value=>nil
     object_node :authentication, "authentication", :class=>Authentication    
     object_node :rfrRequest, 'RFRRequest', :class=>LitleRFRRequest
   end

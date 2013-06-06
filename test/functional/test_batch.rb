@@ -31,7 +31,7 @@ module LitleOnline
   
     def test_batch_file_creation
       dir = '/tmp'
-      Dir.mkdir(dir + '/litle-sdk-for-ruby-test')
+      Dir.mkdir(dir + '/temp')
       
       
       batch = LitleBatchRequest.new
@@ -51,7 +51,7 @@ module LitleOnline
     
     def test_batch_file_creation_account_update
       dir = '/tmp'
-      Dir.mkdir(dir + '/litle-sdk-for-ruby-test')
+      Dir.mkdir(dir + '/temp')
       
       
       batch = LitleBatchRequest.new
@@ -93,21 +93,21 @@ module LitleOnline
     def test_batch_file_creation_on_file
       dir = '/tmp'
       
-      File.open(dir + '/litle-sdk-for-ruby-test', 'a+') do |file|
+      File.open(dir + '/test', 'a+') do |file|
         file.puts("")
       end
       
       assert_raise ArgumentError do
         batch = LitleBatchRequest.new
-        batch.create_new_batch(dir + '/litle-sdk-for-ruby-test')
+        batch.create_new_batch(dir + '/test')
       end
       
-      File.delete(dir+'/litle-sdk-for-ruby-test')      
+      File.delete(dir+'/test')      
     end
     
     def test_batch_file_rename_and_remove
       dir = '/tmp'
-      Dir.mkdir(dir + '/litle-sdk-for-ruby-test')
+      Dir.mkdir(dir + '/temp')
       batch = LitleBatchRequest.new
       batch.create_new_batch(dir + '/litle-sdk-for-ruby-test')
       assert_equal Dir.entries(dir+'/litle-sdk-for-ruby-test').size, 4
