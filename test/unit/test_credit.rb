@@ -238,7 +238,7 @@ module LitleOnline
         'orderSource'=>'ecommerce',
         'reportGroup'=>'Planets'
       }
-      LitleXmlMapper.expects(:request).with(regexp_matches(/.*loggedInUser="gdake".*merchantSdk="Ruby;8.14.0".*/m), is_a(Hash))
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*(loggedInUser="gdake".*merchantSdk="Ruby;8.14.0")|(merchantSdk="Ruby;8.14.0".*loggedInUser="gdake").*/m), is_a(Hash))
       LitleOnlineRequest.new.credit(hash)
     end
     
