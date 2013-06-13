@@ -249,7 +249,6 @@ module LitleOnline
             #we have a complete report according to filename regex
             if((filename =~ /request_\d+.complete\z/) != nil) then
               # adding .prg extension per the XML 
-              puts "Renaming to .prg " + filename 
               File.rename(path + filename, path + filename + '.prg')
             end
           end

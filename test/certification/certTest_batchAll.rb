@@ -42,7 +42,6 @@ module LitleOnline
     end
   
     def test_MEGA_batch
-      puts "Time at beginning:       " + Time.new.inspect
       authHash = {
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -194,7 +193,6 @@ module LitleOnline
           'number' =>'4100000000000001',
           'expDate' =>'1210'
         }}
-      puts "All hashes created:        " + Time.new.inspect
       
       path = "/tmp/litle-sdk-for-ruby/cert/"
 
@@ -223,18 +221,14 @@ module LitleOnline
       batch.close_batch()
       #add the batch to the LitleRequest
       request.commit_batch(batch)
-      puts "request.commit_batch:       " + Time.new.inspect
       #finish the Litle Request, indicating we plan to add no more batches
       request.finish_request
-      puts "request.finish_request:       " + Time.new.inspect
 
       #send the batch files at the given directory over sFTP
       request.send_to_litle
-      puts "request.send_to_litle:       " + Time.new.inspect
 
       #grab the expected number of responses from the sFTP server and save them to the given path
       request.get_responses_from_server()
-      puts "request.get_responses_from_server:       " + Time.new.inspect
       
       count = 0
       #process the responses from the server with a listener which applies the given block
