@@ -24,6 +24,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 =end
 require 'lib/LitleOnline'
 require 'test/unit'
+require 'mocha/setup'
 
 module LitleOnline
   class Test_capture < Test::Unit::TestCase
@@ -43,6 +44,28 @@ module LitleOnline
       }
   
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*(loggedInUser="gdake".*merchantSdk="Ruby;8.14.0")|(merchantSdk="Ruby;8.14.0".*loggedInUser="gdake").*/m), is_a(Hash))
+      LitleOnlineRequest.new.capture(hash)
+    end
+    def test_surcharge_amount
+      hash = {
+        'litleTxnId' => '3',
+        'amount' => '2',
+        'surchargeAmount' => '1',
+        'payPalNotes' => 'note',
+        'reportGroup' => 'Planets'
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<amount>2<\/amount><surchargeAmount>1<\/surchargeAmount><payPalNotes>note<\/payPalNotes>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.capture(hash)
+    end
+    
+    def test_surcharge_amount_optional
+      hash = {
+        'litleTxnId' => '3',
+        'amount' => '2',
+        'payPalNotes' => 'note',
+        'reportGroup' => 'Planets'
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<amount>2<\/amount><payPalNotes>note<\/payPalNotes>.*/m), is_a(Hash))
       LitleOnlineRequest.new.capture(hash)
     end
   end

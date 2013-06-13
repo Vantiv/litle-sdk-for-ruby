@@ -86,33 +86,35 @@ module LitleOnline
         'merchantId' => '101',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
-        'litleTxnId'=>'123456',
         'orderId'=>'12344',
         'amount'=>'106',
         'orderSource'=>'ecommerce',
         'fraudCheck'=>{'authenticationTransactionId'=>'123'},
         'bypassVelocityCheckcardholderAuthentication'=>{'authenticationTransactionId'=>'123'},
         'card'=>{
-        'type'=>'VI',
-        'number' =>'4100000000000001',
-        'expDate' =>'1210'
+          'type'=>'VI',
+          'number' =>'4100000000000001',
+          'expDate' =>'1210'
         },
         'paypage'=> {
-        'paypageRegistrationId'=>'1234',
-        'expDate'=>'1210',
-        'cardValidationNum'=>'555',
-        'type'=>'VI'},
+          'paypageRegistrationId'=>'1234',
+          'expDate'=>'1210',
+          'cardValidationNum'=>'555',
+          'type'=>'VI'
+        },
         'paypal'=>{
-        'payerId'=>'1234',
-        'payerEmail'=>'a@b.com',
-        'token'=>'1234',
-        'transactionId'=>'123456'},
+          'payerId'=>'1234',
+          'payerEmail'=>'a@b.com',
+          'token'=>'1234',
+          'transactionId'=>'123456'
+        },
         'token'=> {
-        'litleToken'=>'1234567890123',
-        'expDate'=>'1210',
-        'cardValidationNum'=>'555',
-        'type'=>'VI'
-        }}
+          'litleToken'=>'1234567890123',
+          'expDate'=>'1210',
+          'cardValidationNum'=>'555',
+          'type'=>'VI'
+        }
+      }
   
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
@@ -242,5 +244,75 @@ module LitleOnline
       LitleOnlineRequest.new.credit(hash)
     end
     
+    def test_surcharge_amount_tied
+      hash = {
+        'amount' => '2',
+        'surchargeAmount' => '1',
+        'litleTxnId' => '3',
+        'processingInstructions' => {},
+        'reportGroup' => 'Planets'
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<litleTxnId>3<\/litleTxnId><amount>2<\/amount><surchargeAmount>1<\/surchargeAmount><process.*/m), is_a(Hash))
+      LitleOnlineRequest.new.credit(hash)
+    end
+    
+    def test_surcharge_amount_tied_optional
+      hash = {
+        'amount' => '2',
+        'litleTxnId' => '3',
+        'processingInstructions' => {},
+        'reportGroup' => 'Planets'
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<litleTxnId>3<\/litleTxnId><amount>2<\/amount><process.*/m), is_a(Hash))
+      LitleOnlineRequest.new.credit(hash)
+    end
+    
+    def test_surcharge_amount_orphan
+      hash = {
+        'amount' => '2',
+        'surchargeAmount' => '1',
+        'orderSource' => 'ecommerce',
+        'reportGroup' => 'Planets'
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<amount>2<\/amount><surchargeAmount>1<\/surchargeAmount><orderSource>ecommerce<\/orderSource>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.credit(hash)
+    end
+    
+    def test_surcharge_amount_orphan_optional
+      hash = {
+        'amount' => '2',
+        'orderSource' => 'ecommerce',
+        'reportGroup' => 'Planets'
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<amount>2<\/amount><orderSource>ecommerce<\/orderSource>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.credit(hash)
+    end
+    
+    def test_pos_tied
+      hash = {
+        'amount' => '2',
+        'pos' => {
+          'terminalId' => 'abc123',
+          'capability' => 'magstripe',
+          'entryMode' => 'keyed',
+          'cardholderId' => 'nopin',
+        },
+        'litleTxnId' => '3',
+        'reportGroup' => 'Planets',
+        'orderSource' => 'ecommerce',
+        'payPalNotes' => 'notes'
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<litleTxnId>3<\/litleTxnId><amount>2<\/amount><pos><capability>magstripe<\/capability><entryMode>keyed<\/entryMode><cardholderId>nopin<\/cardholderId><terminalId>abc123<\/terminalId><\/pos><payPalNotes>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.credit(hash)
+    end
+    
+    def test_post_tied_optional
+      hash = {
+        'amount' => '2',
+        'litleTxnId' => '3',
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<litleTxnId>3<\/litleTxnId><amount>2<\/amount><\/credit>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.credit(hash)
+    end
   end
 end

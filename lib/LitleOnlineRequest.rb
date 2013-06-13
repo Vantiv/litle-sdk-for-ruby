@@ -149,7 +149,7 @@ module LitleOnline
 
       request.authentication  = authentication
       request.merchantId      = get_merchant_id(options)
-      request.version         = '8.16'
+      request.version         = '8.17'
       request.loggedInUser    = get_logged_in_user(options)
       request.xmlns           = "http://www.litle.com/schema"
       request.merchantSdk     = get_merchant_sdk(options)
@@ -180,7 +180,7 @@ module LitleOnline
     end
 
     def get_merchant_sdk(options)
-      options['merchantSdk'] || 'Ruby;8.16.0'
+      options['merchantSdk'] || 'Ruby;8.17.0'
     end
 
     def get_report_group(options)

@@ -281,6 +281,29 @@ module LitleOnline
       LitleOnlineRequest.new.authorization(hash)
     end
           
+    def test_surcharge_amount
+      hash = {
+        'orderId' => '12344',
+        'amount' => '2',
+        'surchargeAmount' => '1',
+        'orderSource' => 'ecommerce',
+        'reportGroup' => 'Planets'
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<amount>2<\/amount><surchargeAmount>1<\/surchargeAmount><orderSource>ecommerce<\/orderSource>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.authorization(hash)
+    end
+    
+    def test_surcharge_amount_optional
+      hash = {
+        'orderId' => '12344',
+        'amount' => '2',
+        'orderSource' => 'ecommerce',
+        'reportGroup' => 'Planets'
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<amount>2<\/amount><orderSource>ecommerce<\/orderSource>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.authorization(hash)
+    end
+    
   end
 
 end

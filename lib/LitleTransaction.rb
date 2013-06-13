@@ -34,6 +34,7 @@ module LitleOnline
   class LitleTransaction
     def authorization(options)
       transaction = Authorization.new
+      transaction.surchargeAmount    = options['surchargeAmount']
       add_transaction_info(transaction, options)
       
       return transaction
@@ -43,6 +44,7 @@ module LitleOnline
       transaction = Sale.new
       add_transaction_info(transaction, options)
 
+      transaction.surchargeAmount     = options['surchargeAmount']
       transaction.fraudCheck          = FraudCheck.from_hash(options,'fraudCheck')
       transaction.payPalOrderComplete = options['payPalOrderComplete']
       transaction.payPalNotes         = options['payPalNotes']
@@ -52,25 +54,40 @@ module LitleOnline
 
     def credit(options)
       transaction = Credit.new
-      add_order_info(transaction, options)
+      transaction.litleTxnId              = options['litleTxnId']
+      if(transaction.litleTxnId.nil?)
+        transaction.orderId               = options['orderId']
+        transaction.orderSource           = options['orderSource']
+        transaction.taxType               = options['taxType']
+        transaction.billToAddress         = Contact.from_hash(options,'billToAddress')
+        transaction.amexAggregatorData    = AmexAggregatorData.from_hash(options)
+        transaction.card                  = Card.from_hash(options)
+        transaction.token                 = CardToken.from_hash(options,'token')
+        transaction.paypage               = CardPaypage.from_hash(options,'paypage')
+      end
+      transaction.amount                  = options['amount']
+      transaction.surchargeAmount         = options['surchargeAmount']
+      transaction.customBilling           = CustomBilling.from_hash(options)
+      transaction.enhancedData            = EnhancedData.from_hash(options)
+      transaction.processingInstructions  = ProcessingInstructions.from_hash(options)
+      transaction.pos                     = Pos.from_hash(options)
+      transaction.billMeLaterRequest      = BillMeLaterRequest.from_hash(options)
+      transaction.payPalNotes             = options['payPalNotes']
+      transaction.actionReason            = options['actionReason']
+      transaction.paypal                  = CreditPayPal.from_hash(options,'paypal')
 
-      transaction.litleTxnId          = options['litleTxnId']
-      transaction.customBilling       = CustomBilling.from_hash(options)
-      transaction.billMeLaterRequest  = BillMeLaterRequest.from_hash(options)
-      transaction.payPalNotes         = options['payPalNotes']
-      transaction.actionReason        = options['actionReason']
-      transaction.paypal              = CreditPayPal.from_hash(options,'paypal')
-
+      add_account_info(transaction, options)
       return transaction
     end
     
     def auth_reversal(options)
       transaction = AuthReversal.new
 
-      transaction.litleTxnId    = options['litleTxnId']
-      transaction.amount        = options['amount']
-      transaction.payPalNotes   = options['payPalNotes']
-      transaction.actionReason  = options['actionReason']
+      transaction.litleTxnId      = options['litleTxnId']
+      transaction.amount          = options['amount']
+      transaction.surchargeAmount = options['surchargeAmount']
+      transaction.payPalNotes     = options['payPalNotes']
+      transaction.actionReason    = options['actionReason']
       
       add_account_info(transaction, options)
       return transaction
@@ -104,7 +121,8 @@ module LitleOnline
 
     def force_capture(options)
       transaction = ForceCapture.new
-      transaction.customBilling = CustomBilling.from_hash(options)
+      transaction.surchargeAmount    = options['surchargeAmount']
+      transaction.customBilling      = CustomBilling.from_hash(options)
 
       add_order_info(transaction, options)
 
@@ -117,6 +135,7 @@ module LitleOnline
       transaction.partial                 = options['partial']
       transaction.litleTxnId              = options['litleTxnId']
       transaction.amount                  = options['amount']
+      transaction.surchargeAmount         = options['surchargeAmount']
       transaction.enhancedData            = EnhancedData.from_hash(options)
       transaction.processingInstructions  = ProcessingInstructions.from_hash(options)
       transaction.payPalOrderComplete     = options['payPalOrderComplete']
@@ -130,6 +149,7 @@ module LitleOnline
       transaction = CaptureGivenAuth.new
       add_order_info(transaction, options)
 
+      transaction.surchargeAmount    = options['surchargeAmount']
       transaction.authInformation    = AuthInformation.from_hash(options)
       transaction.shipToAddress      = Contact.from_hash(options,'shipToAddress')
       transaction.customBilling      = CustomBilling.from_hash(options)

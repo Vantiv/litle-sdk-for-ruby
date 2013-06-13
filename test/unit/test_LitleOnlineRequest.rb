@@ -29,7 +29,7 @@ require 'mocha/setup'
 
 module LitleOnline
 
-  class Newtest < Test::Unit::TestCase
+  class TestLitleOnlineRequest < Test::Unit::TestCase
     def test_set_merchant_id
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}})
       litle = LitleOnlineRequest.new
@@ -244,7 +244,7 @@ module LitleOnline
       #Explicit - used for integrations
       assert_equal 'ActiveMerchant;3.2', litle.send(:get_merchant_sdk, {'merchantSdk'=>'ActiveMerchant;3.2'})
       #Implicit - used raw when nothing is specified
-      assert_equal 'Ruby;8.16.0', litle.send(:get_merchant_sdk, {'NotMerchantSdk'=>'ActiveMerchant;3.2'})
+      assert_equal 'Ruby;8.17.0', litle.send(:get_merchant_sdk, {'NotMerchantSdk'=>'ActiveMerchant;3.2'})
     end
   
     def test_sale_paypal_order_complete_typo
@@ -274,7 +274,7 @@ module LitleOnline
         'litleTxnId' => '006'
       }
 
-      Communications.expects(:http_post).with(regexp_matches(/<litleOnlineRequest.*version="8\.16".*/m),kind_of(Hash))
+      Communications.expects(:http_post).with(regexp_matches(/<litleOnlineRequest.*version="8\.17".*/m),kind_of(Hash))
       XMLObject.expects(:new)
  
       response = LitleOnlineRequest.new.void(hash)

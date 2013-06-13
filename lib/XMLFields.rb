@@ -424,6 +424,7 @@ module LitleOnline
     text_node :capability, "capability", :default_value=>nil
     text_node :entryMode, "entryMode", :default_value=>nil
     text_node :cardholderId, "cardholderId", :default_value=>nil
+    text_node :terminalId, "terminalId", :default_vaule=>nil
     def self.from_hash(hash, name='pos')
       base = hash[name]
       if(base)
@@ -431,6 +432,7 @@ module LitleOnline
         this.capability = base['capability']
         this.entryMode = base['entryMode']
         this.cardholderId = base['cardholderId']
+        this.terminalId = base['terminalId']
         SchemaValidation.validate_enum(this.capability, true, ['notused','magstripe','keyedonly'], name, 'capability')
         SchemaValidation.validate_enum(this.entryMode, true, ['notused','keyed','track1','track2','completeread'], name, 'entryMode')
         SchemaValidation.validate_enum(this.cardholderId, true, ['signature','pin','nopin','directmarket'], name, 'cardholderId')
@@ -897,6 +899,7 @@ module LitleOnline
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
     text_node :orderId, "orderId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
+    text_node :surchargeAmount, "surchargeAmount", :default_value=>nil
     text_node :orderSource, "orderSource", :default_value=>nil
     object_node :customerInfo, "customerInfo", :class=>CustomerInfo, :default_value=>nil
     object_node :billToAddress, "billToAddress", :class=>Contact, :default_value=>nil
@@ -931,6 +934,7 @@ module LitleOnline
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
     text_node :orderId, "orderId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
+    text_node :surchargeAmount, "surchargeAmount", :default_value=>nil
     text_node :orderSource, "orderSource", :default_value=>nil
     object_node :customerInfo, "customerInfo", :class=>CustomerInfo, :default_value=>nil
     object_node :billToAddress, "billToAddress", :class=>Contact, :default_value=>nil
@@ -968,6 +972,7 @@ module LitleOnline
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
     text_node :orderId, "orderId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
+    text_node :surchargeAmount, "surchargeAmount", :default_value=>nil
     text_node :orderSource, "orderSource", :default_value=>nil
     object_node :billToAddress, "billToAddress", :class=>Contact, :default_value=>nil
     optional_choice_node :if,    'card', :then, (object_node :card, "card", :class=>Card),
@@ -1009,6 +1014,7 @@ module LitleOnline
     text_node :orderId, "orderId", :default_value=>nil
     object_node :authInformation, "authInformation", :class=>AuthInformation, :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
+    text_node :surchargeAmount, "surchargeAmount", :default_value=>nil
     text_node :orderSource, "orderSource", :default_value=>nil
     object_node :billToAddress, "billToAddress", :class=>Contact, :default_value=>nil
     object_node :shipToAddress, "shipToAddress", :class=>Contact, :default_value=>nil
@@ -1034,6 +1040,7 @@ module LitleOnline
   
     text_node :orderId, "orderId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
+    text_node :surchargeAmount, "surchargeAmount", :default_value=>nil
     text_node :orderSource, "orderSource", :default_value=>nil
     object_node :billToAddress, "billToAddress", :class=>Contact, :default_value=>nil
     optional_choice_node :if,    'card', :then, (object_node :card, "card", :class=>Card),
@@ -1058,6 +1065,7 @@ module LitleOnline
   
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
+    text_node :surchargeAmount, "surchargeAmount", :default_value=>nil
     text_node :payPalNotes, "payPalNotes", :default_value=>nil
     text_node :actionReason, "actionReason", :default_value=>nil
   end
@@ -1072,6 +1080,7 @@ module LitleOnline
   
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
+    text_node :surchargeAmount, "surchargeAmount", :default_value=>nil
     object_node :enhancedData, "enhancedData", :class=>EnhancedData, :default_value=>nil
     object_node :processingInstructions, "processingInstructions", :class=>ProcessingInstructions, :default_value=>nil
     text_node :payPalOrderComplete, "payPalOrderComplete", :default_value=>nil

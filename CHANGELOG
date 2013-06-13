@@ -1,5 +1,12 @@
 = LitleOnline CHANGELOG
 
+== Version 8.17.0 (June 13, 2013)
+* Feature: Batch support - see https://gist.github.com/litleSDK/5687345, https://gist.github.com/litleSDK/5714803 and https://gist.github.com/litleSDK/5714847
+* Feature: Add support for surcharging credit card transactions
+* Feature: Add support for specifying the terminalId on a pos transaction
+* Feature: Add support for pos transactions on tied refunds
+* Cleanup: Drop support for 1.8.6
+
 == Version 8.16.0 (March 29, 2013)
 
 * Feature: Merged pull request #7 from pierre to add external logging support
