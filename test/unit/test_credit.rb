@@ -314,5 +314,6 @@ module LitleOnline
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<litleTxnId>3<\/litleTxnId><amount>2<\/amount><\/credit>.*/m), is_a(Hash))
       LitleOnlineRequest.new.credit(hash)
     end
+    
   end
 end

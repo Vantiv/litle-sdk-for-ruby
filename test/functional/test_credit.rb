@@ -60,24 +60,6 @@ module LitleOnline
       assert_equal('Valid Format', response.message)
     end
   
-    def test_illegal_order_id
-      hash = {
-        'merchantId' => '101',
-        'version'=>'8.8',
-        'reportGroup'=>'Planets',
-        'orderId'=>'12344',
-        'litleTxnId' => '12345456',
-        'amount'=>'106',
-        'orderSource'=>'ecomerce',
-        'card'=>{
-        'type'=>'VI',
-        'number' =>'4100000000000001',
-        'expDate' =>'1210'
-        }}
-      response= LitleOnlineRequest.new.credit(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
-    end
-  
     def test_fields_out_of_order
       hash = {
         'merchantId' => '101',

@@ -424,7 +424,7 @@ module LitleOnline
     text_node :capability, "capability", :default_value=>nil
     text_node :entryMode, "entryMode", :default_value=>nil
     text_node :cardholderId, "cardholderId", :default_value=>nil
-    text_node :terminalId, "terminalId", :default_vaule=>nil
+    text_node :terminalId, "terminalId", :default_value=>nil
     def self.from_hash(hash, name='pos')
       base = hash[name]
       if(base)
