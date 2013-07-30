@@ -719,8 +719,8 @@ module LitleOnline
   class CustomBilling
     include XML::Mapping
     optional_choice_node :if,    'phone', :then, (text_node :phone, "phone", :default_value=>nil),
-    :elsif, 'city',  :then, (text_node :city, "city", :default_vaule=>nil),
-    :elsif, 'url',   :then, (text_node :url, "url", :default_vaule=>nil)
+    :elsif, 'city',  :then, (text_node :city, "city", :default_value=>nil),
+    :elsif, 'url',   :then, (text_node :url, "url", :default_value=>nil)
     text_node :descriptor, "descriptor", :default_value=>nil
     def self.from_hash(hash, name='customBilling')
       base = hash[name]
