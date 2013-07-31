@@ -1,5 +1,9 @@
 = LitleOnline CHANGELOG
 
+== Version 8.18.0 (July 31, 2013)
+* Feature: Add initial support for Recurring
+* Feature: Add support for Gift Card as a card type (GC)
+
 == Version 8.17.0 (June 13, 2013)
 * Feature: Batch support - see https://gist.github.com/litleSDK/5687345, https://gist.github.com/litleSDK/5714803 and https://gist.github.com/litleSDK/5714847
 * Feature: Add support for surcharging credit card transactions

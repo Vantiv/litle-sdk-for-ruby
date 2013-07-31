@@ -614,7 +614,7 @@ module LitleOnline
         this.number = base['number']
         this.expDate = base['expDate']
         this.cardValidationNum = base['cardValidationNum']
-        SchemaValidation.validate_enum(this.mop, false, ['','MC','VI','AX','DC','DI','PP','JC','BL','EC'], name, 'type')
+        SchemaValidation.validate_enum(this.mop, false, ['','MC','VI','AX','DC','DI','PP','JC','BL','EC','GC'], name, 'type')
         SchemaValidation.validate_length(this.track, false, 1, 256, name, 'track')
         SchemaValidation.validate_length(this.number, false, 13, 25, name, 'number')
         SchemaValidation.validate_length(this.expDate, false, 4, 4, name, 'expDate')
@@ -889,6 +889,53 @@ module LitleOnline
     end
   end
   
+  class Subscription
+    include XML::Mapping
+    text_node :planCode, "planCode", :default_value=>nil
+    text_node :numberOfPaymentsRemaining, "numberOfPaymentsRemaining", :default_value=>nil
+    def self.from_hash(hash, name="subscription")
+      base = hash[name]
+      if(base)
+        this = Subscription.new
+        this.planCode = base['planCode']
+        this.numberOfPaymentsRemaining = base['numberOfPaymentsRemaining']
+        SchemaValidation.validate_length(this.planCode, true, 1, 25, name, 'planCode')
+        SchemaValidation.validate_size(this.numberOfPaymentsRemaining, true, 1, 99, name, 'numberOfPaymentsRemaining')
+        this
+      end
+    end
+  end
+
+  class RecurringRequest
+    include XML::Mapping
+    object_node :subscription, "subscription", :class=>Subscription, :default_value=>nil
+    def self.from_hash(hash, name="recurringRequest")
+      base = hash[name]
+      if(base)
+        this = RecurringRequest.new
+        this.subscription = Subscription.from_hash(base)
+        this
+      end
+    end
+  end
+  
+  class LitleInternalRecurringRequest
+    include XML::Mapping
+    text_node :subscriptionId, "subscriptionId", :default_value=>nil
+    text_node :recurringTxnId, "recurringTxnId", :default_value=>nil
+    def self.from_hash(hash, name="litleInternalRecurringRequest")
+      base = hash[name]
+      if(base)
+        this = LitleInternalRecurringRequest.new
+        this.subscriptionId = base['subscriptionId']
+        this.recurringTxnId = base['recurringTxnId']
+        SchemaValidation.validate_length(this.subscriptionId, true, 19, 19, name, "subscriptionId")
+        SchemaValidation.validate_length(this.recurringTxnId, true, 19, 19, name, "recurringTxnId")
+        this
+      end
+    end
+  end
+  
   class Authorization
     include XML::Mapping
     root_element_name "authorization"
@@ -960,6 +1007,8 @@ module LitleOnline
     object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
     object_node :recyclingRequest, "recyclingRequest", :class=>RecyclingRequest, :default_value=>nil
     text_node :fraudFilterOverride, "fraudFilterOverride", :default_value=>nil
+    object_node :recurringRequest, "recurringRequest", :class=>RecurringRequest, :default_value=>nil
+    object_node :litleInternalRecurringRequest, "litleInternalRecurringRequest", :class=>LitleInternalRecurringRequest, :default_value=>nil
   end
   
   class Credit

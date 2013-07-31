@@ -48,6 +48,8 @@ module LitleOnline
       transaction.fraudCheck          = FraudCheck.from_hash(options,'fraudCheck')
       transaction.payPalOrderComplete = options['payPalOrderComplete']
       transaction.payPalNotes         = options['payPalNotes']
+      transaction.recurringRequest    = RecurringRequest.from_hash(options,'recurringRequest')
+      transaction.litleInternalRecurringRequest = LitleInternalRecurringRequest.from_hash(options,'litleInternalRecurringRequest')
 
       return transaction
     end

@@ -2002,7 +2002,7 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         Card.from_hash({ 'card'=>{'type'=>'ZZ' }})
       }
-      assert_equal "If card type is specified, it must be in [\"\", \"MC\", \"VI\", \"AX\", \"DC\", \"DI\", \"PP\", \"JC\", \"BL\", \"EC\"]", exception.message
+      assert_equal "If card type is specified, it must be in [\"\", \"MC\", \"VI\", \"AX\", \"DC\", \"DI\", \"PP\", \"JC\", \"BL\", \"EC\", \"GC\"]", exception.message
     end
     
     def test_card_track

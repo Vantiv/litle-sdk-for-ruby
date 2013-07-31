@@ -304,6 +304,21 @@ module LitleOnline
       LitleOnlineRequest.new.authorization(hash)
     end
     
+    def test_method_of_payment_allows_giftcard
+      hash = {
+        'orderId' => '12344',
+        'amount' => '2',
+        'orderSource' => 'ecommerce',
+        'card' => {
+          'number' => '4141000000000000',
+          'expDate' => '1210',
+          'type' => 'GC'
+        }  
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<card><type>GC<\/type><number>4141000000000000<\/number><expDate>1210<\/expDate><\/card>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.authorization(hash)
+    end
+    
   end
 
 end

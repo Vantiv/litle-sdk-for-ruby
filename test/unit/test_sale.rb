@@ -311,6 +311,80 @@ module LitleOnline
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<amount>2<\/amount><orderSource>ecommerce<\/orderSource>.*/m), is_a(Hash))
       LitleOnlineRequest.new.sale(hash)
     end
+    
+    def test_recurringRequest
+      hash = {
+        'card'=>{
+          'type'=>'VI',
+          'number'=>'4100000000000001',
+          'expDate'=>'1213',
+        },
+        'orderId'=>'12344',
+        'amount'=>'2',
+        'orderSource'=>'ecommerce',
+        'fraudFilterOverride'=>'true',
+        'recurringRequest'=>{
+          'subscription'=>{
+            'planCode'=>'abc123',
+            'numberOfPaymentsRemaining'=>'12'
+          }
+        }
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<fraudFilterOverride>true<\/fraudFilterOverride><recurringRequest><subscription><planCode>abc123<\/planCode><numberOfPaymentsRemaining>12<\/numberOfPaymentsRemaining><\/subscription><\/recurringRequest>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.sale(hash)
+    end
+    
+    def test_recurringRequest_optional
+      hash = {
+        'card'=>{
+          'type'=>'VI',
+          'number'=>'4100000000000001',
+          'expDate'=>'1213',
+        },
+        'orderId'=>'12344',
+        'amount'=>'2',
+        'orderSource'=>'ecommerce',
+        'fraudFilterOverride'=>'true',
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<fraudFilterOverride>true<\/fraudFilterOverride><\/sale>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.sale(hash)
+    end
+    
+    def test_litleInternalRecurringRequest 
+      hash = {
+        'card'=>{
+          'type'=>'VI',
+          'number'=>'4100000000000001',
+          'expDate'=>'1213',
+        },
+        'orderId'=>'12344',
+        'amount'=>'2',
+        'orderSource'=>'ecommerce',
+        'fraudFilterOverride'=>'true',
+        'litleInternalRecurringRequest'=>{
+          'subscriptionId'=>'1234567890123456789',
+          'recurringTxnId'=>'1234567890123456789',
+        },
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<fraudFilterOverride>true<\/fraudFilterOverride><litleInternalRecurringRequest><subscriptionId>1234567890123456789<\/subscriptionId><recurringTxnId>1234567890123456789<\/recurringTxnId><\/litleInternalRecurringRequest>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.sale(hash)
+    end
+    
+    def test_litleInternalRecurringRequest_optional
+      hash = {
+        'card'=>{
+          'type'=>'VI',
+          'number'=>'4100000000000001',
+          'expDate'=>'1213',
+        },
+        'orderId'=>'12344',
+        'amount'=>'2',
+        'orderSource'=>'ecommerce',
+        'fraudFilterOverride'=>'true',
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<fraudFilterOverride>true<\/fraudFilterOverride><\/sale>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.sale(hash)
+    end
           
   end
 end
