@@ -54,7 +54,7 @@ litleSaleTxn = {
     }
 
 # Peform the transaction on the Litle Platform
-response = LitleOnlineRequest.sale(litleSaleTxn)
+response = LitleOnlineRequest.new.sale(litleSaleTxn)
 
 # display result
 puts "Message: "+ response.message
