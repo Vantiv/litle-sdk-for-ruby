@@ -35,6 +35,8 @@ module LitleOnline
     def authorization(options)
       transaction = Authorization.new
       transaction.surchargeAmount    = options['surchargeAmount']
+      transaction.recurringRequest   = RecurringRequest.from_hash(options,'recurringRequest')
+      transaction.debtRepayment	     = options['debtRepayment']
       add_transaction_info(transaction, options)
       
       return transaction
@@ -50,7 +52,7 @@ module LitleOnline
       transaction.payPalNotes         = options['payPalNotes']
       transaction.recurringRequest    = RecurringRequest.from_hash(options,'recurringRequest')
       transaction.litleInternalRecurringRequest = LitleInternalRecurringRequest.from_hash(options,'litleInternalRecurringRequest')
-
+      transaction.debtRepayment	     = options['debtRepayment']
       return transaction
     end
 
@@ -125,7 +127,7 @@ module LitleOnline
       transaction = ForceCapture.new
       transaction.surchargeAmount    = options['surchargeAmount']
       transaction.customBilling      = CustomBilling.from_hash(options)
-
+      transaction.debtRepayment	     = options['debtRepayment']
       add_order_info(transaction, options)
 
       return transaction
@@ -156,7 +158,7 @@ module LitleOnline
       transaction.shipToAddress      = Contact.from_hash(options,'shipToAddress')
       transaction.customBilling      = CustomBilling.from_hash(options)
       transaction.billMeLaterRequest = BillMeLaterRequest.from_hash(options)
-
+      transaction.debtRepayment	     = options['debtRepayment']
       return transaction
     end
 

@@ -892,15 +892,22 @@ module LitleOnline
   class Subscription
     include XML::Mapping
     text_node :planCode, "planCode", :default_value=>nil
-    text_node :numberOfPaymentsRemaining, "numberOfPaymentsRemaining", :default_value=>nil
+    text_node :numberOfPayments, "numberOfPayments", :default_value=>nil
+    text_node :startDate,"startDate",:default_value=>nil
+    text_node :amount,"amount",:default_value=>nil
+    
     def self.from_hash(hash, name="subscription")
       base = hash[name]
       if(base)
         this = Subscription.new
         this.planCode = base['planCode']
-        this.numberOfPaymentsRemaining = base['numberOfPaymentsRemaining']
+        this.numberOfPayments = base['numberOfPayments']
+	this.startDate = base['startDate']
+	this.amount = base['amount']
         SchemaValidation.validate_length(this.planCode, true, 1, 25, name, 'planCode')
-        SchemaValidation.validate_size(this.numberOfPaymentsRemaining, true, 1, 99, name, 'numberOfPaymentsRemaining')
+        SchemaValidation.validate_size(this.numberOfPayments, false, 1, 99, name, 'numberOfPayments')
+	SchemaValidation.validate_date(this.startDate,false,name,'startDate')
+	SchemaValidation.validate_size(this.amount,false,0,999999999999,name,'amount')
         this
       end
     end
@@ -969,6 +976,8 @@ module LitleOnline
     object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
     object_node :recyclingRequest, "recyclingRequest", :class=>RecyclingRequest, :default_value=>nil
     text_node :fraudFilterOverride, "fraudFilterOverride", :default_value=>nil
+    object_node :recurringRequest,"recurringRequest", :class=>RecurringRequest, :default_value=>nil
+    text_node :debtRepayment,"debtRepayment", :default_value=>nil
   end
   
   class Sale
@@ -1009,6 +1018,7 @@ module LitleOnline
     text_node :fraudFilterOverride, "fraudFilterOverride", :default_value=>nil
     object_node :recurringRequest, "recurringRequest", :class=>RecurringRequest, :default_value=>nil
     object_node :litleInternalRecurringRequest, "litleInternalRecurringRequest", :class=>LitleInternalRecurringRequest, :default_value=>nil
+    text_node :debtRepayment,"debtRepayment", :default_value=>nil
   end
   
   class Credit
@@ -1078,6 +1088,7 @@ module LitleOnline
     object_node :pos, "pos", :class=>Pos, :default_value=>nil
     object_node :amexAggregatorData, "amexAggregatorData", :class=>AmexAggregatorData, :default_value=>nil
     object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
+    text_node :debtRepayment,"debtRepayment", :default_value=>nil
   end
   
   class ForceCapture
@@ -1102,6 +1113,7 @@ module LitleOnline
     object_node :pos, "pos", :class=>Pos, :default_value=>nil
     object_node :amexAggregatorData, "amexAggregatorData", :class=>AmexAggregatorData, :default_value=>nil
     object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
+    text_node :debtRepayment,"debtRepayment", :default_value=>nil
   end
   
   class AuthReversal

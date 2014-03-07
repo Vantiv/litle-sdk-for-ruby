@@ -1,5 +1,9 @@
 = LitleOnline CHANGELOG
 
+== Version 8.19.0 (March 07, 2014)
+* Feature: Added deptRepayment as a choice for authorizations, forceCapture, captureGivenAuth, sale
+* Feature: More initial support for Recurring, including a backwards incompatible changing a field from numberOfPaymentsRemaining to numberOfPayments
+
 == Version 8.18.0 (July 31, 2013)
 * Feature: Add initial support for Recurring
 * Feature: Add support for Gift Card as a card type (GC)

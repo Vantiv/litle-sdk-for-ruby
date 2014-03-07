@@ -2511,5 +2511,25 @@ module LitleOnline
       assert_equal "If recyclingRequest recycleId is specified, it must be between 1 and 25 characters long", exception.message
     end
 
+    def test_subscription_type
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'recurringRequest'=> {
+		'subscription'=>
+		{
+		'planCode'=>'planCodeString',
+		'numberOfPayments'=>'10',
+		'startDate'=>'2014-03-07',
+		'amount'=>'100'
+		}
+           }
+      }
+  
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<subscription>.*<planCode>planCodeString<\/planCode><numberOfPayments>10<\/numberOfPayments><startDate>2014-03-07<\/startDate><amount>100<\/amount><\/subscription>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.authorization(hash)
+    end
+
   end
 end

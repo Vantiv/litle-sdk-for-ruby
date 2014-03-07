@@ -326,11 +326,11 @@ module LitleOnline
         'recurringRequest'=>{
           'subscription'=>{
             'planCode'=>'abc123',
-            'numberOfPaymentsRemaining'=>'12'
+            'numberOfPayments'=>'12'
           }
         }
       }
-      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<fraudFilterOverride>true<\/fraudFilterOverride><recurringRequest><subscription><planCode>abc123<\/planCode><numberOfPaymentsRemaining>12<\/numberOfPaymentsRemaining><\/subscription><\/recurringRequest>.*/m), is_a(Hash))
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<fraudFilterOverride>true<\/fraudFilterOverride><recurringRequest><subscription><planCode>abc123<\/planCode><numberOfPayments>12<\/numberOfPayments><\/subscription><\/recurringRequest>.*/m), is_a(Hash))
       LitleOnlineRequest.new.sale(hash)
     end
     
