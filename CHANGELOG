@@ -1,5 +1,9 @@
 = LitleOnline CHANGELOG
 
+== Version 8.20.0 (December 17, 2013)
+* Feature: More initial support for Recurring, including the ability to update or cancel subscriptions
+* Cleanup: Move phpseclib to composer
+
 == Version 8.19.0 (March 07, 2014)
 * Feature: Added deptRepayment as a choice for authorizations, forceCapture, captureGivenAuth, sale
 * Feature: More initial support for Recurring, including a backwards incompatible changing a field from numberOfPaymentsRemaining to numberOfPayments

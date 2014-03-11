@@ -53,7 +53,9 @@ module LitleOnline
                       :echeckSale=>{ :numEcheckSales=>0, :echeckSalesAmount=>0 },
                       :numUpdateCardValidationNumOnTokens=>0,
                       :numAccountUpdates=>0,
-                      :total=>0
+                      :total=>0,
+                      :numCancelSubscriptions=>0,
+                      :numUpdateSubscriptions=>0
       }
       @litle_txn = LitleTransaction.new
       @path_to_batch = nil
@@ -165,6 +167,20 @@ module LitleOnline
       @txn_counts[:authReversal][:authReversalAmount] += options['amount'].to_i
       
       add_txn_to_batch(transaction, :authReversal, options)
+    end
+
+    def cancel_subscription(options)
+      transaction = @litle_txn.cancel_subscription(options)
+      @txn_counts[:numCancelSubscriptions] += 1
+      
+      add_txn_to_batch(transaction, :cancelSubscriptions, options)
+    end
+
+    def update_subscription(options)
+      transaction = @litle_txn.update_subscription(options)
+      @txn_counts[:numUpdateSubscriptions] += 1
+      
+      add_txn_to_batch(transaction, :updateSubscriptions, options)
     end
     
     def register_token_request(options)
@@ -303,7 +319,8 @@ module LitleOnline
       request.merchantId               = get_merchant_id(options)
       request.id                       = @txn_counts[:id]
       request.numUpdateCardValidationNumOnTokens = @txn_counts[:numUpdateCardValidationNumOnTokens]
-      
+      request.numCancelSubscriptions =@txn_counts[:numCancelSubscriptions]
+      request.numUpdateSubscriptions =@txn_counts[:numUpdateSubscriptions]
       header = request.save_to_xml.to_s
       header['/>']= '>' 
 

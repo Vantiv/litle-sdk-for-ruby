@@ -41,6 +41,22 @@ module LitleOnline
       
       return transaction
     end
+
+    def cancel_subscription(options)
+      transaction = CancelSubscription.new
+      transaction.subscriptionId = options['subscriptionId']
+      return transaction
+    end
+
+    def update_subscription(options)
+      transaction = UpdateSubscription.new
+      transaction.subscriptionId = options['subscriptionId']
+      transaction.planCode=options['planCode']
+      transaction.billToAddress=Contact.from_hash(options,'billToAddress')
+      transaction.card=Card.from_hash(options,'card')
+      transaction.billingDate=options['billingDate']
+      return transaction 
+    end
     
     def sale(options)
       transaction = Sale.new

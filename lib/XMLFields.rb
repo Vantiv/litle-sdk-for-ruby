@@ -942,6 +942,42 @@ module LitleOnline
       end
     end
   end
+
+  class CancelSubscription
+    include XML::Mapping
+    root_element_name "cancelSubscription"
+    text_node :subscriptionId, "subscriptionId", :default_value=>nil
+    def self.from_hash	(hash, name="cancelSubscription")
+      base = hash[name]
+      if(base)
+        this = CancelSubscription.new
+        this.subscriptionId = base['subscriptionId']
+	this
+      end
+    end  
+  end
+
+  class UpdateSubscription
+    include XML::Mapping
+    root_element_name "updateSubscription"
+    text_node :subscriptionId, "subscriptionId", :default_value=>nil
+    text_node :planCode,"planCode",:default_value=>nil
+    object_node :billToAddress , 'billToAddress', :class=>Contact, :default_value=>nil
+    object_node :card,'card',:class=>Card, :default_value=>nil
+    text_node :billingDate,'billingDate', :default_value=>nil
+    def self.from_hash(hash, name='updateSubscription')
+      base = hash[name]
+      if(base)
+        this = UpdateSubscription.new
+        this.subscriptionId = base['subscriptionId']
+        this.planCode = base['planCode']         
+        this.billToAddress = base['billToAddress']
+        this.card = base['card']
+        this.billingDate = base['billingDate']    
+        this
+      end
+    end
+  end 
   
   class Authorization
     include XML::Mapping
@@ -1285,7 +1321,9 @@ module LitleOnline
     :elsif, 'echeckVoid', :then, (object_node :echeckVoid, "echeckVoid", :class=>EcheckVoid),
     :elsif, 'echeckVerification', :then, (object_node :echeckVerification, "echeckVerification", :class=>EcheckVerification),
     :elsif, 'registerTokenRequest', :then, (object_node :registerTokenRequest, "registerTokenRequest", :class=>RegisterTokenRequest),
-    :elsif, 'updateCardValidationNumOnToken', :then, (object_node :updateCardValidationNumOnToken, "updateCardValidationNumOnToken", :class=>UpdateCardValidationNumOnToken)
+    :elsif, 'updateCardValidationNumOnToken', :then, (object_node :updateCardValidationNumOnToken, "updateCardValidationNumOnToken", :class=>UpdateCardValidationNumOnToken),
+    :elsif, 'cancelSubscription', :then, (object_node :cancelSubscription, "cancelSubscription", :class=>CancelSubscription),
+    :elsif, 'updateSubscription', :then, (object_node :updateSubscription, "updateSubscription", :class=>UpdateSubscription)
     def post_save(xml, options={:Mapping=>:_default})
       xml.each_element() {|el| 
         if(el.name == 'captureTxn')
@@ -1326,6 +1364,8 @@ module LitleOnline
     text_node :numAccountUpdates, "@numAccountUpdates", :default_value=>"0"
     text_node :merchantId, "@merchantId", :default_value=>nil
     text_node :id, "@id", :default_value=>nil
+    text_node :numCancelSubscriptions,"@numCancelSubscriptions", :default_value=>"0"
+    text_node :numUpdateSubscriptions,"@numUpdateSubscriptions", :default_value=>"0"
   end
   
   class LitleRequest
@@ -1369,6 +1409,11 @@ module LitleOnline
     object_node :authentication, "authentication", :class=>Authentication    
     object_node :rfrRequest, 'RFRRequest', :class=>LitleRFRRequest
   end
+
+  
+
+  
+
 # begin   
   # class LitleOnlineResponse
     # attr_accessor :message

@@ -174,7 +174,52 @@ module LitleOnline
       counts = batch.get_counts_and_amounts
       assert_equal 1, counts[:numTokenRegistrations]
     end
-    
+
+    def test_cancel_subscription
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').twice
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').once
+      File.expects(:directory?).returns(true).once
+      
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'subscriptionId'=>'100'
+     }
+
+      batch = LitleBatchRequest.new
+      batch.create_new_batch('D:\Batches\\')
+      batch.cancel_subscription(hash)
+      
+      counts = batch.get_counts_and_amounts
+      assert_equal 1, counts[:numCancelSubscriptions]
+    end
+
+    def test_update_subscription
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').twice
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').once
+      File.expects(:directory?).returns(true).once
+      
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'subscriptionId'=>'100',
+	'planCode'=>'planCodeString',
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
+     }
+
+      batch = LitleBatchRequest.new
+      batch.create_new_batch('D:\Batches\\')
+      batch.update_subscription(hash)
+      
+      counts = batch.get_counts_and_amounts
+      assert_equal 1, counts[:numUpdateSubscriptions]
+    end
     def test_add_update_card_validation_num_on_token
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once

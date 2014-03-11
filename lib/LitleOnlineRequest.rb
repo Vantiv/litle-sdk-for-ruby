@@ -36,6 +36,18 @@ module LitleOnline
       @litle_transaction = LitleTransaction.new
     end
 
+    def cancel_subscription(options)
+       transaction =@litle_transaction.cancel_subscription(options)
+
+       commit(transaction, :cancelSubscription, options)
+    end
+
+    def update_subscription(options)
+       transaction =@litle_transaction.update_subscription(options)
+
+       commit(transaction, :updateSubscription, options)
+    end
+
     def authorization(options)
       transaction = @litle_transaction.authorization(options)
 
@@ -135,9 +147,15 @@ module LitleOnline
     private
 
     def add_account_info(transaction, options)
-      transaction.reportGroup   = get_report_group(options)
-      transaction.transactionId = options['id']
-      transaction.customerId    = options['customerId']
+      if(transaction.respond_to?(:reportGroup))
+          transaction.reportGroup   = get_report_group(options)
+      end
+      if(transaction.respond_to?(:transactionId))	
+          transaction.transactionId = options['id']
+      end
+      if(transaction.respond_to?(:customerId))	
+          transaction.customerId    = options['customerId']
+      end
     end
 
     def build_request(options)
@@ -149,7 +167,7 @@ module LitleOnline
 
       request.authentication  = authentication
       request.merchantId      = get_merchant_id(options)
-      request.version         = '8.19'
+      request.version         = '8.20'
       request.loggedInUser    = get_logged_in_user(options)
       request.xmlns           = "http://www.litle.com/schema"
       request.merchantSdk     = get_merchant_sdk(options)
@@ -180,7 +198,7 @@ module LitleOnline
     end
 
     def get_merchant_sdk(options)
-      options['merchantSdk'] || 'Ruby;8.19.0'
+      options['merchantSdk'] || 'Ruby;8.20.0'
     end
 
     def get_report_group(options)
