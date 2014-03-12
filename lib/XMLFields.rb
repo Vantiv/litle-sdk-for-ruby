@@ -947,14 +947,6 @@ module LitleOnline
     include XML::Mapping
     root_element_name "cancelSubscription"
     text_node :subscriptionId, "subscriptionId", :default_value=>nil
-    def self.from_hash	(hash, name="cancelSubscription")
-      base = hash[name]
-      if(base)
-        this = CancelSubscription.new
-        this.subscriptionId = base['subscriptionId']
-	this
-      end
-    end  
   end
 
   class UpdateSubscription
@@ -965,19 +957,18 @@ module LitleOnline
     object_node :billToAddress , 'billToAddress', :class=>Contact, :default_value=>nil
     object_node :card,'card',:class=>Card, :default_value=>nil
     text_node :billingDate,'billingDate', :default_value=>nil
-    def self.from_hash(hash, name='updateSubscription')
-      base = hash[name]
-      if(base)
-        this = UpdateSubscription.new
-        this.subscriptionId = base['subscriptionId']
-        this.planCode = base['planCode']         
-        this.billToAddress = base['billToAddress']
-        this.card = base['card']
-        this.billingDate = base['billingDate']    
-        this
-      end
-    end
   end 
+
+  class Activate
+    include XML::Mapping
+    root_element_name "activate"
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :orderId,'orderId', :default_value=>nil
+    text_node :amount, "amount", :default_value=>nil
+    text_node :orderSource, "orderSource", :default_value=>nil
+    object_node :card,'card',:class=>Card, :default_value=>nil
+   
+  end
   
   class Authorization
     include XML::Mapping
@@ -1323,7 +1314,8 @@ module LitleOnline
     :elsif, 'registerTokenRequest', :then, (object_node :registerTokenRequest, "registerTokenRequest", :class=>RegisterTokenRequest),
     :elsif, 'updateCardValidationNumOnToken', :then, (object_node :updateCardValidationNumOnToken, "updateCardValidationNumOnToken", :class=>UpdateCardValidationNumOnToken),
     :elsif, 'cancelSubscription', :then, (object_node :cancelSubscription, "cancelSubscription", :class=>CancelSubscription),
-    :elsif, 'updateSubscription', :then, (object_node :updateSubscription, "updateSubscription", :class=>UpdateSubscription)
+    :elsif, 'updateSubscription', :then, (object_node :updateSubscription, "updateSubscription", :class=>UpdateSubscription),
+    :elsif, 'activate',:then,(object_node :activate,"activate", :class=>Activate)
     def post_save(xml, options={:Mapping=>:_default})
       xml.each_element() {|el| 
         if(el.name == 'captureTxn')

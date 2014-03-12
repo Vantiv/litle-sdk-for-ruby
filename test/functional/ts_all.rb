@@ -27,7 +27,7 @@ require 'lib/LitleOnline'
 
 #test driver for running all tests
 
-=begin
+
 require_relative 'test_xmlfields'
 require_relative 'test_sale'
 require_relative 'test_auth'
@@ -43,8 +43,7 @@ require_relative 'test_echeckCredit'
 require_relative 'test_echeckVerification'
 require_relative 'test_echeckVoid'
 require_relative 'test_updateCardValidationNumOnToken'
-#require_relative 'test_litle_requests'
-#require_relative 'test_batch'
-=end
+require_relative 'test_litle_requests'
+require_relative 'test_batch'
 require_relative 'test_cancelSubscription'
 require_relative 'test_updateSubscription'
