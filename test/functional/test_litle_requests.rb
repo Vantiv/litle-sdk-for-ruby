@@ -293,6 +293,12 @@ module LitleOnline
           saleHash['card']['number']= (saleHash['card']['number'].to_i + 1).to_s
           batch.sale(saleHash)
         }
+         
+        cancelSubscriptionHash = 
+             {
+              'subscriptionId'=>'100'
+             }
+        batch.cancel_subscription(cancelSubscriptionHash)
 
         #close the batch, indicating we plan to add no more transactions
         batch.close_batch()

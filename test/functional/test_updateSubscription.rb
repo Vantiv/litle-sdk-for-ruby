@@ -22,38 +22,48 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-
 require 'lib/LitleOnline'
+require 'test/unit'
 
-#test driver for running all tests
+#test Authorization Transaction
+module LitleOnline
+ class TestUpdateSubscription < Test::Unit::TestCase
+  
+def test_simple_happy
+    hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'subscriptionId' =>'1001'  
+	   }
 
-#=begin
-require_relative 'test_xmlfields'
-require_relative 'test_sale'
-require_relative 'test_auth'
-require_relative 'test_authReversal'
-require_relative 'test_credit'
-require_relative 'test_token'
-require_relative 'test_forceCapture'
-require_relative 'test_capture'
-require_relative 'test_captureGivenAuth'
-require_relative 'test_echeckRedeposit'
-require_relative 'test_echeckSale'
-require_relative 'test_echeckCredit'
-require_relative 'test_echeckVerification'
-require_relative 'test_echeckVoid'
-require_relative 'test_updateCardValidationNumOnToken'
-require_relative 'test_litle_requests'
-require_relative 'test_batch'
+    response= LitleOnlineRequest.new.update_subscription(hash)
+    assert_equal('Valid Format', response.message)
+  end
 
-require_relative 'test_cancelSubscription'
-require_relative 'test_updateSubscription'
-require_relative 'test_activate'
-require_relative 'test_deactivate'
-require_relative 'test_load'
-require_relative 'test_unload'
-require_relative 'test_balanceInquiry'
-#=end
-require_relative 'test_createPlan'
-require_relative 'test_updatePlan'
-require_relative 'test_batchStream'
+  def test_simple_out_of_order
+    hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'subscriptionId' =>'1001',
+	'billingDate'=>'2014-03-11',
+	'planCode'=>'planCodeString'
+	   }
+
+    response= LitleOnlineRequest.new.update_subscription(hash)
+    assert_equal('Valid Format', response.message)
+  end
+
+  def test_simple_error
+    hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+	   }
+
+    response= LitleOnlineRequest.new.update_subscription(hash)
+    assert(response.message =~ /Error validating xml data against the schema/)
+  end
+ end
+end

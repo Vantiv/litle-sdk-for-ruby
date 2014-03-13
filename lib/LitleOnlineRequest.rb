@@ -36,6 +36,18 @@ module LitleOnline
       @litle_transaction = LitleTransaction.new
     end
 
+    def create_plan(options)
+       transaction =@litle_transaction.create_plan(options)
+
+       commit(transaction, :createPlan, options)
+    end
+
+    def update_plan(options)
+       transaction =@litle_transaction.update_plan(options)
+
+       commit(transaction, :updatePlan, options)
+    end
+
     def cancel_subscription(options)
        transaction =@litle_transaction.cancel_subscription(options)
 
@@ -46,6 +58,36 @@ module LitleOnline
        transaction =@litle_transaction.update_subscription(options)
 
        commit(transaction, :updateSubscription, options)
+    end
+
+    def activate(options)
+      transaction = @litle_transaction.activate(options)
+
+      commit(transaction, :activate, options)
+    end 
+   
+    def deactivate(options)
+     transaction = @litle_transaction.deactivate(options)
+
+      commit(transaction, :deactivate, options)
+    end
+
+    def load_request(options)
+     transaction = @litle_transaction.load_request(options)
+
+      commit(transaction, :load, options)
+    end
+
+    def unload_request(options)
+     transaction = @litle_transaction.unload_request(options)
+
+      commit(transaction, :unload, options)
+    end
+
+    def balance_inquiry(options)
+     transaction = @litle_transaction.balance_inquiry(options)
+
+      commit(transaction, :balanceInquiry, options)
     end
 
     def authorization(options)
@@ -167,7 +209,7 @@ module LitleOnline
 
       request.authentication  = authentication
       request.merchantId      = get_merchant_id(options)
-      request.version         = '8.20'
+      request.version         = '8.21'
       request.loggedInUser    = get_logged_in_user(options)
       request.xmlns           = "http://www.litle.com/schema"
       request.merchantSdk     = get_merchant_sdk(options)
@@ -198,7 +240,7 @@ module LitleOnline
     end
 
     def get_merchant_sdk(options)
-      options['merchantSdk'] || 'Ruby;8.20.0'
+      options['merchantSdk'] || 'Ruby;8.21.0'
     end
 
     def get_report_group(options)

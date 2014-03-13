@@ -55,7 +55,15 @@ module LitleOnline
                       :numAccountUpdates=>0,
                       :total=>0,
                       :numCancelSubscriptions=>0,
-                      :numUpdateSubscriptions=>0
+                      :numUpdateSubscriptions=>0,
+                      :numCreatePlans=>0,
+                      :numUpdatePlans=>0,
+                      :activate=>{:numActivates=>0, :activateAmount=>0},
+                      :numDeactivates=>0,
+                      :load=>{:numLoads=>0, :loadAmount=>0},
+                      :unload=>{:numUnloads=>0, :unloadAmount=>0},
+                      :numBalanceInquirys=>0,
+                      :merchantSdk=>nil
       }
       @litle_txn = LitleTransaction.new
       @path_to_batch = nil
@@ -173,16 +181,64 @@ module LitleOnline
       transaction = @litle_txn.cancel_subscription(options)
       @txn_counts[:numCancelSubscriptions] += 1
       
-      add_txn_to_batch(transaction, :cancelSubscriptions, options)
+      add_txn_to_batch(transaction, :cancelSubscription, options)
     end
 
     def update_subscription(options)
       transaction = @litle_txn.update_subscription(options)
       @txn_counts[:numUpdateSubscriptions] += 1
       
-      add_txn_to_batch(transaction, :updateSubscriptions, options)
+      add_txn_to_batch(transaction, :updateSubscription, options)
+    end
+
+    def create_plan(options)
+      transaction = @litle_txn.create_plan(options)  
+      @txn_counts[:numCreatePlans] += 1
+      
+      add_txn_to_batch(transaction, :createPlan, options)
     end
     
+    def update_plan(options)
+      transaction = @litle_txn.update_plan(options)  
+      @txn_counts[:numUpdatePlans] += 1
+      
+      add_txn_to_batch(transaction, :updatePlan, options)
+    end
+
+    def activate(options)
+      transaction = @litle_txn.activate(options)  
+      @txn_counts[:numActivates] += 1
+      
+      add_txn_to_batch(transaction, :activate, options)
+    end
+
+    def deactivate(options)
+      transaction = @litle_txn.deactivate(options)  
+      @txn_counts[:numDeactivates] += 1
+      
+      add_txn_to_batch(transaction, :deactivate, options)
+    end
+
+    def load_request(options)
+      transaction = @litle_txn.load_request(options)  
+      @txn_counts[:numLoads] += 1
+      
+      add_txn_to_batch(transaction, :load, options)
+    end
+
+    def unload_request(options)
+      transaction = @litle_txn.unload_request(options)  
+      @txn_counts[:numunLoads] += 1
+      
+      add_txn_to_batch(transaction, :unload, options)
+    end
+
+    def balance_inquiry(options)
+      transaction = @litle_txn.balance_inquiry(options)  
+      @txn_counts[:numBalanceInquirys] += 1
+      
+      add_txn_to_batch(transaction, :balanceInquirys, options)
+    end
     def register_token_request(options)
       transaction = @litle_txn.register_token_request(options)
       @txn_counts[:numTokenRegistrations] += 1
@@ -321,6 +377,16 @@ module LitleOnline
       request.numUpdateCardValidationNumOnTokens = @txn_counts[:numUpdateCardValidationNumOnTokens]
       request.numCancelSubscriptions =@txn_counts[:numCancelSubscriptions]
       request.numUpdateSubscriptions =@txn_counts[:numUpdateSubscriptions]
+      request.numCreatePlans =@txn_counts[:numCreatePlans]
+      request.numUpdatePlans =@txn_counts[:numUpdatePlans]
+      request.numActivates =@txn_counts[:activate][:numActivates]
+      request.numDeactivates =@txn_counts[:numDeactivates]
+      request.activateAmount =@txn_counts[:activate][:activateAmount]
+      request.numLoads =@txn_counts[:load][:numLoads]
+      request.loadAmount =@txn_counts[:load][:loadAmount]
+      request.numUnloads =@txn_counts[:unload][:numLoads]
+      request.unloadAmount =@txn_counts[:unload][:unloadAmount]
+      request.numBalanceInquirys =@txn_counts[:numBalanceInquirys]
       header = request.save_to_xml.to_s
       header['/>']= '>' 
 

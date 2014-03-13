@@ -22,38 +22,24 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-
 require 'lib/LitleOnline'
+require 'test/unit'
 
-#test driver for running all tests
+module LitleOnline
+  class TestUpdatePlan < Test::Unit::TestCase
 
-#=begin
-require_relative 'test_xmlfields'
-require_relative 'test_sale'
-require_relative 'test_auth'
-require_relative 'test_authReversal'
-require_relative 'test_credit'
-require_relative 'test_token'
-require_relative 'test_forceCapture'
-require_relative 'test_capture'
-require_relative 'test_captureGivenAuth'
-require_relative 'test_echeckRedeposit'
-require_relative 'test_echeckSale'
-require_relative 'test_echeckCredit'
-require_relative 'test_echeckVerification'
-require_relative 'test_echeckVoid'
-require_relative 'test_updateCardValidationNumOnToken'
-require_relative 'test_litle_requests'
-require_relative 'test_batch'
+    def test_simple
+      hash ={
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'planCode'=>'planCodeString',
+        'active'=>'true'  
+            }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<updatePlan><planCode>planCodeString<\/planCode><active>true<\/active><\/updatePlan>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.update_plan(hash)
+    end
 
-require_relative 'test_cancelSubscription'
-require_relative 'test_updateSubscription'
-require_relative 'test_activate'
-require_relative 'test_deactivate'
-require_relative 'test_load'
-require_relative 'test_unload'
-require_relative 'test_balanceInquiry'
-#=end
-require_relative 'test_createPlan'
-require_relative 'test_updatePlan'
-require_relative 'test_batchStream'
+   end
+
+end

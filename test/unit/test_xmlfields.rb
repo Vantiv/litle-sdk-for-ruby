@@ -2530,6 +2530,49 @@ module LitleOnline
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<subscription>.*<planCode>planCodeString<\/planCode><numberOfPayments>10<\/numberOfPayments><startDate>2014-03-07<\/startDate><amount>100<\/amount><\/subscription>.*/m), is_a(Hash))
       LitleOnlineRequest.new.authorization(hash)
     end
+
+    def test_subscription_type_discount_addOn
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'recurringRequest'=> {
+		'subscription'=>
+		{
+		'planCode'=>'planCodeString',
+		'numberOfPayments'=>'10',
+		'startDate'=>'2014-03-07',
+		'amount'=>'100',
+                'createDiscount'=>[
+             	 {
+               'discountCode'=>'discCode1',
+               'name'=>'name1',
+               'amount'=>'500',
+               'startDate'=>'2014-03-12',
+               'endDate'=>'2014-03-12',
+             	 },
+             	 {
+               'discountCode'=>'discCode11',
+               'name'=>'name11',
+               'amount'=>'5000',
+               'startDate'=>'2014-03-12',
+               'endDate'=>'2014-03-12',
+              	 }],
+                'createAddOn'=>[
+             	 {
+               'addOnCode'=>'addOnCode1',
+               'name'=>'name1',
+               'amount'=>'500',
+               'startDate'=>'2014-03-12',
+               'endDate'=>'2014-03-12',
+             	 }]
+	       }
+           }
+      }
+  
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<subscription>.*<planCode>planCodeString<\/planCode><numberOfPayments>10<\/numberOfPayments><startDate>2014-03-07<\/startDate><amount>100<\/amount><createDiscount><discountCode>discCode1<\/discountCode><name>name1<\/name><amount>500<\/amount><startDate>2014-03-12<\/startDate><endDate>2014-03-12<\/endDate><\/createDiscount><createDiscount><discountCode>discCode11<\/discountCode><name>name11<\/name><amount>5000<\/amount><startDate>2014-03-12<\/startDate><endDate>2014-03-12<\/endDate><\/createDiscount><createAddOn><addOnCode>addOnCode1<\/addOnCode><name>name1<\/name><amount>500<\/amount><startDate>2014-03-12<\/startDate><endDate>2014-03-12<\/endDate><\/createAddOn><\/subscription>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.authorization(hash)
+    end
     
     def test_cancel_subscription
       hash = {
@@ -2559,12 +2602,173 @@ module LitleOnline
                  'number' =>'4100000000000001',
                  'expDate' =>'1210'
                 },
-              'billingDate' =>'2014-03-11'        
+              'billingDate' =>'2014-03-11',
+              'createDiscount'=>[
+              {
+               'discountCode'=>'discCode1',
+               'name'=>'name1',
+               'amount'=>'500',
+               'startDate'=>'2014-03-12',
+               'endDate'=>'2014-03-12',
+              },
+              {
+               'discountCode'=>'discCode11',
+               'name'=>'name11',
+               'amount'=>'5000',
+               'startDate'=>'2014-03-12',
+               'endDate'=>'2014-03-12',
+              }],
+              'updateDiscount'=>[
+              {
+		'discountCode'=>'discCode2',
+              }],
+              'deleteDiscount'=>['discCode3','discCode33'],
+              'createAddOn'=>[
+              {
+               'addOnCode'=>'addOnCode1',
+               'name'=>'name1',
+               'amount'=>'500',
+               'startDate'=>'2014-03-12',
+               'endDate'=>'2014-03-12',
+              }],
+              'updateAddOn'=>[
+              {
+		'addOnCode'=>'addOnCode2',
+              }],
+              'deleteAddOn'=>['addOnCode3']
              }
-      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<updateSubscription><subscriptionId>1000<\/subscriptionId><planCode>planCodeString<\/planCode><billToAddress><name>nameString<\/name><\/billToAddress><card><type>VI<\/type><number>4100000000000001<\/number><expDate>1210<\/expDate><\/card><billingDate>2014-03-11<\/billingDate><\/updateSubscription>.*/m), is_a(Hash))
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<updateSubscription><subscriptionId>1000<\/subscriptionId><planCode>planCodeString<\/planCode><billToAddress><name>nameString<\/name><\/billToAddress><card><type>VI<\/type><number>4100000000000001<\/number><expDate>1210<\/expDate><\/card><billingDate>2014-03-11<\/billingDate><createDiscount><discountCode>discCode1<\/discountCode><name>name1<\/name><amount>500<\/amount><startDate>2014-03-12<\/startDate><endDate>2014-03-12<\/endDate><\/createDiscount><createDiscount><discountCode>discCode11<\/discountCode><name>name11<\/name><amount>5000<\/amount><startDate>2014-03-12<\/startDate><endDate>2014-03-12<\/endDate><\/createDiscount><updateDiscount><discountCode>discCode2<\/discountCode><\/updateDiscount><deleteDiscount>discCode3<\/deleteDiscount><deleteDiscount>discCode33<\/deleteDiscount><createAddOn><addOnCode>addOnCode1<\/addOnCode><name>name1<\/name><amount>500<\/amount><startDate>2014-03-12<\/startDate><endDate>2014-03-12<\/endDate><\/createAddOn><updateAddOn><addOnCode>addOnCode2<\/addOnCode><\/updateAddOn><deleteAddOn>addOnCode3<\/deleteAddOn><\/updateSubscription>.*/m), is_a(Hash))
       LitleOnlineRequest.new.update_subscription(hash)
     end
-    
 
+    def test_activate
+       hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId' => '11',
+        'amount'  => '500',
+        'orderSource'=>'ecommerce',
+        'card'=>
+                {  
+                 'type'=>'VI',
+                 'number' =>'4100000000000001',
+                 'expDate' =>'1210'
+                }
+      }
+      
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<activate reportGroup="Planets"><orderId>11<\/orderId><amount>500<\/amount><orderSource>ecommerce<\/orderSource><card><type>VI<\/type><number>4100000000000001<\/number><expDate>1210<\/expDate><\/card><\/activate>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.activate(hash)
+    end
+
+    def test_deactivate
+       hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId' => '11',
+        'orderSource'=>'ecommerce',
+        'card'=>
+                {  
+                 'type'=>'VI',
+                 'number' =>'4100000000000001',
+                 'expDate' =>'1210'
+                }
+      }
+      
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<deactivate reportGroup="Planets"><orderId>11<\/orderId><orderSource>ecommerce<\/orderSource><card><type>VI<\/type><number>4100000000000001<\/number><expDate>1210<\/expDate><\/card><\/deactivate>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.deactivate(hash)
+    end
+
+    def test_load
+       hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId' => '11',
+        'amount'  => '500',
+        'orderSource'=>'ecommerce',
+        'card'=>
+                {  
+                 'type'=>'VI',
+                 'number' =>'4100000000000001',
+                 'expDate' =>'1210'
+                }
+      }
+      
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<load reportGroup="Planets"><orderId>11<\/orderId><amount>500<\/amount><orderSource>ecommerce<\/orderSource><card><type>VI<\/type><number>4100000000000001<\/number><expDate>1210<\/expDate><\/card><\/load>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.load_request(hash)
+    end
+
+    def test_unload
+       hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId' => '11',
+        'amount'  => '500',
+        'orderSource'=>'ecommerce',
+        'card'=>
+                {  
+                 'type'=>'VI',
+                 'number' =>'4100000000000001',
+                 'expDate' =>'1210'
+                }
+      }
+      
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<unload reportGroup="Planets"><orderId>11<\/orderId><amount>500<\/amount><orderSource>ecommerce<\/orderSource><card><type>VI<\/type><number>4100000000000001<\/number><expDate>1210<\/expDate><\/card><\/unload>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.unload_request(hash)
+    end
+
+    def test_balanceInquiry
+       hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId' => '11',
+        'orderSource'=>'ecommerce',
+        'card'=>
+                {  
+                 'type'=>'VI',
+                 'number' =>'4100000000000001',
+                 'expDate' =>'1210'
+                }
+      }
+      
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<balanceInquiry reportGroup="Planets"><orderId>11<\/orderId><orderSource>ecommerce<\/orderSource><card><type>VI<\/type><number>4100000000000001<\/number><expDate>1210<\/expDate><\/card><\/balanceInquiry>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.balance_inquiry(hash)
+    end
+
+    def test_createPlan
+      hash ={
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'planCode'=>'planCodeString',
+        'name'=>'nameString',
+        'description'=>'descriptionString',
+        'intervalType'=>'ANNUAL',
+        'amount'=>'500',
+        'numberOfPayments'=>'2',
+        'trialNumberOfIntervals'=>'1',
+        'trialIntervalType'=>'MONTH',
+        'active'=>'true'  
+            }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<createPlan><planCode>planCodeString<\/planCode><name>nameString<\/name><description>descriptionString<\/description><intervalType>ANNUAL<\/intervalType><amount>500<\/amount><numberOfPayments>2<\/numberOfPayments><trialNumberOfIntervals>1<\/trialNumberOfIntervals><trialIntervalType>MONTH<\/trialIntervalType><active>true<\/active><\/createPlan>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.create_plan(hash)
+    end
+
+    def test_updatePlan
+      hash={
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'planCode'=>'planCodeString',
+        'active'=>'true'
+           }
+
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<updatePlan><planCode>planCodeString<\/planCode><active>true<\/active><\/updatePlan>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.update_plan(hash)
+    end	
   end
 end

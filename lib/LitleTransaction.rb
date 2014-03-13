@@ -47,6 +47,49 @@ module LitleOnline
       transaction.subscriptionId = options['subscriptionId']
       return transaction
     end
+   
+    def activate(options)
+       transaction = Activate.new
+       transaction.orderId = options['orderId']
+       transaction.orderSource = options['orderSource']
+       transaction.amount = options['amount']
+       transaction.card = Card.from_hash(options,'card')
+       return transaction
+    end	
+
+    def deactivate(options)
+       transaction = Deactivate.new
+       transaction.orderId = options['orderId']
+       transaction.orderSource = options['orderSource']
+       transaction.card = Card.from_hash(options,'card')
+       return transaction
+    end
+
+    def load_request(options)
+       transaction = Load.new
+       transaction.orderId = options['orderId']
+       transaction.orderSource = options['orderSource']
+       transaction.amount = options['amount']
+       transaction.card = Card.from_hash(options,'card')
+       return transaction
+    end
+
+    def unload_request(options)
+       transaction = Unload.new
+       transaction.orderId = options['orderId']
+       transaction.orderSource = options['orderSource']
+       transaction.amount = options['amount']
+       transaction.card = Card.from_hash(options,'card')
+       return transaction
+    end
+
+    def balance_inquiry(options)
+       transaction = BalanceInquiry.new
+       transaction.orderId = options['orderId']
+       transaction.orderSource = options['orderSource']
+       transaction.card = Card.from_hash(options,'card')
+       return transaction
+    end
 
     def update_subscription(options)
       transaction = UpdateSubscription.new
@@ -55,7 +98,47 @@ module LitleOnline
       transaction.billToAddress=Contact.from_hash(options,'billToAddress')
       transaction.card=Card.from_hash(options,'card')
       transaction.billingDate=options['billingDate']
+      if(options['createDiscount'])
+          options['createDiscount'].each_index {| index | transaction.createDiscount << CreateDiscount.from_hash(options, index,'createDiscount')}
+        end
+      if(options['updateDiscount'])
+          options['updateDiscount'].each_index {| index | transaction.updateDiscount << UpdateDiscount.from_hash(options, index,'updateDiscount')}
+        end
+      if(options['deleteDiscount'])
+          options['deleteDiscount'].each_index {| index | transaction.deleteDiscount << options['deleteDiscount'][index]}
+        end
+      if(options['createAddOn'])
+          options['createAddOn'].each_index {| index | transaction.createAddOn << CreateAddOn.from_hash(options, index,'createAddOn')}
+        end
+      if(options['updateAddOn'])
+          options['updateAddOn'].each_index {| index | transaction.updateAddOn << UpdateAddOn.from_hash(options, index,'updateAddOn')}
+        end
+      if(options['deleteAddOn'])
+          options['deleteAddOn'].each_index {| index | transaction.deleteAddOn << options['deleteAddOn'][index]}
+        end 
+
       return transaction 
+    end
+
+    def create_plan(options)
+     transaction = CreatePlan.new
+     transaction.planCode = options['planCode']
+     transaction.name=options['name']
+     transaction.description=options['description']
+     transaction.intervalType=options['intervalType']
+     transaction.amount=options['amount']
+     transaction.numberOfPayments=options['numberOfPayments']
+     transaction.trialNumberOfIntervals=options['trialNumberOfIntervals']
+     transaction.trialIntervalType=options['trialIntervalType']
+     transaction.active=options['active']
+     return transaction 
+    end
+
+    def update_plan(options)
+     transaction = UpdatePlan.new
+     transaction.planCode = options['planCode']
+     transaction.active=options['active']
+     return transaction 
     end
     
     def sale(options)

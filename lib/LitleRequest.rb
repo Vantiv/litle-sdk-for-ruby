@@ -168,9 +168,9 @@ module LitleOnline
     def add_rfr_request(options, path = (File.dirname(@path_to_batches)))
      
       rfrrequest = LitleRFRRequest.new
-      if(options['litleSessionId'] != nil) then
+      if(options['litleSessionId']) then
         rfrrequest.litleSessionId = options['litleSessionId']
-      elsif(options['merchantId'] != nil and options['postDay'] != nil) then
+      elsif(options['merchantId'] and options['postDay']) then
         accountUpdate = AccountUpdateFileRequestData.new
         accountUpdate.merchantId = options['merchantId']
         accountUpdate.postDay = options['postDay']
@@ -296,19 +296,24 @@ module LitleOnline
       Dir.foreach(path) do |filename|
         if((filename =~ /request_\d+.complete\z/) != nil) then
           begin 
-            socket = Socket.new( AF_INET, SOCK_STREAM, 0 )
-            sockaddr = Socket.pack_sockaddr_in( port.to_i, url )
-            socket.connect( sockaddr )
+            socket = TCPSocket.open(url,port.to_i)
+            ssl_context = OpenSSL::SSL::SSLContext.new()
+            ssl_context.ssl_version = :SSLv23
+            ssl_socket = OpenSSL::SSL::SSLSocket.new(socket, ssl_context)
+            ssl_socket.sync_close = true
+            ssl_socket.connect
            rescue => e 
             raise "A connection couldn't be established. Are you sure you have the correct credentials? Exception: " + e.message
            end 
             
             File.foreach(path + filename) do |li|
-              socket.write(li)
+              ssl_socket.puts li
             end
             File.rename(path + filename, path + filename + '.sent')
             File.open(path + 'responses/' + (filename + '.asc.received').gsub("request", "response"), 'a+') do |fo|
-              fo.puts(socket.read)
+            while line = ssl_socket.gets
+                 fo.puts(line)
+             end
             end
                
         end
@@ -490,7 +495,7 @@ module LitleOnline
       authentication.password = get_config(:password, options)
 
       litle_request.authentication = authentication
-      litle_request.version         = '8.19'
+      litle_request.version         = '8.21'
       litle_request.xmlns           = "http://www.litle.com/schema"
       # litle_request.id              = options['sessionId'] #grab from options; okay if nil
       litle_request.numBatchRequests = @num_batch_requests

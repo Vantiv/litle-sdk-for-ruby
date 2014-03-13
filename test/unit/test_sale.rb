@@ -364,9 +364,10 @@ module LitleOnline
         'litleInternalRecurringRequest'=>{
           'subscriptionId'=>'1234567890123456789',
           'recurringTxnId'=>'1234567890123456789',
+	  'finalPayment'=>'false'
         },
       }
-      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<fraudFilterOverride>true<\/fraudFilterOverride><litleInternalRecurringRequest><subscriptionId>1234567890123456789<\/subscriptionId><recurringTxnId>1234567890123456789<\/recurringTxnId><\/litleInternalRecurringRequest>.*/m), is_a(Hash))
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<fraudFilterOverride>true<\/fraudFilterOverride><litleInternalRecurringRequest><subscriptionId>1234567890123456789<\/subscriptionId><recurringTxnId>1234567890123456789<\/recurringTxnId><finalPayment>false<\/finalPayment><\/litleInternalRecurringRequest>.*/m), is_a(Hash))
       LitleOnlineRequest.new.sale(hash)
     end
     
