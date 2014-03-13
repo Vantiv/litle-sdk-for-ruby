@@ -290,6 +290,7 @@ module LitleOnline
         #add the same sale ten times
         10.times{
         #batch.account_update(accountUpdateHash)
+          saleHash['card']['number']= (saleHash['card']['number'].to_i + 1).to_s
           batch.sale(saleHash)
         }
 
