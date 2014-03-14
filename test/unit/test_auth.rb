@@ -30,6 +30,7 @@ require 'mocha/setup'
 module LitleOnline
   
   class TestAuth < Test::Unit::TestCase
+
     def test_success_re_auth
       hash = {
         'merchantId' => '101',
@@ -318,7 +319,22 @@ module LitleOnline
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<card><type>GC<\/type><number>4141000000000000<\/number><expDate>1210<\/expDate><\/card>.*/m), is_a(Hash))
       LitleOnlineRequest.new.authorization(hash)
     end
-    
+
+    def test_advanced_fraud_check
+      hash = {
+        'orderId' => '12344',
+        'amount' => '2',
+        'orderSource' => 'ecommerce',
+        'card' => {
+          'number' => '4141000000000000',
+          'expDate' => '1210',
+          'type' => 'GC'
+        } , 
+        'advancedFraudChecks' => {'threatMetrixSessionId'=>'1234'}
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<advancedFraudChecks><threatMetrixSessionId>1234<\/threatMetrixSessionId><\/advancedFraudChecks>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.authorization(hash)
+    end
   end
 
 end

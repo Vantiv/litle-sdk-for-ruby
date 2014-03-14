@@ -147,7 +147,11 @@ module LitleOnline
         'authInformation' => {
         'authDate'=>'2002-10-09','authCode'=>'543216',
         'authAmount'=>'12345','fraudResult'=>{'avsResult'=>'12','cardValidationResult'=>'123','authenticationResult'=>'1',
-        'advancedAVSResult'=>'123'}
+        'advancedAVSResult'=>'123',
+        'advancedFraudResults' => {'deviceReviewStatus' => 'deviceReviewStatusString',
+                                   'deviceReputationScore' => '100'
+                                  }
+                              }
         },
         'orderSource'=>'ecommerce',
         'card'=>{

@@ -24,6 +24,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 =end
 require 'lib/LitleOnline'
 require 'test/unit'
+require 'mocha/setup'
 
 module LitleOnline
   class TestUpdateSubscription < Test::Unit::TestCase
@@ -96,7 +97,6 @@ module LitleOnline
               {
 		'discountCode'=>'discCode2',
               }],
-              'deleteDiscount'=>['discCode3','discCode33'],
               'createAddOn'=>[
               {
                'addOnCode'=>'addOnCode1',
@@ -109,9 +109,9 @@ module LitleOnline
               {
 		'addOnCode'=>'addOnCode2',
               }],
-              'deleteAddOn'=>['addOnCode3']
+              'deleteAddOn'=>[{'addOnCode'=>'addOnCode3'}]
              }
-      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<updateSubscription><subscriptionId>1000<\/subscriptionId><planCode>planCodeString<\/planCode><billToAddress><name>nameString<\/name><\/billToAddress><token><litleToken>litleTokenString<\/litleToken><\/token><billingDate>2014-03-11<\/billingDate><createDiscount><discountCode>discCode1<\/discountCode><name>name1<\/name><amount>500<\/amount><startDate>2014-03-12<\/startDate><endDate>2014-03-12<\/endDate><\/createDiscount><createDiscount><discountCode>discCode11<\/discountCode><name>name11<\/name><amount>5000<\/amount><startDate>2014-03-12<\/startDate><endDate>2014-03-12<\/endDate><\/createDiscount><updateDiscount><discountCode>discCode2<\/discountCode><\/updateDiscount><deleteDiscount>discCode3<\/deleteDiscount><deleteDiscount>discCode33<\/deleteDiscount><createAddOn><addOnCode>addOnCode1<\/addOnCode><name>name1<\/name><amount>500<\/amount><startDate>2014-03-12<\/startDate><endDate>2014-03-12<\/endDate><\/createAddOn><updateAddOn><addOnCode>addOnCode2<\/addOnCode><\/updateAddOn><deleteAddOn>addOnCode3<\/deleteAddOn><\/updateSubscription>.*/m), is_a(Hash))
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<updateSubscription><subscriptionId>1000<\/subscriptionId><planCode>planCodeString<\/planCode><billToAddress><name>nameString<\/name><\/billToAddress><token><litleToken>litleTokenString<\/litleToken><\/token><billingDate>2014-03-11<\/billingDate><createDiscount><discountCode>discCode1<\/discountCode><name>name1<\/name><amount>500<\/amount><startDate>2014-03-12<\/startDate><endDate>2014-03-12<\/endDate><\/createDiscount><createDiscount><discountCode>discCode11<\/discountCode><name>name11<\/name><amount>5000<\/amount><startDate>2014-03-12<\/startDate><endDate>2014-03-12<\/endDate><\/createDiscount><updateDiscount><discountCode>discCode2<\/discountCode><\/updateDiscount><createAddOn><addOnCode>addOnCode1<\/addOnCode><name>name1<\/name><amount>500<\/amount><startDate>2014-03-12<\/startDate><endDate>2014-03-12<\/endDate><\/createAddOn><updateAddOn><addOnCode>addOnCode2<\/addOnCode><\/updateAddOn><deleteAddOn><addOnCode>addOnCode3<\/addOnCode><\/deleteAddOn><\/updateSubscription>.*/m), is_a(Hash))
       LitleOnlineRequest.new.update_subscription(hash)
     end
 
@@ -150,7 +150,7 @@ module LitleOnline
               {
 		'discountCode'=>'discCode2',
               }],
-              'deleteDiscount'=>['discCode3','discCode33'],
+              'deleteDiscount'=>[{'discountCode'=>'discCode3'},{'discountCode'=>'discCode33'}],
               'createAddOn'=>[
               {
                'addOnCode'=>'addOnCode1',
@@ -163,9 +163,8 @@ module LitleOnline
               {
 		'addOnCode'=>'addOnCode2',
               }],
-              'deleteAddOn'=>['addOnCode3']
              }
-      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<updateSubscription><subscriptionId>1000<\/subscriptionId><planCode>planCodeString<\/planCode><billToAddress><name>nameString<\/name><\/billToAddress><paypage><paypageRegistrationId>paypageString<\/paypageRegistrationId><\/paypage><billingDate>2014-03-11<\/billingDate><createDiscount><discountCode>discCode1<\/discountCode><name>name1<\/name><amount>500<\/amount><startDate>2014-03-12<\/startDate><endDate>2014-03-12<\/endDate><\/createDiscount><createDiscount><discountCode>discCode11<\/discountCode><name>name11<\/name><amount>5000<\/amount><startDate>2014-03-12<\/startDate><endDate>2014-03-12<\/endDate><\/createDiscount><updateDiscount><discountCode>discCode2<\/discountCode><\/updateDiscount><deleteDiscount>discCode3<\/deleteDiscount><deleteDiscount>discCode33<\/deleteDiscount><createAddOn><addOnCode>addOnCode1<\/addOnCode><name>name1<\/name><amount>500<\/amount><startDate>2014-03-12<\/startDate><endDate>2014-03-12<\/endDate><\/createAddOn><updateAddOn><addOnCode>addOnCode2<\/addOnCode><\/updateAddOn><deleteAddOn>addOnCode3<\/deleteAddOn><\/updateSubscription>.*/m), is_a(Hash))
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<updateSubscription><subscriptionId>1000<\/subscriptionId><planCode>planCodeString<\/planCode><billToAddress><name>nameString<\/name><\/billToAddress><paypage><paypageRegistrationId>paypageString<\/paypageRegistrationId><\/paypage><billingDate>2014-03-11<\/billingDate><createDiscount><discountCode>discCode1<\/discountCode><name>name1<\/name><amount>500<\/amount><startDate>2014-03-12<\/startDate><endDate>2014-03-12<\/endDate><\/createDiscount><createDiscount><discountCode>discCode11<\/discountCode><name>name11<\/name><amount>5000<\/amount><startDate>2014-03-12<\/startDate><endDate>2014-03-12<\/endDate><\/createDiscount><updateDiscount><discountCode>discCode2<\/discountCode><\/updateDiscount><deleteDiscount><discountCode>discCode3<\/discountCode><\/deleteDiscount><deleteDiscount><discountCode>discCode33<\/discountCode><\/deleteDiscount><createAddOn><addOnCode>addOnCode1<\/addOnCode><name>name1<\/name><amount>500<\/amount><startDate>2014-03-12<\/startDate><endDate>2014-03-12<\/endDate><\/createAddOn><updateAddOn><addOnCode>addOnCode2<\/addOnCode><\/updateAddOn><\/updateSubscription>.*/m), is_a(Hash))
       LitleOnlineRequest.new.update_subscription(hash)
     end    
    end

@@ -48,7 +48,14 @@ def test_simple_happy
         'reportGroup'=>'Planets',
         'subscriptionId' =>'1001',
 	'billingDate'=>'2014-03-11',
-	'planCode'=>'planCodeString'
+	'planCode'=>'planCodeString',
+        'deleteDiscount'=>[{'discountCode'=>'discCode3'},{'discountCode'=>'discCode33'}],
+        'updateAddOn'=>[
+              {
+		'addOnCode'=>'addOnCode2',
+              }],
+              'deleteAddOn'=>[{'addOnCode'=>'addOnCode3'}]
+             
 	   }
 
     response= LitleOnlineRequest.new.update_subscription(hash)

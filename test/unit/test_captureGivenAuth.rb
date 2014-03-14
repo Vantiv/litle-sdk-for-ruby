@@ -132,6 +132,27 @@ module LitleOnline
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<amount>2<\/amount><orderSource>ecommerce<\/orderSource>.*/m), is_a(Hash))
       LitleOnlineRequest.new.capture_given_auth(hash)
     end
+  
+
+    def test_fraudResult
+      hash = {
+        'amount' => '2',
+        'orderSource' => 'ecommerce',
+        'reportGroup' => 'Planets',
+        'authInformation' => {
+        'authDate'=>'2002-10-09','authCode'=>'543216',
+        'authAmount'=>'12345',
+        'fraudResult' => {
+           'advancedFraudResults' => 
+                    {'deviceReviewStatus' => 'deviceReviewStatusString',
+                     'deviceReputationScore' => '100'
+                    }
+           }
+        }
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<advancedFraudResults><deviceReviewStatus>deviceReviewStatusString<\/deviceReviewStatus><deviceReputationScore>100<\/deviceReputationScore><\/advancedFraudResults>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.capture_given_auth(hash)
+    end
   end
 
 end

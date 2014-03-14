@@ -28,7 +28,7 @@ require 'test/unit'
 module LitleOnline
   class TestActivate < Test::Unit::TestCase
 
-    def test_simple
+    def test_simple_card
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
@@ -45,6 +45,45 @@ module LitleOnline
       }
 
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<activate reportGroup="Planets"><orderId>11<\/orderId><amount>500<\/amount><orderSource>ecommerce<\/orderSource><card><type>VI<\/type><number>4100000000000001<\/number><expDate>1210<\/expDate><\/card><\/activate>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.activate(hash)
+    end
+
+    def test_simple_card
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId' => '11',
+        'amount'  => '500',
+        'orderSource'=>'ecommerce',
+        'card'=>
+                {  
+                 'type'=>'VI',
+                 'number' =>'4100000000000001',
+                 'expDate' =>'1210'
+                }
+      }
+
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<activate reportGroup="Planets"><orderId>11<\/orderId><amount>500<\/amount><orderSource>ecommerce<\/orderSource><card><type>VI<\/type><number>4100000000000001<\/number><expDate>1210<\/expDate><\/card><\/activate>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.activate(hash)
+    end
+
+    def test_simple_virtualGiftcard
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId' => '11',
+        'amount'  => '500',
+        'orderSource'=>'ecommerce',
+        'virtualGiftCard'=>
+                {  
+                 'accountNumberLength'=>'13',
+                 'giftCardBin'=>'giftCardBinString'
+                }
+      }
+
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<activate reportGroup="Planets"><orderId>11<\/orderId><amount>500<\/amount><orderSource>ecommerce<\/orderSource><virtualGiftCard><accountNumberLength>13<\/accountNumberLength><giftCardBin>giftCardBinString<\/giftCardBin><\/virtualGiftCard><\/activate>.*/m), is_a(Hash))
       LitleOnlineRequest.new.activate(hash)
     end
 

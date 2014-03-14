@@ -37,6 +37,7 @@ module LitleOnline
       transaction.surchargeAmount    = options['surchargeAmount']
       transaction.recurringRequest   = RecurringRequest.from_hash(options,'recurringRequest')
       transaction.debtRepayment	     = options['debtRepayment']
+      transaction.advancedFraudChecks = AdvancedFraudChecks.from_hash(options, 'advancedFraudChecks')
       add_transaction_info(transaction, options)
       
       return transaction
@@ -109,7 +110,7 @@ module LitleOnline
           options['updateDiscount'].each_index {| index | transaction.updateDiscount << UpdateDiscount.from_hash(options, index,'updateDiscount')}
         end
       if(options['deleteDiscount'])
-          options['deleteDiscount'].each_index {| index | transaction.deleteDiscount << options['deleteDiscount'][index]}
+          options['deleteDiscount'].each_index {| index | transaction.deleteDiscount << DeleteDiscount.from_hash(options, index,'deleteDiscount')}
         end
       if(options['createAddOn'])
           options['createAddOn'].each_index {| index | transaction.createAddOn << CreateAddOn.from_hash(options, index,'createAddOn')}
@@ -118,7 +119,7 @@ module LitleOnline
           options['updateAddOn'].each_index {| index | transaction.updateAddOn << UpdateAddOn.from_hash(options, index,'updateAddOn')}
         end
       if(options['deleteAddOn'])
-          options['deleteAddOn'].each_index {| index | transaction.deleteAddOn << options['deleteAddOn'][index]}
+          options['deleteAddOn'].each_index {| index | transaction.deleteAddOn << DeleteAddOn.from_hash(options, index,'deleteAddOn')}
         end 
 
       return transaction 
@@ -199,6 +200,7 @@ module LitleOnline
       transaction.recurringRequest    = RecurringRequest.from_hash(options,'recurringRequest')
       transaction.litleInternalRecurringRequest = LitleInternalRecurringRequest.from_hash(options,'litleInternalRecurringRequest')
       transaction.debtRepayment	     = options['debtRepayment']
+      transaction.advancedFraudChecks = AdvancedFraudChecks.from_hash(options, 'advancedFraudChecks')
       return transaction
     end
 

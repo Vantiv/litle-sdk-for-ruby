@@ -296,13 +296,14 @@ module LitleOnline
           'capability' => 'magstripe',
           'entryMode' => 'keyed',
           'cardholderId' => 'nopin',
+          'catLevel' => 'self service' 
         },
         'litleTxnId' => '3',
         'reportGroup' => 'Planets',
         'orderSource' => 'ecommerce',
         'payPalNotes' => 'notes'
       }
-      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<litleTxnId>3<\/litleTxnId><amount>2<\/amount><pos><capability>magstripe<\/capability><entryMode>keyed<\/entryMode><cardholderId>nopin<\/cardholderId><terminalId>abc123<\/terminalId><\/pos><payPalNotes>.*/m), is_a(Hash))
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<litleTxnId>3<\/litleTxnId><amount>2<\/amount><pos><capability>magstripe<\/capability><entryMode>keyed<\/entryMode><cardholderId>nopin<\/cardholderId><terminalId>abc123<\/terminalId><catLevel>self service<\/catLevel><\/pos><payPalNotes>.*/m), is_a(Hash))
       LitleOnlineRequest.new.credit(hash)
     end
     

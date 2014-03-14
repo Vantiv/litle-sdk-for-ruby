@@ -325,12 +325,29 @@ module LitleOnline
     end
   end
   
+  class AdvancedFraudResults
+    include XML::Mapping
+    root_element_name "advanceFraudResults"
+    text_node :deviceReviewStatus, "deviceReviewStatus", :default_value=>nil
+    text_node :deviceReputationScore, "deviceReputationScore", :default_value=>nil
+    def self.from_hash(hash, name="advancedFraudResults")
+      base = hash[name]
+      if(base)
+        this = AdvancedFraudResults.new
+        this.deviceReviewStatus = base['deviceReviewStatus']
+        this.deviceReputationScore = base['deviceReputationScore']
+        this
+      end
+     end
+    end
+
   class FraudResult
     include XML::Mapping
     text_node :avsResult, "avsResult", :default_value=>nil
     text_node :cardValidationResult, "cardValidationResult", :default_value=>nil
     text_node :authenticationResult, "authenticationResult", :default_value=>nil
     text_node :advancedAVSResult, "advancedAVSResult", :default_value=>nil
+    object_node :advancedFraudResults, "advancedFraudResults",:class => AdvancedFraudResults,  :default_value=>nil 
     def self.from_hash(hash, name='fraudResult')
       base = hash[name]
       if(base)
@@ -339,6 +356,7 @@ module LitleOnline
         this.cardValidationResult = base['cardValidationResult']
         this.authenticationResult = base['authenticationResult']
         this.advancedAVSResult = base['advancedAVSResult']
+        this.advancedFraudResults = AdvancedFraudResults.from_hash(base)
         SchemaValidation.validate_length(this.avsResult, false, 1, 2, name, "avsResult")
         SchemaValidation.validate_length(this.authenticationResult, false, 1, 1, name, "authenticationResult")
         SchemaValidation.validate_length(this.advancedAVSResult, false, 1, 3, name, "advancedAVSResult")
@@ -425,6 +443,7 @@ module LitleOnline
     text_node :entryMode, "entryMode", :default_value=>nil
     text_node :cardholderId, "cardholderId", :default_value=>nil
     text_node :terminalId, "terminalId", :default_value=>nil
+    text_node :catLevel, "catLevel", :default_value=>nil
     def self.from_hash(hash, name='pos')
       base = hash[name]
       if(base)
@@ -433,9 +452,11 @@ module LitleOnline
         this.entryMode = base['entryMode']
         this.cardholderId = base['cardholderId']
         this.terminalId = base['terminalId']
+        this.catLevel =base['catLevel'] 
         SchemaValidation.validate_enum(this.capability, true, ['notused','magstripe','keyedonly'], name, 'capability')
         SchemaValidation.validate_enum(this.entryMode, true, ['notused','keyed','track1','track2','completeread'], name, 'entryMode')
         SchemaValidation.validate_enum(this.cardholderId, true, ['signature','pin','nopin','directmarket'], name, 'cardholderId')
+        SchemaValidation.validate_enum(this.catLevel, false, ['self service'], name, 'catLevel')
         this
       else
         nil
@@ -1033,6 +1054,33 @@ module LitleOnline
     end
   end
 
+  class DeleteDiscount
+    include XML::Mapping
+    text_node  :discountCode, "discountCode", :default_value=>nil
+    def self.from_hash(hash,index=0, name="deleteDiscount")
+      base = hash[name][index]
+      if(base)
+        this = DeleteDiscount.new
+        this.discountCode = base['discountCode']
+        SchemaValidation.validate_length(this.discountCode, true, 1, 25, name, 'discountCode')
+        this
+      end
+    end
+  end
+
+  class DeleteAddOn
+    include XML::Mapping
+    text_node  :addOnCode, "addOnCode", :default_value=>nil
+    def self.from_hash(hash,index=0, name="updateDiscount")
+      base = hash[name][index]
+      if(base)
+        this = DeleteAddOn.new
+        this.addOnCode = base['addOnCode']
+        SchemaValidation.validate_length(this.addOnCode, true, 1, 25, name, 'addOnCode')
+        this
+      end
+    end
+  end
 
 
   class UpdateAddOn
@@ -1082,10 +1130,10 @@ module LitleOnline
     text_node :billingDate,'billingDate', :default_value=>nil
     array_node :createDiscount, "", "createDiscount", :class=>CreateDiscount, :default_value=>[]
     array_node :updateDiscount, "", "updateDiscount", :class=>UpdateDiscount, :default_value=>[]
-    array_node :deleteDiscount, "", "deleteDiscount", :default_value=>[]
+    array_node :deleteDiscount, "", "deleteDiscount", :class=>DeleteDiscount,:default_value=>[]
     array_node :createAddOn, "", "createAddOn", :class=>CreateAddOn, :default_value=>[]
     array_node :updateAddOn, "", "updateAddOn", :class=>UpdateAddOn, :default_value=>[]
-    array_node :deleteAddOn, "", "deleteAddOn", :default_value=>[]
+    array_node :deleteAddOn, "", "deleteAddOn", :class=>DeleteAddOn, :default_value=>[]
   end 
 
   class CreatePlan
@@ -1176,6 +1224,21 @@ module LitleOnline
     object_node :card,'card',:class=>Card, :default_value=>nil
   end
 
+  class AdvancedFraudChecks
+    include XML::Mapping
+    root_element_name "advancedFraudChecks"
+    text_node :threatMetrixSessionId, 'threatMetrixSessionId', :default_value=>nil
+    
+    def self.from_hash(hash, name="advancedFraudChecks")
+      base = hash[name]
+      if(base)
+        this = AdvancedFraudChecks.new
+        this.threatMetrixSessionId = base['threatMetrixSessionId']      #   /\A([A-Z,a-z,0-9, ,\*,,,\-,',#,&,.]){4,25}\Z/
+        #SchemaValidation.validate_regex(this.threatMetrixSessionId, true, '[-a-zA-Z0-9_]{1,128}', name, 'threatMetrixSessionId') 
+        this
+      end
+    end
+   end
 
   
   class Authorization
@@ -1213,6 +1276,7 @@ module LitleOnline
     text_node :fraudFilterOverride, "fraudFilterOverride", :default_value=>nil
     object_node :recurringRequest,"recurringRequest", :class=>RecurringRequest, :default_value=>nil
     text_node :debtRepayment,"debtRepayment", :default_value=>nil
+    object_node :advancedFraudChecks, "advancedFraudChecks",:class=>AdvancedFraudChecks, :default_value=>nil
   end
   
   class Sale
@@ -1254,6 +1318,7 @@ module LitleOnline
     object_node :recurringRequest, "recurringRequest", :class=>RecurringRequest, :default_value=>nil
     object_node :litleInternalRecurringRequest, "litleInternalRecurringRequest", :class=>LitleInternalRecurringRequest, :default_value=>nil
     text_node :debtRepayment,"debtRepayment", :default_value=>nil
+    object_node :advancedFraudChecks, "advancedFraudChecks",:class=>AdvancedFraudChecks, :default_value=>nil
   end
   
   class Credit
@@ -1464,6 +1529,8 @@ module LitleOnline
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
   end 
 
+
+
   class EcheckVerification
     include XML::Mapping
     root_element_name "echeckVerification"
@@ -1596,7 +1663,8 @@ module LitleOnline
     :elsif, 'refundReversal', :then, (object_node :refundReversal,"refundReversal", :class=>RefundReversal),
     :elsif, 'deactivateReversal', :then, (object_node :deactivateReversal,"deactivateReversal", :class=>DeactivateReversal),
     :elsif, 'loadReversal', :then, (object_node :loadReversal,"loadReversal", :class=>LoadReversal),
-    :elsif, 'unloadReversal', :then, (object_node :unloadReversal,"unloadReversal", :class=>UnloadReversal)
+    :elsif, 'unloadReversal', :then, (object_node :unloadReversal,"unloadReversal", :class=>UnloadReversal),
+    :elsif, 'advancedFraudResults', :then, (object_node :advancedFraudResults,"advancedFraudResults", :class=>AdvancedFraudResults)
 
     def post_save(xml, options={:Mapping=>:_default})
       xml.each_element() {|el| 

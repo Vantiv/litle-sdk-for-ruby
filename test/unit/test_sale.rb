@@ -386,6 +386,22 @@ module LitleOnline
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<fraudFilterOverride>true<\/fraudFilterOverride><\/sale>.*/m), is_a(Hash))
       LitleOnlineRequest.new.sale(hash)
     end
+
+    def test_advanced_fraud_check
+      hash = {
+        'orderId' => '12344',
+        'amount' => '2',
+        'orderSource' => 'ecommerce',
+        'card' => {
+          'number' => '4141000000000000',
+          'expDate' => '1210',
+          'type' => 'GC'
+        } , 
+        'advancedFraudChecks' => {'threatMetrixSessionId'=>'1234'}
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<advancedFraudChecks><threatMetrixSessionId>1234<\/threatMetrixSessionId><\/advancedFraudChecks>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.sale(hash)
+    end
           
   end
 end

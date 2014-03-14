@@ -28,6 +28,7 @@ require 'test/unit'
 #test Authorization Transaction
 module LitleOnline
   class TestAuth < Test::Unit::TestCase
+
     def test_simple_auth_with_card
       hash = {
         'merchantId' => '101',
@@ -229,6 +230,25 @@ module LitleOnline
         	'cardValidationNum' => '123'
         }
       }
+      response= LitleOnlineRequest.new.authorization(hash)
+      assert_equal('000', response.authorizationResponse.response)
+    end
+
+    def test_simple_auth_with_advanced_fraud_checks
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12355',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000000',
+        'expDate' =>'1210'
+                },
+        'advancedFraudChecks' => {'threatMetrixSessionId'=>'1234'}
+             }
       response= LitleOnlineRequest.new.authorization(hash)
       assert_equal('000', response.authorizationResponse.response)
     end
