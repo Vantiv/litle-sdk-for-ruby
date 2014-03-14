@@ -1075,7 +1075,10 @@ module LitleOnline
     text_node :subscriptionId, "subscriptionId", :default_value=>nil
     text_node :planCode,"planCode",:default_value=>nil
     object_node :billToAddress , 'billToAddress', :class=>Contact, :default_value=>nil
-    object_node :card,'card',:class=>Card, :default_value=>nil
+    #object_node :card,'card',:class=>Card, :default_value=>nil
+    optional_choice_node :if,    'card', :then, (object_node :card, "card", :class=>Card, :default_value=>nil),
+    :elsif, 'token', :then, (object_node :token, "token", :class=>CardToken, :default_value=>nil),
+    :elsif, 'paypage', :then, (object_node :paypage, "paypage", :class=>CardPaypage, :default_value=>nil)
     text_node :billingDate,'billingDate', :default_value=>nil
     array_node :createDiscount, "", "createDiscount", :class=>CreateDiscount, :default_value=>[]
     array_node :updateDiscount, "", "updateDiscount", :class=>UpdateDiscount, :default_value=>[]
@@ -1106,6 +1109,23 @@ module LitleOnline
     text_node :active,"active", :default_value=>nil
   end  
 
+  class VirtualGiftCard
+    include XML::Mapping
+    root_element_name "virtualGiftCard" 
+    text_node "accountNumberLength","accountNumberLength", :default_value=>nil
+    text_node "giftCardBin","giftCardBin", :default_value=>nil
+       
+    def self.from_hash(hash, name="virtualGiftCard")
+      base = hash[name]
+      if(base)
+        this = VirtualGiftCard.new
+        this.accountNumberLength = base['accountNumberLength']
+        this.giftCardBin = base['giftCardBin']
+        this
+      end
+    end
+  end
+
   class Activate
     include XML::Mapping
     root_element_name "activate"
@@ -1113,7 +1133,9 @@ module LitleOnline
     text_node :orderId,'orderId', :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
     text_node :orderSource, "orderSource", :default_value=>nil
-    object_node :card,'card',:class=>Card, :default_value=>nil
+    #object_node :card,'card',:class=>Card, :default_value=>nil
+    optional_choice_node :if,    'card', :then, (object_node :card, "card", :class=>Card),
+    :elsif, 'virtualGiftCard', :then, (object_node :virtualGiftCard, "virtualGiftCard", :class=>VirtualGiftCard)
   end
 
   class Deactivate
@@ -1153,6 +1175,8 @@ module LitleOnline
     text_node :orderSource, "orderSource", :default_value=>nil
     object_node :card,'card',:class=>Card, :default_value=>nil
   end
+
+
   
   class Authorization
     include XML::Mapping
@@ -1379,7 +1403,67 @@ module LitleOnline
   
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
   end
+
+  class DepositReversal
+    include XML::Mapping
+    root_element_name "depositReversal"
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
   
+    text_node :litleTxnId, "litleTxnId", :default_value=>nil
+  end
+
+  class RefundReversal
+    include XML::Mapping
+    root_element_name "refundReversal"
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+  
+    text_node :litleTxnId, "litleTxnId", :default_value=>nil
+  end
+
+  class ActivateReversal
+    include XML::Mapping
+    root_element_name "activateReversal"
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+  
+    text_node :litleTxnId, "litleTxnId", :default_value=>nil
+  end
+
+  class DeactivateReversal
+    include XML::Mapping
+    root_element_name "deactivateReversal"
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+  
+    text_node :litleTxnId, "litleTxnId", :default_value=>nil
+  end
+ 
+  class LoadReversal
+    include XML::Mapping
+    root_element_name "loadReversal"
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+  
+    text_node :litleTxnId, "litleTxnId", :default_value=>nil
+  end
+
+  class UnloadReversal
+    include XML::Mapping
+    root_element_name "unloadReversal"
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+  
+    text_node :litleTxnId, "litleTxnId", :default_value=>nil
+  end 
+
   class EcheckVerification
     include XML::Mapping
     root_element_name "echeckVerification"
@@ -1505,7 +1589,15 @@ module LitleOnline
     :elsif, 'unload',:then,(object_node :unload,"unload", :class=>Unload),
     :elsif, 'balanceInquiry',:then,(object_node :balanceInquiry,"balanceInquiry", :class=>BalanceInquiry),
     :elsif, 'createPlan',:then,(object_node :createPlan,"createPlan",:class=>CreatePlan),
-    :elsif, 'updatePlan',:then,(object_node :updatePlan,"updatePlan",:class=>UpdatePlan)
+    :elsif, 'updatePlan',:then,(object_node :updatePlan,"updatePlan",:class=>UpdatePlan),
+    :elsif, 'virtualGiftCard', :then,(object_node :virtualGiftCard,"virtualGiftCard",:class=>VirtualGiftCard),
+    :elsif, 'activateReversal', :then, (object_node :activateReversal,"activateReversal", :class=>ActivateReversal),
+    :elsif, 'depositReversal', :then, (object_node :depositReversal,"depositReversal", :class=>DepositReversal),
+    :elsif, 'refundReversal', :then, (object_node :refundReversal,"refundReversal", :class=>RefundReversal),
+    :elsif, 'deactivateReversal', :then, (object_node :deactivateReversal,"deactivateReversal", :class=>DeactivateReversal),
+    :elsif, 'loadReversal', :then, (object_node :loadReversal,"loadReversal", :class=>LoadReversal),
+    :elsif, 'unloadReversal', :then, (object_node :unloadReversal,"unloadReversal", :class=>UnloadReversal)
+
     def post_save(xml, options={:Mapping=>:_default})
       xml.each_element() {|el| 
         if(el.name == 'captureTxn')

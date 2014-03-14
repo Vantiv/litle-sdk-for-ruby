@@ -60,6 +60,114 @@ module LitleOnline
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<updateSubscription><subscriptionId>100<\/subscriptionId><planCode>planCodeString<\/planCode><billToAddress><name>nameString<\/name><\/billToAddress><card><type>VI<\/type><number>4100000000000001<\/number><expDate>1210<\/expDate><\/card><billingDate>2014-03-11<\/billingDate><\/updateSubscription>.*/m), is_a(Hash))
       LitleOnlineRequest.new.update_subscription(hash)
     end 
+
+     def test_update_subscription_token
+      hash = {
+              'merchantId' => '101',
+              'version'=>'8.8',
+              'reportGroup'=>'Planets',
+              'subscriptionId' => '1000',
+              'planCode' => 'planCodeString',
+              'billToAddress' =>  
+                {
+                 'name' =>'nameString'               
+                },
+              'token'=>
+                {  
+		'litleToken'=>'litleTokenString'
+                },
+              'billingDate' =>'2014-03-11',
+              'createDiscount'=>[
+              {
+               'discountCode'=>'discCode1',
+               'name'=>'name1',
+               'amount'=>'500',
+               'startDate'=>'2014-03-12',
+               'endDate'=>'2014-03-12',
+              },
+              {
+               'discountCode'=>'discCode11',
+               'name'=>'name11',
+               'amount'=>'5000',
+               'startDate'=>'2014-03-12',
+               'endDate'=>'2014-03-12',
+              }],
+              'updateDiscount'=>[
+              {
+		'discountCode'=>'discCode2',
+              }],
+              'deleteDiscount'=>['discCode3','discCode33'],
+              'createAddOn'=>[
+              {
+               'addOnCode'=>'addOnCode1',
+               'name'=>'name1',
+               'amount'=>'500',
+               'startDate'=>'2014-03-12',
+               'endDate'=>'2014-03-12',
+              }],
+              'updateAddOn'=>[
+              {
+		'addOnCode'=>'addOnCode2',
+              }],
+              'deleteAddOn'=>['addOnCode3']
+             }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<updateSubscription><subscriptionId>1000<\/subscriptionId><planCode>planCodeString<\/planCode><billToAddress><name>nameString<\/name><\/billToAddress><token><litleToken>litleTokenString<\/litleToken><\/token><billingDate>2014-03-11<\/billingDate><createDiscount><discountCode>discCode1<\/discountCode><name>name1<\/name><amount>500<\/amount><startDate>2014-03-12<\/startDate><endDate>2014-03-12<\/endDate><\/createDiscount><createDiscount><discountCode>discCode11<\/discountCode><name>name11<\/name><amount>5000<\/amount><startDate>2014-03-12<\/startDate><endDate>2014-03-12<\/endDate><\/createDiscount><updateDiscount><discountCode>discCode2<\/discountCode><\/updateDiscount><deleteDiscount>discCode3<\/deleteDiscount><deleteDiscount>discCode33<\/deleteDiscount><createAddOn><addOnCode>addOnCode1<\/addOnCode><name>name1<\/name><amount>500<\/amount><startDate>2014-03-12<\/startDate><endDate>2014-03-12<\/endDate><\/createAddOn><updateAddOn><addOnCode>addOnCode2<\/addOnCode><\/updateAddOn><deleteAddOn>addOnCode3<\/deleteAddOn><\/updateSubscription>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.update_subscription(hash)
+    end
+
+     def test_update_subscription_paypage
+      hash = {
+              'merchantId' => '101',
+              'version'=>'8.8',
+              'reportGroup'=>'Planets',
+              'subscriptionId' => '1000',
+              'planCode' => 'planCodeString',
+              'billToAddress' =>  
+                {
+                 'name' =>'nameString'               
+                },
+              'paypage'=>
+                {  
+		'paypageRegistrationId'=>'paypageString'
+                },
+              'billingDate' =>'2014-03-11',
+              'createDiscount'=>[
+              {
+               'discountCode'=>'discCode1',
+               'name'=>'name1',
+               'amount'=>'500',
+               'startDate'=>'2014-03-12',
+               'endDate'=>'2014-03-12',
+              },
+              {
+               'discountCode'=>'discCode11',
+               'name'=>'name11',
+               'amount'=>'5000',
+               'startDate'=>'2014-03-12',
+               'endDate'=>'2014-03-12',
+              }],
+              'updateDiscount'=>[
+              {
+		'discountCode'=>'discCode2',
+              }],
+              'deleteDiscount'=>['discCode3','discCode33'],
+              'createAddOn'=>[
+              {
+               'addOnCode'=>'addOnCode1',
+               'name'=>'name1',
+               'amount'=>'500',
+               'startDate'=>'2014-03-12',
+               'endDate'=>'2014-03-12',
+              }],
+              'updateAddOn'=>[
+              {
+		'addOnCode'=>'addOnCode2',
+              }],
+              'deleteAddOn'=>['addOnCode3']
+             }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<updateSubscription><subscriptionId>1000<\/subscriptionId><planCode>planCodeString<\/planCode><billToAddress><name>nameString<\/name><\/billToAddress><paypage><paypageRegistrationId>paypageString<\/paypageRegistrationId><\/paypage><billingDate>2014-03-11<\/billingDate><createDiscount><discountCode>discCode1<\/discountCode><name>name1<\/name><amount>500<\/amount><startDate>2014-03-12<\/startDate><endDate>2014-03-12<\/endDate><\/createDiscount><createDiscount><discountCode>discCode11<\/discountCode><name>name11<\/name><amount>5000<\/amount><startDate>2014-03-12<\/startDate><endDate>2014-03-12<\/endDate><\/createDiscount><updateDiscount><discountCode>discCode2<\/discountCode><\/updateDiscount><deleteDiscount>discCode3<\/deleteDiscount><deleteDiscount>discCode33<\/deleteDiscount><createAddOn><addOnCode>addOnCode1<\/addOnCode><name>name1<\/name><amount>500<\/amount><startDate>2014-03-12<\/startDate><endDate>2014-03-12<\/endDate><\/createAddOn><updateAddOn><addOnCode>addOnCode2<\/addOnCode><\/updateAddOn><deleteAddOn>addOnCode3<\/deleteAddOn><\/updateSubscription>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.update_subscription(hash)
+    end    
    end
 
 end

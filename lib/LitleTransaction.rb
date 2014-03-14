@@ -54,6 +54,7 @@ module LitleOnline
        transaction.orderSource = options['orderSource']
        transaction.amount = options['amount']
        transaction.card = Card.from_hash(options,'card')
+       transaction.virtualGiftCard = VirtualGiftCard.from_hash(options,'virtualGiftCard')
        return transaction
     end	
 
@@ -98,6 +99,9 @@ module LitleOnline
       transaction.billToAddress=Contact.from_hash(options,'billToAddress')
       transaction.card=Card.from_hash(options,'card')
       transaction.billingDate=options['billingDate']
+      transaction.card                  = Card.from_hash(options)
+      transaction.token                 = CardToken.from_hash(options,'token')
+      transaction.paypage               = CardPaypage.from_hash(options,'paypage')
       if(options['createDiscount'])
           options['createDiscount'].each_index {| index | transaction.createDiscount << CreateDiscount.from_hash(options, index,'createDiscount')}
         end
@@ -140,7 +144,50 @@ module LitleOnline
      transaction.active=options['active']
      return transaction 
     end
-    
+
+    def virtual_giftcard(options)
+     transaction = VirtualGiftCard.new     
+     transaction.accountNumberLength = options['accountNumberLength']     
+     transaction.giftCardBin = options['giftCardBin']
+     return transaction
+    end
+   
+    def activate_reversal(options)
+      transaction = ActivateReversal.new
+      transaction.litleTxnId = options['litleTxnId']
+      return transaction
+    end 
+
+    def deposit_reversal(options)
+      transaction = DepositReversal.new
+      transaction.litleTxnId = options['litleTxnId']
+      return transaction
+    end 
+
+    def refund_reversal(options)
+      transaction = RefundReversal.new
+      transaction.litleTxnId = options['litleTxnId']
+      return transaction
+    end 
+
+    def deactivate_reversal(options)
+      transaction = DeactivateReversal.new
+      transaction.litleTxnId = options['litleTxnId']
+      return transaction
+    end 
+
+    def load_reversal(options)
+      transaction = LoadReversal.new
+      transaction.litleTxnId = options['litleTxnId']
+      return transaction
+    end 
+
+    def unload_reversal(options)
+      transaction = UnloadReversal.new
+      transaction.litleTxnId = options['litleTxnId']
+      return transaction
+    end 
+
     def sale(options)
       transaction = Sale.new
       add_transaction_info(transaction, options)

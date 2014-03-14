@@ -25,75 +25,31 @@ OTHER DEALINGS IN THE SOFTWARE.
 require 'lib/LitleOnline'
 require 'test/unit'
 
-#test Activate Transaction
+#test DepositReversal Transaction
 module LitleOnline
- class TestActivate < Test::Unit::TestCase
+ class TestDepositReversal < Test::Unit::TestCase
   
-def test_simple_card_happy
+def test_simple
     hash = {
         'merchantId' => '101',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
-        'orderId' =>'1001',
-        'amount' =>'500',
-        'orderSource' =>'ecommerce',
-        'card'=>{
-        'type'=>'VI',
-        'number' =>'4100000000000001',
-        'expDate' =>'1210'
-                }
+        'litleTxnId' =>'5000'
 	   }
 
-    response= LitleOnlineRequest.new.activate(hash)
+    response= LitleOnlineRequest.new.deposit_reversal(hash)
     assert_equal('Valid Format', response.message)
   end
 
-def test_simple_virtualGiftCard_happy
-    hash = {
-        'merchantId' => '101',
-        'version'=>'8.8',
-        'reportGroup'=>'Planets',
-        'orderId' =>'1001',
-        'amount' =>'500',
-        'orderSource' =>'ecommerce',
-        'virtualGiftCard'=>{
-          'accountNumberLength'=>'13',
-          'giftCardBin'=>'giftCardBinString'
-                }
-	   }
-
-    response= LitleOnlineRequest.new.activate(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-  def test_simple_out_of_order
-    hash = {
-        'merchantId' => '101',
-        'version'=>'8.8',
-        'reportGroup'=>'Planets',
-        'amount' =>'500',
-        'orderId' =>'1001',
-        'orderSource' =>'ecommerce',
-        'card'=>{
-        'type'=>'VI',
-        'number' =>'4100000000000001',
-        'expDate' =>'1210'
-                }
-	   }
-
-    response= LitleOnlineRequest.new.activate(hash)
-    assert_equal('Valid Format', response.message)
-  end
 
   def test_simple_error
     hash = {
         'merchantId' => '101',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
-        'amount' =>'500',	
 	   }
 
-    response= LitleOnlineRequest.new.activate(hash)
+    response= LitleOnlineRequest.new.deposit_reversal(hash)
     assert(response.message =~ /Error validating xml data against the schema/)
   end
  end
