@@ -294,12 +294,6 @@ module LitleOnline
           batch.sale(saleHash)
         }
          
-        cancelSubscriptionHash = 
-             {
-              'subscriptionId'=>'100'
-             }
-        batch.cancel_subscription(cancelSubscriptionHash)
-
         #close the batch, indicating we plan to add no more transactions
         batch.close_batch()
         entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
