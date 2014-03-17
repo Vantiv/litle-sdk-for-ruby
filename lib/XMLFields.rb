@@ -330,12 +330,16 @@ module LitleOnline
     root_element_name "advanceFraudResults"
     text_node :deviceReviewStatus, "deviceReviewStatus", :default_value=>nil
     text_node :deviceReputationScore, "deviceReputationScore", :default_value=>nil
+    array_node :triggeredRule, "", "triggeredRule", :default_value=>[]
     def self.from_hash(hash, name="advancedFraudResults")
       base = hash[name]
       if(base)
         this = AdvancedFraudResults.new
         this.deviceReviewStatus = base['deviceReviewStatus']
         this.deviceReputationScore = base['deviceReputationScore']
+        if(base['triggeredRule'])
+            base['triggeredRule'].each_index {|index| this.triggeredRule << base['triggeredRule'][index]}
+        end
         this
       end
      end

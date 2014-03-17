@@ -25,12 +25,9 @@ OTHER DEALINGS IN THE SOFTWARE.
 require 'test/unit'
 require 'lib/LitleOnline'
 
-
+require_relative 'test_captureGivenAuth'
 require_relative 'test_sale'
-
 require_relative 'test_LitleOnlineRequest'
-
-
 require_relative 'test_xmlfields'
 require_relative 'test_updateSubscription'
 require_relative 'test_auth'
@@ -39,7 +36,6 @@ require_relative 'test_credit'
 require_relative 'test_token'
 require_relative 'test_forceCapture'
 require_relative 'test_capture'
-require_relative 'test_captureGivenAuth'
 require_relative 'test_auth'
 require_relative 'test_echeckRedeposit'
 require_relative 'test_echeckSale'
@@ -58,7 +54,6 @@ require_relative 'test_unload'
 require_relative 'test_balanceInquiry'
 require_relative 'test_createPlan'
 require_relative 'test_updatePlan'
-
 require_relative 'test_activate'
 require_relative 'test_activateReversal'
 require_relative 'test_depositReversal'
@@ -66,4 +61,3 @@ require_relative 'test_refundReversal'
 require_relative 'test_loadReversal'
 require_relative 'test_unloadReversal'
 require_relative 'test_deactivateReversal'
-

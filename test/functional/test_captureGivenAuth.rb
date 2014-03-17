@@ -149,7 +149,8 @@ module LitleOnline
         'authAmount'=>'12345','fraudResult'=>{'avsResult'=>'12','cardValidationResult'=>'123','authenticationResult'=>'1',
         'advancedAVSResult'=>'123',
         'advancedFraudResults' => {'deviceReviewStatus' => 'deviceReviewStatusString',
-                                   'deviceReputationScore' => '100'
+                                   'deviceReputationScore' => '100',
+                                   'triggeredRule' => ['rule1','rule2']
                                   }
                               }
         },
