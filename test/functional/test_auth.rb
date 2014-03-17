@@ -252,6 +252,23 @@ module LitleOnline
       response= LitleOnlineRequest.new.authorization(hash)
       assert_equal('000', response.authorizationResponse.response)
     end
-    
+
+    def test_simple_auth_with_mpos
+      hash = {
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'mpos'=>
+		{
+		'ksn'=>'ksnString',
+		'formatId'=>'30',
+		'encryptedTrack'=>'encryptedTrackString',
+		'track1Status'=>'0',
+		'track2Status'=>'0'
+		}
+      }
+      response= LitleOnlineRequest.new.authorization(hash)
+      assert_equal('000', response.authorizationResponse.response)
+    end
   end
 end  

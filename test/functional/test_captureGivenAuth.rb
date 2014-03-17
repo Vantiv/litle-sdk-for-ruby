@@ -183,5 +183,30 @@ module LitleOnline
       response= LitleOnlineRequest.new.capture_given_auth(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
+
+    def test_simple_captureGivenAuth_with_mpos
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'authInformation' => {
+        'authDate'=>'2002-10-09','authCode'=>'543216',
+        'authAmount'=>'12345'
+        },
+        'orderSource'=>'ecommerce',
+        'mpos'=>
+		{
+		'ksn'=>'ksnString',
+		'formatId'=>'30',
+		'encryptedTrack'=>'encryptedTrackString',
+		'track1Status'=>'0',
+		'track2Status'=>'0'
+		}
+      }
+      response= LitleOnlineRequest.new.capture_given_auth(hash)
+      assert_equal('Valid Format', response.message)
+    end
   end
 end

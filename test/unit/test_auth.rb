@@ -335,6 +335,24 @@ module LitleOnline
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<advancedFraudChecks><threatMetrixSessionId>1234<\/threatMetrixSessionId><\/advancedFraudChecks>.*/m), is_a(Hash))
       LitleOnlineRequest.new.authorization(hash)
     end
-  end
 
+    def test_mpos
+      hash = {
+        'orderId' => '12344',
+        'amount' => '2',
+        'orderSource' => 'ecommerce',
+        'mpos'=>
+		{
+		'ksn'=>'ksnString',
+		'formatId'=>'30',
+		'encryptedTrack'=>'encryptedTrackString',
+		'track1Status'=>'0',
+		'track2Status'=>'0'
+		} 
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<mpos><ksn>ksnString<\/ksn><formatId>30<\/formatId><encryptedTrack>encryptedTrackString<\/encryptedTrack><track1Status>0<\/track1Status><track2Status>0<\/track2Status><\/mpos>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.authorization(hash)
+    end
+
+  end
 end

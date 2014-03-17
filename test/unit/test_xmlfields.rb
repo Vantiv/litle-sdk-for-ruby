@@ -2906,6 +2906,25 @@ module LitleOnline
 
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<unloadReversal reportGroup="Planets"><litleTxnId>111<\/litleTxnId><\/unloadReversal>.*/m), is_a(Hash))
       LitleOnlineRequest.new.unload_reversal(hash)
-    end		
+    end	
+
+    def test_mpos_type
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'mpos'=>
+		{
+		'ksn'=>'ksnString',
+		'formatId'=>'30',
+		'encryptedTrack'=>'encryptedTrackString',
+		'track1Status'=>'0',
+		'track2Status'=>'0'
+		}
+      }
+  
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<mpos><ksn>ksnString<\/ksn><formatId>30<\/formatId><encryptedTrack>encryptedTrackString<\/encryptedTrack><track1Status>0<\/track1Status><track2Status>0<\/track2Status><\/mpos>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.authorization(hash)
+    end	
   end
 end

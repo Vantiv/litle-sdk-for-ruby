@@ -216,6 +216,7 @@ module LitleOnline
         transaction.card                  = Card.from_hash(options)
         transaction.token                 = CardToken.from_hash(options,'token')
         transaction.paypage               = CardPaypage.from_hash(options,'paypage')
+        transaction.mpos                  = Mpos.from_hash(options,'mpos') 
       end
       transaction.amount                  = options['amount']
       transaction.surchargeAmount         = options['surchargeAmount']
@@ -227,7 +228,7 @@ module LitleOnline
       transaction.payPalNotes             = options['payPalNotes']
       transaction.actionReason            = options['actionReason']
       transaction.paypal                  = CreditPayPal.from_hash(options,'paypal')
-
+      
       add_account_info(transaction, options)
       return transaction
     end
@@ -420,7 +421,7 @@ module LitleOnline
       transaction.card                    = Card.from_hash(options)
       transaction.token                   = CardToken.from_hash(options,'token')
       transaction.paypage                 = CardPaypage.from_hash(options,'paypage')
-      
+      transaction.mpos                    = Mpos.from_hash(options,'mpos')
       add_account_info(transaction, options)
     end
 

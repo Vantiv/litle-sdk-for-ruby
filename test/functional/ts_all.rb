@@ -26,21 +26,18 @@ OTHER DEALINGS IN THE SOFTWARE.
 require 'lib/LitleOnline'
 
 
-require_relative 'test_captureGivenAuth'
-
 #test driver for running all tests
-require_relative 'test_auth'
 require_relative 'test_updateSubscription'
-
+require_relative 'test_captureGivenAuth'
 require_relative 'test_xmlfields'
 require_relative 'test_sale'
 require_relative 'test_captureGivenAuth'
 require_relative 'test_authReversal'
 require_relative 'test_credit'
+require_relative 'test_auth'
 require_relative 'test_token'
 require_relative 'test_forceCapture'
 require_relative 'test_capture'
-
 require_relative 'test_echeckRedeposit'
 require_relative 'test_echeckSale'
 require_relative 'test_echeckCredit'
@@ -65,4 +62,3 @@ require_relative 'test_refundReversal'
 require_relative 'test_loadReversal'
 require_relative 'test_unloadReversal'
 require_relative 'test_deactivateReversal'
-

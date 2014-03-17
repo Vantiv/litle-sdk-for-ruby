@@ -136,6 +136,28 @@ module LitleOnline
       response= LitleOnlineRequest.new.force_capture(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
+
+    def test_simple_forceCapture_with_mpos
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'mpos'=>
+		{
+		'ksn'=>'ksnString',
+		'formatId'=>'30',
+		'encryptedTrack'=>'encryptedTrackString',
+		'track1Status'=>'0',
+		'track2Status'=>'0'
+		}
+      }
+      response= LitleOnlineRequest.new.force_capture(hash)
+      assert_equal('000', response.forceCaptureResponse.response)
+    end
   
   end
 

@@ -25,10 +25,11 @@ OTHER DEALINGS IN THE SOFTWARE.
 require 'test/unit'
 require 'lib/LitleOnline'
 
+
+require_relative 'test_xmlfields'
 require_relative 'test_captureGivenAuth'
 require_relative 'test_sale'
 require_relative 'test_LitleOnlineRequest'
-require_relative 'test_xmlfields'
 require_relative 'test_updateSubscription'
 require_relative 'test_auth'
 require_relative 'test_authReversal'

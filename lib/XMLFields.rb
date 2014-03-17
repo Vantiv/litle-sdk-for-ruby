@@ -650,6 +650,33 @@ module LitleOnline
       end
     end
   end
+
+  class Mpos
+    include XML::Mapping
+    text_node :ksn, "ksn", :default_value=>nil
+    text_node :formatId, "formatId", :default_value=>nil
+    text_node :encryptedTrack, "encryptedTrack", :default_value=>nil
+    text_node :track1Status,"track1Status", :default_value=>nil
+    text_node :track2Status,"track2Status", :default_value=>nil
+    def self.from_hash(hash, name='mpos')
+      base = hash[name]
+      if(base)
+      this = Mpos.new
+      this.ksn = base['ksn']
+      this.formatId = base['formatId']
+      this.encryptedTrack = base['encryptedTrack'] 
+      this.track1Status = base['track1Status']
+      this.track2Status = base['track2Status']
+      SchemaValidation.validate_length(this.ksn, true, 1, 1028 , name, 'ksn')
+      SchemaValidation.validate_length(this.formatId, true, 1, 1028, name, 'formatId')
+      SchemaValidation.validate_length(this.encryptedTrack, true, 1, 1028, name, 'encryptedTrack')
+      SchemaValidation.validate_size(this.track1Status, true, 0, 1028, name, 'track1Status')
+      SchemaValidation.validate_size(this.track2Status, true, 0, 1028, name, 'track2Status')    
+      this
+      end
+    end
+
+  end
   
   class CardToken
     include XML::Mapping
@@ -1263,7 +1290,8 @@ module LitleOnline
     optional_choice_node :if,    'card', :then, (object_node :card, "card", :class=>Card),
     :elsif, 'paypal', :then, (object_node :paypal, "paypal", :class=>PayPal),
     :elsif, 'token', :then, (object_node :token, "token", :class=>CardToken),
-    :elsif, 'paypage', :then, (object_node :paypage, "paypage", :class=>CardPaypage)
+    :elsif, 'paypage', :then, (object_node :paypage, "paypage", :class=>CardPaypage),
+    :elsif, 'mpos', :then, (object_node :mpos, "mpos", :class=>Mpos)
     object_node :billMeLaterRequest, "billMeLaterRequest", :class=>BillMeLaterRequest, :default_value=>nil
     object_node :cardholderAuthentication, "cardholderAuthentication", :class=>FraudCheck, :default_value=>nil
     object_node :processingInstructions, "processingInstructions", :class=>ProcessingInstructions, :default_value=>nil
@@ -1301,7 +1329,8 @@ module LitleOnline
     optional_choice_node :if,    'card', :then, (object_node :card, "card", :class=>Card),
     :elsif, 'paypal', :then, (object_node :paypal, "paypal", :class=>PayPal),
     :elsif, 'token', :then, (object_node :token, "token", :class=>CardToken),
-    :elsif, 'paypage', :then, (object_node :paypage, "paypage", :class=>CardPaypage)
+    :elsif, 'paypage', :then, (object_node :paypage, "paypage", :class=>CardPaypage),
+    :elsif, 'mpos', :then, (object_node :mpos, "mpos", :class=>Mpos)
     object_node :billMeLaterRequest, "billMeLaterRequest", :class=>BillMeLaterRequest, :default_value=>nil
     optional_choice_node :if,    'fraudCheck',               :then, (object_node :fraudCheck,               "fraudCheck",               :class=>FraudCheck, :default_value=>nil),
                          :elsif, 'cardholderAuthentication', :then, (object_node :cardholderAuthentication, "cardholderAuthentication", :class=>FraudCheck, :default_value=>nil)
@@ -1341,7 +1370,8 @@ module LitleOnline
     optional_choice_node :if,    'card', :then, (object_node :card, "card", :class=>Card),
     :elsif, 'paypal', :then, (object_node :paypal, "paypal", :class=>CreditPayPal),
     :elsif, 'token', :then, (object_node :token, "token", :class=>CardToken),
-    :elsif, 'paypage', :then, (object_node :paypage, "paypage", :class=>CardPaypage)
+    :elsif, 'paypage', :then, (object_node :paypage, "paypage", :class=>CardPaypage),
+    :elsif, 'mpos', :then, (object_node :mpos, "mpos", :class=>Mpos)
     object_node :customBilling, "customBilling", :class=>CustomBilling, :default_value=>nil
     text_node :taxType, "taxType", :default_value=>nil
     object_node :billMeLaterRequest, "billMeLaterRequest", :class=>BillMeLaterRequest, :default_value=>nil
@@ -1383,7 +1413,8 @@ module LitleOnline
     object_node :shipToAddress, "shipToAddress", :class=>Contact, :default_value=>nil
     optional_choice_node :if,    'card', :then, (object_node :card, "card", :class=>Card),
     :elsif, 'token', :then, (object_node :token, "token", :class=>CardToken),
-    :elsif, 'paypage', :then, (object_node :paypage, "paypage", :class=>CardPaypage)
+    :elsif, 'paypage', :then, (object_node :paypage, "paypage", :class=>CardPaypage),
+    :elsif, 'mpos', :then, (object_node :mpos, "mpos", :class=>Mpos)
     object_node :customBilling, "customBilling", :class=>CustomBilling, :default_value=>nil
     text_node :taxType, "taxType", :default_value=>nil
     object_node :billMeLaterRequest, "billMeLaterRequest", :class=>BillMeLaterRequest, :default_value=>nil
@@ -1409,7 +1440,8 @@ module LitleOnline
     object_node :billToAddress, "billToAddress", :class=>Contact, :default_value=>nil
     optional_choice_node :if,    'card', :then, (object_node :card, "card", :class=>Card),
     :elsif, 'token', :then, (object_node :token, "token", :class=>CardToken),
-    :elsif, 'paypage', :then, (object_node :paypage, "paypage", :class=>CardPaypage)
+    :elsif, 'paypage', :then, (object_node :paypage, "paypage", :class=>CardPaypage),
+    :elsif, 'mpos', :then, (object_node :mpos, "mpos", :class=>Mpos)
     object_node :customBilling, "customBilling", :class=>CustomBilling, :default_value=>nil
     text_node :taxType, "taxType", :default_value=>nil
     object_node :enhancedData, "enhancedData", :class=>EnhancedData, :default_value=>nil

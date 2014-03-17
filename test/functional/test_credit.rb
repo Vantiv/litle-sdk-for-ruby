@@ -132,5 +132,26 @@ module LitleOnline
       response= LitleOnlineRequest.new.credit(hash)
       assert_equal('Valid Format', response.message)
     end
+
+    def test_simple_credit_with_mpos
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'mpos'=>
+		{
+		'ksn'=>'ksnString',
+		'formatId'=>'30',
+		'encryptedTrack'=>'encryptedTrackString',
+		'track1Status'=>'0',
+		'track2Status'=>'0'
+		}
+      }
+      response= LitleOnlineRequest.new.credit(hash)
+      assert_equal('Valid Format', response.message)
+    end
   end
 end
