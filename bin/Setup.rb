@@ -46,7 +46,7 @@ class Setup
       f.puts "  DEFAULT: " + gets
       f.puts "default_report_group: 'Default Report Group'"
       
-      puts "Please choose Litle url from the following list (example: 'cert') or directly input another URL: \nsandbox => https://www.testlitle.com/sandbox/communicator/online \ncert => https://cert.litle.com/vap/communicator/online \nprecert => https://precert.litle.com/vap/communicator/online \nproduction1 => https://payments.litle.com/vap/communicator/online \nproduction2 => https://payments2.litle.com/vap/communicator/online"
+      puts "Please choose Litle url from the following list (example: 'prelive') or directly input another URL: \nsandbox => https://www.testlitle.com/sandbox/communicator/online \nprelive => https://prelive.litle.com/vap/communicator/online \npostlive => https://postlive.litle.com/vap/communicator/online \nproduction => https://payments.litle.com/vap/communicator/online \ntransact_prelive => https://transact-prelive.litle.com/vap/communicator/online \ntransact_postlive => https://transact-postlive.litle.com/vap/communicator/online \ntransact_production => https://transact.litle.com/vap/communicator/online \ntransact_betacert => https://transact-betacert.litle.com/vap/communicator/online \nbetacert => https://betacert.litle.com/vap/communicator/online"
       f.puts "url: " + Setup.choice(gets)
       puts "Please input the proxy address, if no proxy hit enter key: "
       f.puts	"proxy_addr: " + gets
@@ -77,12 +77,22 @@ class Setup
     litle_online_ctx = 'vap/communicator/online'
     if litle_env == "sandbox\n"
       return 'https://www.testlitle.com/sandbox/communicator/online'
-    elsif litle_env == "cert\n"
-      return 'https://cert.litle.com/' + litle_online_ctx
-    elsif litle_env == "precert\n"
-      return 'https://precert.litle.com/' + litle_online_ctx
-    elsif litle_env == "production1\n"
+    elsif litle_env == "prelive\n"
+      return 'https://prelive.litle.com/' + litle_online_ctx
+    elsif litle_env == "postlive\n"
+      return 'https://postlive.litle.com/' + litle_online_ctx
+    elsif litle_env == "betacert\n"
+      return 'https://betacert.litle.com/' + litle_online_ctx
+    elsif litle_env == "production\n"
       return 'https://payments.litle.com/' + litle_online_ctx
+    elsif litle_env == "transact_production\n"
+      return 'https://transact.litle.com/' + litle_online_ctx
+    elsif litle_env == "transact_prelive\n"
+      return 'https://transact-prelive.litle.com/' + litle_online_ctx
+    elsif litle_env == "transact_postlive\n"
+      return 'https://transact-postlive.litle.com/' + litle_online_ctx
+    elsif litle_env == "transact_betacert\n"
+      return 'https://transact-betacert.litle.com/' + litle_online_ctx
     else
       return 'https://www.testlitle.com/sandbox/communicator/online'
     end
