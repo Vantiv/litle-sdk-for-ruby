@@ -23,7 +23,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
 
-require_relative '../../lib/LitleOnline'
+ require_relative '../../lib/LitleOnline'
 
 
 #test driver for running all tests
