@@ -24,7 +24,6 @@ OTHER DEALINGS IN THE SOFTWARE.
 =end
 
 require 'yaml'
-
 #
 # Loads the configuration from a file
 #
@@ -40,13 +39,29 @@ module LitleOnline
         if !(ENV['LITLE_CONFIG_DIR'].nil?)
           config_file = ENV['LITLE_CONFIG_DIR'] + "/.litle_SDK_config.yml"
         else
-          config_file = ENV['HOME'] + "/.litle_SDK_config.yml"
+          config_file = ENV['HOME'] + "/.litle_SDK_config.yml"        
         end
-        return YAML.load_file(config_file)
-      rescue
+        #if Env variable exist, then just override the data from config file
+         if (File.exists?(config_file))
+          datas=YAML.load_file(config_file)  
+         else         
+          environments = EnvironmentVariables.new   
+          datas={}
+          environments.instance_variables.each {|var| datas[var.to_s.delete("@")] = environments.instance_variable_get(var) }          
+         end
+          datas.each {|key,value| setENV(key,datas)}                      
+        return datas
+      rescue   
         return {}
       end
   
     end
+    def setENV(key,datas)
+      if !(ENV['litle_'+key].nil?)
+       datas[key]=ENV['litle_'+key]
+      end
+    end
+    
   end
+
 end

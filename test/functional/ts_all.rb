@@ -23,7 +23,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
 
-require 'lib/LitleOnline'
+require_relative '../../lib/LitleOnline'
 
 
 #test driver for running all tests
@@ -62,3 +62,5 @@ require_relative 'test_refundReversal'
 require_relative 'test_loadReversal'
 require_relative 'test_unloadReversal'
 require_relative 'test_deactivateReversal'
+require_relative 'test_override'
+require_relative 'test_configuration'

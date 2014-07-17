@@ -23,7 +23,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
 require 'test/unit'
-require 'lib/LitleOnline'
+require '../../lib/LitleOnline'
 
 
 require_relative 'test_xmlfields'
@@ -62,3 +62,4 @@ require_relative 'test_refundReversal'
 require_relative 'test_loadReversal'
 require_relative 'test_unloadReversal'
 require_relative 'test_deactivateReversal'
+
