@@ -1,4 +1,4 @@
-require '../../lib/LitleOnline'
+require File.expand_path("../../../lib/LitleOnline",__FILE__) 
 require 'test/unit'
 
 #test Activate Transaction

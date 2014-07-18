@@ -1,4 +1,4 @@
-require_relative '../../lib/LitleOnline'
+require File.expand_path("../../../lib/LitleOnline",__FILE__) 
 #require 'Litle_activemerchant'
 require 'test/unit'
 
