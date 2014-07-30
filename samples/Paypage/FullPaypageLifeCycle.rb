@@ -1,0 +1,63 @@
+require 'LitleOnline'
+include LitleOnline
+ 
+hash = {
+  'orderId'=>'1234',
+  'amount'=>'106',
+  'orderSource'=>'ecommerce',
+  'paypage'=>{
+    'type'=>'VI',
+    'paypageRegistrationId' =>'QU1pTFZnV2NGQWZrZzRKeTNVR0lzejB1K2Q5VDdWMTVqb2J5WFJ2Snh4U0U4eTBxaFg2cEVWaDBWSlhtMVZTTw==',
+    'expDate' =>'1210',
+    'cardValidationNum' => '123'
+  }
+}
+auth_response = LitleOnlineRequest.new.authorization(hash)
+#display results, sample output from sandbox
+puts "Response: " + auth_response.authorizationResponse.response #prints 000
+puts "Message: " + auth_response.authorizationResponse.message #prints Approved
+puts "Litle Transaction ID: " + auth_response.authorizationResponse.litleTxnId #prints 492578641509469583
+puts "Litle Token: " + auth_response.authorizationResponse.tokenResponse.litleToken #prints 1234567890123456 - save this away so you can issue future authorizations against it
+ 
+#Now, we capture the authorization
+hash = {
+  'litleTxnId'=>auth_response.authorizationResponse.litleTxnId #Use the litleTxnId from the auth we want to capture
+}
+capture_response = LitleOnlineRequest.new.capture(hash)
+puts "Response: " + capture_response.captureResponse.response
+puts "Message: " + capture_response.captureResponse.message
+puts "Litle Transaction ID: " + capture_response.captureResponse.litleTxnId
+ 
+#Now, we issue a refund against the capture
+hash = {
+  'litleTxnId'=>capture_response.captureResponse.litleTxnId #Use the litleTxnId from the capture we want to refund against
+}
+credit_response = LitleOnlineRequest.new.credit(hash)
+puts "Response: " + credit_response.creditResponse.response
+puts "Message: " + credit_response.creditResponse.message
+puts "Litle Transaction ID: " + credit_response.creditResponse.litleTxnId
+ 
+#Now, we issue an auth reversal against the refund
+hash = {
+  'litleTxnId'=>credit_response.creditResponse.litleTxnId #Use the litleTxnId from the capture we want to refund against
+}
+reversal_response = LitleOnlineRequest.new.auth_reversal(hash)
+puts "Response: " + reversal_response.authReversalResponse.response
+puts "Message: " + reversal_response.authReversalResponse.message
+puts "Litle Transaction ID: " + reversal_response.authReversalResponse.litleTxnId
+ 
+#Let's assume next month we want to create a sale for the same card as the original authorization.  The paypageRegistrationId is expired, but we have the token and can use it
+hash = {
+  'orderId'=>'4321',
+  'amount'=>'106',
+  'orderSource'=>'ecommerce',
+  'token'=>{
+    'type'=>'VI',
+    'litleToken' => auth_response.authorizationResponse.tokenResponse.litleToken,
+    'expDate' =>'1210'
+  }
+}
+sale_response = LitleOnlineRequest.new.sale(hash)
+puts "Response: " + sale_response.saleResponse.response
+puts "Message: " + sale_response.saleResponse.message
+puts "Litle Transaction ID: " + sale_response.saleResponse.litleTxnId
