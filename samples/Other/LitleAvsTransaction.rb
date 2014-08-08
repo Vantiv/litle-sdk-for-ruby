@@ -29,3 +29,7 @@ puts "Response: " + auth_response.authorizationResponse.response
 puts "Message: " + auth_response.authorizationResponse.message
 puts "Litle Transaction ID: " + auth_response.authorizationResponse.litleTxnId
 puts "AVS Match: " + auth_response.authorizationResponse.fraudResult.avsResult
+
+ if (!auth_response.authorizationResponse.message.eql?'Approved')
+   raise ArgumentError, "LitleAvsTransaction has not been Approved", caller
+ end

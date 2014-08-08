@@ -19,6 +19,9 @@ puts "Message: " + auth_response.authorizationResponse.message #prints Approved
 puts "Litle Transaction ID: " + auth_response.authorizationResponse.litleTxnId #prints 492578641509469583
 puts "Litle Token: " + auth_response.authorizationResponse.tokenResponse.litleToken #prints 1234567890123456 - save this away so you can issue future authorizations against it
  
+ if (!auth_response.authorizationResponse.message.eql?'Approved')
+   raise ArgumentError, "FullPaypageLifeCycle's auth has not been Approved", caller
+ end
 #Now, we capture the authorization
 hash = {
   'litleTxnId'=>auth_response.authorizationResponse.litleTxnId #Use the litleTxnId from the auth we want to capture
@@ -27,7 +30,10 @@ capture_response = LitleOnlineRequest.new.capture(hash)
 puts "Response: " + capture_response.captureResponse.response
 puts "Message: " + capture_response.captureResponse.message
 puts "Litle Transaction ID: " + capture_response.captureResponse.litleTxnId
- 
+
+  if (!capture_response.captureResponse.message.eql?'Approved')
+   raise ArgumentError, "FullPaypageLifeCycle's capture has not been Approved", caller
+ end
 #Now, we issue a refund against the capture
 hash = {
   'litleTxnId'=>capture_response.captureResponse.litleTxnId #Use the litleTxnId from the capture we want to refund against
@@ -45,7 +51,10 @@ reversal_response = LitleOnlineRequest.new.auth_reversal(hash)
 puts "Response: " + reversal_response.authReversalResponse.response
 puts "Message: " + reversal_response.authReversalResponse.message
 puts "Litle Transaction ID: " + reversal_response.authReversalResponse.litleTxnId
- 
+
+ if (!reversal_response.authReversalResponse.message.eql?'Approved')
+   raise ArgumentError, "FullPaypageLifeCycle's reversal has not been Approved", caller
+ end
 #Let's assume next month we want to create a sale for the same card as the original authorization.  The paypageRegistrationId is expired, but we have the token and can use it
 hash = {
   'orderId'=>'4321',
@@ -61,3 +70,7 @@ sale_response = LitleOnlineRequest.new.sale(hash)
 puts "Response: " + sale_response.saleResponse.response
 puts "Message: " + sale_response.saleResponse.message
 puts "Litle Transaction ID: " + sale_response.saleResponse.litleTxnId
+
+if (!sale_response.saleResponse.message.eql?'Approved')
+   raise ArgumentError, "FullPaypageLifeCycle's sale has not been Approved", caller
+ end

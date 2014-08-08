@@ -14,7 +14,7 @@ my_sale_info = {
   'zip' => '01803-3747',
   'country' => 'US'},
   'card'=>{
-  'number' =>'5***********5100',
+  'number' =>'4100000000000001',
   'expDate' => '0112',
   'cardValidationNum' => '349',
   'type' => 'MC'}
@@ -25,3 +25,7 @@ sale_response = LitleOnlineRequest.new.sale(my_sale_info)
 puts "Response: " + sale_response.saleResponse.response
 puts "Message: " + sale_response.saleResponse.message
 puts "Litle Transaction ID: " + sale_response.saleResponse.litleTxnId
+
+if (!sale_response.saleResponse.message.eql?'Approved')
+   raise ArgumentError, "LitleSaleTransaction has not been Approved", caller
+end

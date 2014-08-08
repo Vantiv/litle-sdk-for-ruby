@@ -13,3 +13,7 @@ response = LitleOnlineRequest.new.void(void_info)
 puts "Response: " + response.voidResponse.response
 puts "Message: " + response.voidResponse.message
 puts "Litle Transaction ID: " + response.voidResponse.litleTxnId
+
+ if (!response.voidResponse.message.eql?'Approved')
+   raise ArgumentError, "LitleVoidTransaction has not been Approved", caller
+ end

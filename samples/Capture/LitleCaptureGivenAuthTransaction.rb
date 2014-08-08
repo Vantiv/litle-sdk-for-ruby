@@ -26,3 +26,7 @@ response = LitleOnlineRequest.new.capture_given_auth(capture_given_auth_info)
 puts "Response: " + response.captureGivenAuthResponse.response
 puts "Message: " + response.captureGivenAuthResponse.message
 puts "Litle Transaction ID: " + response.captureGivenAuthResponse.litleTxnId
+
+if (!response.captureGivenAuthResponse.message.eql?'Approved')
+   raise ArgumentError, "LitleCaptureGivenAuthTransaction has not been Approved", caller
+end

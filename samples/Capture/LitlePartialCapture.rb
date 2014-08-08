@@ -12,3 +12,7 @@ capture_response = LitleOnlineRequest.new.capture(capture_info)
 puts "Response: " + capture_response.captureResponse.response
 puts "Message: " + capture_response.captureResponse.message
 puts "Litle Transaction ID: " + capture_response.captureResponse.litleTxnId
+
+if (!capture_response.captureResponse.message.eql?'Approved')
+   raise ArgumentError, "LitlePartialCapture has not been Approved", caller
+end

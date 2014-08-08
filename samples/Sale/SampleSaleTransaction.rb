@@ -19,4 +19,8 @@ response = LitleOnlineRequest.new.sale(litleSaleTxn)
  
 # display results
 puts "Message: "+ response.message
-puts "Litle Transaction ID: "+ response.saleResponse.litleTxnId    
+puts "Litle Transaction ID: "+ response.saleResponse.litleTxnId  
+
+if (!response.saleResponse.message.eql?'Approved')
+   raise ArgumentError, "SampleSaleTransaction has not been Approved", caller
+end  

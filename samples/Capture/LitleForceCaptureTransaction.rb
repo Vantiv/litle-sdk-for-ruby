@@ -22,3 +22,7 @@ response= LitleOnlineRequest.new.force_capture(force_capture_info)
 puts "Response: " + response.forceCaptureResponse.response
 puts "Message: " + response.forceCaptureResponse.message
 puts "Litle Transaction ID: " + response.forceCaptureResponse.litleTxnId
+
+if (!response.forceCaptureResponse.message.eql?'Approved')
+   raise ArgumentError, "LitleForceCaptureTransaction has not been Approved", caller
+end

@@ -10,3 +10,7 @@ reversal_response = LitleOnlineRequest.new.auth_reversal(reversal_info)
 puts "Response: " + reversal_response.authReversalResponse.response
 puts "Message: " + reversal_response.authReversalResponse.message
 puts "Litle Transaction ID: " + reversal_response .authReversalResponse.litleTxnId
+
+if (!reversal_response.authReversalResponse.message.eql?'Approved')
+   raise ArgumentError, "LitleAuthReversalTransaction has not been Approved", caller
+end

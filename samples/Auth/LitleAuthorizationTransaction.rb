@@ -25,3 +25,8 @@ auth_response = LitleOnlineRequest.new.authorization(auth_info)
 puts "Response: " + auth_response.authorizationResponse.response
 puts "Message: " + auth_response.authorizationResponse.message
 puts "Litle Transaction ID: " + auth_response.authorizationResponse.litleTxnId
+
+if (!auth_response.authorizationResponse.message.eql?'Approved')
+   raise ArgumentError, "LitleAuthorizationTransaction has not been Approved", caller
+end
+
