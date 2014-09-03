@@ -24,7 +24,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 =end
 require File.expand_path("../../../lib/LitleOnline",__FILE__) 
 require 'test/unit'
-
+require 'mocha/setup'
 module LitleOnline
   class Test_echeckRedeposit < Test::Unit::TestCase
     def test_echeck_redeposit_with_both

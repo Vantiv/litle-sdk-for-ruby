@@ -1,6 +1,4 @@
-require 'LitleOnline'
-include LitleOnline
- 
+require_relative '../../lib/LitleOnline'
 #Force Capture
 force_capture_info = {
   'merchantId' => '101',
@@ -16,7 +14,7 @@ force_capture_info = {
     'expDate' =>'1210'
   }
 }
-response= LitleOnlineRequest.new.force_capture(force_capture_info)
+response= LitleOnline::LitleOnlineRequest.new.force_capture(force_capture_info)
  
 #display results
 puts "Response: " + response.forceCaptureResponse.response

@@ -1,6 +1,4 @@
-require 'LitleOnline'
-include LitleOnline
- 
+require_relative '../../lib/LitleOnline'
 #Sale
 my_sale_info = {
   'orderId' => '1',
@@ -19,7 +17,7 @@ my_sale_info = {
   'cardValidationNum' => '349',
   'type' => 'MC'}
 }
-sale_response = LitleOnlineRequest.new.sale(my_sale_info)
+sale_response = LitleOnline::LitleOnlineRequest.new.sale(my_sale_info)
  
 #display results
 puts "Response: " + sale_response.saleResponse.response

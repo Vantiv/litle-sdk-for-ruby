@@ -1,5 +1,4 @@
-require 'LitleOnline'
-include LitleOnline
+require_relative '../../lib/LitleOnline'
  @@merchant_hash = {'reportGroup'=>'Planets','id'=>'321','customerId'=>'123',
       'merchantId'=>'101'
     }
@@ -22,7 +21,7 @@ auth_info = {
   'type' => 'VI'}
 } 
 hash = auth_info.merge(@@merchant_hash)
-auth_response = LitleOnlineRequest.new.authorization(hash)
+auth_response = LitleOnline::LitleOnlineRequest.new.authorization(hash)
  
 #display results
 puts "Response: " + auth_response.authorizationResponse.response

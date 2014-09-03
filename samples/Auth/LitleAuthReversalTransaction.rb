@@ -1,10 +1,9 @@
-require 'LitleOnline'
-include LitleOnline
+require_relative '../../lib/LitleOnline'
  
 #Auth Reversal
 #litleTxnId contains the Litle Transaction Id returned on the authorization
 reversal_info = {'litleTxnId' => '100000000000000001'}
-reversal_response = LitleOnlineRequest.new.auth_reversal(reversal_info)
+reversal_response = LitleOnline::LitleOnlineRequest.new.auth_reversal(reversal_info)
  
 #display results
 puts "Response: " + reversal_response.authReversalResponse.response

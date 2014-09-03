@@ -190,7 +190,7 @@ module LitleOnline
       litleRequest.authentication = authentication
       litleRequest.numBatchRequests = "0"
       
-      litleRequest.version         = '8.25'
+      litleRequest.version         = '9.00'
       litleRequest.xmlns           = "http://www.litle.com/schema"
       
       
@@ -233,7 +233,9 @@ module LitleOnline
     def send_to_litle(path = (File.dirname(@path_to_batches)), options = {})
       username = get_config(:sftp_username, options)
       password = get_config(:sftp_password, options)
+    
       url = get_config(:sftp_url, options)
+    
       if(username == nil or password == nil or url == nil) then
         raise ArgumentError, "You are not configured to use sFTP for batch processing. Please run /bin/Setup.rb again!"
       end
@@ -244,6 +246,7 @@ module LitleOnline
       
       begin 
         Net::SFTP.start(url, username, :password => password) do |sftp|
+         
           # our folder is /SHORTNAME/SHORTNAME/INBOUND
           Dir.foreach(path) do |filename|
             #we have a complete report according to filename regex
@@ -495,7 +498,7 @@ module LitleOnline
       authentication.password = get_config(:password, options)
 
       litle_request.authentication = authentication
-      litle_request.version         = '8.25'
+      litle_request.version         = '9.00'
       litle_request.xmlns           = "http://www.litle.com/schema"
       # litle_request.id              = options['sessionId'] #grab from options; okay if nil
       litle_request.numBatchRequests = @num_batch_requests

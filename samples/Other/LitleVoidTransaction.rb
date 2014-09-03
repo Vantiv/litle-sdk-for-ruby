@@ -1,5 +1,4 @@
-require 'LitleOnline'
-include LitleOnline
+require_relative '../../lib/LitleOnline'
  
 #Void
 void_info = {
@@ -7,7 +6,7 @@ void_info = {
   'litleTxnId' => '100000000000000001',
 }
  
-response = LitleOnlineRequest.new.void(void_info)
+response = LitleOnline::LitleOnlineRequest.new.void(void_info)
  
 #display results
 puts "Response: " + response.voidResponse.response

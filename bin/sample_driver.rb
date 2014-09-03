@@ -26,8 +26,9 @@ OTHER DEALINGS IN THE SOFTWARE.
 =end
 
 #Sample Driver
-require 'LitleOnline'
-
+#require 'LitleOnline'
+#include LitleOnline
+require_relative '../lib/LitleOnline'
 hash = {
   'reportGroup'=>'product1',
   'orderId'=>'12344',
@@ -41,9 +42,8 @@ hash = {
 }
 
 #perform credit transaction
-response= LitleOnlineRequest.new.credit(hash)
+response= LitleOnline::LitleOnlineRequest.new.credit(hash)
 
 #display results
-
 puts "Message: "+response.message
 puts "Litle Transaction ID: "+response.creditResponse.litleTxnId

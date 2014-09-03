@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 =begin
 Copyright (c) 2011 Litle & Co.
 
@@ -119,3 +120,4 @@ request.process_responses({:transaction_listener => LitleOnline::DefaultLitleLis
 end})
 stop = Time::now
 puts "Total time: " + (stop - start).to_s
+

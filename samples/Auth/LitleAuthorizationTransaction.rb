@@ -1,5 +1,4 @@
-require 'LitleOnline'
-include LitleOnline
+require_relative '../../lib/LitleOnline'
  
 #Authorization
 auth_info = {
@@ -19,7 +18,7 @@ auth_info = {
   'cardValidationNum' => '349',
   'type' => 'VI'}
 }
-auth_response = LitleOnlineRequest.new.authorization(auth_info)
+auth_response = LitleOnline::LitleOnlineRequest.new.authorization(auth_info)
  
 #display results
 puts "Response: " + auth_response.authorizationResponse.response

@@ -1,6 +1,4 @@
-require 'LitleOnline'
-include LitleOnline
- 
+require_relative '../../lib/LitleOnline'
 # Visa $10 Sale
 litleSaleTxn = {
     'merchantId' => '087900',
@@ -15,7 +13,7 @@ litleSaleTxn = {
     }
  
 # Peform the transaction on the Litle Platform
-response = LitleOnlineRequest.new.sale(litleSaleTxn)
+response = LitleOnline::LitleOnlineRequest.new.sale(litleSaleTxn)
  
 # display results
 puts "Message: "+ response.message

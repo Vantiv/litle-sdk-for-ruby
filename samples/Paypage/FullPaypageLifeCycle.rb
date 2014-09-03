@@ -1,6 +1,4 @@
-require 'LitleOnline'
-include LitleOnline
- 
+require_relative '../../lib/LitleOnline'
 hash = {
   'orderId'=>'1234',
   'amount'=>'106',
@@ -12,7 +10,7 @@ hash = {
     'cardValidationNum' => '123'
   }
 }
-auth_response = LitleOnlineRequest.new.authorization(hash)
+auth_response = LitleOnline::LitleOnlineRequest.new.authorization(hash)
 #display results, sample output from sandbox
 puts "Response: " + auth_response.authorizationResponse.response #prints 000
 puts "Message: " + auth_response.authorizationResponse.message #prints Approved
@@ -26,7 +24,7 @@ puts "Litle Token: " + auth_response.authorizationResponse.tokenResponse.litleTo
 hash = {
   'litleTxnId'=>auth_response.authorizationResponse.litleTxnId #Use the litleTxnId from the auth we want to capture
 }
-capture_response = LitleOnlineRequest.new.capture(hash)
+capture_response = LitleOnline::LitleOnlineRequest.new.capture(hash)
 puts "Response: " + capture_response.captureResponse.response
 puts "Message: " + capture_response.captureResponse.message
 puts "Litle Transaction ID: " + capture_response.captureResponse.litleTxnId
@@ -38,7 +36,7 @@ puts "Litle Transaction ID: " + capture_response.captureResponse.litleTxnId
 hash = {
   'litleTxnId'=>capture_response.captureResponse.litleTxnId #Use the litleTxnId from the capture we want to refund against
 }
-credit_response = LitleOnlineRequest.new.credit(hash)
+credit_response = LitleOnline::LitleOnlineRequest.new.credit(hash)
 puts "Response: " + credit_response.creditResponse.response
 puts "Message: " + credit_response.creditResponse.message
 puts "Litle Transaction ID: " + credit_response.creditResponse.litleTxnId
@@ -47,7 +45,7 @@ puts "Litle Transaction ID: " + credit_response.creditResponse.litleTxnId
 hash = {
   'litleTxnId'=>credit_response.creditResponse.litleTxnId #Use the litleTxnId from the capture we want to refund against
 }
-reversal_response = LitleOnlineRequest.new.auth_reversal(hash)
+reversal_response = LitleOnline::LitleOnlineRequest.new.auth_reversal(hash)
 puts "Response: " + reversal_response.authReversalResponse.response
 puts "Message: " + reversal_response.authReversalResponse.message
 puts "Litle Transaction ID: " + reversal_response.authReversalResponse.litleTxnId
@@ -66,7 +64,7 @@ hash = {
     'expDate' =>'1210'
   }
 }
-sale_response = LitleOnlineRequest.new.sale(hash)
+sale_response = LitleOnline::LitleOnlineRequest.new.sale(hash)
 puts "Response: " + sale_response.saleResponse.response
 puts "Message: " + sale_response.saleResponse.message
 puts "Litle Transaction ID: " + sale_response.saleResponse.litleTxnId

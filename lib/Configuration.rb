@@ -27,7 +27,7 @@ require 'yaml'
 #
 # Loads the configuration from a file
 #
- module LitleOnline
+module LitleOnline
   class Configuration
     class << self
       # External logger, if specified

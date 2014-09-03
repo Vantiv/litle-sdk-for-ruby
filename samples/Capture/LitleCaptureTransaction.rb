@@ -1,10 +1,8 @@
-require 'LitleOnline'
-include LitleOnline
- 
+require_relative '../../lib/LitleOnline'
 #Capture
 #litleTxnId contains the Litle Transaction Id returned on the authorization
 capture_info =  {'litleTxnId' => '100000000000000001'}
-capture_response = LitleOnlineRequest.new.capture(capture_info)
+capture_response = LitleOnline::LitleOnlineRequest.new.capture(capture_info)
  
 #display results
 puts "Response: " + capture_response.captureResponse.response

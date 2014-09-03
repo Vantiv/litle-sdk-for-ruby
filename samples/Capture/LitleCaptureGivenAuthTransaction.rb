@@ -1,6 +1,4 @@
-require 'LitleOnline'
-include LitleOnline
- 
+require_relative '../../lib/LitleOnline'
 #Capture Given Auth
 capture_given_auth_info = {
   'merchantId' => '101',
@@ -20,7 +18,7 @@ capture_given_auth_info = {
     'expDate' =>'1210'
     }
 }
-response = LitleOnlineRequest.new.capture_given_auth(capture_given_auth_info)
+response = LitleOnline::LitleOnlineRequest.new.capture_given_auth(capture_given_auth_info)
  
 #display results
 puts "Response: " + response.captureGivenAuthResponse.response

@@ -1,6 +1,4 @@
-require 'LitleOnline'
-include LitleOnline
- 
+require_relative '../../lib/LitleOnline'
 #Stand alone credit
 credit_info = {
   'orderId' => '1',
@@ -19,7 +17,7 @@ credit_info = {
   'cardValidationNum' => '349',
   'type' => 'VI'}
 }
-credit_response= LitleOnlineRequest.new.credit(credit_info)
+credit_response= LitleOnline::LitleOnlineRequest.new.credit(credit_info)
  
 #display results
 puts "Response: " + credit_response.creditResponse.response

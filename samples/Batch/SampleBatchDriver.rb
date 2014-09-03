@@ -1,6 +1,4 @@
-require 'LitleOnline'
-include LitleOnline
- 
+require_relative '../../lib/LitleOnline'
 saleHash = {
         'reportGroup'=>'Planets',
         'id' => '006',
