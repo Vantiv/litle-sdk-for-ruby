@@ -142,13 +142,14 @@ module LitleOnline
         initialize(@options)
         create_new_litle_request
       else #otherwise, let's add it line by line to the request doc
-        @num_batch_requests += 1
+       # @num_batch_requests += 1
         #how long we wnat to wait around for the FTP server to get us a response
         @RESPONSE_TIME_OUT += 90 + (transactions_in_batch * 0.25)
         #don't start looking until there could possibly be a response
         @POLL_DELAY += 30 +(transactions_in_batch  * 0.02)
         @num_total_transactions += transactions_in_batch
-
+         # Don't add empty batches
+       @num_batch_requests += 1 unless transactions_in_batch.eql?(0)
         File.open(@path_to_batches, 'a+') do |fo|
           File.foreach(path_to_batch) do |li|
             fo.puts li

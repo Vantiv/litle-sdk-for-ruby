@@ -104,6 +104,10 @@ module LitleOnline
       end
     end
     
+    def has_transactions?
+      !@txn_counts[:total].eql?(0)
+    end
+    
     def open_existing_batch(pathToBatchFile)
       if(!File.file?(pathToBatchFile)) then
         raise ArgumentError, "No batch file exists at the passed location!"
@@ -128,21 +132,30 @@ module LitleOnline
       end 
     end
     
+    
+    def au_batch?
+      !@au_batch.nil?
+    end
+   
     def close_batch(txn_location = @txn_file)
       header = build_batch_header(@txn_counts)
       File.rename(@path_to_batch, @path_to_batch + '.closed-' + @txn_counts[:total].to_s)
       @path_to_batch = @path_to_batch + '.closed-' + @txn_counts[:total].to_s
       File.open(@path_to_batch, 'w') do |fo|
-        fo.puts header
+       # fo.puts header
+       put_header = !au_batch? || has_transactions? 
+       fo.puts header if put_header
         File.foreach(txn_location) do |li|
           fo.puts li
         end
-        fo.puts('</batchRequest>')
+       # fo.puts('</batchRequest>')  
+      fo.puts('</batchRequest>')   if put_header
       end
       File.delete(txn_location)
       if(@au_batch != nil) then
         @au_batch.close_batch
       end 
+     
     end
     
     def authorization(options)
@@ -171,7 +184,7 @@ module LitleOnline
     
     def auth_reversal(options)
       transaction = @litle_txn.auth_reversal(options)
-      @txn_counts[:authReversal][:numAuthReversals] += 1
+      @txn_counts[:authReversal][:numAuthReversals] += 1     
       @txn_counts[:authReversal][:authReversalAmount] += options['amount'].to_i
       
       add_txn_to_batch(transaction, :authReversal, options)
