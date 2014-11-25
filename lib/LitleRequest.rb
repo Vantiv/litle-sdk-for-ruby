@@ -191,7 +191,7 @@ module LitleOnline
       litleRequest.authentication = authentication
       litleRequest.numBatchRequests = "0"
       
-      litleRequest.version         = '9.00'
+      litleRequest.version         = '8.27'
       litleRequest.xmlns           = "http://www.litle.com/schema"
       
       
@@ -499,7 +499,7 @@ module LitleOnline
       authentication.password = get_config(:password, options)
 
       litle_request.authentication = authentication
-      litle_request.version         = '9.00'
+      litle_request.version         = '8.27'
       litle_request.xmlns           = "http://www.litle.com/schema"
       # litle_request.id              = options['sessionId'] #grab from options; okay if nil
       litle_request.numBatchRequests = @num_batch_requests
