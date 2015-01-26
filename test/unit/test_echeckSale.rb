@@ -54,5 +54,18 @@ module LitleOnline
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*(loggedInUser="gdake".*merchantSdk="Ruby;8.14.0")|(merchantSdk="Ruby;8.14.0".*loggedInUser="gdake").*/m), is_a(Hash))
       LitleOnlineRequest.new.echeck_sale(hash)
     end
+    
+    def test_secondary_amount
+      hash = {
+        'orderId' => '12344',
+        'amount' => '2',
+        'secondaryAmount' => '1',
+        'orderSource' => 'ecommerce',
+        'reportGroup' => 'Planets'
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<amount>2<\/amount><secondaryAmount>1<\/secondaryAmount><orderSource>ecommerce<\/orderSource>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.echeck_sale(hash)
+    end
+    
   end
 end

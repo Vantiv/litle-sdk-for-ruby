@@ -22,9 +22,10 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require File.expand_path("../../../lib/LitleOnline",__FILE__) 
+require File.expand_path("../../../lib/LitleOnline",__FILE__)
 require 'test/unit'
 require 'mocha/setup'
+
 module LitleOnline
   class Test_echeckCredit < Test::Unit::TestCase
     def test_echeck_credit_with_both
@@ -39,11 +40,11 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_credit(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
-    
+
     def test_logged_in_user
       hash = {
-      	'loggedInUser' => 'gdake',
-      	'merchantSdk' => 'Ruby;8.14.0',
+        'loggedInUser' => 'gdake',
+        'merchantSdk' => 'Ruby;8.14.0',
         'merchantId' => '101',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
@@ -53,6 +54,18 @@ module LitleOnline
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*(loggedInUser="gdake".*merchantSdk="Ruby;8.14.0")|(merchantSdk="Ruby;8.14.0".*loggedInUser="gdake").*/m), is_a(Hash))
       LitleOnlineRequest.new.echeck_credit(hash)
     end
-  
+
+    def test_secondary_amount
+      hash = {
+        'orderId' => '12344',
+        'amount' => '2',
+        'secondaryAmount' => '1',
+        'orderSource' => 'ecommerce',
+        'reportGroup' => 'Planets'
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<amount>2<\/amount><secondaryAmount>1<\/secondaryAmount><orderSource>ecommerce<\/orderSource>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.echeck_credit(hash)
+    end
+
   end
 end

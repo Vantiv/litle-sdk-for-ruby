@@ -34,6 +34,7 @@ module LitleOnline
   class LitleTransaction
     def authorization(options)
       transaction = Authorization.new
+      transaction.secondaryAmount = options['secondaryAmount']
       transaction.surchargeAmount    = options['surchargeAmount']
       transaction.recurringRequest   = RecurringRequest.from_hash(options,'recurringRequest')
       transaction.debtRepayment	     = options['debtRepayment']
@@ -192,7 +193,7 @@ module LitleOnline
     def sale(options)
       transaction = Sale.new
       add_transaction_info(transaction, options)
-
+      transaction.secondaryAmount     = options['secondaryAmount']
       transaction.surchargeAmount     = options['surchargeAmount']
       transaction.fraudCheck          = FraudCheck.from_hash(options,'fraudCheck')
       transaction.payPalOrderComplete = options['payPalOrderComplete']
@@ -219,6 +220,7 @@ module LitleOnline
         transaction.mpos                  = Mpos.from_hash(options,'mpos') 
       end
       transaction.amount                  = options['amount']
+      transaction.secondaryAmount         = options['secondaryAmount']
       transaction.surchargeAmount         = options['surchargeAmount']
       transaction.customBilling           = CustomBilling.from_hash(options)
       transaction.enhancedData            = EnhancedData.from_hash(options)
@@ -253,7 +255,7 @@ module LitleOnline
       transaction.accountNumber         = options['accountNumber']
       transaction.echeckForToken        = EcheckForToken.from_hash(options)
       transaction.paypageRegistrationId = options['paypageRegistrationId']
-      
+      transaction.applepay              = Applepay.from_hash(options,'applepay')
       add_account_info(transaction, options)
       return transaction
     end
@@ -274,6 +276,7 @@ module LitleOnline
 
     def force_capture(options)
       transaction = ForceCapture.new
+      transaction.secondaryAmount = options['secondaryAmount']
       transaction.surchargeAmount    = options['surchargeAmount']
       transaction.customBilling      = CustomBilling.from_hash(options)
       transaction.debtRepayment	     = options['debtRepayment']
@@ -301,7 +304,7 @@ module LitleOnline
     def capture_given_auth(options)
       transaction = CaptureGivenAuth.new
       add_order_info(transaction, options)
-
+      transaction.secondaryAmount    = options['secondaryAmount']
       transaction.surchargeAmount    = options['surchargeAmount']
       transaction.authInformation    = AuthInformation.from_hash(options)
       transaction.shipToAddress      = Contact.from_hash(options,'shipToAddress')
@@ -335,7 +338,7 @@ module LitleOnline
       transaction = EcheckSale.new
       add_echeck(transaction, options)
       add_echeck_order_info(transaction, options)
-
+      transaction.secondaryAmount = options['secondaryAmount']
       transaction.verify        = options['verify']
       transaction.shipToAddress = Contact.from_hash(options,'shipToAddress')
       transaction.customBilling = CustomBilling.from_hash(options)
@@ -346,7 +349,7 @@ module LitleOnline
     def echeck_credit(options)
       transaction = EcheckCredit.new
       transaction.customBilling = CustomBilling.from_hash(options)
-
+      transaction.secondaryAmount = options['secondaryAmount']
       add_echeck_order_info(transaction, options)
       add_echeck(transaction, options)
 
@@ -404,6 +407,7 @@ module LitleOnline
       transaction.fraudFilterOverride       = options['fraudFilterOverride']
       transaction.customBilling             = CustomBilling.from_hash(options)
       transaction.paypal                    = PayPal.from_hash(options,'paypal')
+      transaction.applepay                  = Applepay.from_hash(options,'applepay')
 
       add_order_info(transaction, options)
     end
