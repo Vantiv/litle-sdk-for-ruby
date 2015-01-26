@@ -58,6 +58,7 @@ module LitleOnline
         'orderId'=>'12344',
         'amount'=>'106',
         'orderSource'=>'ecommerce',
+        'fraudCheck'=>{'authenticationTransactionId'=>'123'}, 
         'applepay'=>{
         'data'=>'user',
         'header'=>{
@@ -72,6 +73,27 @@ module LitleOnline
       }
 
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*?<litleOnlineRequest.*?<sale.*?<applepay>.*?<data>user<\/data>.*?<\/applepay>.*?<\/sale>.*?/m), is_a(Hash))
+      LitleOnlineRequest.new.sale(hash)
+    end
+
+    # for test the choice functionality
+    def test_success_card
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        #        'fraudCheck'=>{'authenticationTransactionId'=>'123'}, #for test
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000002',
+        'expDate' =>'1210'
+        }
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*?<litleOnlineRequest.*?<sale.*?<card>.*?<type>VI<\/type>.*?<\/card>.*?<\/sale>.*?/m), is_a(Hash))
       LitleOnlineRequest.new.sale(hash)
     end
 
@@ -324,8 +346,8 @@ module LitleOnline
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<amount>2<\/amount><surchargeAmount>1<\/surchargeAmount><orderSource>ecommerce<\/orderSource>.*/m), is_a(Hash))
       LitleOnlineRequest.new.sale(hash)
     end
-    
-def test_secondary_amount
+
+    def test_secondary_amount
       hash = {
         'orderId' => '12344',
         'amount' => '2',

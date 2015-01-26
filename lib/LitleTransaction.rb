@@ -398,7 +398,7 @@ module LitleOnline
       transaction.customerInfo              = CustomerInfo.from_hash(options)
       transaction.shipToAddress             = Contact.from_hash(options,'shipToAddress')
       transaction.billMeLaterRequest        = BillMeLaterRequest.from_hash(options)
-      transaction.cardholderAuthentication  = FraudCheck.from_hash(options)
+      transaction.cardholderAuthentication  = FraudCheck.from_hash(options, 'cardholderAuthentication')
       transaction.allowPartialAuth          = options['allowPartialAuth']
       transaction.healthcareIIAS            = HealthcareIIAS.from_hash(options)
       transaction.filtering                 = Filtering.from_hash(options)
