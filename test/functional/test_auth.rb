@@ -22,13 +22,12 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require File.expand_path("../../../lib/LitleOnline",__FILE__) 
+require File.expand_path("../../../lib/LitleOnline",__FILE__)
 require 'test/unit'
 
 #test Authorization Transaction
 module LitleOnline
   class TestAuth < Test::Unit::TestCase
-
     def test_simple_auth_with_card
       hash = {
         'merchantId' => '101',
@@ -45,7 +44,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.authorization(hash)
       assert_equal('000', response.authorizationResponse.response)
     end
-  
+
     def test_simple_auth_with_paypal
       hash = {
         'merchantId' => '101',
@@ -62,7 +61,31 @@ module LitleOnline
       response= LitleOnlineRequest.new.authorization(hash)
       assert_equal 'Valid Format', response.message
     end
-  
+
+    def test_simple_auth_with_applepay
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'amount'=>'110',
+        'orderSource'=>'ecommerce',
+        'applepay'=>{
+        'data'=>'1234',
+        'header'=>{
+        'applicationData'=>'454657413164',
+        'ephemeralPublicKey'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+        'publicKeyHash'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+        'transactionId'=>'1234'
+        },
+        'signature' =>'1',
+        'version'=>'1'
+        }}
+      response= LitleOnlineRequest.new.authorization(hash)
+      assert_equal('Insufficient Funds', response.authorizationResponse.message)
+      assert_equal('110', response.authorizationResponse.applepayResponse.transactionAmount)
+    end
+
     def test_illegal_order_source
       hash = {
         'merchantId' => '101',
@@ -79,7 +102,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.authorization(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-  
+
     def test_fields_out_of_order
       hash = {
         'merchantId' => '101',
@@ -97,7 +120,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.authorization(hash)
       assert_equal('000', response.authorizationResponse.response)
     end
-  
+
     def test_invalid_field
       hash = {
         'merchantId' => '101',
@@ -115,7 +138,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.authorization(hash)
       assert_equal('000', response.authorizationResponse.response)
     end
-  
+
     def test_no_order_id
       hash = {
         'merchantId' => '101',
@@ -131,7 +154,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.authorization(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-    
+
     def test_no_amount
       hash = {
         'merchantId' => '101',
@@ -147,7 +170,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.authorization(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-  
+
     def test_no_order_source
       hash = {
         'merchantId' => '101',
@@ -164,23 +187,23 @@ module LitleOnline
       response= LitleOnlineRequest.new.authorization(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-  
+
     def test_authorization_missing_attributes
       hash={
         'reportGroup'=>'Planets',
         'amount'=>'106',
-  
+
         'orderSource'=>'ecommerce',
         'card'=>{
         'type'=>'VI',
         'number' =>'4100000000000001',
         'expDate' =>'1210'
         }}
-  
+
       response= LitleOnlineRequest.new.authorization(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-  
+
     def test_orderId_required
       start_hash = {
         'merchantId'=>'101',
@@ -194,11 +217,11 @@ module LitleOnline
       }
       response= LitleOnlineRequest.new.authorization(start_hash)
       assert(response.message =~ /Error validating xml data against the schema/)
-    
+
       response = LitleOnlineRequest.new.authorization(start_hash.merge({'orderId'=>'1234'}))
       assert_equal('000', response.authorizationResponse.response)
     end
-  
+
     def test_ssn_optional
       start_hash = {
         'orderId'=>'12344',
@@ -213,7 +236,7 @@ module LitleOnline
       }
       response = LitleOnlineRequest.new.authorization(start_hash)
       assert_equal('000', response.authorizationResponse.response)
-    
+
       response = LitleOnlineRequest.new.authorization(start_hash.merge({'customerInfo'=>{'ssn'=>'000112222'} }))
       assert_equal('000', response.authorizationResponse.response)
     end
@@ -224,10 +247,10 @@ module LitleOnline
         'amount'=>'106',
         'orderSource'=>'ecommerce',
         'paypage'=>{
-        	'type'=>'VI',
-        	'paypageRegistrationId' =>'QU1pTFZnV2NGQWZrZzRKeTNVR0lzejB1K2Q5VDdWMTVqb2J5WFJ2Snh4U0U4eTBxaFg2cEVWaDBWSlhtMVZTTw==',
-        	'expDate' =>'1210',
-        	'cardValidationNum' => '123'
+        'type'=>'VI',
+        'paypageRegistrationId' =>'QU1pTFZnV2NGQWZrZzRKeTNVR0lzejB1K2Q5VDdWMTVqb2J5WFJ2Snh4U0U4eTBxaFg2cEVWaDBWSlhtMVZTTw==',
+        'expDate' =>'1210',
+        'cardValidationNum' => '123'
         }
       }
       response= LitleOnlineRequest.new.authorization(hash)
@@ -246,9 +269,9 @@ module LitleOnline
         'type'=>'VI',
         'number' =>'4100000000000000',
         'expDate' =>'1210'
-                },
+        },
         'advancedFraudChecks' => {'threatMetrixSessionId'=>'1234'}
-             }
+      }
       response= LitleOnlineRequest.new.authorization(hash)
       assert_equal('000', response.authorizationResponse.response)
     end
@@ -259,16 +282,16 @@ module LitleOnline
         'amount'=>'106',
         'orderSource'=>'ecommerce',
         'mpos'=>
-		{
-		'ksn'=>'ksnString',
-		'formatId'=>'30',
-		'encryptedTrack'=>'encryptedTrackString',
-		'track1Status'=>'0',
-		'track2Status'=>'0'
-		}
+        {
+        'ksn'=>'ksnString',
+        'formatId'=>'30',
+        'encryptedTrack'=>'encryptedTrackString',
+        'track1Status'=>'0',
+        'track2Status'=>'0'
+        }
       }
       response= LitleOnlineRequest.new.authorization(hash)
       assert_equal('000', response.authorizationResponse.response)
     end
   end
-end  
+end
