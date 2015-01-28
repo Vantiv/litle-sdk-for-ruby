@@ -1,6 +1,6 @@
 = LitleOnline CHANGELOG
 
-== version 8.27.0(August 27, 2014)
+== version 8.29.0(January 28, 2015)
 * Feature : Added support for Applepay and Secondary Amount
 * BugFix: fix an incorrect mapping in fraud check option fields for Sale transaction
 
