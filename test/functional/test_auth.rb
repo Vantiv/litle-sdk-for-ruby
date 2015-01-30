@@ -62,13 +62,14 @@ module LitleOnline
       assert_equal 'Valid Format', response.message
     end
 
-    def test_simple_auth_with_applepay
+    def test_simple_auth_with_applepay_and_secondaryAmount
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
         'amount'=>'110',
+        'secondaryAmount'=>'50',
         'orderSource'=>'ecommerce',
         'applepay'=>{
         'data'=>'1234',
@@ -170,7 +171,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.authorization(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-
+   
     def test_no_order_source
       hash = {
         'merchantId' => '101',

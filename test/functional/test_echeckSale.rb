@@ -22,7 +22,7 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require File.expand_path("../../../lib/LitleOnline",__FILE__) 
+require File.expand_path("../../../lib/LitleOnline",__FILE__)
 require 'test/unit'
 
 module LitleOnline
@@ -42,7 +42,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.echeck_sale(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_no_amount
       hash = {
         'merchantId' => '101',
@@ -52,7 +52,7 @@ module LitleOnline
       response = LitleOnlineRequest.new.echeck_sale(hash)
       assert_match /The content of element 'echeckSale' is not complete/, response.message
     end
-  
+
     def test_echeck_sale_with_echeck
       hash = {
         'merchantId' => '101',
@@ -68,7 +68,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.echeck_sale(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_echeck_sale_with_ship_to
       hash = {
         'merchantId' => '101',
@@ -85,7 +85,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.echeck_sale(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_echeck_sale_with_echeck_token
       hash = {
         'merchantId' => '101',
@@ -102,7 +102,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.echeck_sale(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_extra_field_and_incorrect_order
       hash = {
         'merchantId' => '101',
@@ -119,7 +119,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.echeck_sale(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_extra_field_and_missing_billing
       hash = {
         'merchantId' => '101',
@@ -135,7 +135,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.echeck_sale(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-  
+
     def test_simple_echeck_sale
       hash = {
         'reportGroup'=>'Planets',
@@ -145,7 +145,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.echeck_sale(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_simple_echeck_sale_with_custom_billing
       hash = {
         'reportGroup'=>'Planets',
@@ -155,6 +155,23 @@ module LitleOnline
       response= LitleOnlineRequest.new.echeck_sale(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
+    def test_echeck_sale_with_secondaryAmount
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'amount'=>'123456',
+        'secondaryAmount'=>'50',
+        'verify'=>'true',
+        'orderId'=>'12345',
+        'orderSource'=>'ecommerce',
+        'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
+      }
+      response= LitleOnlineRequest.new.echeck_sale(hash)
+      assert_equal('Valid Format', response.message)
+    end
+
   end
 end

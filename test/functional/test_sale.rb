@@ -63,7 +63,7 @@ module LitleOnline
       assert_equal 'Valid Format', response.message
     end
 
-    def test_simple_sale_with_applepay
+    def test_simple_sale_with_applepay_and_secondaryAmount
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
@@ -71,6 +71,7 @@ module LitleOnline
         'litleTxnId'=>'123456',
         'orderId'=>'12344',
         'amount'=>'110',
+        'secondaryAmount'=>'50',
         'orderSource'=>'ecommerce',
         'applepay'=>{
         'data'=>'1234',
