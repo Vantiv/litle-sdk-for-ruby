@@ -926,7 +926,7 @@ module LitleOnline
     text_node :accNum, "accNum", :default_value=>nil
     text_node :routingNum, "routingNum", :default_value=>nil
     text_node :checkNum, "checkNum", :default_value=>nil
-    text_node :checkNum, "ccdPaymentInformation", :default_value=>nil
+    text_node :ccdPaymentInformation, "ccdPaymentInformation", :default_value=>nil
     def self.from_hash(hash, name='echeck')
       base = hash[name]
       if(base)
@@ -935,11 +935,12 @@ module LitleOnline
         this.accNum = base['accNum']
         this.routingNum = base['routingNum']
         this.checkNum = base['checkNum']
+        this.ccdPaymentInformation = base['ccdPaymentInformation']
         SchemaValidation.validate_enum(this.accType, true, ['Checking','Savings','Corporate','Corp Savings'], name, 'accType')
         SchemaValidation.validate_length(this.accNum, true, 1, 17, name, 'accNum')
         SchemaValidation.validate_length(this.routingNum, true, 9, 9, name, 'routingNum')
         SchemaValidation.validate_length(this.checkNum, false, 1, 15, name, 'checkNum')
-        SchemaValidation.validate_length(this.checkNum, false, 1, 80, name, 'ccdPaymentInformation')
+        SchemaValidation.validate_length(this.ccdPaymentInformation, false, 1, 80, name, 'ccdPaymentInformation')
         this
       else
         nil
@@ -952,6 +953,7 @@ module LitleOnline
     text_node :litleToken, "litleToken", :default_value=>nil
     text_node :routingNum, "routingNum", :default_value=>nil
     text_node :accType, "accType", :default_value=>nil
+    text_node :checkNum, "checkNum", :default_value=>nil
     def self.from_hash(hash, name='echeckToken')
       base = hash[name]
       if(base)
