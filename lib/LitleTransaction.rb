@@ -333,6 +333,24 @@ module LitleOnline
 
       return transaction
     end
+    
+    def echeck_pre_note_sale(options)
+      transaction = EcheckPreNoteSale.new
+      add_echeck(transaction, options)
+      add_echeck_order_info(transaction, options)      
+      transaction.merchantData              = MerchantData.from_hash(options)
+
+      return transaction
+    end
+    
+    def echeck_pre_note_credit(options)
+      transaction = EcheckPreNoteCredit.new
+      add_echeck(transaction, options)
+      add_echeck_order_info(transaction, options)      
+      transaction.merchantData              = MerchantData.from_hash(options)
+
+      return transaction
+    end
 
     def echeck_sale(options)
       transaction = EcheckSale.new
@@ -384,6 +402,18 @@ module LitleOnline
       
       return transaction
     end
+#    
+#    def fraud_check_request(options)
+#      transaction = FraudCheckRequest.new
+#      transaction.advancedFraudChecks = AdvancedFraudChecks.from_hash(options,'advancedFraudChecks')
+#      transaction.billToAddress = Contact.from_hash(options,'billToAddress')
+#      transaction.shipToAddress = Contact.from_hash(options,'shipToAddress')
+#      transaction.amount = options['amount']
+#        
+#      add_account_info(transaction, options)
+#      
+#      return transaction        
+#    end
     
     private
     

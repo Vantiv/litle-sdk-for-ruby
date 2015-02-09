@@ -228,6 +228,12 @@ module LitleOnline
       
       commit(transaction, :echeckVoid, options)
     end
+    
+#    def fraud_check_request(options)
+#      transaction = @litle_transaction.fraud_check_request(options)
+#            
+#      commit(transaction, :fraudCheck, options)
+#    end
 
     private
 

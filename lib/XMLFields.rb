@@ -926,6 +926,7 @@ module LitleOnline
     text_node :accNum, "accNum", :default_value=>nil
     text_node :routingNum, "routingNum", :default_value=>nil
     text_node :checkNum, "checkNum", :default_value=>nil
+    text_node :checkNum, "ccdPaymentInformation", :default_value=>nil
     def self.from_hash(hash, name='echeck')
       base = hash[name]
       if(base)
@@ -938,6 +939,7 @@ module LitleOnline
         SchemaValidation.validate_length(this.accNum, true, 1, 17, name, 'accNum')
         SchemaValidation.validate_length(this.routingNum, true, 9, 9, name, 'routingNum')
         SchemaValidation.validate_length(this.checkNum, false, 1, 15, name, 'checkNum')
+        SchemaValidation.validate_length(this.checkNum, false, 1, 80, name, 'ccdPaymentInformation')
         this
       else
         nil
@@ -950,7 +952,6 @@ module LitleOnline
     text_node :litleToken, "litleToken", :default_value=>nil
     text_node :routingNum, "routingNum", :default_value=>nil
     text_node :accType, "accType", :default_value=>nil
-    text_node :checkNum, "checkNum", :default_value=>nil
     def self.from_hash(hash, name='echeckToken')
       base = hash[name]
       if(base)
@@ -1302,16 +1303,42 @@ module LitleOnline
     include XML::Mapping
     root_element_name "advancedFraudChecks"
     text_node :threatMetrixSessionId, 'threatMetrixSessionId', :default_value=>nil
+    text_node :customAttribute1, 'customAttribute1', :default_value=>nil
+    text_node :customAttribute2, 'customAttribute2', :default_value=>nil
+    text_node :customAttribute3, 'customAttribute3', :default_value=>nil
+    text_node :customAttribute4, 'customAttribute4', :default_value=>nil
+    text_node :customAttribute5, 'customAttribute5', :default_value=>nil
     def self.from_hash(hash, name="advancedFraudChecks")
       base = hash[name]
       if(base)
         this = AdvancedFraudChecks.new
         this.threatMetrixSessionId = base['threatMetrixSessionId']      #   /\A([A-Z,a-z,0-9, ,\*,,,\-,',#,&,.]){4,25}\Z/
         #SchemaValidation.validate_regex(this.threatMetrixSessionId, true, '[-a-zA-Z0-9_]{1,128}', name, 'threatMetrixSessionId')
-        this
+        this.customAttribute1 = base['customAttribute1']
+        SchemaValidation.validate_length(this.customAttribute1,false,1,200,name,"customAttribute1")
+        this.customAttribute2 = base['customAttribute2']
+        SchemaValidation.validate_length(this.customAttribute2,false,1,200,name,"customAttribute2")
+        this.customAttribute3 = base['customAttribute3']
+        SchemaValidation.validate_length(this.customAttribute3,false,1,200,name,"customAttribute3")
+        this.customAttribute4 = base['customAttribute4']
+        SchemaValidation.validate_length(this.customAttribute4,false,1,200,name,"customAttribute4")
+        this.customAttribute5 = base['customAttribute5']
+        SchemaValidation.validate_length(this.customAttribute5,false,1,200,name,"customAttribute5")
       end
     end
   end
+#  
+#  class FraudCheckRequest
+#    include XML::Mapping
+#    root_element_name "fraudCheck"
+#    text_node :reportGroup, "@reportGroup", :default_value=>nil
+#    text_node :transactionId, "@id", :default_value=>nil
+#    text_node :customerId, "@customerId", :default_value=>nil
+#    object_node :advancedFraudChecks, "advancedFraudChecks", :default_value=>nil
+#    object_node :billToAddress, "billToAddress", :class=>Contact, :default_value=>nil
+#    object_node :shipToAddress, "shipToAddress", :class=>Contact, :default_value=>nil
+#    text_node :amount, "amount", :default_value=>nil    
+#  end
 
   class Authorization
     include XML::Mapping
@@ -1682,6 +1709,34 @@ module LitleOnline
     optional_choice_node :if,    'echeck', :then, (object_node :echeck, "echeck", :class=>Echeck, :default_value=>nil),
     :elsif, 'echeckToken', :then, (object_node :echeckToken, "echeckToken", :class=>EcheckToken, :default_value=>nil)
     object_node :customBilling, "customBilling", :class=>CustomBilling, :default_value=>nil
+    object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
+  end
+  
+  class EcheckPreNoteSale
+    include XML::Mapping
+    root_element_name "echeckPreNoteSale"
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+    
+    text_node :orderId, "orderId", :default_value=>nil
+    text_node :orderSource, "orderSource", :default_value=>nil
+    object_node :billToAddress, "billToAddress", :class=>Contact, :default_value=>nil
+    object_node :echeck, "echeck", :class=>Echeck, :default_value=>nil
+    object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
+  end
+  
+  class EcheckPreNoteCredit    
+    include XML::Mapping
+    root_element_name "echeckPreNoteSale"
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+    
+    text_node :orderId, "orderId", :default_value=>nil
+    text_node :orderSource, "orderSource", :default_value=>nil
+    object_node :billToAddress, "billToAddress", :class=>Contact, :default_value=>nil
+    object_node :echeck, "echeck", :class=>Echeck, :default_value=>nil
     object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
   end
 
