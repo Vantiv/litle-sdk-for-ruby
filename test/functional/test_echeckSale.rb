@@ -156,7 +156,7 @@ module LitleOnline
       assert_equal('Valid Format', response.message)
     end
 
-    def test_echeck_sale_with_secondaryAmount
+    def test_echeck_sale_with_secondaryAmount_ccd
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
@@ -166,11 +166,39 @@ module LitleOnline
         'verify'=>'true',
         'orderId'=>'12345',
         'orderSource'=>'ecommerce',
-        'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
+        'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455','ccdPaymentInformation'=>'12345678901234567890123456789012345678901234567890123456789012345678901234567890'},
         'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
       }
       response= LitleOnlineRequest.new.echeck_sale(hash)
       assert_equal('Valid Format', response.message)
+    end
+    
+    def test_echeck_sale_with_secondaryAmount_ccd_longer_than_80
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'amount'=>'123456',
+        'secondaryAmount'=>'50',
+        'verify'=>'true',
+        'orderId'=>'12345',
+        'orderSource'=>'ecommerce',
+        'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455','ccdPaymentInformation'=>'123456789012345678901234567890123456789012345678901234567890123456789012345678901'},
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
+      }
+      response= LitleOnlineRequest.new.echeck_sale(hash)
+      assert(response.message=~/Error validating xml data against the schema.*/)
+    end
+    
+    def test_echeck_sale_with_txnId_secondaryAmount
+      hash = {
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456789101112',
+        'amount'=>'12',
+        'secondaryAmount'=>'50'
+      }
+      response= LitleOnlineRequest.new.echeck_sale(hash)
+      assert(response.message=~/Error validating xml data against the schema.*/)
     end
 
   end

@@ -130,5 +130,18 @@ module LitleOnline
       response= LitleOnlineRequest.new.echeck_credit(hash)
       assert_equal('Valid Format', response.message)
     end
+    
+    def test_echeck_credit_with_txnId_secondaryAmount
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456789101112',
+        'amount'=>'12',
+        'secondaryAmount'=>'50'
+      }
+      response= LitleOnlineRequest.new.echeck_credit(hash)
+      assert_equal('Valid Format', response.message)
+    end
   end
 end

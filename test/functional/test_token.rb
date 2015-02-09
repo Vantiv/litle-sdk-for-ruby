@@ -72,6 +72,7 @@ module LitleOnline
       }
       response= LitleOnlineRequest.new.register_token_request(hash)
       assert_equal('Valid Format', response.message)
+      assert_equal('0', response.registerTokenResponse.applepayResponse.transactionAmount)
     end
 
     def test_simple_token_echeck
