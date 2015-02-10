@@ -1326,6 +1326,7 @@ module LitleOnline
         SchemaValidation.validate_length(this.customAttribute4,false,1,200,name,"customAttribute4")
         this.customAttribute5 = base['customAttribute5']
         SchemaValidation.validate_length(this.customAttribute5,false,1,200,name,"customAttribute5")
+        this
       end
     end
   end
@@ -1839,6 +1840,8 @@ module LitleOnline
     text_node :numEcheckSales, "@numEcheckSales", :default_value=>"0"
     text_node :echeckSalesAmount, "@echeckSalesAmount", :default_value=>"0"
     text_node :numEcheckRedeposit, "@numEcheckRedeposit", :default_value=>"0"
+    text_node :numEcheckPreNoteSale, "@numEcheckPreNoteSale", :default_value=>"0"
+    text_node :numEcheckPreNoteCredit, "@numEcheckPreNoteCredit", :default_value=>"0"
     text_node :numEcheckCredit, "@numEcheckCredit", :default_value=>"0"
     text_node :echeckCreditAmount, "@echeckCreditAmount", :default_value=>"0"
     text_node :numEcheckVerification, "@numEcheckVerification", :default_value=>"0"

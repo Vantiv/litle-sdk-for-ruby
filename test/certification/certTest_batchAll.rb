@@ -207,7 +207,7 @@ module LitleOnline
       echeckPreNoteCreditHash = {
         'merchantId' => '101',
         'version'=>'8.8',
-        'reportGroup'=>'Planets',
+        'reportGroup'=l>'Planets',
         'orderId'=>'123457',
         'orderSource'=>'ecommerce',
         'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'},

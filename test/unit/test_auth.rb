@@ -391,9 +391,9 @@ module LitleOnline
         'card' => {
         'number' => '4141000000000000',
         'expDate' => '1210',
-        'type' => 'GC'
-        } ,
-        'advancedFraudChecks' => {'threatMetrixSessionId'=>'1234'}
+        'type' => 'GC'        
+        },
+        'advancedFraudChecks' => {'threatMetrixSessionId'=>'1234'}        
       }
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<advancedFraudChecks><threatMetrixSessionId>1234<\/threatMetrixSessionId><\/advancedFraudChecks>.*/m), is_a(Hash))
       LitleOnlineRequest.new.authorization(hash)

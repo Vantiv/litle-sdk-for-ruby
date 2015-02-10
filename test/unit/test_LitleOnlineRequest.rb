@@ -273,7 +273,7 @@ module LitleOnline
         'litleTxnId' => '006'
       }
 
-      Communications.expects(:http_post).with(regexp_matches(/<litleOnlineRequest.*version="8\.29".*/m),kind_of(Hash))
+      Communications.expects(:http_post).with(regexp_matches(/<litleOnlineRequest.*version="9\.3".*/m),kind_of(Hash))
       XMLObject.expects(:new)
  
       response = LitleOnlineRequest.new.void(hash)

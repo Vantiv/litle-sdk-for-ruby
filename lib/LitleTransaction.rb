@@ -336,8 +336,11 @@ module LitleOnline
     
     def echeck_pre_note_sale(options)
       transaction = EcheckPreNoteSale.new
-      add_echeck(transaction, options)
-      add_echeck_order_info(transaction, options)      
+      transaction.echeck = Echeck.from_hash(options)
+      transaction.orderId       = options['orderId']
+      transaction.orderSource   = options['orderSource']
+      transaction.billToAddress = Contact.from_hash(options,'billToAddress') 
+      add_account_info(transaction, options) 
       transaction.merchantData              = MerchantData.from_hash(options)
 
       return transaction
@@ -345,8 +348,11 @@ module LitleOnline
     
     def echeck_pre_note_credit(options)
       transaction = EcheckPreNoteCredit.new
-      add_echeck(transaction, options)
-      add_echeck_order_info(transaction, options)      
+      transaction.echeck = Echeck.from_hash(options)      
+      transaction.orderId       = options['orderId']
+      transaction.orderSource   = options['orderSource']
+      transaction.billToAddress = Contact.from_hash(options,'billToAddress') 
+      add_account_info(transaction, options) 
       transaction.merchantData              = MerchantData.from_hash(options)
 
       return transaction

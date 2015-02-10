@@ -186,8 +186,10 @@ module LitleOnline
         'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455','ccdPaymentInformation'=>'123456789012345678901234567890123456789012345678901234567890123456789012345678901'},
         'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
       }
-      response= LitleOnlineRequest.new.echeck_sale(hash)
-      assert(response.message=~/Error validating xml data against the schema.*/)
+      assert_raises RuntimeError do 
+        response= LitleOnlineRequest.new.echeck_sale(hash)
+        puts "validation for ccdPaymentInformation"
+      end
     end
     
     def test_echeck_sale_with_txnId_secondaryAmount
