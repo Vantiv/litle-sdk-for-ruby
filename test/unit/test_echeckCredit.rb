@@ -55,7 +55,7 @@ module LitleOnline
       LitleOnlineRequest.new.echeck_credit(hash)
     end
 
-    def test_secondary_amount
+    def test_secondary_amount_with_orderId
       hash = {
         'orderId' => '12344',
         'amount' => '2',
@@ -64,6 +64,16 @@ module LitleOnline
         'reportGroup' => 'Planets'
       }
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<amount>2<\/amount><secondaryAmount>1<\/secondaryAmount><orderSource>ecommerce<\/orderSource>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.echeck_credit(hash)
+    end
+    
+    def test_secondary_amount_with_TxnId
+      hash = {
+        'litleTxnId' => '12344',
+        'amount' => '2',
+        'secondaryAmount' => '1'
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<litleTxnId>12344<\/litleTxnId>.*?<amount>2<\/amount><secondaryAmount>1<\/secondaryAmount>.*/m), is_a(Hash))
       LitleOnlineRequest.new.echeck_credit(hash)
     end
 
