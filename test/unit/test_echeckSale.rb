@@ -67,17 +67,5 @@ module LitleOnline
       LitleOnlineRequest.new.echeck_sale(hash)
     end
     
-    def test_echeck_sale_with_ccd
-      hash = {
-        'orderId' => '12344',
-        'amount' => '2',
-        'orderSource' => 'ecommerce',
-        'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455',
-          'ccdPaymentInformation'=>'12345678901234567890123456789012345678901234567890123456789012345678901234567890'}
-      }
-      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<amount>2<\/amount>.*?<echeck.*?<ccdPaymentInformation>.*?<\/ccdPaymentInformation><\/echeck>.*/m), is_a(Hash))
-      LitleOnlineRequest.new.echeck_sale(hash)
-    end
-    
   end
 end

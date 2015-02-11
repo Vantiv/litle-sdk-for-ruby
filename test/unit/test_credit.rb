@@ -251,7 +251,7 @@ module LitleOnline
         'processingInstructions' => {},
         'reportGroup' => 'Planets'
       }
-      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<litleTxnIds>3<\/litleTxnIds><amount>2<\/amount><secondaryAmount>1<\/secondaryAmount><process.*/m), is_a(Hash))
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<litleTxnId>3<\/litleTxnId><amount>2<\/amount><secondaryAmount>1<\/secondaryAmount><process.*/m), is_a(Hash))
       LitleOnlineRequest.new.credit(hash)
     end
 
