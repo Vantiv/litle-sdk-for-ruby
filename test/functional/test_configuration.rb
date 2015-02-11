@@ -73,7 +73,7 @@ module LitleOnline
       assert_equal('fire is comming',@config_hash['sftp_password'])
       assert_equal('prelive.litle.com',@config_hash['fast_url'])
       assert_equal('15000',@config_hash['fast_port'])
-       ENV['litle_user']=nil
+      ENV['litle_user']=nil
       ENV['litle_password']=nil
       ENV['litle_currency_merchant_map']=nil
       ENV['litle_url']=nil

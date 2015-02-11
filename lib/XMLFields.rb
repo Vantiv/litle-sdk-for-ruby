@@ -1731,7 +1731,7 @@ module LitleOnline
   
   class EcheckPreNoteCredit    
     include XML::Mapping
-    root_element_name "echeckPreNoteSale"
+    root_element_name "echeckPreNoteCredit"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil

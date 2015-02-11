@@ -319,14 +319,14 @@ module LitleOnline
       transaction = @litle_txn.echeck_pre_note_sale(options)
       @txn_counts[:numEcheckPreNoteSale] += 1
       
-      add_txn_to_batch(transaction, :echeckRedeposit, options)
+      add_txn_to_batch(transaction, :echeckPreNoteSale, options)
     end
     
     def echeck_pre_note_credit(options)
       transaction = @litle_txn.echeck_pre_note_credit(options)
       @txn_counts[:numEcheckPreNoteCredit] += 1
       
-      add_txn_to_batch(transaction, :echeckRedeposit, options)
+      add_txn_to_batch(transaction, :echeckPreNoteCredit, options)
     end
     
     def echeck_sale(options)
