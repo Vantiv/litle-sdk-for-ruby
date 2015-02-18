@@ -59,6 +59,36 @@ module LitleOnline
       response= LitleOnlineRequest.new.credit(hash)
       assert_equal('Valid Format', response.message)
     end
+    
+    def test_simple_credit_with_secondaryAmount
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'amount'=>'106',
+        'secondaryAmount'=>'50',
+        'orderId'=>'123456',
+        'orderSource'=>'ecommerce',
+        'paypal'=>{
+        'payerId'=>'1234',
+        'transactionId'=>'1234',
+        }}
+      response= LitleOnlineRequest.new.credit(hash)
+      assert_equal('Valid Format', response.message)
+    end
+    
+    def test_credit_with_TxnID_secondaryAmount
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'amount'=>'106',
+        'secondaryAmount'=>'50',
+        'litleTxnId'=>'123456'
+      }
+      response= LitleOnlineRequest.new.credit(hash)
+      assert_equal('Valid Format', response.message)
+    end
   
     def test_fields_out_of_order
       hash = {

@@ -123,6 +123,22 @@ module LitleOnline
     end  
   end
   
+  class EcheckPreNoteSaleListener < DefaultLitleListener
+    def apply(duck)
+      if(duck["type"] == "echeckPreNoteSaleResponse") then
+        @action.call(duck)
+      end
+    end  
+  end
+  
+  class EcheckPreNoteCreditListener < DefaultLitleListener
+    def apply(duck)
+      if(duck["type"] == "echeckPreNoteCreditResponse") then
+        @action.call(duck)
+      end
+    end  
+  end
+  
   class AuthReversalListener < DefaultLitleListener
     def apply(duck)
       if(duck["type"] == "authReversalResponse") then
@@ -138,5 +154,13 @@ module LitleOnline
       end
     end  
   end
+#  
+#  class FraudCheckListener < DefaultLitleListener
+#    def apply(duck)
+#      if(duck["type"] == "fraudCheckResponse") then
+#        @action.call(duck)
+#      end
+#    end  
+#  end
   
 end

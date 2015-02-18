@@ -158,6 +158,25 @@ module LitleOnline
       response= LitleOnlineRequest.new.force_capture(hash)
       assert_equal('000', response.forceCaptureResponse.response)
     end
+    
+    def test_simple_force_capture_with_secondaryAmount
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'secondaryAmount'=>'20',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        }}
+      response= LitleOnlineRequest.new.force_capture(hash)
+      assert_equal('000', response.forceCaptureResponse.response)
+    end
   
   end
 

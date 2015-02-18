@@ -22,7 +22,7 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require File.expand_path("../../../lib/LitleOnline",__FILE__) 
+require File.expand_path("../../../lib/LitleOnline",__FILE__)
 require 'test/unit'
 
 module LitleOnline
@@ -44,7 +44,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal('000', response.saleResponse.response)
     end
-  
+
     def test_simple_sale_with_paypal
       hash = {
         'merchantId' => '101',
@@ -62,7 +62,33 @@ module LitleOnline
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal 'Valid Format', response.message
     end
-  
+
+    def test_simple_sale_with_applepay_and_secondaryAmount
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'110',
+        'secondaryAmount'=>'50',
+        'orderSource'=>'ecommerce',
+        'applepay'=>{
+        'data'=>'1234',
+        'header'=>{
+        'applicationData'=>'454657413164',
+        'ephemeralPublicKey'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+        'publicKeyHash'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+        'transactionId'=>'1234'
+        },
+        'signature' =>'1',
+        'version'=>'1'
+        }}
+      response= LitleOnlineRequest.new.sale(hash)
+      assert_equal('Insufficient Funds', response.saleResponse.message)
+      assert_equal('110', response.saleResponse.applepayResponse.transactionAmount)
+    end
+
     def test_illegal_order_source
       hash = {
         'merchantId' => '101',
@@ -80,7 +106,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.sale(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-  
+
     def test_no_report_group
       hash = {
         'merchantId' => '101',
@@ -98,7 +124,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal('000', response.saleResponse.response)
     end
-  
+
     def test_fields_out_of_order
       hash = {
         'merchantId' => '101',
@@ -117,7 +143,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal('000', response.saleResponse.response)
     end
-  
+
     def test_invalid_field
       hash = {
         'merchantId' => '101',
@@ -136,7 +162,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal('000', response.saleResponse.response)
     end
-  
+
     def test_simple_sale_with_card
       hash = {
         'merchantId'=>'101',
@@ -154,8 +180,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal('000', response.saleResponse.response)
     end
-  
-    
+
     def test_no_order_id
       hash = {
         'merchantId' => '101',
@@ -172,7 +197,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.sale(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-  
+
     def test_no_amount
       hash = {
         'merchantId' => '101',
@@ -189,7 +214,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.sale(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-  
+
     def test_no_order_source
       hash = {
         'merchantId' => '101',
@@ -217,18 +242,18 @@ module LitleOnline
         'amount'=>'106',
         'orderSource'=>'ecommerce',
         'mpos'=>
-		{
-		'ksn'=>'ksnString',
-		'formatId'=>'30',
-		'encryptedTrack'=>'encryptedTrackString',
-		'track1Status'=>'0',
-		'track2Status'=>'0'
-		}
+        {
+        'ksn'=>'ksnString',
+        'formatId'=>'30',
+        'encryptedTrack'=>'encryptedTrackString',
+        'track1Status'=>'0',
+        'track2Status'=>'0'
+        }
       }
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal('000', response.saleResponse.response)
     end
-  
+
   end
 
 end

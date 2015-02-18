@@ -1,9 +1,14 @@
 = LitleOnline CHANGELOG
 
-==version 9.00.0(August 27,2014)
-* Feature : support Version 9.0
+== Version 9.03.0
+* Feature: Applepay support was added
+* Feature: Secondary amount support was added
+* Feature: Add support for new Batch transaction in version 9.3 schema
 
-== version 8.27.0(August 27, 2014)
+== Version 9.00.0 (August 27,2014)
+* Feature: Add support for new element in version 9 schema
+
+== Version 8.27.0 (August 27,2014)
 * Feature : Added samples for all kinds of transactions
 
 == version 8.25.1(July 18,2014)

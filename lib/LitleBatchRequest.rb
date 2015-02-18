@@ -50,6 +50,8 @@ module LitleOnline
                       :echeckVerification=>{ :numEcheckVerification=>0, :echeckVerificationAmount=>0 },
                       :echeckCredit=>{ :numEcheckCredit=>0, :echeckCreditAmount=>0 },
                       :numEcheckRedeposit=>0,
+                      :numEcheckPreNoteSale=>0,
+                      :numEcheckPreNoteCredit=>0,
                       :echeckSale=>{ :numEcheckSales=>0, :echeckSalesAmount=>0 },
                       :numUpdateCardValidationNumOnTokens=>0,
                       :numAccountUpdates=>0,
@@ -313,6 +315,20 @@ module LitleOnline
       add_txn_to_batch(transaction, :echeckRedeposit, options)
     end
     
+    def echeck_pre_note_sale(options)
+      transaction = @litle_txn.echeck_pre_note_sale(options)
+      @txn_counts[:numEcheckPreNoteSale] += 1
+      
+      add_txn_to_batch(transaction, :echeckPreNoteSale, options)
+    end
+    
+    def echeck_pre_note_credit(options)
+      transaction = @litle_txn.echeck_pre_note_credit(options)
+      @txn_counts[:numEcheckPreNoteCredit] += 1
+      
+      add_txn_to_batch(transaction, :echeckPreNoteCredit, options)
+    end
+    
     def echeck_sale(options)
       transaction = @litle_txn.echeck_sale(options)
       @txn_counts[:echeckSale][:numEcheckSales] += 1
@@ -380,6 +396,8 @@ module LitleOnline
       request.numEcheckSales           = @txn_counts[:echeckSale][:numEcheckSales]
       request.echeckSalesAmount        = @txn_counts[:echeckSale][:echeckSalesAmount]
       request.numEcheckRedeposit       = @txn_counts[:numEcheckRedeposit]
+      request.numEcheckPreNoteSale     = @txn_counts[:numEcheckPreNoteSale]
+      request.numEcheckPreNoteCredit   = @txn_counts[:numEcheckPreNoteCredit]
       request.numEcheckCredit          = @txn_counts[:echeckCredit][:numEcheckCredit]
       request.echeckCreditAmount       = @txn_counts[:echeckCredit][:echeckCreditAmount]
       request.numEcheckVerification    = @txn_counts[:echeckVerification][:numEcheckVerification]

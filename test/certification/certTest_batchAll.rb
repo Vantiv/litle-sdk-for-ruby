@@ -193,6 +193,26 @@ module LitleOnline
           'number' =>'4100000000000001',
           'expDate' =>'1210'
         }}
+        
+      echeckPreNoteSaleHash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'123456',
+        'orderSource'=>'ecommerce',
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'},
+        'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'}          
+      }
+      
+      echeckPreNoteCreditHash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'123457',
+        'orderSource'=>'ecommerce',
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'},
+        'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'}          
+      }
       
       path = "/tmp/litle-sdk-for-ruby/cert/"
 
@@ -216,6 +236,8 @@ module LitleOnline
       batch.register_token_request(registerTokenHash)
       batch.sale(saleHash)
       batch.update_card_validation_num_on_token(updateCardHash)
+      batch.echeck_pre_note_sale(echeckPreNoteSaleHash)
+      batch.echeck_pre_note_credit(echeckPreNoteCreditHash)
       
       #close the batch, indicating we plan to add no more transactions
       batch.close_batch()
@@ -238,7 +260,7 @@ module LitleOnline
           assert_not_nil transaction["message"]
           count+=1
       end})
-      assert_equal count, 14
+      assert_equal count, 16
     end
     
     def test_mini_batch_borked_counts

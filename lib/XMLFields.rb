@@ -47,17 +47,16 @@ module LitleOnline
       end
     end
   end
-  
+
   XML::Mapping.add_node_class OptionalChoiceNode
-  
+
   class Authentication
     include XML::Mapping
     text_node :user, "user"
     text_node :password, "password"
   end
-  
+
   class SchemaValidation
-    
     def self.validate_required(value, required, class_name, field_name)
       if(required)
         if(value.nil?)
@@ -65,7 +64,7 @@ module LitleOnline
         end
       end
     end
-    
+
     def self.validate_length(value, required, min, max, class_name, field_name)
       validate_required(value, required, class_name, field_name)
       if(value.nil?)
@@ -75,7 +74,7 @@ module LitleOnline
         raise "If " + class_name + " " + field_name + " is specified, it must be between " + min.to_s + " and " + max.to_s + " characters long"
       end
     end
-    
+
     def self.validate_size(value, required, min, max, class_name, field_name)
       validate_required(value, required, class_name, field_name)
       if(value.nil?)
@@ -85,7 +84,7 @@ module LitleOnline
         raise "If " + class_name + " " + field_name + " is specified, it must be between " + min.to_s + " and " + max.to_s
       end
     end
-    
+
     def self.validate_country(value, class_name, field_name)
       if(value.nil?)
         return
@@ -95,7 +94,7 @@ module LitleOnline
         raise "If " + class_name + " " + field_name + " is specified, it must be valid.  You specified " + value
       end
     end
-    
+
     def self.validate_regex(value, required,  regex, class_name, field_name)
       validate_required(value, required, class_name, field_name)
       if(value.nil?)
@@ -105,7 +104,7 @@ module LitleOnline
         raise "If #{class_name} #{field_name} is specified, it must match the regular expression #{regex.inspect}"
       end
     end
-    
+
     def self.validate_enum(value, required, list, class_name, field_name)
       validate_required(value, required, class_name, field_name)
       if(value.nil?)
@@ -116,25 +115,25 @@ module LitleOnline
         raise "If #{class_name} #{field_name} is specified, it must be in #{str}"
       end
     end
-    
+
     def self.validate_long(value, required, class_name, field_name)
       validate_size(value, required, -9223372036854775808, 9223372036854775807, class_name, field_name)
     end
-    
+
     def self.validate_currency(value, required, class_name, field_name)
       validate_enum(value, required, ['AUD','CAD','CHF','DKK','EUR','GBP','HKD','JPY','NOK','NZD','SEK','SGD','USD'], class_name, field_name)
     end
-    
+
     def self.validate_boolean(value, required, class_name, field_name)
       validate_enum(value, required, ['true','false','1','0'], class_name, field_name)
     end
-    
+
     def self.validate_date(value, required, class_name, field_name)
       validate_regex(value, required, /\A\d{4}-\d{2}-\d{2}\Z/, class_name, field_name)
     end
-    
+
   end
-  
+
   class Contact
     include XML::Mapping
     text_node :name, "name", :default_value=>nil
@@ -190,7 +189,7 @@ module LitleOnline
       end
     end
   end
-  
+
   class CustomerInfo
     include XML::Mapping
     text_node :ssn, "ssn", :default_value=>nil
@@ -242,7 +241,7 @@ module LitleOnline
       end
     end
   end
-  
+
   class BillMeLaterRequest
     include XML::Mapping
     text_node :bmlMerchantId, "bmlMerchantId", :default_value=>nil
@@ -299,7 +298,7 @@ module LitleOnline
       end
     end
   end
-  
+
   class FraudCheck
     include XML::Mapping
     text_node :authenticationValue, "authenticationValue", :default_value=>nil
@@ -314,7 +313,7 @@ module LitleOnline
         this.authenticationTransactionId = base['authenticationTransactionId']
         this.customerIpAddress = base['customerIpAddress']
         this.authenticatedByMerchant = base['authenticatedByMerchant']
-        SchemaValidation.validate_length(this.authenticationValue, false, 1, 32, name, "authenticationValue")
+        SchemaValidation.validate_length(this.authenticationValue, false, 1, 56, name, "authenticationValue")
         SchemaValidation.validate_length(this.authenticationTransactionId, false, 1, 28, name, "authenticationTransactionId")
         SchemaValidation.validate_regex(this.customerIpAddress, false, /\A(\d{1,3}.){3}\d{1,3}\Z/, name, 'customerIpAddress')
         SchemaValidation.validate_boolean(this.authenticatedByMerchant, false, name, 'authenticatedByMerchant')
@@ -324,7 +323,7 @@ module LitleOnline
       end
     end
   end
-  
+
   class AdvancedFraudResults
     include XML::Mapping
     root_element_name "advanceFraudResults"
@@ -338,12 +337,12 @@ module LitleOnline
         this.deviceReviewStatus = base['deviceReviewStatus']
         this.deviceReputationScore = base['deviceReputationScore']
         if(base['triggeredRule'])
-            base['triggeredRule'].each_index {|index| this.triggeredRule << base['triggeredRule'][index]}
+          base['triggeredRule'].each_index {|index| this.triggeredRule << base['triggeredRule'][index]}
         end
         this
       end
-     end
     end
+  end
 
   class FraudResult
     include XML::Mapping
@@ -351,7 +350,7 @@ module LitleOnline
     text_node :cardValidationResult, "cardValidationResult", :default_value=>nil
     text_node :authenticationResult, "authenticationResult", :default_value=>nil
     text_node :advancedAVSResult, "advancedAVSResult", :default_value=>nil
-    object_node :advancedFraudResults, "advancedFraudResults",:class => AdvancedFraudResults,  :default_value=>nil 
+    object_node :advancedFraudResults, "advancedFraudResults",:class => AdvancedFraudResults,  :default_value=>nil
     def self.from_hash(hash, name='fraudResult')
       base = hash[name]
       if(base)
@@ -370,7 +369,7 @@ module LitleOnline
       end
     end
   end
-  
+
   class AuthInformation
     include XML::Mapping
     text_node :authDate, "authDate", :default_value=>nil
@@ -394,7 +393,7 @@ module LitleOnline
       end
     end
   end
-  
+
   class HealthcareAmounts
     include XML::Mapping
     text_node :totalHealthcareAmount, "totalHealthcareAmount", :default_value=>nil
@@ -422,7 +421,7 @@ module LitleOnline
       end
     end
   end
-  
+
   class HealthcareIIAS
     include XML::Mapping
     object_node :healthcareAmounts, "healthcareAmounts", :class=>HealthcareAmounts, :default_value=>nil
@@ -440,7 +439,7 @@ module LitleOnline
       end
     end
   end
-  
+
   class Pos
     include XML::Mapping
     text_node :capability, "capability", :default_value=>nil
@@ -456,7 +455,7 @@ module LitleOnline
         this.entryMode = base['entryMode']
         this.cardholderId = base['cardholderId']
         this.terminalId = base['terminalId']
-        this.catLevel =base['catLevel'] 
+        this.catLevel =base['catLevel']
         SchemaValidation.validate_enum(this.capability, true, ['notused','magstripe','keyedonly'], name, 'capability')
         SchemaValidation.validate_enum(this.entryMode, true, ['notused','keyed','track1','track2','completeread'], name, 'entryMode')
         SchemaValidation.validate_enum(this.cardholderId, true, ['signature','pin','nopin','directmarket'], name, 'cardholderId')
@@ -467,7 +466,7 @@ module LitleOnline
       end
     end
   end
-  
+
   class DetailTax
     include XML::Mapping
     text_node :taxIncludedInTotal, "taxIncludedInTotal", :default_value=>nil
@@ -495,7 +494,7 @@ module LitleOnline
       end
     end
   end
-  
+
   class LineItemData
     include XML::Mapping
     text_node :itemSequenceNumber, "itemSequenceNumber", :default_value=>nil
@@ -545,7 +544,7 @@ module LitleOnline
       end
     end
   end
-  
+
   class EnhancedData
     include XML::Mapping
     text_node :customerReference, "customerReference", :default_value=>nil
@@ -602,7 +601,7 @@ module LitleOnline
       end
     end
   end
-  
+
   class AmexAggregatorData
     include XML::Mapping
     text_node :sellerId, "sellerId", :default_value=>nil
@@ -621,7 +620,7 @@ module LitleOnline
       end
     end
   end
-  
+
   class Card
     include XML::Mapping
     text_node :mop, "type", :default_value=>nil
@@ -629,7 +628,6 @@ module LitleOnline
     text_node :number, "number", :default_value=>nil
     text_node :expDate, "expDate", :default_value=>nil
     text_node :cardValidationNum, "cardValidationNum", :default_value=>nil
-      
     def self.from_hash(hash, name='card')
       base = hash[name]
       if(base)
@@ -651,6 +649,56 @@ module LitleOnline
     end
   end
 
+  class ApplepayHeader
+    include XML::Mapping
+    text_node :applicationData, "applicationData", :default_value=>nil
+    text_node :ephemeralPublicKey, "ephemeralPublicKey", :default_value=>nil
+    text_node :publicKeyHash, "publicKeyHash", :default_value=>nil
+    text_node :transactionId, "transactionId", :default_value=>nil
+    def self.from_hash(hash, name='header')
+      base = hash[name]
+      if(base)
+        this = ApplepayHeader.new
+        this.applicationData = base['applicationData']
+        this.ephemeralPublicKey = base['ephemeralPublicKey']
+        this.publicKeyHash = base['publicKeyHash']
+        this.transactionId = base['transactionId']
+        SchemaValidation.validate_required(this.applicationData,true,name,'applicationData')
+        SchemaValidation.validate_required(this.ephemeralPublicKey,true,name,'ephemeralPublicKey')
+        SchemaValidation.validate_required(this.publicKeyHash,true,name,'publicKeyHash')
+        SchemaValidation.validate_required(this.transactionId,true,name,'transactionId')
+        this
+      else
+        nil
+      end
+    end
+  end
+
+  class Applepay
+    include XML::Mapping
+    text_node :data, "data", :default_value=>nil
+    object_node :header, "header", :class=>ApplepayHeader, :default_value=>nil
+    text_node :signature, "signature", :default_value=>nil
+    text_node :version, "version", :default_value=>nil
+    def self.from_hash(hash, name='applepay')
+      base = hash[name]
+      if(base)
+        this = Applepay.new
+        this.data = base['data']
+        this.header = ApplepayHeader.from_hash(base)
+        this.signature = base['signature']
+        this.version = base['version']
+        SchemaValidation.validate_required(this.data,true,name,'data')
+        SchemaValidation.validate_required(this.header,true,name,'header')
+        SchemaValidation.validate_required(this.signature,true,name,'signature')
+        SchemaValidation.validate_required(this.version,true,name,'version')
+        this
+      else
+        nil
+      end
+    end
+  end
+
   class Mpos
     include XML::Mapping
     text_node :ksn, "ksn", :default_value=>nil
@@ -661,23 +709,23 @@ module LitleOnline
     def self.from_hash(hash, name='mpos')
       base = hash[name]
       if(base)
-      this = Mpos.new
-      this.ksn = base['ksn']
-      this.formatId = base['formatId']
-      this.encryptedTrack = base['encryptedTrack'] 
-      this.track1Status = base['track1Status']
-      this.track2Status = base['track2Status']
-      SchemaValidation.validate_length(this.ksn, true, 1, 1028 , name, 'ksn')
-      SchemaValidation.validate_length(this.formatId, true, 1, 1028, name, 'formatId')
-      SchemaValidation.validate_length(this.encryptedTrack, true, 1, 1028, name, 'encryptedTrack')
-      SchemaValidation.validate_size(this.track1Status, true, 0, 1028, name, 'track1Status')
-      SchemaValidation.validate_size(this.track2Status, true, 0, 1028, name, 'track2Status')    
-      this
+        this = Mpos.new
+        this.ksn = base['ksn']
+        this.formatId = base['formatId']
+        this.encryptedTrack = base['encryptedTrack']
+        this.track1Status = base['track1Status']
+        this.track2Status = base['track2Status']
+        SchemaValidation.validate_length(this.ksn, true, 1, 1028 , name, 'ksn')
+        SchemaValidation.validate_length(this.formatId, true, 1, 1028, name, 'formatId')
+        SchemaValidation.validate_length(this.encryptedTrack, true, 1, 1028, name, 'encryptedTrack')
+        SchemaValidation.validate_size(this.track1Status, true, 0, 1028, name, 'track1Status')
+        SchemaValidation.validate_size(this.track2Status, true, 0, 1028, name, 'track2Status')
+        this
       end
     end
 
   end
-  
+
   class CardToken
     include XML::Mapping
     text_node :litleToken, "litleToken", :default_value=>nil
@@ -702,7 +750,7 @@ module LitleOnline
       end
     end
   end
-  
+
   class CardPaypage
     include XML::Mapping
     text_node :paypageRegistrationId, "paypageRegistrationId", :default_value=>nil
@@ -727,7 +775,7 @@ module LitleOnline
       end
     end
   end
-  
+
   class PayPal
     include XML::Mapping
     text_node :payerId, "payerId", :default_value=>nil
@@ -748,7 +796,7 @@ module LitleOnline
       end
     end
   end
-  
+
   class CreditPayPal
     include XML::Mapping
     text_node :payerId, "payerId", :default_value=>nil
@@ -767,7 +815,7 @@ module LitleOnline
       end
     end
   end
-  
+
   class CustomBilling
     include XML::Mapping
     optional_choice_node :if,    'phone', :then, (text_node :phone, "phone", :default_value=>nil),
@@ -792,7 +840,7 @@ module LitleOnline
       end
     end
   end
-  
+
   class ProcessingInstructions
     include XML::Mapping
     text_node :bypassVelocityCheck, "bypassVelocityCheck", :default_value=>nil
@@ -808,7 +856,7 @@ module LitleOnline
       end
     end
   end
-  
+
   class EcheckForToken
     include XML::Mapping
     text_node :accNum, "accNum", :default_value=>nil
@@ -827,7 +875,7 @@ module LitleOnline
       end
     end
   end
-  
+
   class Filtering
     include XML::Mapping
     text_node :prepaid, "prepaid", :default_value=>nil
@@ -849,7 +897,7 @@ module LitleOnline
       end
     end
   end
-  
+
   class MerchantData
     include XML::Mapping
     text_node :campaign, "campaign", :default_value=>nil
@@ -871,13 +919,14 @@ module LitleOnline
       end
     end
   end
-  
+
   class Echeck
     include XML::Mapping
     text_node :accType, "accType", :default_value=>nil
     text_node :accNum, "accNum", :default_value=>nil
     text_node :routingNum, "routingNum", :default_value=>nil
     text_node :checkNum, "checkNum", :default_value=>nil
+    text_node :ccdPaymentInformation, "ccdPaymentInformation", :default_value=>nil
     def self.from_hash(hash, name='echeck')
       base = hash[name]
       if(base)
@@ -886,17 +935,19 @@ module LitleOnline
         this.accNum = base['accNum']
         this.routingNum = base['routingNum']
         this.checkNum = base['checkNum']
+        this.ccdPaymentInformation = base['ccdPaymentInformation']
         SchemaValidation.validate_enum(this.accType, true, ['Checking','Savings','Corporate','Corp Savings'], name, 'accType')
         SchemaValidation.validate_length(this.accNum, true, 1, 17, name, 'accNum')
         SchemaValidation.validate_length(this.routingNum, true, 9, 9, name, 'routingNum')
         SchemaValidation.validate_length(this.checkNum, false, 1, 15, name, 'checkNum')
+        SchemaValidation.validate_length(this.ccdPaymentInformation, false, 1, 80, name, 'ccdPaymentInformation')
         this
       else
         nil
       end
     end
   end
-  
+
   class EcheckToken
     include XML::Mapping
     text_node :litleToken, "litleToken", :default_value=>nil
@@ -921,7 +972,7 @@ module LitleOnline
       end
     end
   end
-  
+
   class RecyclingRequest
     include XML::Mapping
     text_node :recycleBy, "recycleBy", :default_value=>nil
@@ -959,7 +1010,7 @@ module LitleOnline
         this.endDate = base['endDate']
         SchemaValidation.validate_length(this.discountCode, true, 1, 25, name, 'discountCode')
         SchemaValidation.validate_length(this.name, true, 1, 100, name, "name")
-	SchemaValidation.validate_size(this.amount,true,0,999999999999,name,'amount')
+        SchemaValidation.validate_size(this.amount,true,0,999999999999,name,'amount')
         SchemaValidation.validate_date(this.startDate, true, name, 'startDate')
         SchemaValidation.validate_date(this.endDate, true, name, 'endDate')
         this
@@ -985,14 +1036,14 @@ module LitleOnline
         this.endDate = base['endDate']
         SchemaValidation.validate_length(this.addOnCode, true, 1, 25, name, 'addOnCode')
         SchemaValidation.validate_length(this.name, true, 1, 100, name, "name")
-	SchemaValidation.validate_size(this.amount,true,0,999999999999,name,'amount')
+        SchemaValidation.validate_size(this.amount,true,0,999999999999,name,'amount')
         SchemaValidation.validate_date(this.startDate, true, name, 'startDate')
         SchemaValidation.validate_date(this.endDate, true, name, 'endDate')
         this
       end
     end
   end
-  
+
   class Subscription
     include XML::Mapping
     text_node :planCode, "planCode", :default_value=>nil
@@ -1001,26 +1052,25 @@ module LitleOnline
     text_node :amount,"amount",:default_value=>nil
     array_node :createDiscount, "", "createDiscount", :class=>CreateDiscount, :default_value=>[]
     array_node :createAddOn, "", "createAddOn", :class=>CreateAddOn, :default_value=>[]
-
     def self.from_hash(hash, name="subscription")
       base = hash[name]
       if(base)
         this = Subscription.new
         this.planCode = base['planCode']
         this.numberOfPayments = base['numberOfPayments']
-	this.startDate = base['startDate']
-	this.amount = base['amount']
-	if(base['createDiscount'])
+        this.startDate = base['startDate']
+        this.amount = base['amount']
+        if(base['createDiscount'])
           base['createDiscount'].each_index {|index| this.createDiscount << CreateDiscount.from_hash(base,index)}
         end
 
-	if(base['createAddOn'])
+        if(base['createAddOn'])
           base['createAddOn'].each_index {|index| this.createAddOn << CreateAddOn.from_hash(base,index)}
         end
         SchemaValidation.validate_length(this.planCode, true, 1, 25, name, 'planCode')
         SchemaValidation.validate_size(this.numberOfPayments, false, 1, 99, name, 'numberOfPayments')
-	SchemaValidation.validate_date(this.startDate,false,name,'startDate')
-	SchemaValidation.validate_size(this.amount,false,0,999999999999,name,'amount')
+        SchemaValidation.validate_date(this.startDate,false,name,'startDate')
+        SchemaValidation.validate_size(this.amount,false,0,999999999999,name,'amount')
         this
       end
     end
@@ -1038,7 +1088,7 @@ module LitleOnline
       end
     end
   end
-  
+
   class LitleInternalRecurringRequest
     include XML::Mapping
     text_node :subscriptionId, "subscriptionId", :default_value=>nil
@@ -1050,10 +1100,10 @@ module LitleOnline
         this = LitleInternalRecurringRequest.new
         this.subscriptionId = base['subscriptionId']
         this.recurringTxnId = base['recurringTxnId']
-	this.finalPayment = base['finalPayment']
+        this.finalPayment = base['finalPayment']
         SchemaValidation.validate_length(this.subscriptionId, true, 19, 19, name, "subscriptionId")
         SchemaValidation.validate_length(this.recurringTxnId, true, 19, 19, name, "recurringTxnId")
-	SchemaValidation.validate_boolean(this.finalPayment, true, name, "finalPayment")
+        SchemaValidation.validate_boolean(this.finalPayment, true, name, "finalPayment")
         this
       end
     end
@@ -1077,7 +1127,7 @@ module LitleOnline
         this.endDate = base['endDate']
         SchemaValidation.validate_length(this.discountCode, true, 1, 25, name, 'discountCode')
         SchemaValidation.validate_length(this.name, false, 1, 100, name, "name")
-	SchemaValidation.validate_size(this.amount,false,0,999999999999,name,'amount')
+        SchemaValidation.validate_size(this.amount,false,0,999999999999,name,'amount')
         SchemaValidation.validate_date(this.startDate, false, name, 'startDate')
         SchemaValidation.validate_date(this.endDate, false, name, 'endDate')
         this
@@ -1113,7 +1163,6 @@ module LitleOnline
     end
   end
 
-
   class UpdateAddOn
     include XML::Mapping
     text_node  :addOnCode, "addOnCode", :default_value=>nil
@@ -1132,15 +1181,13 @@ module LitleOnline
         this.endDate = base['endDate']
         SchemaValidation.validate_length(this.addOnCode, true, 1, 25, name, 'addOnCode')
         SchemaValidation.validate_length(this.name, false, 1, 100, name, "name")
-	SchemaValidation.validate_size(this.amount,false,0,999999999999,name,'amount')
+        SchemaValidation.validate_size(this.amount,false,0,999999999999,name,'amount')
         SchemaValidation.validate_date(this.startDate, false, name, 'startDate')
         SchemaValidation.validate_date(this.endDate, false, name, 'endDate')
         this
       end
     end
   end
-
-
 
   class CancelSubscription
     include XML::Mapping
@@ -1165,7 +1212,7 @@ module LitleOnline
     array_node :createAddOn, "", "createAddOn", :class=>CreateAddOn, :default_value=>[]
     array_node :updateAddOn, "", "updateAddOn", :class=>UpdateAddOn, :default_value=>[]
     array_node :deleteAddOn, "", "deleteAddOn", :class=>DeleteAddOn, :default_value=>[]
-  end 
+  end
 
   class CreatePlan
     include XML::Mapping
@@ -1179,21 +1226,20 @@ module LitleOnline
     text_node :trialNumberOfIntervals,"trialNumberOfIntervals", :default_value=>nil
     text_node :trialIntervalType,"trialIntervalType", :default_value=>nil
     text_node :active,"active", :default_value=>nil
-  end  
+  end
 
   class UpdatePlan
     include XML::Mapping
     root_element_name "updatePlan"
     text_node :planCode,"planCode",:default_value=>nil
     text_node :active,"active", :default_value=>nil
-  end  
+  end
 
   class VirtualGiftCard
     include XML::Mapping
-    root_element_name "virtualGiftCard" 
+    root_element_name "virtualGiftCard"
     text_node "accountNumberLength","accountNumberLength", :default_value=>nil
     text_node "giftCardBin","giftCardBin", :default_value=>nil
-       
     def self.from_hash(hash, name="virtualGiftCard")
       base = hash[name]
       if(base)
@@ -1259,29 +1305,55 @@ module LitleOnline
     include XML::Mapping
     root_element_name "advancedFraudChecks"
     text_node :threatMetrixSessionId, 'threatMetrixSessionId', :default_value=>nil
-    
+    text_node :customAttribute1, 'customAttribute1', :default_value=>nil
+    text_node :customAttribute2, 'customAttribute2', :default_value=>nil
+    text_node :customAttribute3, 'customAttribute3', :default_value=>nil
+    text_node :customAttribute4, 'customAttribute4', :default_value=>nil
+    text_node :customAttribute5, 'customAttribute5', :default_value=>nil
     def self.from_hash(hash, name="advancedFraudChecks")
       base = hash[name]
       if(base)
         this = AdvancedFraudChecks.new
         this.threatMetrixSessionId = base['threatMetrixSessionId']      #   /\A([A-Z,a-z,0-9, ,\*,,,\-,',#,&,.]){4,25}\Z/
-        #SchemaValidation.validate_regex(this.threatMetrixSessionId, true, '[-a-zA-Z0-9_]{1,128}', name, 'threatMetrixSessionId') 
+        #SchemaValidation.validate_regex(this.threatMetrixSessionId, true, '[-a-zA-Z0-9_]{1,128}', name, 'threatMetrixSessionId')
+        this.customAttribute1 = base['customAttribute1']
+        SchemaValidation.validate_length(this.customAttribute1,false,1,200,name,"customAttribute1")
+        this.customAttribute2 = base['customAttribute2']
+        SchemaValidation.validate_length(this.customAttribute2,false,1,200,name,"customAttribute2")
+        this.customAttribute3 = base['customAttribute3']
+        SchemaValidation.validate_length(this.customAttribute3,false,1,200,name,"customAttribute3")
+        this.customAttribute4 = base['customAttribute4']
+        SchemaValidation.validate_length(this.customAttribute4,false,1,200,name,"customAttribute4")
+        this.customAttribute5 = base['customAttribute5']
+        SchemaValidation.validate_length(this.customAttribute5,false,1,200,name,"customAttribute5")
         this
       end
     end
-   end
+  end
+#  
+#  class FraudCheckRequest
+#    include XML::Mapping
+#    root_element_name "fraudCheck"
+#    text_node :reportGroup, "@reportGroup", :default_value=>nil
+#    text_node :transactionId, "@id", :default_value=>nil
+#    text_node :customerId, "@customerId", :default_value=>nil
+#    object_node :advancedFraudChecks, "advancedFraudChecks", :default_value=>nil
+#    object_node :billToAddress, "billToAddress", :class=>Contact, :default_value=>nil
+#    object_node :shipToAddress, "shipToAddress", :class=>Contact, :default_value=>nil
+#    text_node :amount, "amount", :default_value=>nil    
+#  end
 
-  
   class Authorization
     include XML::Mapping
     root_element_name "authorization"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-  
+
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
     text_node :orderId, "orderId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
+    text_node :secondaryAmount, "secondaryAmount", :default_value=>nil
     text_node :surchargeAmount, "surchargeAmount", :default_value=>nil
     text_node :orderSource, "orderSource", :default_value=>nil
     object_node :customerInfo, "customerInfo", :class=>CustomerInfo, :default_value=>nil
@@ -1291,7 +1363,8 @@ module LitleOnline
     :elsif, 'paypal', :then, (object_node :paypal, "paypal", :class=>PayPal),
     :elsif, 'token', :then, (object_node :token, "token", :class=>CardToken),
     :elsif, 'paypage', :then, (object_node :paypage, "paypage", :class=>CardPaypage),
-    :elsif, 'mpos', :then, (object_node :mpos, "mpos", :class=>Mpos)
+    :elsif, 'mpos', :then, (object_node :mpos, "mpos", :class=>Mpos),
+    :elsif, 'applepay', :then, (object_node :applepay, "applepay", :class=>Applepay)
     object_node :billMeLaterRequest, "billMeLaterRequest", :class=>BillMeLaterRequest, :default_value=>nil
     object_node :cardholderAuthentication, "cardholderAuthentication", :class=>FraudCheck, :default_value=>nil
     object_node :processingInstructions, "processingInstructions", :class=>ProcessingInstructions, :default_value=>nil
@@ -1310,17 +1383,18 @@ module LitleOnline
     text_node :debtRepayment,"debtRepayment", :default_value=>nil
     object_node :advancedFraudChecks, "advancedFraudChecks",:class=>AdvancedFraudChecks, :default_value=>nil
   end
-  
+
   class Sale
     include XML::Mapping
     root_element_name "sale"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-  
+
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
     text_node :orderId, "orderId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
+    text_node :secondaryAmount, "secondaryAmount", :default_value=>nil
     text_node :surchargeAmount, "surchargeAmount", :default_value=>nil
     text_node :orderSource, "orderSource", :default_value=>nil
     object_node :customerInfo, "customerInfo", :class=>CustomerInfo, :default_value=>nil
@@ -1330,10 +1404,11 @@ module LitleOnline
     :elsif, 'paypal', :then, (object_node :paypal, "paypal", :class=>PayPal),
     :elsif, 'token', :then, (object_node :token, "token", :class=>CardToken),
     :elsif, 'paypage', :then, (object_node :paypage, "paypage", :class=>CardPaypage),
-    :elsif, 'mpos', :then, (object_node :mpos, "mpos", :class=>Mpos)
+    :elsif, 'mpos', :then, (object_node :mpos, "mpos", :class=>Mpos),
+    :elsif, 'applepay', :then, (object_node :applepay, "applepay", :class=>Applepay)
     object_node :billMeLaterRequest, "billMeLaterRequest", :class=>BillMeLaterRequest, :default_value=>nil
-    optional_choice_node :if,    'fraudCheck',               :then, (object_node :fraudCheck,               "fraudCheck",               :class=>FraudCheck, :default_value=>nil),
-                         :elsif, 'cardholderAuthentication', :then, (object_node :cardholderAuthentication, "cardholderAuthentication", :class=>FraudCheck, :default_value=>nil)
+    optional_choice_node :if, 'fraudCheck', :then, (object_node :fraudCheck, "fraudCheck", :class=>FraudCheck, :default_value=>nil),
+    :elsif, 'cardholderAuthentication', :then, (object_node :cardholderAuthentication, "cardholderAuthentication", :class=>FraudCheck, :default_value=>nil)
     object_node :customBilling, "customBilling", :class=>CustomBilling, :default_value=>nil
     text_node :taxType, "taxType", :default_value=>nil
     object_node :enhancedData, "enhancedData", :class=>EnhancedData, :default_value=>nil
@@ -1353,17 +1428,18 @@ module LitleOnline
     text_node :debtRepayment,"debtRepayment", :default_value=>nil
     object_node :advancedFraudChecks, "advancedFraudChecks",:class=>AdvancedFraudChecks, :default_value=>nil
   end
-  
+
   class Credit
     include XML::Mapping
     root_element_name "credit"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-  
+
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
     text_node :orderId, "orderId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
+    text_node :secondaryAmount, "secondaryAmount", :default_value=>nil
     text_node :surchargeAmount, "surchargeAmount", :default_value=>nil
     text_node :orderSource, "orderSource", :default_value=>nil
     object_node :billToAddress, "billToAddress", :class=>Contact, :default_value=>nil
@@ -1383,30 +1459,32 @@ module LitleOnline
     text_node :payPalNotes, "payPalNotes", :default_value=>nil
     text_node :actionReason, "actionReason", :default_value=>nil
   end
-  
+
   class RegisterTokenRequest
     include XML::Mapping
     root_element_name "registerTokenRequest"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-  
+
     text_node :orderId, "orderId", :default_value=>nil
     optional_choice_node :if,    'accountNumber', :then, (text_node :accountNumber, "accountNumber", :default_value=>nil),
     :elsif, 'echeckForToken', :then, (object_node :echeckForToken, "echeckForToken", :class=>EcheckForToken),
-    :elsif, 'paypageRegistrationId', :then, (text_node :paypageRegistrationId, "paypageRegistrationId", :default_value=>nil)
+    :elsif, 'paypageRegistrationId', :then, (text_node :paypageRegistrationId, "paypageRegistrationId", :default_value=>nil),
+    :elsif, 'applepay', :then, (object_node :applepay, "applepay", :class=>Applepay)
   end
-  
+
   class CaptureGivenAuth
     include XML::Mapping
     root_element_name "captureGivenAuth"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-  
+
     text_node :orderId, "orderId", :default_value=>nil
     object_node :authInformation, "authInformation", :class=>AuthInformation, :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
+    text_node :secondaryAmount, "secondaryAmount", :default_value=>nil
     text_node :surchargeAmount, "surchargeAmount", :default_value=>nil
     text_node :orderSource, "orderSource", :default_value=>nil
     object_node :billToAddress, "billToAddress", :class=>Contact, :default_value=>nil
@@ -1425,16 +1503,17 @@ module LitleOnline
     object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
     text_node :debtRepayment,"debtRepayment", :default_value=>nil
   end
-  
+
   class ForceCapture
     include XML::Mapping
     root_element_name "forceCapture"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-  
+
     text_node :orderId, "orderId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
+    text_node :secondaryAmount, "secondaryAmount", :default_value=>nil
     text_node :surchargeAmount, "surchargeAmount", :default_value=>nil
     text_node :orderSource, "orderSource", :default_value=>nil
     object_node :billToAddress, "billToAddress", :class=>Contact, :default_value=>nil
@@ -1451,7 +1530,7 @@ module LitleOnline
     object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
     text_node :debtRepayment,"debtRepayment", :default_value=>nil
   end
-  
+
   class AuthReversal
     include XML::Mapping
     root_element_name "authReversal"
@@ -1459,14 +1538,14 @@ module LitleOnline
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
     text_node :partial, "@partial", :default_value=>nil
-  
+
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
     text_node :surchargeAmount, "surchargeAmount", :default_value=>nil
     text_node :payPalNotes, "payPalNotes", :default_value=>nil
     text_node :actionReason, "actionReason", :default_value=>nil
   end
-  
+
   class Capture
     include XML::Mapping
     root_element_name "capture"
@@ -1474,7 +1553,7 @@ module LitleOnline
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
     text_node :partial, "@partial", :default_value=>nil
-  
+
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
     text_node :surchargeAmount, "surchargeAmount", :default_value=>nil
@@ -1483,25 +1562,25 @@ module LitleOnline
     text_node :payPalOrderComplete, "payPalOrderComplete", :default_value=>nil
     text_node :payPalNotes, "payPalNotes", :default_value=>nil
   end
-  
+
   class Void
     include XML::Mapping
     root_element_name "void"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-  
+
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
     object_node :processingInstructions, "processingInstructions", :class=>ProcessingInstructions, :default_value=>nil
   end
-  
+
   class EcheckVoid
     include XML::Mapping
     root_element_name "echeckVoid"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-  
+
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
   end
 
@@ -1511,7 +1590,7 @@ module LitleOnline
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-  
+
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
   end
 
@@ -1521,7 +1600,7 @@ module LitleOnline
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-  
+
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
   end
 
@@ -1531,7 +1610,7 @@ module LitleOnline
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-  
+
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
   end
 
@@ -1541,17 +1620,17 @@ module LitleOnline
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-  
+
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
   end
- 
+
   class LoadReversal
     include XML::Mapping
     root_element_name "loadReversal"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-  
+
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
   end
 
@@ -1561,11 +1640,9 @@ module LitleOnline
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-  
+
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
-  end 
-
-
+  end
 
   class EcheckVerification
     include XML::Mapping
@@ -1573,7 +1650,7 @@ module LitleOnline
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-  
+
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
     text_node :orderId, "orderId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
@@ -1582,19 +1659,20 @@ module LitleOnline
     object_node :shipToAddress, "shipToAddress", :class=>Contact, :default_value=>nil
     optional_choice_node :if,    'echeck', :then, (object_node :echeck, "echeck", :class=>Echeck),
     :elsif, 'echeckToken', :then, (object_node :echeckToken, "echeckToken", :class=>EcheckToken)
-	object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
+    object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
   end
-  
+
   class EcheckCredit
     include XML::Mapping
     root_element_name "echeckCredit"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-  
+
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
     text_node :orderId, "orderId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
+    text_node :secondaryAmount, "secondaryAmount", :default_value=>nil
     text_node :orderSource, "orderSource", :default_value=>nil
     object_node :billToAddress, "billToAddress", :class=>Contact, :default_value=>nil
     optional_choice_node :if,    'echeck', :then, (object_node :echeck, "echeck", :class=>Echeck, :default_value=>nil),
@@ -1602,31 +1680,32 @@ module LitleOnline
     object_node :customBilling, "customBilling", :class=>CustomBilling, :default_value=>nil
     object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
   end
-  
+
   class EcheckRedeposit
     include XML::Mapping
     root_element_name "echeckRedeposit"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-  
+
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
     optional_choice_node :if,    'echeck', :then, (object_node :echeck, "echeck", :class=>Echeck, :default_value=>nil),
     :elsif, 'echeckToken', :then, (object_node :echeckToken, "echeckToken", :class=>EcheckToken, :default_value=>nil)
-	object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
+    object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
   end
-  
+
   class EcheckSale
     include XML::Mapping
     root_element_name "echeckSale"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-  
+
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
     text_node :orderId, "orderId", :default_value=>nil
     text_node :verify, "verify", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
+    text_node :secondaryAmount, "secondaryAmount", :default_value=>nil
     text_node :orderSource, "orderSource", :default_value=>nil
     object_node :billToAddress, "billToAddress", :class=>Contact, :default_value=>nil
     object_node :shipToAddress, "shipToAddress", :class=>Contact, :default_value=>nil
@@ -1636,30 +1715,58 @@ module LitleOnline
     object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
   end
   
+  class EcheckPreNoteSale
+    include XML::Mapping
+    root_element_name "echeckPreNoteSale"
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+    
+    text_node :orderId, "orderId", :default_value=>nil
+    text_node :orderSource, "orderSource", :default_value=>nil
+    object_node :billToAddress, "billToAddress", :class=>Contact, :default_value=>nil
+    object_node :echeck, "echeck", :class=>Echeck, :default_value=>nil
+    object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
+  end
+  
+  class EcheckPreNoteCredit    
+    include XML::Mapping
+    root_element_name "echeckPreNoteCredit"
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+    
+    text_node :orderId, "orderId", :default_value=>nil
+    text_node :orderSource, "orderSource", :default_value=>nil
+    object_node :billToAddress, "billToAddress", :class=>Contact, :default_value=>nil
+    object_node :echeck, "echeck", :class=>Echeck, :default_value=>nil
+    object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
+  end
+
   class UpdateCardValidationNumOnToken
     include XML::Mapping
     root_element_name "updateCardValidationNumOnToken"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-  
+
     text_node :orderId, "orderId", :default_value=>nil
     text_node :litleToken, "litleToken", :default_value=>nil
     text_node :cardValidationNum, "cardValidationNum", :default_value=>nil
   end
-  
+
   class AccountUpdate
     include XML::Mapping
     root_element_name "accountUpdate"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-  
+
     text_node :orderId, "orderId", :default_value=>nil
     optional_choice_node :if,    'card', :then, (object_node :card, "card", :class=>Card),
     :else, (object_node :token, "token", :class=>CardToken)
   end
-  
+
   class OnlineRequest
     include XML::Mapping
     root_element_name "litleOnlineRequest"
@@ -1701,20 +1808,19 @@ module LitleOnline
     :elsif, 'loadReversal', :then, (object_node :loadReversal,"loadReversal", :class=>LoadReversal),
     :elsif, 'unloadReversal', :then, (object_node :unloadReversal,"unloadReversal", :class=>UnloadReversal),
     :elsif, 'advancedFraudResults', :then, (object_node :advancedFraudResults,"advancedFraudResults", :class=>AdvancedFraudResults)
-
     def post_save(xml, options={:Mapping=>:_default})
-      xml.each_element() {|el| 
+      xml.each_element() {|el|
         if(el.name == 'captureTxn')
           el.name = 'capture'
-        end      
+        end
       }
     end
-    
+
   end
-  
+
   class BatchRequest
     include XML::Mapping
-    root_element_name "batchRequest" 
+    root_element_name "batchRequest"
 
     text_node :numAuths, "@numAuths", :default_value=>"0"
     text_node :authAmount, "@authAmount", :default_value=>"0"
@@ -1734,6 +1840,8 @@ module LitleOnline
     text_node :numEcheckSales, "@numEcheckSales", :default_value=>"0"
     text_node :echeckSalesAmount, "@echeckSalesAmount", :default_value=>"0"
     text_node :numEcheckRedeposit, "@numEcheckRedeposit", :default_value=>"0"
+    text_node :numEcheckPreNoteSale, "@numEcheckPreNoteSale", :default_value=>"0"
+    text_node :numEcheckPreNoteCredit, "@numEcheckPreNoteCredit", :default_value=>"0"
     text_node :numEcheckCredit, "@numEcheckCredit", :default_value=>"0"
     text_node :echeckCreditAmount, "@echeckCreditAmount", :default_value=>"0"
     text_node :numEcheckVerification, "@numEcheckVerification", :default_value=>"0"
@@ -1746,7 +1854,7 @@ module LitleOnline
     text_node :numUpdateSubscriptions,"@numUpdateSubscriptions", :default_value=>"0"
     text_node :numCreatePlans,"@numCreatePlans",:default_value=>"0"
     text_node :numUpdatePlans,"@numUpdatePlans",:default_value=>"0"
-    text_node :numActivates,"@numActivates",:default_value=>"0"  
+    text_node :numActivates,"@numActivates",:default_value=>"0"
     text_node :numDeactivates,"@numDeactivates",:default_value=>"0"
     text_node :activateAmount,"@activateAmount",:default_value=>"0"
     text_node :numLoads,"@numLoads",:default_value=>"0"
@@ -1754,61 +1862,57 @@ module LitleOnline
     text_node :numUnloads,"@numUnloads",:default_value=>"0"
     text_node :unloadAmount,"@unloadAmount",:default_value=>"0"
     text_node :numBalanceInquirys,"@numBalanceInquirys",:default_value=>"0"
-    text_node :merchantSdk,"merchantSdk",:default_value=>"0"    
+    text_node :merchantSdk,"merchantSdk",:default_value=>"0"
   end
-  
+
   class LitleRequest
     include XML::Mapping
     # version="6.0" xmlns="http://www.litle.com/schema" numBatchRequests = "1">
     # <authentication>
-        # <user>XMLTESTV6ORG14</user>
-        # <password>password</password>
+    # <user>XMLTESTV6ORG14</user>
+    # <password>password</password>
     # </authentication>
     root_element_name "litleRequest"
-    
+
     text_node :version, "@version", :default_value=>"0"
     text_node :xmlns, "@xmlns", :default_value=>nil
     #TODO: ask greg about sessionId
     #text_node :sessionId, "@id", default_vale:nil
     text_node :numBatchRequests, "@numBatchRequests", :default_value=>"0"
-    object_node :authentication, "authentication", :class=>Authentication    
+    object_node :authentication, "authentication", :class=>Authentication
   end
-  
+
   class AccountUpdateFileRequestData
     include XML::Mapping
     root_element_name "accountUpdateFileRequestData"
-    
+
     text_node :merchantId, "merchantId", :default_value=>nil
     text_node :postDay, "postDay", :default_value=>nil
   end
-  
+
   class LitleRFRRequest
     include XML::Mapping
     root_element_name "RFRRequest"
     optional_choice_node   :if,    'litleSessionId', :then, (text_node :litleSessionId, "litleSessionId"),
     :elsif, 'accountUpdateFileRequestData',    :then, (object_node :accountUpdateFileRequestData,    "accountUpdateFileRequestData",    :class=>AccountUpdateFileRequestData)
   end
-  
+
   class LitleRequestForRFR
     include XML::Mapping
     root_element_name "litleRequest"
     text_node :version, "@version", :default_value=>"0"
     text_node :xmlns, "@xmlns", :default_value=>nil
     text_node :numBatchRequests, "@numBatchRequests", :default_value=>nil
-    object_node :authentication, "authentication", :class=>Authentication    
+    object_node :authentication, "authentication", :class=>Authentication
     object_node :rfrRequest, 'RFRRequest', :class=>LitleRFRRequest
   end
 
-  
-
-  
-
-# begin   
+  # begin
   # class LitleOnlineResponse
-    # attr_accessor :message
+  # attr_accessor :message
   # end
-#   
+  #
   # class XMLFields
-#   
+  #
   # end
 end

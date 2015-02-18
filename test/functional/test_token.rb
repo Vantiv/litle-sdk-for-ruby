@@ -22,7 +22,7 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require File.expand_path("../../../lib/LitleOnline",__FILE__) 
+require File.expand_path("../../../lib/LitleOnline",__FILE__)
 require 'test/unit'
 
 module LitleOnline
@@ -38,7 +38,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.register_token_request(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_simple_token_with_paypage
       hash = {
         'merchantId' => '101',
@@ -51,7 +51,30 @@ module LitleOnline
       assert_equal('Valid Format', response.message)
       assert_equal('1111222233334444', response.registerTokenResponse.litleToken)
     end
-  
+
+    def test_simple_token_with_applepay
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'applepay'=>{
+        'data'=>'1234',
+        'header'=>{
+        'applicationData'=>'454657413164',
+        'ephemeralPublicKey'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+        'publicKeyHash'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+        'transactionId'=>'1234'
+        },
+        'signature' =>'1',
+        'version'=>'1'
+        }
+      }
+      response= LitleOnlineRequest.new.register_token_request(hash)
+      assert_equal('Valid Format', response.message)
+      assert_equal('0', response.registerTokenResponse.applepayResponse.transactionAmount)
+    end
+
     def test_simple_token_echeck
       hash = {
         'reportGroup'=>'Planets',
@@ -63,7 +86,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.register_token_request(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_fields_out_of_order
       hash = {
         'merchantId' => '101',
@@ -75,7 +98,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.register_token_request(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_invalid_field
       hash = {
         'merchantId' => '101',

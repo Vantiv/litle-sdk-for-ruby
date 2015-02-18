@@ -108,6 +108,17 @@ module LitleOnline
       LitleOnlineRequest.new.force_capture(hash)
     end
     
+def test_secondary_amount
+      hash = {
+        'amount' => '2',
+        'secondaryAmount' => '1',
+        'orderSource' => 'ecommerce',
+        'reportGroup' => 'Planets'
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<amount>2<\/amount><secondaryAmount>1<\/secondaryAmount><orderSource>ecommerce<\/orderSource>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.force_capture(hash)
+    end
+    
     def test_surcharge_amount
       hash = {
         'amount' => '2',

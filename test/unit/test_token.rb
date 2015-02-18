@@ -22,11 +22,57 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require File.expand_path("../../../lib/LitleOnline",__FILE__) 
+require File.expand_path("../../../lib/LitleOnline",__FILE__)
 require 'test/unit'
 require 'mocha/setup'
+
 module LitleOnline
   class TestToken < Test::Unit::TestCase
+    def test_success_applepay
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'applepay'=>{
+        'data'=>'user',
+        'header'=>{
+        'applicationData'=>'454657413164',
+        'ephemeralPublicKey'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+        'publicKeyHash'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+        'transactionId'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+        },
+        'signature' =>'sign',
+        'version' =>'1'
+        }
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*?<litleOnlineRequest.*?<registerTokenRequest.*?<applepay>.*?<data>user<\/data>.*?<\/applepay>.*?<\/registerTokenRequest>.*?/m), is_a(Hash))
+      LitleOnlineRequest.new.register_token_request(hash)
+    end
+
+    def test_account_num_and_applepay
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'accountNumber'=>'1233456789101112',
+        'applepay'=>{
+        'data'=>'user',
+        'header'=>{
+        'applicationData'=>'454657413164',
+        'ephemeralPublicKey'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+        'publicKeyHash'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+        'transactionId'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+        },
+        'signature' =>'sign',
+        'version' =>'1'
+        }
+      }
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.register_token_request(hash)}
+      assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
+    end
+
     def test_account_num_and_paypage
       hash = {
         'merchantId' => '101',
@@ -39,8 +85,8 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.register_token_request(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
-  
-    def test_echeckandPaypage
+
+    def test_echeck_and_Paypage
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
@@ -52,8 +98,8 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.register_token_request(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
-  
-    def test_echeckandPaypageandaccountnum
+
+    def test_echeck_and_Paypage_and_accountnum
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
@@ -81,8 +127,8 @@ module LitleOnline
 
     def test_logged_in_user
       hash = {
-      	'loggedInUser'=>'gdake',
-      	'merchantSdk' => 'Ruby;8.14.0',
+        'loggedInUser'=>'gdake',
+        'merchantSdk' => 'Ruby;8.14.0',
         'merchantId' => '101',
         'version'=>'8.8',
         'reportGroup'=>'Planets',

@@ -972,9 +972,9 @@ module LitleOnline
       assert_equal(nil, FraudCheck.from_hash({ 'fraudCheck'=>{}}).authenticationValue)
       assert_equal("12345678901234567890123456789012", FraudCheck.from_hash({ 'fraudCheck'=>{'authenticationValue'=>'12345678901234567890123456789012' }}).authenticationValue)
       exception = assert_raise(RuntimeError){
-        FraudCheck.from_hash({ 'fraudCheck'=>{'authenticationValue'=>'123456789012345678901234567890123' }})
+        FraudCheck.from_hash({ 'fraudCheck'=>{'authenticationValue'=>'123456789012345678901234567890123456789012345678901234567' }})
       }
-      assert_equal "If fraudCheck authenticationValue is specified, it must be between 1 and 32 characters long", exception.message
+      assert_equal "If fraudCheck authenticationValue is specified, it must be between 1 and 56 characters long", exception.message
     end
     
     def test_fraudCheck_authenticationTransactionId

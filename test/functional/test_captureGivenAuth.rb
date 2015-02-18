@@ -22,7 +22,7 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require File.expand_path("../../../lib/LitleOnline",__FILE__) 
+require File.expand_path("../../../lib/LitleOnline",__FILE__)
 require 'test/unit'
 
 module LitleOnline
@@ -47,7 +47,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.capture_given_auth(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_simple_capture_given_auth_with_token
       hash = {
         'merchantId' => '101',
@@ -69,7 +69,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.capture_given_auth(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_fields_out_of_order
       hash = {
         'merchantId' => '101',
@@ -91,7 +91,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.capture_given_auth(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_invalid_field
       hash = {
         'merchantId' => '101',
@@ -113,7 +113,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.capture_given_auth(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_complex_capture_given_auth
       hash = {
         'merchantId' => '101',
@@ -136,7 +136,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.capture_given_auth(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_auth_info
       hash = {
         'merchantId' => '101',
@@ -149,10 +149,10 @@ module LitleOnline
         'authAmount'=>'12345','fraudResult'=>{'avsResult'=>'12','cardValidationResult'=>'123','authenticationResult'=>'1',
         'advancedAVSResult'=>'123',
         'advancedFraudResults' => {'deviceReviewStatus' => 'deviceReviewStatusString',
-                                   'deviceReputationScore' => '100',
-                                   'triggeredRule' => ['rule1','rule2']
-                                  }
-                              }
+        'deviceReputationScore' => '100',
+        'triggeredRule' => ['rule1','rule2']
+        }
+        }
         },
         'orderSource'=>'ecommerce',
         'card'=>{
@@ -163,7 +163,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.capture_given_auth(hash)
       assert_equal('Valid Format', response.message)
     end
-    
+
     def test_no_amount
       hash = {
         'merchantId' => '101',
@@ -197,14 +197,37 @@ module LitleOnline
         },
         'orderSource'=>'ecommerce',
         'mpos'=>
-		{
-		'ksn'=>'ksnString',
-		'formatId'=>'30',
-		'encryptedTrack'=>'encryptedTrackString',
-		'track1Status'=>'0',
-		'track2Status'=>'0'
-		}
+        {
+        'ksn'=>'ksnString',
+        'formatId'=>'30',
+        'encryptedTrack'=>'encryptedTrackString',
+        'track1Status'=>'0',
+        'track2Status'=>'0'
+        }
       }
+      response= LitleOnlineRequest.new.capture_given_auth(hash)
+      assert_equal('Valid Format', response.message)
+    end
+
+    def test_simple_capture_given_auth_with_secondaryAmount
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'authInformation' => {
+        'authDate'=>'2002-10-09','authCode'=>'543216', 'processingInstructions'=>{'bypassVelocityCheck'=>'true'},
+        'authAmount'=>'12345'
+        },
+        'amount'=>'106',
+        'secondaryAmount'=>'50',
+        'orderSource'=>'ecommerce',
+        'token'=> {
+        'litleToken'=>'123456789101112',
+        'expDate'=>'1210',
+        'cardValidationNum'=>'555',
+        'type'=>'VI'
+        }}
       response= LitleOnlineRequest.new.capture_given_auth(hash)
       assert_equal('Valid Format', response.message)
     end
