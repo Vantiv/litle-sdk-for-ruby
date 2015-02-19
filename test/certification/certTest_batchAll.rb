@@ -22,8 +22,7 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-
-require File.expand_path("../../../lib/LitleOnline",__FILE__) 
+require File.expand_path("../../../lib/LitleOnline",__FILE__)
 require 'test/unit'
 require 'fileutils'
 
@@ -40,7 +39,7 @@ module LitleOnline
         Dir.mkdir(path)
       end
     end
-  
+
     def test_MEGA_batch
       authHash = {
         'reportGroup'=>'Planets',
@@ -48,9 +47,9 @@ module LitleOnline
         'amount'=>'106',
         'orderSource'=>'ecommerce',
         'card'=>{
-          'type'=>'VI',
-          'number' =>'4100000000000001',
-          'expDate' =>'1210'
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
         }}
 
       saleHash = {
@@ -60,9 +59,9 @@ module LitleOnline
         'amount'=>'6000',
         'orderSource'=>'ecommerce',
         'card'=>{
-          'type'=>'VI',
-          'number' =>'4100000000000001',
-          'expDate' =>'1210'
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
         }}
 
       creditHash = {
@@ -73,9 +72,9 @@ module LitleOnline
         'amount'=>'106',
         'orderSource'=>'ecommerce',
         'card'=>{
-          'type'=>'VI',
-          'number' =>'4100000000000001',
-          'expDate' =>'1210'
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
         }}
 
       authReversalHash = {
@@ -105,7 +104,7 @@ module LitleOnline
         'litleToken'=>'1233456789103801',
         'cardValidationNum'=>'123'
       }
-      
+
       forceCaptHash = {
         'merchantId' => '101',
         'version'=>'8.8',
@@ -115,9 +114,9 @@ module LitleOnline
         'amount'=>'106',
         'orderSource'=>'ecommerce',
         'card'=>{
-          'type'=>'VI',
-          'number' =>'4100000000000001',
-          'expDate' =>'1210'
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
         }}
 
       captHash = {
@@ -135,14 +134,14 @@ module LitleOnline
         'orderId'=>'12344',
         'amount'=>'106',
         'authInformation' => {
-          'authDate'=>'2002-10-09','authCode'=>'543216',
-          'authAmount'=>'12345'
+        'authDate'=>'2002-10-09','authCode'=>'543216',
+        'authAmount'=>'12345'
         },
         'orderSource'=>'ecommerce',
         'card'=>{
-          'type'=>'VI',
-          'number' =>'4100000000000000',
-          'expDate' =>'1210'
+        'type'=>'VI',
+        'number' =>'4100000000000000',
+        'expDate' =>'1210'
         }}
 
       echeckVerificationHash = {
@@ -189,11 +188,11 @@ module LitleOnline
         'customerId'=>'0987',
         'orderId'=>'1234',
         'card'=>{
-          'type'=>'VI',
-          'number' =>'4100000000000001',
-          'expDate' =>'1210'
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
         }}
-        
+
       echeckPreNoteSaleHash = {
         'merchantId' => '101',
         'version'=>'8.8',
@@ -201,9 +200,9 @@ module LitleOnline
         'orderId'=>'123456',
         'orderSource'=>'ecommerce',
         'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'},
-        'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'}          
+        'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'}
       }
-      
+
       echeckPreNoteCreditHash = {
         'merchantId' => '101',
         'version'=>'8.8',
@@ -211,9 +210,97 @@ module LitleOnline
         'orderId'=>'123457',
         'orderSource'=>'ecommerce',
         'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'},
-        'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'}          
+        'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'}
       }
-      
+
+      submerchantCreditHash = {
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'fundingSubmerchantId'=>'123456',
+        'submerchantName'=>'001',
+        'fundsTransferId'=>'1234567',
+        'amount'=>'106',
+        'accountInfo' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'}
+      }
+
+      vendorCreditHash = {
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'fundingSubmerchantId'=>'123456',
+        'vendorName'=>'001',
+        'fundsTransferId'=>'1234567',
+        'amount'=>'107',
+        'accountInfo' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'}
+      }
+
+      payFacCreditHash = {
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'fundingSubmerchantId'=>'123456',
+        'fundsTransferId'=>'1234567',
+        'amount'=>'108',
+      }
+
+      reserveCreditHash = {
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'fundingSubmerchantId'=>'123456',
+        'fundsTransferId'=>'1234567',
+        'amount'=>'109',
+      }
+
+      physicalCheckCreditHash = {
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'fundingSubmerchantId'=>'123456',
+        'fundsTransferId'=>'1234567',
+        'amount'=>'110',
+      }
+
+      submerchantDebitHash = {
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'fundingSubmerchantId'=>'123456',
+        'submerchantName'=>'001',
+        'fundsTransferId'=>'1234567',
+        'amount'=>'106',
+        'accountInfo' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'}
+      }
+
+      vendorDebitHash = {
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'fundingSubmerchantId'=>'123456',
+        'vendorName'=>'001',
+        'fundsTransferId'=>'1234567',
+        'amount'=>'107',
+        'accountInfo' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'}
+      }
+
+      payFacDebitHash = {
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'fundingSubmerchantId'=>'123456',
+        'fundsTransferId'=>'1234567',
+        'amount'=>'108',
+      }
+
+      reserveDebitHash = {
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'fundingSubmerchantId'=>'123456',
+        'fundsTransferId'=>'1234567',
+        'amount'=>'109',
+      }
+
+      physicalCheckDebitHash = {
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'fundingSubmerchantId'=>'123456',
+        'fundsTransferId'=>'1234567',
+        'amount'=>'110',
+      }
+
       path = "/tmp/litle-sdk-for-ruby/cert/"
 
       request = LitleRequest.new({'sessionId'=>'8675309'})
@@ -221,7 +308,7 @@ module LitleOnline
       request.create_new_litle_request(path)
       batch = LitleBatchRequest.new
       batch.create_new_batch(path)
-    
+
       batch.account_update(accountUpdateHash)
       batch.auth_reversal(authReversalHash)
       batch.authorization(authHash)
@@ -238,7 +325,17 @@ module LitleOnline
       batch.update_card_validation_num_on_token(updateCardHash)
       batch.echeck_pre_note_sale(echeckPreNoteSaleHash)
       batch.echeck_pre_note_credit(echeckPreNoteCreditHash)
-      
+      batch.submerchant_credit(submerchantCreditHash)
+      batch.payFac_credit(payFacCreditHash)
+      batch.vendor_credit(vendorCreditHash)
+      batch.reserve_credit(reserveCreditHash)
+      batch.physical_check_credit(physicalCheckCreditHash)
+      batch.submerchant_debit(submerchantDebitHash)
+      batch.payFac_debit(payFacDebitHash)
+      batch.vendor_debit(vendorDebitHash)
+      batch.reserve_debit(reserveDebitHash)
+      batch.physical_check_debit(physicalCheckDebitHash)
+
       #close the batch, indicating we plan to add no more transactions
       batch.close_batch()
       #add the batch to the LitleRequest
@@ -251,18 +348,18 @@ module LitleOnline
 
       #grab the expected number of responses from the sFTP server and save them to the given path
       request.get_responses_from_server()
-      
+
       count = 0
       #process the responses from the server with a listener which applies the given block
       request.process_responses({:transaction_listener => LitleOnline::DefaultLitleListener.new do |transaction|
-          assert_not_nil transaction["litleTxnId"] =~ /\d+/
-          assert_not_nil transaction["response"] =~ /\d+/
-          assert_not_nil transaction["message"]
-          count+=1
-      end})
+        assert_not_nil transaction["litleTxnId"] =~ /\d+/
+        assert_not_nil transaction["response"] =~ /\d+/
+        assert_not_nil transaction["message"]
+        count+=1
+        end})
       assert_equal count, 16
     end
-    
+
     def test_mini_batch_borked_counts
       echeckSaleHash = {
         'merchantId' => '101',
@@ -275,7 +372,7 @@ module LitleOnline
         'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
         'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
       }
-      
+
       path = "/tmp/litle-sdk-for-ruby/cert/"
 
       request = LitleRequest.new({'sessionId'=>'8675309'})
@@ -283,11 +380,11 @@ module LitleOnline
       request.create_new_litle_request(path)
       batch = LitleBatchRequest.new
       batch.create_new_batch(path)
-      
+
       batch.echeck_sale(echeckSaleHash)
-      
+
       #make this a bad batch
-      batch.get_counts_and_amounts[:sale][:numSales] += 1  
+      batch.get_counts_and_amounts[:sale][:numSales] += 1
       #close the batch, indicating we plan to add no more transactions
       batch.close_batch()
       #add the batch to the LitleRequest
@@ -305,10 +402,10 @@ module LitleOnline
       assert_raise RuntimeError do
         #process the responses from the server with a listener which applies the given block
         request.process_responses({:transaction_listener => LitleOnline::DefaultLitleListener.new do |transaction|
-        end})
+          end})
       end
     end
-    
+
     def test_mini_batch_borked_amounts
       echeckSaleHash = {
         'merchantId' => '101',
@@ -321,7 +418,7 @@ module LitleOnline
         'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
         'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
       }
-      
+
       path = "/tmp/litle-sdk-for-ruby/cert/"
 
       request = LitleRequest.new({'sessionId'=>'8675309'})
@@ -329,11 +426,11 @@ module LitleOnline
       request.create_new_litle_request(path)
       batch = LitleBatchRequest.new
       batch.create_new_batch(path)
-      
+
       batch.echeck_sale(echeckSaleHash)
-      
+
       #make this a bad batch
-      batch.get_counts_and_amounts[:sale][:saleAmount] += 1  
+      batch.get_counts_and_amounts[:sale][:saleAmount] += 1
       #close the batch, indicating we plan to add no more transactions
       batch.close_batch()
       #add the batch to the LitleRequest
@@ -352,7 +449,7 @@ module LitleOnline
       assert_raise RuntimeError do
         #process the responses from the server with a listener which applies the given block
         request.process_responses({:transaction_listener => LitleOnline::DefaultLitleListener.new do |transaction|
-        end})
+          end})
       end
     end
   end

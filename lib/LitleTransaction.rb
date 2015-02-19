@@ -30,7 +30,6 @@ require_relative 'Configuration'
 # contains the methods to properly create each transaction type
 #
 module LitleOnline
-
   class LitleTransaction
     def authorization(options)
       transaction = Authorization.new
@@ -40,7 +39,7 @@ module LitleOnline
       transaction.debtRepayment	     = options['debtRepayment']
       transaction.advancedFraudChecks = AdvancedFraudChecks.from_hash(options, 'advancedFraudChecks')
       add_transaction_info(transaction, options)
-      
+
       return transaction
     end
 
@@ -49,49 +48,49 @@ module LitleOnline
       transaction.subscriptionId = options['subscriptionId']
       return transaction
     end
-   
+
     def activate(options)
-       transaction = Activate.new
-       transaction.orderId = options['orderId']
-       transaction.orderSource = options['orderSource']
-       transaction.amount = options['amount']
-       transaction.card = Card.from_hash(options,'card')
-       transaction.virtualGiftCard = VirtualGiftCard.from_hash(options,'virtualGiftCard')
-       return transaction
-    end	
+      transaction = Activate.new
+      transaction.orderId = options['orderId']
+      transaction.orderSource = options['orderSource']
+      transaction.amount = options['amount']
+      transaction.card = Card.from_hash(options,'card')
+      transaction.virtualGiftCard = VirtualGiftCard.from_hash(options,'virtualGiftCard')
+      return transaction
+    end
 
     def deactivate(options)
-       transaction = Deactivate.new
-       transaction.orderId = options['orderId']
-       transaction.orderSource = options['orderSource']
-       transaction.card = Card.from_hash(options,'card')
-       return transaction
+      transaction = Deactivate.new
+      transaction.orderId = options['orderId']
+      transaction.orderSource = options['orderSource']
+      transaction.card = Card.from_hash(options,'card')
+      return transaction
     end
 
     def load_request(options)
-       transaction = Load.new
-       transaction.orderId = options['orderId']
-       transaction.orderSource = options['orderSource']
-       transaction.amount = options['amount']
-       transaction.card = Card.from_hash(options,'card')
-       return transaction
+      transaction = Load.new
+      transaction.orderId = options['orderId']
+      transaction.orderSource = options['orderSource']
+      transaction.amount = options['amount']
+      transaction.card = Card.from_hash(options,'card')
+      return transaction
     end
 
     def unload_request(options)
-       transaction = Unload.new
-       transaction.orderId = options['orderId']
-       transaction.orderSource = options['orderSource']
-       transaction.amount = options['amount']
-       transaction.card = Card.from_hash(options,'card')
-       return transaction
+      transaction = Unload.new
+      transaction.orderId = options['orderId']
+      transaction.orderSource = options['orderSource']
+      transaction.amount = options['amount']
+      transaction.card = Card.from_hash(options,'card')
+      return transaction
     end
 
     def balance_inquiry(options)
-       transaction = BalanceInquiry.new
-       transaction.orderId = options['orderId']
-       transaction.orderSource = options['orderSource']
-       transaction.card = Card.from_hash(options,'card')
-       return transaction
+      transaction = BalanceInquiry.new
+      transaction.orderId = options['orderId']
+      transaction.orderSource = options['orderSource']
+      transaction.card = Card.from_hash(options,'card')
+      return transaction
     end
 
     def update_subscription(options)
@@ -105,90 +104,90 @@ module LitleOnline
       transaction.token                 = CardToken.from_hash(options,'token')
       transaction.paypage               = CardPaypage.from_hash(options,'paypage')
       if(options['createDiscount'])
-          options['createDiscount'].each_index {| index | transaction.createDiscount << CreateDiscount.from_hash(options, index,'createDiscount')}
-        end
+        options['createDiscount'].each_index {| index | transaction.createDiscount << CreateDiscount.from_hash(options, index,'createDiscount')}
+      end
       if(options['updateDiscount'])
-          options['updateDiscount'].each_index {| index | transaction.updateDiscount << UpdateDiscount.from_hash(options, index,'updateDiscount')}
-        end
+        options['updateDiscount'].each_index {| index | transaction.updateDiscount << UpdateDiscount.from_hash(options, index,'updateDiscount')}
+      end
       if(options['deleteDiscount'])
-          options['deleteDiscount'].each_index {| index | transaction.deleteDiscount << DeleteDiscount.from_hash(options, index,'deleteDiscount')}
-        end
+        options['deleteDiscount'].each_index {| index | transaction.deleteDiscount << DeleteDiscount.from_hash(options, index,'deleteDiscount')}
+      end
       if(options['createAddOn'])
-          options['createAddOn'].each_index {| index | transaction.createAddOn << CreateAddOn.from_hash(options, index,'createAddOn')}
-        end
+        options['createAddOn'].each_index {| index | transaction.createAddOn << CreateAddOn.from_hash(options, index,'createAddOn')}
+      end
       if(options['updateAddOn'])
-          options['updateAddOn'].each_index {| index | transaction.updateAddOn << UpdateAddOn.from_hash(options, index,'updateAddOn')}
-        end
+        options['updateAddOn'].each_index {| index | transaction.updateAddOn << UpdateAddOn.from_hash(options, index,'updateAddOn')}
+      end
       if(options['deleteAddOn'])
-          options['deleteAddOn'].each_index {| index | transaction.deleteAddOn << DeleteAddOn.from_hash(options, index,'deleteAddOn')}
-        end 
+        options['deleteAddOn'].each_index {| index | transaction.deleteAddOn << DeleteAddOn.from_hash(options, index,'deleteAddOn')}
+      end
 
-      return transaction 
+      return transaction
     end
 
     def create_plan(options)
-     transaction = CreatePlan.new
-     transaction.planCode = options['planCode']
-     transaction.name=options['name']
-     transaction.description=options['description']
-     transaction.intervalType=options['intervalType']
-     transaction.amount=options['amount']
-     transaction.numberOfPayments=options['numberOfPayments']
-     transaction.trialNumberOfIntervals=options['trialNumberOfIntervals']
-     transaction.trialIntervalType=options['trialIntervalType']
-     transaction.active=options['active']
-     return transaction 
+      transaction = CreatePlan.new
+      transaction.planCode = options['planCode']
+      transaction.name=options['name']
+      transaction.description=options['description']
+      transaction.intervalType=options['intervalType']
+      transaction.amount=options['amount']
+      transaction.numberOfPayments=options['numberOfPayments']
+      transaction.trialNumberOfIntervals=options['trialNumberOfIntervals']
+      transaction.trialIntervalType=options['trialIntervalType']
+      transaction.active=options['active']
+      return transaction
     end
 
     def update_plan(options)
-     transaction = UpdatePlan.new
-     transaction.planCode = options['planCode']
-     transaction.active=options['active']
-     return transaction 
+      transaction = UpdatePlan.new
+      transaction.planCode = options['planCode']
+      transaction.active=options['active']
+      return transaction
     end
 
     def virtual_giftcard(options)
-     transaction = VirtualGiftCard.new     
-     transaction.accountNumberLength = options['accountNumberLength']     
-     transaction.giftCardBin = options['giftCardBin']
-     return transaction
+      transaction = VirtualGiftCard.new
+      transaction.accountNumberLength = options['accountNumberLength']
+      transaction.giftCardBin = options['giftCardBin']
+      return transaction
     end
-   
+
     def activate_reversal(options)
       transaction = ActivateReversal.new
       transaction.litleTxnId = options['litleTxnId']
       return transaction
-    end 
+    end
 
     def deposit_reversal(options)
       transaction = DepositReversal.new
       transaction.litleTxnId = options['litleTxnId']
       return transaction
-    end 
+    end
 
     def refund_reversal(options)
       transaction = RefundReversal.new
       transaction.litleTxnId = options['litleTxnId']
       return transaction
-    end 
+    end
 
     def deactivate_reversal(options)
       transaction = DeactivateReversal.new
       transaction.litleTxnId = options['litleTxnId']
       return transaction
-    end 
+    end
 
     def load_reversal(options)
       transaction = LoadReversal.new
       transaction.litleTxnId = options['litleTxnId']
       return transaction
-    end 
+    end
 
     def unload_reversal(options)
       transaction = UnloadReversal.new
       transaction.litleTxnId = options['litleTxnId']
       return transaction
-    end 
+    end
 
     def sale(options)
       transaction = Sale.new
@@ -217,7 +216,7 @@ module LitleOnline
         transaction.card                  = Card.from_hash(options)
         transaction.token                 = CardToken.from_hash(options,'token')
         transaction.paypage               = CardPaypage.from_hash(options,'paypage')
-        transaction.mpos                  = Mpos.from_hash(options,'mpos') 
+        transaction.mpos                  = Mpos.from_hash(options,'mpos')
       end
       transaction.amount                  = options['amount']
       transaction.secondaryAmount         = options['secondaryAmount']
@@ -230,11 +229,11 @@ module LitleOnline
       transaction.payPalNotes             = options['payPalNotes']
       transaction.actionReason            = options['actionReason']
       transaction.paypal                  = CreditPayPal.from_hash(options,'paypal')
-      
+
       add_account_info(transaction, options)
       return transaction
     end
-    
+
     def auth_reversal(options)
       transaction = AuthReversal.new
 
@@ -243,7 +242,7 @@ module LitleOnline
       transaction.surchargeAmount = options['surchargeAmount']
       transaction.payPalNotes     = options['payPalNotes']
       transaction.actionReason    = options['actionReason']
-      
+
       add_account_info(transaction, options)
       return transaction
     end
@@ -259,17 +258,17 @@ module LitleOnline
       add_account_info(transaction, options)
       return transaction
     end
-    
+
     def update_card_validation_num_on_token(options)
       transaction = UpdateCardValidationNumOnToken.new
-      
+
       transaction.orderId               = options['orderId']
       transaction.litleToken            = options['litleToken']
       transaction.cardValidationNum     = options['cardValidationNum']
-      
+
       SchemaValidation.validate_length(transaction.litleToken, true, 13, 25, "updateCardValidationNumOnToken", "litleToken")
       SchemaValidation.validate_length(transaction.cardValidationNum, true, 1, 4, "updateCardValidationNumOnToken", "cardValidationNum")
-      
+
       add_account_info(transaction, options)
       return transaction
     end
@@ -319,7 +318,7 @@ module LitleOnline
 
       transaction.litleTxnId             = options['litleTxnId']
       transaction.processingInstructions = ProcessingInstructions.from_hash(options)
-      
+
       add_account_info(transaction, options)
       return transaction
     end
@@ -333,27 +332,125 @@ module LitleOnline
 
       return transaction
     end
-    
+
     def echeck_pre_note_sale(options)
       transaction = EcheckPreNoteSale.new
       transaction.echeck = Echeck.from_hash(options)
       transaction.orderId       = options['orderId']
       transaction.orderSource   = options['orderSource']
-      transaction.billToAddress = Contact.from_hash(options,'billToAddress') 
-      add_account_info(transaction, options) 
+      transaction.billToAddress = Contact.from_hash(options,'billToAddress')
+      add_account_info(transaction, options)
       transaction.merchantData              = MerchantData.from_hash(options)
 
       return transaction
     end
-    
+
     def echeck_pre_note_credit(options)
       transaction = EcheckPreNoteCredit.new
-      transaction.echeck = Echeck.from_hash(options)      
+      transaction.echeck = Echeck.from_hash(options)
       transaction.orderId       = options['orderId']
       transaction.orderSource   = options['orderSource']
-      transaction.billToAddress = Contact.from_hash(options,'billToAddress') 
-      add_account_info(transaction, options) 
+      transaction.billToAddress = Contact.from_hash(options,'billToAddress')
+      add_account_info(transaction, options)
       transaction.merchantData              = MerchantData.from_hash(options)
+
+      return transaction
+    end
+
+    def submerchant_credit(options)
+      transaction = SubmerchantCredit.new
+      transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
+      transaction.submerchantName       = options['submerchantName']
+      transaction.fundsTransferId   = options['fundsTransferId']
+      transaction.amount   = options['amount']
+      transaction.accountInfo = Echeck.from_hash(options,'accountInfo')
+
+      return transaction
+    end
+
+    def vendor_credit(options)
+      transaction = VendorCredit.new
+      transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
+      transaction.vendorName       = options['vendorName']
+      transaction.fundsTransferId   = options['fundsTransferId']
+      transaction.amount   = options['amount']
+      transaction.accountInfo = Echeck.from_hash(options,'accountInfo')
+
+      return transaction
+    end
+
+    def payFac_credit(options)
+      transaction = PayFacCredit.new
+      transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
+      transaction.fundsTransferId   = options['fundsTransferId']
+      transaction.amount   = options['amount']
+
+      return transaction
+    end
+
+    def reserve_credit(options)
+      transaction = ReserveCredit.new
+      transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
+      transaction.fundsTransferId   = options['fundsTransferId']
+      transaction.amount   = options['amount']
+
+      return transaction
+    end
+
+    def physical_check_credit(options)
+      transaction = PhysicalCheckCredit.new
+      transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
+      transaction.fundsTransferId   = options['fundsTransferId']
+      transaction.amount   = options['amount']
+
+      return transaction
+    end
+
+    def submerchant_debit(options)
+      transaction = SubmerchantDebit.new
+      transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
+      transaction.submerchantName       = options['submerchantName']
+      transaction.fundsTransferId   = options['fundsTransferId']
+      transaction.amount   = options['amount']
+      transaction.accountInfo = Echeck.from_hash(options,'accountInfo')
+
+      return transaction
+    end
+
+    def vendor_debit(options)
+      transaction = VendorDebit.new
+      transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
+      transaction.vendorName       = options['vendorName']
+      transaction.fundsTransferId   = options['fundsTransferId']
+      transaction.amount   = options['amount']
+      transaction.accountInfo = Echeck.from_hash(options,'accountInfo')
+
+      return transaction
+    end
+
+    def payFac_debit(options)
+      transaction = PayFacDebit.new
+      transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
+      transaction.fundsTransferId   = options['fundsTransferId']
+      transaction.amount   = options['amount']
+
+      return transaction
+    end
+
+    def reserve_debit(options)
+      transaction = ReserveDebit.new
+      transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
+      transaction.fundsTransferId   = options['fundsTransferId']
+      transaction.amount   = options['amount']
+
+      return transaction
+    end
+
+    def physical_check_debit(options)
+      transaction = PhysicalCheckDebit.new
+      transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
+      transaction.fundsTransferId   = options['fundsTransferId']
+      transaction.amount   = options['amount']
 
       return transaction
     end
@@ -393,42 +490,42 @@ module LitleOnline
     def echeck_void(options)
       transaction = EcheckVoid.new
       transaction.litleTxnId = options['litleTxnId']
-      
+
       add_account_info(transaction, options)
       return transaction
     end
-    
+
     def account_update(options)
       transaction = AccountUpdate.new
       transaction.card = Card.from_hash(options)
       transaction.token = CardToken.from_hash(options,'token')
       transaction.orderId = options['orderId']
-      
+
       add_account_info(transaction, options)
-      
+
       return transaction
     end
-#    
-#    def fraud_check_request(options)
-#      transaction = FraudCheckRequest.new
-#      transaction.advancedFraudChecks = AdvancedFraudChecks.from_hash(options,'advancedFraudChecks')
-#      transaction.billToAddress = Contact.from_hash(options,'billToAddress')
-#      transaction.shipToAddress = Contact.from_hash(options,'shipToAddress')
-#      transaction.amount = options['amount']
-#        
-#      add_account_info(transaction, options)
-#      
-#      return transaction        
-#    end
-    
+    #
+    #    def fraud_check_request(options)
+    #      transaction = FraudCheckRequest.new
+    #      transaction.advancedFraudChecks = AdvancedFraudChecks.from_hash(options,'advancedFraudChecks')
+    #      transaction.billToAddress = Contact.from_hash(options,'billToAddress')
+    #      transaction.shipToAddress = Contact.from_hash(options,'shipToAddress')
+    #      transaction.amount = options['amount']
+    #
+    #      add_account_info(transaction, options)
+    #
+    #      return transaction
+    #    end
+
     private
-    
+
     def add_account_info(transaction, options)
       transaction.reportGroup   = get_report_group(options)
       transaction.transactionId = options['id']
       transaction.customerId    = options['customerId']
     end
-    
+
     def add_transaction_info(transaction, options)
       transaction.litleTxnId                = options['litleTxnId']
       transaction.customerInfo              = CustomerInfo.from_hash(options)
@@ -476,13 +573,13 @@ module LitleOnline
     def add_echeck(transaction, options)
       transaction.echeck      = Echeck.from_hash(options)
       transaction.echeckToken = EcheckToken.from_hash(options)
-      
+
       add_account_info(transaction, options)
     end
-    
+
     def get_report_group(options)
       #options['reportGroup'] || @config_hash['default_report_group']
       options['reportGroup']
     end
-  end    
+  end
 end

@@ -1330,18 +1330,18 @@ module LitleOnline
       end
     end
   end
-#  
-#  class FraudCheckRequest
-#    include XML::Mapping
-#    root_element_name "fraudCheck"
-#    text_node :reportGroup, "@reportGroup", :default_value=>nil
-#    text_node :transactionId, "@id", :default_value=>nil
-#    text_node :customerId, "@customerId", :default_value=>nil
-#    object_node :advancedFraudChecks, "advancedFraudChecks", :default_value=>nil
-#    object_node :billToAddress, "billToAddress", :class=>Contact, :default_value=>nil
-#    object_node :shipToAddress, "shipToAddress", :class=>Contact, :default_value=>nil
-#    text_node :amount, "amount", :default_value=>nil    
-#  end
+  #
+  #  class FraudCheckRequest
+  #    include XML::Mapping
+  #    root_element_name "fraudCheck"
+  #    text_node :reportGroup, "@reportGroup", :default_value=>nil
+  #    text_node :transactionId, "@id", :default_value=>nil
+  #    text_node :customerId, "@customerId", :default_value=>nil
+  #    object_node :advancedFraudChecks, "advancedFraudChecks", :default_value=>nil
+  #    object_node :billToAddress, "billToAddress", :class=>Contact, :default_value=>nil
+  #    object_node :shipToAddress, "shipToAddress", :class=>Contact, :default_value=>nil
+  #    text_node :amount, "amount", :default_value=>nil
+  #  end
 
   class Authorization
     include XML::Mapping
@@ -1714,33 +1714,121 @@ module LitleOnline
     object_node :customBilling, "customBilling", :class=>CustomBilling, :default_value=>nil
     object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
   end
-  
+
   class EcheckPreNoteSale
     include XML::Mapping
     root_element_name "echeckPreNoteSale"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-    
+
     text_node :orderId, "orderId", :default_value=>nil
     text_node :orderSource, "orderSource", :default_value=>nil
     object_node :billToAddress, "billToAddress", :class=>Contact, :default_value=>nil
     object_node :echeck, "echeck", :class=>Echeck, :default_value=>nil
     object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
   end
-  
-  class EcheckPreNoteCredit    
+
+  class EcheckPreNoteCredit
     include XML::Mapping
     root_element_name "echeckPreNoteCredit"
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-    
+
     text_node :orderId, "orderId", :default_value=>nil
     text_node :orderSource, "orderSource", :default_value=>nil
     object_node :billToAddress, "billToAddress", :class=>Contact, :default_value=>nil
     object_node :echeck, "echeck", :class=>Echeck, :default_value=>nil
     object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
+  end
+
+  class SubmerchantCredit
+    include XML::Mapping
+    root_element_name "submerchantCredit"
+    text_node :fundingSubmerchantId, "@fundingSubmerchantId", :default_value=>nil
+    text_node :submerchantName, "@submerchantName", :default_value=>nil
+    text_node :fundsTransferId, "@fundsTransferId", :default_value=>nil
+    text_node :amount, "@amount", :default_value=>nil
+    object_node :accountInfo, "accountInfo", :class=>Echeck, :default_value=>nil
+  end
+
+  class PayFacCredit
+    include XML::Mapping
+    root_element_name "payFacCredit"
+    text_node :fundingSubmerchantId, "@fundingSubmerchantId", :default_value=>nil
+    text_node :fundsTransferId, "@fundsTransferId", :default_value=>nil
+    text_node :amount, "@amount", :default_value=>nil
+  end
+
+  class ReserveCredit
+    include XML::Mapping
+    root_element_name "reserveCredit"
+    text_node :fundingSubmerchantId, "@fundingSubmerchantId", :default_value=>nil
+    text_node :fundsTransferId, "@fundsTransferId", :default_value=>nil
+    text_node :amount, "@amount", :default_value=>nil
+  end
+
+  class VendorCredit
+    include XML::Mapping
+    root_element_name "vendorCredit"
+    text_node :fundingSubmerchantId, "@fundingSubmerchantId", :default_value=>nil
+    text_node :vendorName, "@vendorName", :default_value=>nil
+    text_node :fundsTransferId, "@fundsTransferId", :default_value=>nil
+    text_node :amount, "@amount", :default_value=>nil
+    object_node :accountInfo, "accountInfo", :class=>Echeck, :default_value=>nil
+  end
+
+  class PhysicalCheckCredit
+    include XML::Mapping
+    root_element_name "physicalCheckCredit"
+    text_node :fundingSubmerchantId, "@fundingSubmerchantId", :default_value=>nil
+    text_node :fundsTransferId, "@fundsTransferId", :default_value=>nil
+    text_node :amount, "@amount", :default_value=>nil
+  end
+
+  class SubmerchantDebit
+    include XML::Mapping
+    root_element_name "submerchantDebit"
+    text_node :fundingSubmerchantId, "@fundingSubmerchantId", :default_value=>nil
+    text_node :submerchantName, "@submerchantName", :default_value=>nil
+    text_node :fundsTransferId, "@fundsTransferId", :default_value=>nil
+    text_node :amount, "@amount", :default_value=>nil
+    object_node :accountInfo, "accountInfo", :class=>Echeck, :default_value=>nil
+  end
+
+  class PayFacDebit
+    include XML::Mapping
+    root_element_name "payFacDebit"
+    text_node :fundingSubmerchantId, "@fundingSubmerchantId", :default_value=>nil
+    text_node :fundsTransferId, "@fundsTransferId", :default_value=>nil
+    text_node :amount, "@amount", :default_value=>nil
+  end
+
+  class ReserveDebit
+    include XML::Mapping
+    root_element_name "reserveDebit"
+    text_node :fundingSubmerchantId, "@fundingSubmerchantId", :default_value=>nil
+    text_node :fundsTransferId, "@fundsTransferId", :default_value=>nil
+    text_node :amount, "@amount", :default_value=>nil
+  end
+
+  class VendorDebit
+    include XML::Mapping
+    root_element_name "vendorDebit"
+    text_node :fundingSubmerchantId, "@fundingSubmerchantId", :default_value=>nil
+    text_node :vendorName, "@vendorName", :default_value=>nil
+    text_node :fundsTransferId, "@fundsTransferId", :default_value=>nil
+    text_node :amount, "@amount", :default_value=>nil
+    object_node :accountInfo, "accountInfo", :class=>Echeck, :default_value=>nil
+  end
+
+  class PhysicalCheckDebit
+    include XML::Mapping
+    root_element_name "physicalCheckDebit"
+    text_node :fundingSubmerchantId, "@fundingSubmerchantId", :default_value=>nil
+    text_node :fundsTransferId, "@fundsTransferId", :default_value=>nil
+    text_node :amount, "@amount", :default_value=>nil
   end
 
   class UpdateCardValidationNumOnToken
@@ -1842,6 +1930,26 @@ module LitleOnline
     text_node :numEcheckRedeposit, "@numEcheckRedeposit", :default_value=>"0"
     text_node :numEcheckPreNoteSale, "@numEcheckPreNoteSale", :default_value=>"0"
     text_node :numEcheckPreNoteCredit, "@numEcheckPreNoteCredit", :default_value=>"0"
+    text_node :numSubmerchantCredit , "@numSubmerchantCredit", :default_value=>"0"
+    text_node :numPayFacCredit , "@numPayFacCredit", :default_value=>"0"
+    text_node :numReserveCredit , "@numReserveCredit", :default_value=>"0"
+    text_node :numVendorCredit , "@numVendorCredit", :default_value=>"0"
+    text_node :numPhysicalCheckCredit , "@numPhysicalCheckCredit", :default_value=>"0"
+    text_node :submerchantCreditAmount , "@submerchantCreditAmount", :default_value=>"0"
+    text_node :payFacCreditAmount , "@payFacCreditAmount", :default_value=>"0"
+    text_node :reserveCreditAmount , "@reserveCreditAmount", :default_value=>"0"
+    text_node :vendorCreditAmount , "@vendorCreditAmount", :default_value=>"0"
+    text_node :physicalCheckCreditAmount , "@physicalCheckCreditAmount", :default_value=>"0"
+    text_node :numSubmerchantDebit , "@numSubmerchantDebit", :default_value=>"0"
+    text_node :numPayFacDebit , "@numPayFacDebit", :default_value=>"0"
+    text_node :numReserveDebit , "@numReserveDebit", :default_value=>"0"
+    text_node :numVendorDebit , "@numVendorDebit", :default_value=>"0"
+    text_node :numPhysicalCheckDebit , "@numPhysicalCheckDebit", :default_value=>"0"
+    text_node :submerchantDebitAmount , "@submerchantDebitAmount", :default_value=>"0"
+    text_node :payFacDebitAmount , "@payFacDebitAmount", :default_value=>"0"
+    text_node :reserveDebitAmount , "@reserveDebitAmount", :default_value=>"0"
+    text_node :vendorDebitAmount , "@vendorDebitAmount", :default_value=>"0"
+    text_node :physicalCheckDebitAmount , "@physicalCheckDebitAmount", :default_value=>"0"
     text_node :numEcheckCredit, "@numEcheckCredit", :default_value=>"0"
     text_node :echeckCreditAmount, "@echeckCreditAmount", :default_value=>"0"
     text_node :numEcheckVerification, "@numEcheckVerification", :default_value=>"0"
