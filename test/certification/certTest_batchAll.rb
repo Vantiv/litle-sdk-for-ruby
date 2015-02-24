@@ -469,14 +469,14 @@ module LitleOnline
       
       billToAddress = {'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}        
       echeckSuccess = {'accType'=>'Corporate','accNum'=>'1092969901','routingNum'=>'011075150'}
-      echeckErrRout = {'accType'=>'Checking','accNum'=>'6099999992','routingNum'=>'053133052'}
-      echeckErrAcc = {'accType'=>'Corporate','accNum'=>'10@2969901','routingNum'=>'011100012'}
+      echeckRoutErr = {'accType'=>'Checking','accNum'=>'6099999992','routingNum'=>'053133052'}
+      echeckAccErr = {'accType'=>'Corporate','accNum'=>'10@2969901','routingNum'=>'011100012'}
   
       echeckPreNoteSaleHashSuccess = {
         'merchantId' => '0180',
         'version'=>'9.3',
         'reportGroup'=>'Planets',
-        'orderId'=>'1',
+        'orderId'=>'000',
         'orderSource'=>'ecommerce',
         'billToAddress'=> billToAddress,
         'echeck' => echeckSuccess
@@ -486,27 +486,27 @@ module LitleOnline
         'merchantId' => '0180',
         'version'=>'9.3',
         'reportGroup'=>'Planets',
-        'orderId'=>'2',
+        'orderId'=>'900',
         'orderSource'=>'ecommerce',
         'billToAddress'=> billToAddress,
-        'echeck' => echeckErrRout
+        'echeck' => echeckRoutErr
       }
             
       echeckPreNoteSaleHashErrAcc = {
         'merchantId' => '0180',
         'version'=>'9.3',
         'reportGroup'=>'Planets',
-        'orderId'=>'3',
+        'orderId'=>'301',
         'orderSource'=>'ecommerce',
         'billToAddress'=> billToAddress,
-        'echeck' => echeckErrAcc
+        'echeck' => echeckAccErr
       }
   
       echeckPreNoteCreditHashSuccess = {
         'merchantId' => '0180',
         'version'=>'9.3',
         'reportGroup'=>'Planets',
-        'orderId'=>'4',
+        'orderId'=>'000',
         'orderSource'=>'ecommerce',
         'billToAddress'=>  billToAddress,
         'echeck' => echeckSuccess
@@ -516,20 +516,20 @@ module LitleOnline
         'merchantId' => '0180',
         'version'=>'9.3',
         'reportGroup'=>'Planets',
-        'orderId'=>'5',
+        'orderId'=>'900',
         'orderSource'=>'ecommerce',
         'billToAddress'=>  billToAddress,
-        'echeck' => echeckErrRout
+        'echeck' => echeckRoutErr
       }
             
       echeckPreNoteCreditHashErrAcc = {
         'merchantId' => '101',
         'version'=>'9.3',
         'reportGroup'=>'Planets',
-        'orderId'=>'6',
+        'orderId'=>'301',
         'orderSource'=>'ecommerce',
         'billToAddress'=>  billToAddress,
-        'echeck' => echeckErrAcc
+        'echeck' => echeckAccErr
       }
   
       path = "/tmp/litle-sdk-for-ruby/cert/"
@@ -558,17 +558,13 @@ module LitleOnline
       request.send_to_litle
   
       request.get_responses_from_server()
-      
-      #expected response
-      expectedResponse = {'1'=>'000','2'=>'900','3'=>'301','4'=>'000','5'=>'900','6'=>'301'}
   
       count = 0
       #process the responses from the server with a listener which applies the given block
       request.process_responses({:transaction_listener => LitleOnline::DefaultLitleListener.new do |transaction|
         assert_not_nil transaction["litleTxnId"] =~ /\d+/
-        assert_not_nil transaction["response"] =~ /\d+/
         assert_not_nil transaction["message"]
-        assert_equal(expectedResponse[transaction["orderId"]],transaction["response"])
+        assert_equal(transaction["orderId"],transaction["response"])
         count+=1
         end})
       assert_equal count, 6
