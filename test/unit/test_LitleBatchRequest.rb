@@ -635,7 +635,7 @@ module LitleOnline
       #assert_equal 6000, counts[:sale][:saleAmount]
     end
 
-    def test_batch_new_action_type
+    def test_PFIF_instruction_txn
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'9.3'}).once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').at_most(12)
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').at_most(10)
