@@ -1746,89 +1746,129 @@ module LitleOnline
   class SubmerchantCredit
     include XML::Mapping
     root_element_name "submerchantCredit"
-    text_node :fundingSubmerchantId, "@fundingSubmerchantId", :default_value=>nil
-    text_node :submerchantName, "@submerchantName", :default_value=>nil
-    text_node :fundsTransferId, "@fundsTransferId", :default_value=>nil
-    text_node :amount, "@amount", :default_value=>nil
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+    
+    text_node :fundingSubmerchantId, "fundingSubmerchantId", :default_value=>nil
+    text_node :submerchantName, "submerchantName", :default_value=>nil
+    text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
+    text_node :amount, "amount", :default_value=>nil
     object_node :accountInfo, "accountInfo", :class=>Echeck, :default_value=>nil
   end
 
   class PayFacCredit
     include XML::Mapping
     root_element_name "payFacCredit"
-    text_node :fundingSubmerchantId, "@fundingSubmerchantId", :default_value=>nil
-    text_node :fundsTransferId, "@fundsTransferId", :default_value=>nil
-    text_node :amount, "@amount", :default_value=>nil
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+    
+    text_node :fundingSubmerchantId, "fundingSubmerchantId", :default_value=>nil
+    text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
+    text_node :amount, "amount", :default_value=>nil
   end
 
   class ReserveCredit
     include XML::Mapping
     root_element_name "reserveCredit"
-    text_node :fundingSubmerchantId, "@fundingSubmerchantId", :default_value=>nil
-    text_node :fundsTransferId, "@fundsTransferId", :default_value=>nil
-    text_node :amount, "@amount", :default_value=>nil
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+    
+    text_node :fundingSubmerchantId, "fundingSubmerchantId", :default_value=>nil
+    text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
+    text_node :amount, "amount", :default_value=>nil
   end
 
   class VendorCredit
     include XML::Mapping
     root_element_name "vendorCredit"
-    text_node :fundingSubmerchantId, "@fundingSubmerchantId", :default_value=>nil
-    text_node :vendorName, "@vendorName", :default_value=>nil
-    text_node :fundsTransferId, "@fundsTransferId", :default_value=>nil
-    text_node :amount, "@amount", :default_value=>nil
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+    
+    text_node :fundingSubmerchantId, "fundingSubmerchantId", :default_value=>nil
+    text_node :vendorName, "vendorName", :default_value=>nil
+    text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
+    text_node :amount, "amount", :default_value=>nil
     object_node :accountInfo, "accountInfo", :class=>Echeck, :default_value=>nil
   end
 
   class PhysicalCheckCredit
     include XML::Mapping
     root_element_name "physicalCheckCredit"
-    text_node :fundingSubmerchantId, "@fundingSubmerchantId", :default_value=>nil
-    text_node :fundsTransferId, "@fundsTransferId", :default_value=>nil
-    text_node :amount, "@amount", :default_value=>nil
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+    
+    text_node :fundingSubmerchantId, "fundingSubmerchantId", :default_value=>nil
+    text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
+    text_node :amount, "amount", :default_value=>nil
   end
 
   class SubmerchantDebit
     include XML::Mapping
     root_element_name "submerchantDebit"
-    text_node :fundingSubmerchantId, "@fundingSubmerchantId", :default_value=>nil
-    text_node :submerchantName, "@submerchantName", :default_value=>nil
-    text_node :fundsTransferId, "@fundsTransferId", :default_value=>nil
-    text_node :amount, "@amount", :default_value=>nil
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+    
+    text_node :fundingSubmerchantId, "fundingSubmerchantId", :default_value=>nil
+    text_node :submerchantName, "submerchantName", :default_value=>nil
+    text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
+    text_node :amount, "amount", :default_value=>nil
     object_node :accountInfo, "accountInfo", :class=>Echeck, :default_value=>nil
   end
 
   class PayFacDebit
     include XML::Mapping
     root_element_name "payFacDebit"
-    text_node :fundingSubmerchantId, "@fundingSubmerchantId", :default_value=>nil
-    text_node :fundsTransferId, "@fundsTransferId", :default_value=>nil
-    text_node :amount, "@amount", :default_value=>nil
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+    
+    text_node :fundingSubmerchantId, "fundingSubmerchantId", :default_value=>nil
+    text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
+    text_node :amount, "amount", :default_value=>nil
   end
 
   class ReserveDebit
     include XML::Mapping
     root_element_name "reserveDebit"
-    text_node :fundingSubmerchantId, "@fundingSubmerchantId", :default_value=>nil
-    text_node :fundsTransferId, "@fundsTransferId", :default_value=>nil
-    text_node :amount, "@amount", :default_value=>nil
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+    
+    text_node :fundingSubmerchantId, "fundingSubmerchantId", :default_value=>nil
+    text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
+    text_node :amount, "amount", :default_value=>nil
   end
 
   class VendorDebit
     include XML::Mapping
     root_element_name "vendorDebit"
-    text_node :fundingSubmerchantId, "@fundingSubmerchantId", :default_value=>nil
-    text_node :vendorName, "@vendorName", :default_value=>nil
-    text_node :fundsTransferId, "@fundsTransferId", :default_value=>nil
-    text_node :amount, "@amount", :default_value=>nil
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+    
+    text_node :fundingSubmerchantId, "fundingSubmerchantId", :default_value=>nil
+    text_node :vendorName, "vendorName", :default_value=>nil
+    text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
+    text_node :amount, "amount", :default_value=>nil
     object_node :accountInfo, "accountInfo", :class=>Echeck, :default_value=>nil
   end
 
   class PhysicalCheckDebit
     include XML::Mapping
     root_element_name "physicalCheckDebit"
-    text_node :fundingSubmerchantId, "@fundingSubmerchantId", :default_value=>nil
-    text_node :fundsTransferId, "@fundsTransferId", :default_value=>nil
-    text_node :amount, "@amount", :default_value=>nil
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+    
+    text_node :fundingSubmerchantId, "fundingSubmerchantId", :default_value=>nil
+    text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
+    text_node :amount, "amount", :default_value=>nil
   end
 
   class UpdateCardValidationNumOnToken

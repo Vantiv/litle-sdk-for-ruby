@@ -41,7 +41,7 @@ module LitleOnline
       # setup https or http post
       url = URI.parse(litle_url)
   
-      response_xml = nil    
+      response_xml = nil
       https = Net::HTTP.new(url.host, url.port, proxy_addr, proxy_port)
       if(url.scheme == 'https') 
         https.use_ssl = url.scheme=='https'

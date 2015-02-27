@@ -364,6 +364,7 @@ module LitleOnline
       transaction.fundsTransferId   = options['fundsTransferId']
       transaction.amount   = options['amount']
       transaction.accountInfo = Echeck.from_hash(options,'accountInfo')
+      add_account_info(transaction, options)
 
       return transaction
     end
@@ -375,6 +376,7 @@ module LitleOnline
       transaction.fundsTransferId   = options['fundsTransferId']
       transaction.amount   = options['amount']
       transaction.accountInfo = Echeck.from_hash(options,'accountInfo')
+      add_account_info(transaction, options)
 
       return transaction
     end
@@ -384,6 +386,7 @@ module LitleOnline
       transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
       transaction.fundsTransferId   = options['fundsTransferId']
       transaction.amount   = options['amount']
+      add_account_info(transaction, options)
 
       return transaction
     end
@@ -393,6 +396,7 @@ module LitleOnline
       transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
       transaction.fundsTransferId   = options['fundsTransferId']
       transaction.amount   = options['amount']
+      add_account_info(transaction, options)
 
       return transaction
     end
@@ -402,6 +406,7 @@ module LitleOnline
       transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
       transaction.fundsTransferId   = options['fundsTransferId']
       transaction.amount   = options['amount']
+      add_account_info(transaction, options)
 
       return transaction
     end
@@ -413,6 +418,7 @@ module LitleOnline
       transaction.fundsTransferId   = options['fundsTransferId']
       transaction.amount   = options['amount']
       transaction.accountInfo = Echeck.from_hash(options,'accountInfo')
+      add_account_info(transaction, options)
 
       return transaction
     end
@@ -424,6 +430,7 @@ module LitleOnline
       transaction.fundsTransferId   = options['fundsTransferId']
       transaction.amount   = options['amount']
       transaction.accountInfo = Echeck.from_hash(options,'accountInfo')
+      add_account_info(transaction, options)
 
       return transaction
     end
@@ -433,6 +440,7 @@ module LitleOnline
       transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
       transaction.fundsTransferId   = options['fundsTransferId']
       transaction.amount   = options['amount']
+      add_account_info(transaction, options)
 
       return transaction
     end
@@ -442,6 +450,7 @@ module LitleOnline
       transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
       transaction.fundsTransferId   = options['fundsTransferId']
       transaction.amount   = options['amount']
+      add_account_info(transaction, options)
 
       return transaction
     end
@@ -451,6 +460,7 @@ module LitleOnline
       transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
       transaction.fundsTransferId   = options['fundsTransferId']
       transaction.amount   = options['amount']
+      add_account_info(transaction, options)
 
       return transaction
     end

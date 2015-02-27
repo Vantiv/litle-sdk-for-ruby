@@ -32,7 +32,7 @@ require_relative 'Configuration'
 module LitleOnline
   class LitleBatchRequest
     include XML::Mapping
-    def initialize
+    def initialize ()
       #load configuration data
       @config_hash = Configuration.new.config
 
@@ -82,7 +82,11 @@ module LitleOnline
       @MAX_TXNS_IN_BATCH = 100000
       @au_batch = nil
     end
-
+    #TODO:change this implementation
+    def set_merchantId_for_txn_counts(merchantId)
+      @txn_counts[:merchantId]=merchantId
+    end
+      
     def create_new_batch(path)
       ts = Time::now.to_i.to_s
       begin
@@ -542,7 +546,7 @@ module LitleOnline
     end
 
     def get_merchant_id(options)
-      options['merchantId'] || @config_hash['currency_merchant_map']['DEFAULT']
+      options[:merchantId] || @config_hash['currency_merchant_map']['DEFAULT']
     end
   end
 
