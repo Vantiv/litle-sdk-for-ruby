@@ -1892,7 +1892,7 @@ module LitleOnline
 
     text_node :orderId, "orderId", :default_value=>nil
     optional_choice_node :if,    'card', :then, (object_node :card, "card", :class=>Card),
-    :else, (object_node :token, "token", :class=>CardToken)
+    :elsif,  'token', :then, (object_node :token, "token", :class=>CardToken)
   end
 
   class OnlineRequest

@@ -212,5 +212,33 @@ module LitleOnline
       
       assert_equal 5, counts[:numAccountUpdates]
     end
+    
+    def test_AU_batch_with_token
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').at_most(7)
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').at_most(5)
+      File.expects(:rename).once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.closed.*/), 'w').once
+      File.expects(:delete).with(regexp_matches(/.*batch_.*\d_txns.*/)).once
+      Dir.expects(:mkdir).with('/usr/local/Batches/').once
+      File.expects(:directory?).returns(false).once      
+      
+      batch = LitleAUBatch.new
+      batch.create_new_batch('/usr/local/Batches/')
+      
+      accountUpdateHash = {
+        'reportGroup'=>'Planets',
+        'id'=>'12345',
+        'customerId'=>'0987',
+        'token'=>{'litleToken'=>'1234567890123'
+      }}
+      
+      5.times(){ batch.account_update(accountUpdateHash ) }
+
+      batch.close_batch()
+      counts = batch.get_counts_and_amounts
+      
+      assert_equal 5, counts[:numAccountUpdates]
+    end
   end
 end
