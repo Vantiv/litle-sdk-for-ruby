@@ -289,7 +289,7 @@ module LitleOnline
     end
 
     def get_merchant_sdk(options)
-      options['merchantSdk'] || 'Ruby;9.3.0'
+      options['merchantSdk'] || 'Ruby;9.3.1'
     end
 
     def get_report_group(options)
