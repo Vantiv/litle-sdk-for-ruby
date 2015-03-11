@@ -243,7 +243,7 @@ module LitleOnline
       #Explicit - used for integrations
       assert_equal 'ActiveMerchant;3.2', litle.send(:get_merchant_sdk, {'merchantSdk'=>'ActiveMerchant;3.2'})
       #Implicit - used raw when nothing is specified
-      assert_equal 'Ruby;8.29.0', litle.send(:get_merchant_sdk, {'NotMerchantSdk'=>'ActiveMerchant;3.2'})
+      assert_equal 'Ruby;8.29.1', litle.send(:get_merchant_sdk, {'NotMerchantSdk'=>'ActiveMerchant;3.2'})
     end
   
     def test_sale_paypal_order_complete_typo
