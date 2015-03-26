@@ -64,7 +64,7 @@ class Setup
       f.puts "fast_port: "  + gets
       
       f.puts "printxml: false"
-      f.puts "timeout: 65"
+      f.puts "timeout: 500"
       
     end
   end
