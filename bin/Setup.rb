@@ -64,6 +64,7 @@ class Setup
       f.puts "fast_port: "  + gets
       
       f.puts "printxml: false"
+      #default http timeout set to 500 ms
       f.puts "timeout: 500"
       
     end
