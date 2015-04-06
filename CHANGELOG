@@ -1,5 +1,8 @@
 = LitleOnline CHANGELOG
 
+==version 8.29.2
+HTTP timeout set to 500ms
+
 == version 8.29.1(March 11, 2015)
 * BugFix: fixed a XML field bug in Account Update Token
 
