@@ -237,7 +237,7 @@ module LitleOnline
         assert_not_nil transaction["message"]
         count+=1
         end})
-      assert_equal count, 14
+      assert_equal 14,count 
     end
 
     def test_mini_batch_borked_counts
@@ -461,7 +461,7 @@ module LitleOnline
         assert_not_nil transaction["message"]
         count+=1
         end})
-      assert_equal count, 10
+      assert_equal 10, count
     end
     
     def test_echeck_pre_note_all 
@@ -566,7 +566,7 @@ module LitleOnline
         assert_equal(transaction["orderId"],transaction["response"])
         count+=1
         end})
-      assert_equal count, 6
+      assert_equal 6,count
     end
 
   end

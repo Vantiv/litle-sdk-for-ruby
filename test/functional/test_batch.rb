@@ -44,7 +44,7 @@ module LitleOnline
       
       entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       
-      assert_equal entries.length, 4
+      assert_equal 4,entries.length
       entries.sort!
       assert_not_nil entries[2] =~ /batch_\d+\z/
       assert_not_nil entries[3] =~ /batch_\d+_txns\z/ 
@@ -58,7 +58,7 @@ module LitleOnline
       
       entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       
-      assert_equal entries.length, 4
+      assert_equal 4,entries.length
       entries.sort!
       assert_not_nil entries[2] =~ /batch_\d+\z/
       assert_not_nil entries[3] =~ /batch_\d+_txns\z/ 

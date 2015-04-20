@@ -56,7 +56,7 @@ module LitleOnline
       entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       entries.sort!
 
-      assert_equal entries.size, 4
+      assert_equal 4,entries.size
       assert_not_nil entries[2] =~ /request_\d+\z/
       assert_not_nil entries[3] =~ /request_\d+_batches\z/
 
@@ -113,7 +113,7 @@ module LitleOnline
       #finish the Litle Request, indicating we plan to add no more batches
       request.finish_request
       entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
-      assert_equal entries.length, 3
+      assert_equal 3, entries.length
       entries.sort!
       assert_not_nil entries[2] =~ /request_\d+.complete\z/
       

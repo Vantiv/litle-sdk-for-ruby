@@ -41,7 +41,7 @@ module LitleOnline
       rescue RuntimeError=> e
         message = e.message
       
-      assert_equal message, "Entered a file not a path."
+      assert_equal "Entered a file not a path.",message
     end
     
     def test_create_with_no_sep
@@ -148,7 +148,7 @@ module LitleOnline
       test = ""
       rescue RuntimeError => e
         test = e.message
-      assert_equal test, "You entered neither a path nor a batch. Game over :("  
+      assert_equal "You entered neither a path nor a batch. Game over :("  ,test 
     end
     
     def test_add_open_batch
