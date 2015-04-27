@@ -118,7 +118,17 @@ module LitleOnline
       assert_not_nil entries[2] =~ /request_\d+.complete\z/
       
       #send the batch files at the given directory over sFTP
-      request.send_to_litle_stream
+      count = 1
+      begin
+        request.send_to_litle_stream
+      rescue
+        if (count < 3) then
+          count = count + 1
+          retry
+        else
+          raise
+        end
+      end
       request.process_responses({:transaction_listener => LitleOnline::DefaultLitleListener.new do |transaction|
       type = transaction["type"]
     
