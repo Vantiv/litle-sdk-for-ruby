@@ -24,6 +24,7 @@ saleHash = {
        
 authReversalHash = {
         'merchantId' => '101',
+         'id' => '006',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'12345678000',

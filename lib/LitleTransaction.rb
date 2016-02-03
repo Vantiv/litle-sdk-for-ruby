@@ -1,6 +1,5 @@
 =begin
 Copyright (c) 2011 Litle & Co.
-
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
 files (the "Software"), to deal in the Software without
@@ -9,10 +8,8 @@ copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the
 Software is furnished to do so, subject to the following
 conditions:
-
 The above copyright notice and this permission notice shall be
 included in all copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
 OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -36,8 +33,8 @@ module LitleOnline
       transaction.secondaryAmount = options['secondaryAmount']
       transaction.surchargeAmount    = options['surchargeAmount']
       transaction.recurringRequest   = RecurringRequest.from_hash(options,'recurringRequest')
-      transaction.debtRepayment	     = options['debtRepayment']
-      transaction.advancedFraudChecks = AdvancedFraudChecks.from_hash(options, 'advancedFraudChecks')
+      transaction.debtRepayment      = options['debtRepayment']
+      transaction.advancedFraudChecks= AdvancedFraudChecks.from_hash(options, 'advancedFraudChecks')
       add_transaction_info(transaction, options)
 
       return transaction
@@ -199,8 +196,9 @@ module LitleOnline
       transaction.payPalNotes         = options['payPalNotes']
       transaction.recurringRequest    = RecurringRequest.from_hash(options,'recurringRequest')
       transaction.litleInternalRecurringRequest = LitleInternalRecurringRequest.from_hash(options,'litleInternalRecurringRequest')
-      transaction.debtRepayment	     = options['debtRepayment']
+      transaction.debtRepayment      = options['debtRepayment']
       transaction.advancedFraudChecks = AdvancedFraudChecks.from_hash(options, 'advancedFraudChecks')
+          
       return transaction
     end
 
@@ -278,7 +276,7 @@ module LitleOnline
       transaction.secondaryAmount = options['secondaryAmount']
       transaction.surchargeAmount    = options['surchargeAmount']
       transaction.customBilling      = CustomBilling.from_hash(options)
-      transaction.debtRepayment	     = options['debtRepayment']
+      transaction.debtRepayment      = options['debtRepayment']
       add_order_info(transaction, options)
 
       return transaction
@@ -309,7 +307,7 @@ module LitleOnline
       transaction.shipToAddress      = Contact.from_hash(options,'shipToAddress')
       transaction.customBilling      = CustomBilling.from_hash(options)
       transaction.billMeLaterRequest = BillMeLaterRequest.from_hash(options)
-      transaction.debtRepayment	     = options['debtRepayment']
+      transaction.debtRepayment      = options['debtRepayment']
       return transaction
     end
 
@@ -410,6 +408,30 @@ module LitleOnline
 
       return transaction
     end
+    
+    #SDK XML 10
+    
+    def funding_txn_void(options)
+      transaction = FundingInstructionVoid.new
+      transaction.litleTxnId = options['litleTxnId']
+      add_account_info(transaction, options)
+              
+      return transaction
+    end
+    
+    #SDK XML 10
+    def query_Transaction(options)
+      transaction = QueryTransaction.new
+      transaction.origId = options['origId']
+      transaction.origActionType = options['origActionType']
+      transaction.origLitleTxnId = options['origLitleTxnId']
+      transaction.origOrderId = options['origOrderId']
+      transaction.origAccountNumber = options['origAccountNumber']
+      add_account_info(transaction, options)
+         
+      return transaction
+    end 
+  
 
     def submerchant_debit(options)
       transaction = SubmerchantDebit.new
@@ -551,9 +573,11 @@ module LitleOnline
       transaction.customBilling             = CustomBilling.from_hash(options)
       transaction.paypal                    = PayPal.from_hash(options,'paypal')
       transaction.applepay                  = Applepay.from_hash(options,'applepay')
-
+      #SDK Ruby XML 10
+      transaction.wallet                    = Wallet.from_hash(options, 'wallet')
+      
       add_order_info(transaction, options)
-    end
+    end 
 
     def add_order_info(transaction, options)
       transaction.amount                  = options['amount']

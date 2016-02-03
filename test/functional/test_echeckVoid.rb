@@ -30,12 +30,13 @@ module LitleOnline
     def test_simple_echeck_void
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'12345678000',
       }
       response= LitleOnlineRequest.new.echeck_void(hash)
-      assert_equal('Approved', response.echeckVoidResponse.message)
+      assert_equal('Transaction Received', response.echeckVoidResponse.message)
     end  
   end
 end

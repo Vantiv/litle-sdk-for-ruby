@@ -25,7 +25,6 @@ OTHER DEALINGS IN THE SOFTWARE.
 require 'test/unit'
 require File.expand_path("../../../lib/LitleOnline",__FILE__) 
 
-
 require_relative 'test_xmlfields'
 require_relative 'test_captureGivenAuth'
 require_relative 'test_sale'
@@ -62,4 +61,6 @@ require_relative 'test_refundReversal'
 require_relative 'test_loadReversal'
 require_relative 'test_unloadReversal'
 require_relative 'test_deactivateReversal'
+require_relative 'test_wallet'
+require_relative 'test_queryTransaction'
 

@@ -43,6 +43,7 @@ module LitleOnline
     def test_MEGA_batch
       authHash = {
         'reportGroup'=>'Planets',
+        'id' => '006',
         'orderId'=>'12344',
         'amount'=>'106',
         'orderSource'=>'ecommerce',
@@ -67,6 +68,7 @@ module LitleOnline
       creditHash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id' => '006',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
         'amount'=>'106',
@@ -80,6 +82,7 @@ module LitleOnline
       authReversalHash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id' => '006',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'12345678000',
         'amount'=>'106',
@@ -89,6 +92,7 @@ module LitleOnline
       registerTokenHash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id' => '006',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
         'accountNumber'=>'1233456789103801'
@@ -108,6 +112,7 @@ module LitleOnline
       forceCaptHash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id' => '006',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
         'orderId'=>'12344',
@@ -122,6 +127,7 @@ module LitleOnline
       captHash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id' => '006',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456000',
         'amount'=>'106',
@@ -130,6 +136,7 @@ module LitleOnline
       captGivenAuthHash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id' => '006',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
         'amount'=>'106',
@@ -147,6 +154,7 @@ module LitleOnline
       echeckVerificationHash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id' => '006',
         'reportGroup'=>'Planets',
         'amount'=>'123456',
         'orderId'=>'12345',
@@ -158,6 +166,7 @@ module LitleOnline
       echeckCreditHash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id' => '006',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456789101112',
         'amount'=>'12'
@@ -166,6 +175,7 @@ module LitleOnline
       echeckRedeopsitHash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id' => '006',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456'
       }
@@ -173,6 +183,7 @@ module LitleOnline
       echeckSaleHash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id' => '006',
         'reportGroup'=>'Planets',
         'amount'=>'123456',
         'verify'=>'true',

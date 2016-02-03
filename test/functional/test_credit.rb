@@ -30,6 +30,7 @@ module LitleOnline
     def test_simple_credit_with_card
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -47,6 +48,7 @@ module LitleOnline
     def test_simple_credit_with_paypal
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'amount'=>'106',
@@ -63,6 +65,7 @@ module LitleOnline
     def test_simple_credit_with_secondaryAmount
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'amount'=>'106',
@@ -80,6 +83,7 @@ module LitleOnline
     def test_credit_with_TxnID_secondaryAmount
       hash = {
         'merchantId' => '101',
+        'id' => '102',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'amount'=>'106',
@@ -93,6 +97,7 @@ module LitleOnline
     def test_fields_out_of_order
       hash = {
         'merchantId' => '101',
+        'id' => '102',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -111,6 +116,7 @@ module LitleOnline
     def test_invalid_field
       hash = {
         'merchantId' => '101',
+        'id' => '102',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -129,6 +135,7 @@ module LitleOnline
     def test_pay_pal_notes
       hash = {
         'merchantId' => '101',
+        'id' => '102',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -147,6 +154,7 @@ module LitleOnline
     def test_processing_instructions_and_amex_data
       hash = {
         'merchantId' => '101',
+        'id' => '102',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'amount'=>'2000',
@@ -166,6 +174,7 @@ module LitleOnline
     def test_simple_credit_with_mpos
       hash = {
         'merchantId' => '101',
+        'id' => '102',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',

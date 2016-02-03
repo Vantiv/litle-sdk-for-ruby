@@ -1,6 +1,5 @@
 =begin
 Copyright (c) 2012 Litle & Co.
-
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
 files (the "Software"), to deal in the Software without
@@ -9,10 +8,8 @@ copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the
 Software is furnished to do so, subject to the following
 conditions:
-
 The above copyright notice and this permission notice shall be
 included in all copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
 OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -198,7 +195,6 @@ module LitleOnline
 
       entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       entries.sort!
-
       assert_equal 3, entries.size
       assert_not_nil entries[2] =~ /request_\d+.complete.sent\z/
 
@@ -216,9 +212,9 @@ module LitleOnline
         handle = sftp.opendir!('/inbound/')
         files_on_srv = sftp.readdir!(handle)
         files_on_srv.each {|file|
-          ents.push(file.name)
+        ents.push(file.name)
         }
-        assert_equal 3,ents.size
+        assert_equal 4,ents.size
         ents.sort!
         assert_equal ents[2], uploaded_file.gsub('sent', 'asc')
         sftp.remove('/inbound/' + ents[2])  
@@ -247,6 +243,7 @@ module LitleOnline
       
       assert_equal 3, entries.size
       assert_not_nil entries[2] =~ /response_\d+.complete.asc.received\z/
+      
     end
 
     def test_full_flow
@@ -340,7 +337,6 @@ module LitleOnline
       entries.sort!
       assert_equal 3, entries.length
       assert_not_nil entries[2] =~ /response_\d+.complete.asc.received.processed\z/
-      
     end
 
     def get_config(field, options)

@@ -31,6 +31,7 @@ module LitleOnline
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456'
       }
@@ -42,6 +43,7 @@ module LitleOnline
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
         'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'}
@@ -54,6 +56,7 @@ module LitleOnline
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
         'echeckToken' => {'accType'=>'Checking','litleToken'=>'1234565789012','routingNum'=>'123456789','checkNum'=>'123455'}
@@ -66,6 +69,7 @@ module LitleOnline
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'reportGroup'=>'Planets',
         'invalidfield'=>'nonexistant',
         'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},

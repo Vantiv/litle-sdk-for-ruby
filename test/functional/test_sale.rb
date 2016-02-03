@@ -30,6 +30,7 @@ module LitleOnline
     def test_simple_sale_with_card
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
@@ -41,6 +42,7 @@ module LitleOnline
         'number' =>'4100000000000002',
         'expDate' =>'1210'
         }}
+     
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal('000', response.saleResponse.response)
     end
@@ -48,6 +50,7 @@ module LitleOnline
     def test_simple_sale_with_paypal
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
@@ -59,13 +62,15 @@ module LitleOnline
         'token'=>'1234',
         'transactionId'=>'123456'
         }}
+      
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal 'Valid Format', response.message
     end
 
-    def test_simple_sale_with_applepay_and_secondaryAmount
+    def test_simple_sale_with_applepay_and_secondaryAmount1
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
@@ -82,7 +87,8 @@ module LitleOnline
         'transactionId'=>'1234'
         },
         'signature' =>'1',
-        'version'=>'1'
+        #'version'=>'1'   
+         'version'=>'10000'
         }}
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal('Insufficient Funds', response.saleResponse.message)
@@ -92,6 +98,7 @@ module LitleOnline
     def test_illegal_order_source
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
@@ -110,6 +117,7 @@ module LitleOnline
     def test_no_report_group
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
@@ -128,6 +136,7 @@ module LitleOnline
     def test_fields_out_of_order
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'orderSource'=>'ecommerce',
         'litleTxnId'=>'123456',
@@ -147,6 +156,7 @@ module LitleOnline
     def test_invalid_field
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
@@ -166,6 +176,7 @@ module LitleOnline
     def test_simple_sale_with_card
       hash = {
         'merchantId'=>'101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
@@ -184,6 +195,7 @@ module LitleOnline
     def test_no_order_id
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
@@ -201,6 +213,7 @@ module LitleOnline
     def test_no_amount
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
@@ -218,6 +231,7 @@ module LitleOnline
     def test_no_order_source
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
@@ -235,6 +249,7 @@ module LitleOnline
     def test_simple_sale_with_mpos
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
@@ -253,7 +268,63 @@ module LitleOnline
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal('000', response.saleResponse.response)
     end
-
-  end
-
+    
+    def test_simple_sale_with_applepay_and_secondaryAmount
+      hash = 
+       {
+         'merchantId' => '101',
+         'id' => 'test',
+         'version'=>'8.8',
+         'reportGroup'=>'Planets',
+         'litleTxnId'=>'123456',
+         'orderId'=>'12344',
+         'amount'=>'110',
+         'secondaryAmount'=>'50',
+         'orderSource'=>'ecommerce',
+         'applepay'=>
+         {
+          'data'=>'1234',
+          'header'=>
+            {
+            'applicationData'=>'454657413164',
+            'ephemeralPublicKey'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+            'publicKeyHash'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+            'transactionId'=>'1234'
+            },
+            
+         'signature' =>'1',
+         'version'=>'100000'
+        }}
+      response= LitleOnlineRequest.new.sale(hash)
+      assert_equal('Insufficient Funds', response.saleResponse.message)
+      assert_equal('110', response.saleResponse.applepayResponse.transactionAmount)
+    end
+        
+    #SDK Ruby XML 10
+    def test_simple_sale_with_wallet
+      hash = 
+      {
+        'merchantId' => '101',
+        'id' => 'test',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'paypal'=>
+         {
+          'payerId'=>'1234',
+          'token'=>'1234',
+          'transactionId'=>'123456'
+          },
+         'wallet'=> 
+          {
+            'walletSourceType' => 'MasterPass',
+             'walletSourceTypeId' => '102'                  
+        }}
+        response= LitleOnlineRequest.new.sale(hash)
+        assert_equal 'Valid Format', response.message
+     end
+   end
 end

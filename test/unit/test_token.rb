@@ -43,7 +43,9 @@ module LitleOnline
         'transactionId'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
         },
         'signature' =>'sign',
-        'version' =>'1'
+         #  'version' =>'1'
+         # SDL Ruby XML 10
+         'version' =>'10000'
         }
       }
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*?<litleOnlineRequest.*?<registerTokenRequest.*?<applepay>.*?<data>user<\/data>.*?<\/applepay>.*?<\/registerTokenRequest>.*?/m), is_a(Hash))
@@ -66,7 +68,9 @@ module LitleOnline
         'transactionId'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
         },
         'signature' =>'sign',
-        'version' =>'1'
+         #  'version' =>'1'
+         # SDL Ruby XML 10
+         'version' =>'10000'
         }
       }
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.register_token_request(hash)}

@@ -7,6 +7,7 @@ module LitleOnline
      def test_override_withoutLocalAndEnv
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'orderId' =>'1001',
         'amount' =>'500',
@@ -23,6 +24,7 @@ module LitleOnline
     def test_override_withoutLocal
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'orderId' =>'1001',
         'amount' =>'500',
@@ -42,6 +44,7 @@ module LitleOnline
     def test_override
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId' =>'1001',

@@ -30,6 +30,7 @@ module LitleOnline
     def test_card_no_required_type_or_track
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
@@ -48,6 +49,7 @@ module LitleOnline
     def test_simple_custom_billing
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
@@ -67,6 +69,7 @@ module LitleOnline
     def test_bill_me_later
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
@@ -87,6 +90,7 @@ module LitleOnline
     def test__customer_info
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
@@ -106,6 +110,7 @@ module LitleOnline
     def test_simple_bill_to_address
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -124,6 +129,7 @@ module LitleOnline
     def test_processing_instructions
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -142,6 +148,7 @@ module LitleOnline
     def test_pos
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -160,6 +167,7 @@ module LitleOnline
     def test_amex_data
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -178,6 +186,7 @@ module LitleOnline
     def test_amex_data_missing_seller_id
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -196,6 +205,7 @@ module LitleOnline
     def test_simple_enhanced_data
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -220,6 +230,7 @@ module LitleOnline
     def test_enhanced_data_with_detail_tax
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -245,6 +256,7 @@ module LitleOnline
     def test_enhanced_data_with_line_item
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -276,6 +288,7 @@ module LitleOnline
     def test_simple_token
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -294,6 +307,7 @@ module LitleOnline
     def test_token_missing_exp_dat_and_valid_num
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -310,6 +324,7 @@ module LitleOnline
     def test_simple_paypage
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -328,6 +343,7 @@ module LitleOnline
     def test_paypage_missing_exp_dat_and_valid_num
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -344,6 +360,7 @@ module LitleOnline
     def test_line_item_data
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'1',
@@ -369,6 +386,7 @@ module LitleOnline
     def test_detail_tax
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'1',
@@ -394,6 +412,7 @@ module LitleOnline
     def test_detail_tax_in_lineItem
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'1',

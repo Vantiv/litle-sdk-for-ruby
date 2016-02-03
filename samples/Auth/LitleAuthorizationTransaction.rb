@@ -3,6 +3,7 @@ require_relative '../../lib/LitleOnline'
 #Authorization
 auth_info = {
   'orderId' => '1',
+  'id'=>'test',
   'amount' => '10010',
   'orderSource'=>'ecommerce',
   'billToAddress'=>{

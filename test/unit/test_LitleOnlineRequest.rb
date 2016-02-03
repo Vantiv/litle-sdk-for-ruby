@@ -243,7 +243,7 @@ module LitleOnline
       #Explicit - used for integrations
       assert_equal 'ActiveMerchant;3.2', litle.send(:get_merchant_sdk, {'merchantSdk'=>'ActiveMerchant;3.2'})
       #Implicit - used raw when nothing is specified
-      assert_equal 'Ruby;9.3.2', litle.send(:get_merchant_sdk, {'NotMerchantSdk'=>'ActiveMerchant;3.2'})
+      assert_equal 'Ruby;10.1', litle.send(:get_merchant_sdk, {'NotMerchantSdk'=>'ActiveMerchant;3.2'})
     end
   
     def test_sale_paypal_order_complete_typo
@@ -273,7 +273,7 @@ module LitleOnline
         'litleTxnId' => '006'
       }
 
-      Communications.expects(:http_post).with(regexp_matches(/<litleOnlineRequest.*version="9\.3".*/m),kind_of(Hash))
+      Communications.expects(:http_post).with(regexp_matches(/<litleOnlineRequest.*version="10\.1".*/m),kind_of(Hash))
       XMLObject.expects(:new)
  
       response = LitleOnlineRequest.new.void(hash)

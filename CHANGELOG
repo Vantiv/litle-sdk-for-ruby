@@ -1,5 +1,12 @@
 = LitleOnline CHANGELOG
 
+==Version 10.1
+* Feature: Support for the following new transactions:
+FundingInstructionVoid and QueryTransaction
+* Feature: 'id' field should be added to all incoming transaction types
+* Feature: Constraints were added to ApplepayType and ApplyPayHeaderType
+* Feature: Wallet class was added and new enum types were introduced
+
 ==Version 9.3.2
 HTTP timeout set to 500ms
 

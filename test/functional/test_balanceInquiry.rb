@@ -33,6 +33,7 @@ def test_simple_happy
     hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'reportGroup'=>'Planets',
         'orderId' =>'1001',
         'orderSource' =>'ecommerce',
@@ -51,6 +52,7 @@ def test_simple_happy
     hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'reportGroup'=>'Planets',
         'orderSource' =>'ecommerce',
         'orderId' =>'1001',

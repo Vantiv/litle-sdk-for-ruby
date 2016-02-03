@@ -32,6 +32,7 @@ module LitleOnline
 def test_simple_card_happy
     hash = {
         'merchantId' => '101',
+       'id' =>'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId' =>'1001',
@@ -41,7 +42,7 @@ def test_simple_card_happy
         'type'=>'VI',
         'number' =>'4100000000000001',
         'expDate' =>'1210'
-                }
+       }
 	   }
 
     response= LitleOnlineRequest.new.activate(hash)
@@ -52,6 +53,7 @@ def test_simple_virtualGiftCard_happy
     hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id' =>'test',
         'reportGroup'=>'Planets',
         'orderId' =>'1001',
         'amount' =>'500',
@@ -59,7 +61,7 @@ def test_simple_virtualGiftCard_happy
         'virtualGiftCard'=>{
           'accountNumberLength'=>'13',
           'giftCardBin'=>'giftCardBinString'
-                }
+         }
 	   }
 
     response= LitleOnlineRequest.new.activate(hash)
@@ -70,6 +72,7 @@ def test_simple_virtualGiftCard_happy
     hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id' =>'test',
         'reportGroup'=>'Planets',
         'amount' =>'500',
         'orderId' =>'1001',

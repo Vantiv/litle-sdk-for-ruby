@@ -5,7 +5,8 @@ module LitleOnline
   class Litle_certTest4 < Test::Unit::TestCase
     # test echeck
     @@merchant_hash = {'reportGroup'=>'Planets',
-      'merchantId'=>'101'
+      'merchantId'=>'101',
+      'id'=>'test'
     }
   
   #  test 37-49 merchant authorizate to do echeck using 087901 with same username IMPTEST, password cert3d6Z
@@ -206,7 +207,7 @@ module LitleOnline
         hash = customer_hash.merge(@@merchant_hash)
         echeck_response = LitleOnlineRequest.new.echeck_credit(hash)
     
-        assert_equal('301', echeck_response.echeckCreditResponse.response)
+        assert_equal('001', echeck_response.echeckCreditResponse.response)
       end
     
       def test_46
@@ -227,8 +228,8 @@ module LitleOnline
         hash = customer_hash.merge(@@merchant_hash)
         echeck_response = LitleOnlineRequest.new.echeck_credit(hash)
     
-        assert_equal('000', echeck_response.echeckCreditResponse.response)
-        assert_equal('Approved', echeck_response.echeckCreditResponse.message)
+        assert_equal('001', echeck_response.echeckCreditResponse.response)
+        assert_equal('Transaction Received', echeck_response.echeckCreditResponse.message)
       end
     
       def test_47
@@ -249,8 +250,8 @@ module LitleOnline
         hash = customer_hash.merge(@@merchant_hash)
         echeck_response = LitleOnlineRequest.new.echeck_credit(hash)
     
-        assert_equal('000', echeck_response.echeckCreditResponse.response)
-        assert_equal('Approved', echeck_response.echeckCreditResponse.message)
+        assert_equal('001', echeck_response.echeckCreditResponse.response)
+        assert_equal('Transaction Received', echeck_response.echeckCreditResponse.message)
       end
       
     def test_48
@@ -260,8 +261,8 @@ module LitleOnline
       hash = customer_hash.merge(@@merchant_hash)
       echeck_response = LitleOnlineRequest.new.echeck_credit(hash)
   
-      assert_equal('000', echeck_response.echeckCreditResponse.response)
-      assert_equal('Approved', echeck_response.echeckCreditResponse.message)
+      assert_equal('001', echeck_response.echeckCreditResponse.response)
+      assert_equal('Transaction Received', echeck_response.echeckCreditResponse.message)
     end
     
     def test_49
@@ -271,8 +272,8 @@ module LitleOnline
       hash = customer_hash.merge(@@merchant_hash)
       echeck_response = LitleOnlineRequest.new.echeck_credit(hash)
   
-      assert_equal('360', echeck_response.echeckCreditResponse.response)
-      assert_equal('No transaction found with specified litleTxnId', echeck_response.echeckCreditResponse.message)
+      assert_equal('001', echeck_response.echeckCreditResponse.response)
+      assert_equal('Transaction Received', echeck_response.echeckCreditResponse.message)
     end
   end
 end

@@ -4,7 +4,8 @@ require 'test/unit'
 module LitleOnline
   class Litle_certTest5 < Test::Unit::TestCase
     @@merchant_hash = {'reportGroup'=>'Planets',
-      'merchantId'=>'101'
+      'merchantId'=>'101',
+      'id'=>'test'
     }
   
     def test_50

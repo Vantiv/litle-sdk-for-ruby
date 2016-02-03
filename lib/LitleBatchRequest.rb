@@ -1,6 +1,5 @@
 =begin
 Copyright (c) 2011 Litle & Co.
-
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
 files (the "Software"), to deal in the Software without
@@ -9,10 +8,8 @@ copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the
 Software is furnished to do so, subject to the following
 conditions:
-
 The above copyright notice and this permission notice shall be
 included in all copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
 OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -74,7 +71,9 @@ module LitleOnline
         :load=>{:numLoads=>0, :loadAmount=>0},
         :unload=>{:numUnloads=>0, :unloadAmount=>0},
         :numBalanceInquirys=>0,
-        :merchantSdk=>nil
+        :merchantSdk=>nil,
+        #SDK XML 10
+        :numFundingInstructionVoid=>0
       }
       @litle_txn = LitleTransaction.new
       @path_to_batch = nil
@@ -381,6 +380,19 @@ module LitleOnline
 
       add_txn_to_batch(transaction, :physicalCheckCredit, options)
     end
+    
+    
+ # Adding the numfundingInstructionVoid to the batch request
+ # Date: 01-25-2016
+ # Change Type: New
+ # Desc: Change proposed as a part of SDK XML 10 to incorporate the feature of voiding transactions
+ # on request.
+    def funding_txn_void(options)
+      transaction = @litle_txn.funding_txn_void(options)
+      @txn_counts[:numFundingInstructionVoid] += 1
+      
+      add_txn_to_batch(transaction, :fundingInstructionVoid, options)
+    end
 
     def payFac_debit(options)
       transaction = @litle_txn.payFac_debit(options)
@@ -503,7 +515,9 @@ module LitleOnline
       request.vendorCreditAmount        = @txn_counts[:vendorCredit][:vendorCreditAmount]
       request.numPhysicalCheckCredit        = @txn_counts[:physicalCheckCredit][:numPhysicalCheckCredit]
       request.physicalCheckCreditAmount        = @txn_counts[:physicalCheckCredit][:physicalCheckCreditAmount]
-
+      #SDK XML 10
+      request.numFundingInstructionVoid        = @txn_counts[:numFundingInstructionVoid]
+        
       request.numPayFacDebit        = @txn_counts[:payFacDebit][:numPayFacDebit]
       request.payFacDebitAmount        = @txn_counts[:payFacDebit][:payFacDebitAmount]
       request.numSubmerchantDebit        = @txn_counts[:submerchantDebit][:numSubmerchantDebit]

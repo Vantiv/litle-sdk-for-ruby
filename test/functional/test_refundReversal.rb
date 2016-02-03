@@ -33,6 +33,7 @@ def test_simple
     hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'reportGroup'=>'Planets',
         'litleTxnId' =>'5000'
 	   }

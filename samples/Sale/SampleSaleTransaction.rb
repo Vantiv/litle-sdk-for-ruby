@@ -2,6 +2,7 @@ require_relative '../../lib/LitleOnline'
 # Visa $10 Sale
 litleSaleTxn = {
     'merchantId' => '087900',
+    'id' => 'test',
     'reportGroup'=>'rpt_grp',
     'orderId'=>'1234567',
     'card'=>{
@@ -19,6 +20,6 @@ response = LitleOnline::LitleOnlineRequest.new.sale(litleSaleTxn)
 puts "Message: "+ response.message
 puts "Litle Transaction ID: "+ response.saleResponse.litleTxnId  
 
-if (!response.saleResponse.message.eql?'Approved')
+if (!response.saleResponse.message.eql?'Transaction Received')
    raise ArgumentError, "SampleSaleTransaction has not been Approved", caller
 end  

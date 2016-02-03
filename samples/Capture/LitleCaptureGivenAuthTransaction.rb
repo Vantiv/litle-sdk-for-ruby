@@ -2,6 +2,7 @@ require_relative '../../lib/LitleOnline'
 #Capture Given Auth
 capture_given_auth_info = {
   'merchantId' => '101',
+   'id'=>'test',
   'version'=>'8.8',
   'reportGroup'=>'Planets',
   'orderId'=>'12344',
@@ -25,6 +26,6 @@ puts "Response: " + response.captureGivenAuthResponse.response
 puts "Message: " + response.captureGivenAuthResponse.message
 puts "Litle Transaction ID: " + response.captureGivenAuthResponse.litleTxnId
 
-if (!response.captureGivenAuthResponse.message.eql?'Approved')
+if (!response.captureGivenAuthResponse.message.eql?'Transaction Received')
    raise ArgumentError, "LitleCaptureGivenAuthTransaction has not been Approved", caller
 end

@@ -31,6 +31,7 @@ module LitleOnline
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
         'accountNumber'=>'1233456789103801'
@@ -43,6 +44,7 @@ module LitleOnline
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
         'paypageRegistrationId'=>'QU1pTFZnV2NGQWZrZzRKeTNVR0lzejB1K2Q5VDdWMTVqb2J5WFJ2Snh4U0U4eTBxaFg2cEVWaDBWSlhtMVZTTw=='
@@ -56,6 +58,7 @@ module LitleOnline
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
         'applepay'=>{
@@ -67,7 +70,7 @@ module LitleOnline
         'transactionId'=>'1234'
         },
         'signature' =>'1',
-        'version'=>'1'
+        'version'=>'10000'
         }
       }
       response= LitleOnlineRequest.new.register_token_request(hash)
@@ -79,6 +82,7 @@ module LitleOnline
       hash = {
         'reportGroup'=>'Planets',
         'merchantId' => '101',
+        'id'=>'test',
         'version'=>'8.8',
         'orderId'=>'12344',
         'echeckForToken'=>{'accNum'=>'12344565','routingNum'=>'123476545'}
@@ -91,6 +95,7 @@ module LitleOnline
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'orderId'=>'12344',
         'accountNumber'=>'1233456789103801',
         'reportGroup'=>'Planets',
@@ -103,6 +108,7 @@ module LitleOnline
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'NOSUCHFIELD'=>'none',
         'orderId'=>'12344',
         'accountNumber'=>'1233456789103801',

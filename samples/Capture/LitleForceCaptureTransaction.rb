@@ -2,6 +2,7 @@ require_relative '../../lib/LitleOnline'
 #Force Capture
 force_capture_info = {
   'merchantId' => '101',
+    'id'=>'test',
   'version'=>'8.8',
   'reportGroup'=>'Planets',
   'litleTxnId'=>'123456',
@@ -21,6 +22,6 @@ puts "Response: " + response.forceCaptureResponse.response
 puts "Message: " + response.forceCaptureResponse.message
 puts "Litle Transaction ID: " + response.forceCaptureResponse.litleTxnId
 
-if (!response.forceCaptureResponse.message.eql?'Approved')
+if (!response.forceCaptureResponse.message.eql?'Transaction Received')
    raise ArgumentError, "LitleForceCaptureTransaction has not been Approved", caller
 end

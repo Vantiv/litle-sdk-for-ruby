@@ -31,6 +31,7 @@ module LitleOnline
     def test_simple_auth_with_card
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -48,6 +49,7 @@ module LitleOnline
     def test_simple_auth_with_paypal
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'amount'=>'106',
@@ -65,6 +67,7 @@ module LitleOnline
     def test_simple_auth_with_applepay_and_secondaryAmount
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -80,7 +83,9 @@ module LitleOnline
         'transactionId'=>'1234'
         },
         'signature' =>'1',
-        'version'=>'1'
+        # RUby SDK XML 10
+        #'version'=>'1'
+         'version'=>'1000000'
         }}
       response= LitleOnlineRequest.new.authorization(hash)
       assert_equal('Insufficient Funds', response.authorizationResponse.message)
@@ -90,6 +95,7 @@ module LitleOnline
     def test_illegal_order_source
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -107,6 +113,7 @@ module LitleOnline
     def test_fields_out_of_order
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -125,6 +132,7 @@ module LitleOnline
     def test_invalid_field
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -143,6 +151,7 @@ module LitleOnline
     def test_no_order_id
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'amount'=>'106',
@@ -159,6 +168,7 @@ module LitleOnline
     def test_no_amount
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -175,6 +185,7 @@ module LitleOnline
     def test_no_order_source
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         #      'litleTxnId'=>'123456',
@@ -202,7 +213,7 @@ module LitleOnline
         }}
 
       response= LitleOnlineRequest.new.authorization(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+        
     end
 
     def test_orderId_required
@@ -218,14 +229,16 @@ module LitleOnline
       }
       response= LitleOnlineRequest.new.authorization(start_hash)
       assert(response.message =~ /Error validating xml data against the schema/)
-
-      response = LitleOnlineRequest.new.authorization(start_hash.merge({'orderId'=>'1234'}))
+      #SDK XML 10
+      #response = LitleOnlineRequest.new.authorization(start_hash.merge({'orderId'=>'1234'}))
+      response = LitleOnlineRequest.new.authorization(start_hash.merge({'orderId'=>'1234','id'=>'test'}))
       assert_equal('000', response.authorizationResponse.response)
     end
 
     def test_ssn_optional
       start_hash = {
         'orderId'=>'12344',
+        'id' => 'test',
         'merchantId'=>'101',
         'reportGroup'=>'Planets',
         'amount'=>'101',
@@ -245,6 +258,7 @@ module LitleOnline
     def test_simple_auth_with_paypage
       hash = {
         'orderId'=>'12344',
+        'id' => 'test',
         'amount'=>'106',
         'orderSource'=>'ecommerce',
         'paypage'=>{
@@ -261,6 +275,7 @@ module LitleOnline
     def test_simple_auth_with_advanced_fraud_checks
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12355',
@@ -280,6 +295,7 @@ module LitleOnline
     def test_simple_auth_with_mpos
       hash = {
         'orderId'=>'12344',
+        'id' => 'test',
         'amount'=>'106',
         'orderSource'=>'ecommerce',
         'mpos'=>
@@ -294,5 +310,29 @@ module LitleOnline
       response= LitleOnlineRequest.new.authorization(hash)
       assert_equal('000', response.authorizationResponse.response)
     end
+    
+    #SDK XML 10 
+    def test_simple_auth_with_wallet
+      hash = {
+        'merchantId' => '101',
+        'id' => 'test',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'amount'=>'106',
+        'orderId'=>'123456',
+        'orderSource'=>'ecommerce',
+        'paypal'=>
+         {
+           'payerId'=>'1234',
+           'token'=>'1234',
+           'transactionId'=>'123456'
+          },
+         'wallet'=> {
+           'walletSourceType' => 'MasterPass',
+           'walletSourceTypeId' => '102'                  
+         }}  
+         response= LitleOnlineRequest.new.authorization(hash)
+         assert_equal 'Valid Format', response.message
+       end
   end
 end

@@ -31,6 +31,7 @@ module LitleOnline
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
         'amount'=>'106',
@@ -52,6 +53,7 @@ module LitleOnline
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
         'authInformation' => {
@@ -74,6 +76,7 @@ module LitleOnline
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'orderSource'=>'ecommerce',
         'authInformation' => {
         'authDate'=>'2002-10-09','authCode'=>'543216',
@@ -96,6 +99,7 @@ module LitleOnline
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'reportGroup'=>'Planets',
         'authInformation' => {
         'authDate'=>'2002-10-09','authCode'=>'543216',
@@ -118,6 +122,7 @@ module LitleOnline
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
         'amount'=>'106',
@@ -141,6 +146,7 @@ module LitleOnline
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
         'amount'=>'106',
@@ -168,6 +174,7 @@ module LitleOnline
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
         'authInformation' => {
@@ -188,6 +195,7 @@ module LitleOnline
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
         'amount'=>'106',
@@ -213,6 +221,7 @@ module LitleOnline
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
         'authInformation' => {

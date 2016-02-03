@@ -2,6 +2,7 @@ require_relative '../../lib/LitleOnline'
 #Sale
 my_sale_info = {
   'orderId' => '1',
+  'id'=>'test',
   'amount' => '10010',
   'orderSource'=>'ecommerce',
   'billToAddress'=>{
@@ -24,6 +25,6 @@ puts "Response: " + sale_response.saleResponse.response
 puts "Message: " + sale_response.saleResponse.message
 puts "Litle Transaction ID: " + sale_response.saleResponse.litleTxnId
 
-if (!sale_response.saleResponse.message.eql?'Approved')
+if (!sale_response.saleResponse.message.eql?'Transaction Received')
    raise ArgumentError, "LitleSaleTransaction has not been Approved", caller
 end

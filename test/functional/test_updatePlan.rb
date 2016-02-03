@@ -33,6 +33,7 @@ def test_simple_happy
     hash ={
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'reportGroup'=>'Planets',
         'planCode'=>'planCodeString',
         'active'=>'true'  

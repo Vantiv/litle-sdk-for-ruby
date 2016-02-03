@@ -30,6 +30,7 @@ module LitleOnline
     def test_simple_force_capture_with_card
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
@@ -42,12 +43,13 @@ module LitleOnline
         'expDate' =>'1210'
         }}
       response= LitleOnlineRequest.new.force_capture(hash)
-      assert_equal('000', response.forceCaptureResponse.response)
+      assert_equal('001', response.forceCaptureResponse.response)
     end
   
     def test_simple_force_capture_with_token
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
@@ -67,6 +69,7 @@ module LitleOnline
     def test_fields_out_of_order
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'orderSource'=>'ecommerce',
         'litleTxnId'=>'123456',
@@ -86,6 +89,7 @@ module LitleOnline
     def test_invalid_field
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
@@ -105,6 +109,7 @@ module LitleOnline
     def test_no_order_id
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
@@ -123,6 +128,7 @@ module LitleOnline
     def test_no_order_source
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
@@ -140,6 +146,7 @@ module LitleOnline
     def test_simple_forceCapture_with_mpos
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
@@ -156,12 +163,13 @@ module LitleOnline
 		}
       }
       response= LitleOnlineRequest.new.force_capture(hash)
-      assert_equal('000', response.forceCaptureResponse.response)
+      assert_equal('001', response.forceCaptureResponse.response)
     end
     
     def test_simple_force_capture_with_secondaryAmount
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
@@ -175,7 +183,7 @@ module LitleOnline
         'expDate' =>'1210'
         }}
       response= LitleOnlineRequest.new.force_capture(hash)
-      assert_equal('000', response.forceCaptureResponse.response)
+      assert_equal('001', response.forceCaptureResponse.response)
     end
   
   end

@@ -135,7 +135,7 @@ module LitleOnline
 
     def authorization(options)
       transaction = @litle_transaction.authorization(options)
-
+      
       commit(transaction, :authorization, options)
     end
 
@@ -229,6 +229,13 @@ module LitleOnline
       commit(transaction, :echeckVoid, options)
     end
     
+    #SDK XML 10
+    def query_Transaction(options)      
+      transaction = @litle_transaction.query_Transaction(options)
+      
+      commit(transaction, :queryTransaction, options)      
+    end
+    
 #    def fraud_check_request(options)
 #      transaction = @litle_transaction.fraud_check_request(options)
 #            
@@ -258,11 +265,11 @@ module LitleOnline
 
       request.authentication  = authentication
       request.merchantId      = get_merchant_id(options)
-      request.version         = '9.3'
+      #request.version         = '9.3'
+      request.version         = '10.1'
       request.loggedInUser    = get_logged_in_user(options)
       request.xmlns           = "http://www.litle.com/schema"
       request.merchantSdk     = get_merchant_sdk(options)
-
       request
     end
 
@@ -289,7 +296,8 @@ module LitleOnline
     end
 
     def get_merchant_sdk(options)
-      options['merchantSdk'] || 'Ruby;9.3.2'
+      #options['merchantSdk'] || 'Ruby;9.3.2'
+      options['merchantSdk'] || 'Ruby;10.1'
     end
 
     def get_report_group(options)

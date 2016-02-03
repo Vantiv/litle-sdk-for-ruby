@@ -83,7 +83,8 @@ request.process_responses({:transaction_listener => LitleOnline::DefaultLitleLis
     
     #grab a child element of a child element of the transation
     puts "AVS Result: " + transaction["fraudResult"]["avsResult"]
-    puts "Token Response Message: " + transaction["tokenResponse"]["tokenMessage"] 
+    puts transaction["message"]
+   # puts "Token Response Message: " + transaction["tokenResponse"]["tokenMessage"] 
     if (!transaction["message"].eql?'Approved')
    raise ArgumentError, "SampleBatchDriver has not been Approved", caller
     end

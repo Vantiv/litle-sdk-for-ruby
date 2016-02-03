@@ -32,6 +32,7 @@ module LitleOnline
 def test_simple
     hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId' =>'5000'

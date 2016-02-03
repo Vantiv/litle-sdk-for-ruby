@@ -28,7 +28,7 @@ require 'mocha/setup'
 
 #test Authorization Transaction
 module LitleOnline
-  class TestAuth < Test::Unit::TestCase
+ class TestAuth < Test::Unit::TestCase
     def test_success_re_auth
       hash = {
         'merchantId' => '101',
@@ -58,7 +58,7 @@ module LitleOnline
         'transactionId'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
         },
         'signature' =>'sign',
-        'version' =>'1'
+        'version' =>'10000'
         }
       }
 
@@ -88,7 +88,7 @@ module LitleOnline
         'transactionId'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
         },
         'signature' =>'sign',
-        'version' =>'1'
+        'version' =>'10000'
         }}
 
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
@@ -150,7 +150,6 @@ module LitleOnline
         'merchantId' => '101',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
-        #      'litleTxnId'=>'123456',
         'orderId'=>'12344',
         'amount'=>'106',
         'orderSource'=>'ecommerce',
@@ -214,6 +213,9 @@ module LitleOnline
       Communications.expects(:http_post).with(regexp_matches(/.*<authorization.*?<fraudFilterOverride>true<\/fraudFilterOverride>.*?<\/authorization>.*/m),kind_of(Hash))
       LitleOnlineRequest.new.authorization(hash)
     end
+    
+ 
+
 
     def test_pos_without_capability
       hash = {
@@ -246,7 +248,7 @@ module LitleOnline
         'transactionId'=>'123456'
         }}
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
-      assert_match /If paypal is specified, it must have a payerId/, exception.message
+     assert_match /If paypal is specified, it must have a payerId/, exception.message
     end
 
     def test_paypal_missing_transaction_id
@@ -416,6 +418,5 @@ module LitleOnline
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<mpos><ksn>ksnString<\/ksn><formatId>30<\/formatId><encryptedTrack>encryptedTrackString<\/encryptedTrack><track1Status>0<\/track1Status><track2Status>0<\/track2Status><\/mpos>.*/m), is_a(Hash))
       LitleOnlineRequest.new.authorization(hash)
     end
-
   end
 end

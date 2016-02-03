@@ -1,6 +1,7 @@
 require_relative '../../lib/LitleOnline'
  @@merchant_hash = {'reportGroup'=>'Planets','id'=>'321','customerId'=>'123',
-      'merchantId'=>'101'
+      'merchantId'=>'101',
+      'id'=>'test'
     }
 #AVS Only
 auth_info = {

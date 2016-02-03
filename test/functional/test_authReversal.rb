@@ -31,6 +31,7 @@ module LitleOnline
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'12345678000',
         'amount'=>'106',
@@ -44,6 +45,7 @@ module LitleOnline
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'litleTxnId'=>'12345000',
         'payPalNotes'=>'Notes',
         'amount'=>'106',
@@ -57,6 +59,7 @@ module LitleOnline
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
+        'id'=>'test',
         'reportGroup'=>'12345678',
         'amount'=>'106',
         'payPalNotes'=>'Notes'

@@ -1,6 +1,5 @@
 =begin
 Copyright (c) 2011 Litle & Co.
-
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
 files (the "Software"), to deal in the Software without
@@ -9,10 +8,8 @@ copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the
 Software is furnished to do so, subject to the following
 conditions:
-
 The above copyright notice and this permission notice shall be
 included in all copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
 OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -191,7 +188,8 @@ module LitleOnline
       litleRequest.authentication = authentication
       litleRequest.numBatchRequests = "0"
       
-      litleRequest.version         = '9.3'
+      #litleRequest.version         = '9.3'
+      litleRequest.version         = '10.1'
       litleRequest.xmlns           = "http://www.litle.com/schema"
       
       
@@ -280,6 +278,7 @@ module LitleOnline
     def send_to_litle_stream(options = {}, path = (File.dirname(@path_to_batches)))
       url = get_config(:fast_url, options)
       port = get_config(:fast_port, options)
+    
       
       if(url == nil or url == "") then
         raise ArgumentError, "A URL for fastbatch was not specified in the config file or passed options. Reconfigure and try again."
@@ -306,20 +305,22 @@ module LitleOnline
             ssl_socket = OpenSSL::SSL::SSLSocket.new(socket, ssl_context)
             ssl_socket.sync_close = true
             ssl_socket.connect
+                 
            rescue => e 
             raise "A connection couldn't be established. Are you sure you have the correct credentials? Exception: " + e.message
            end 
             
             File.foreach(path + filename) do |li|
               ssl_socket.puts li
+              
             end
             File.rename(path + filename, path + filename + '.sent')
             File.open(path + 'responses/' + (filename + '.asc.received').gsub("request", "response"), 'a+') do |fo|
             while line = ssl_socket.gets
                  fo.puts(line)
-             end
             end
-               
+           end
+           
         end
       end    
     end
@@ -499,7 +500,8 @@ module LitleOnline
       authentication.password = get_config(:password, options)
 
       litle_request.authentication = authentication
-      litle_request.version         = '9.3'
+      #litle_request.version        = '9.3'
+      litle_request.version         = '10.1'
       litle_request.xmlns           = "http://www.litle.com/schema"
       # litle_request.id              = options['sessionId'] #grab from options; okay if nil
       litle_request.numBatchRequests = @num_batch_requests
@@ -512,9 +514,9 @@ module LitleOnline
     def get_config(field, options)
       if options[field.to_s] == nil and options[field] == nil then
         return @config_hash[field.to_s]
-      elsif options[field.to_s] != nil then
+      elsif options[field.to_s] != nil then       
         return options[field.to_s]
-      else
+      else       
         return options[field]
       end
     end

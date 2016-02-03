@@ -1,6 +1,7 @@
 require_relative '../../lib/LitleOnline'
 hash = {
   'orderId'=>'1234',
+  'id'=>'test',
   'amount'=>'106',
   'orderSource'=>'ecommerce',
   'paypage'=>{
@@ -22,6 +23,7 @@ puts "Litle Token: " + auth_response.authorizationResponse.tokenResponse.litleTo
  end
 #Now, we capture the authorization
 hash = {
+  'id'=>auth_response.authorizationResponse.id,
   'litleTxnId'=>auth_response.authorizationResponse.litleTxnId #Use the litleTxnId from the auth we want to capture
 }
 capture_response = LitleOnline::LitleOnlineRequest.new.capture(hash)
@@ -29,11 +31,12 @@ puts "Response: " + capture_response.captureResponse.response
 puts "Message: " + capture_response.captureResponse.message
 puts "Litle Transaction ID: " + capture_response.captureResponse.litleTxnId
 
-  if (!capture_response.captureResponse.message.eql?'Approved')
+  if (!capture_response.captureResponse.message.eql?'Transaction Received')
    raise ArgumentError, "FullPaypageLifeCycle's capture has not been Approved", caller
  end
 #Now, we issue a refund against the capture
 hash = {
+  'id'=>capture_response.captureResponse.id,
   'litleTxnId'=>capture_response.captureResponse.litleTxnId #Use the litleTxnId from the capture we want to refund against
 }
 credit_response = LitleOnline::LitleOnlineRequest.new.credit(hash)
@@ -43,6 +46,7 @@ puts "Litle Transaction ID: " + credit_response.creditResponse.litleTxnId
  
 #Now, we issue an auth reversal against the refund
 hash = {
+  'id'=>credit_response.creditResponse.id,
   'litleTxnId'=>credit_response.creditResponse.litleTxnId #Use the litleTxnId from the capture we want to refund against
 }
 reversal_response = LitleOnline::LitleOnlineRequest.new.auth_reversal(hash)
@@ -50,12 +54,13 @@ puts "Response: " + reversal_response.authReversalResponse.response
 puts "Message: " + reversal_response.authReversalResponse.message
 puts "Litle Transaction ID: " + reversal_response.authReversalResponse.litleTxnId
 
- if (!reversal_response.authReversalResponse.message.eql?'Approved')
+ if (!reversal_response.authReversalResponse.message.eql?'Transaction Received')
    raise ArgumentError, "FullPaypageLifeCycle's reversal has not been Approved", caller
  end
 #Let's assume next month we want to create a sale for the same card as the original authorization.  The paypageRegistrationId is expired, but we have the token and can use it
 hash = {
   'orderId'=>'4321',
+  'id'=>'test',
   'amount'=>'106',
   'orderSource'=>'ecommerce',
   'token'=>{

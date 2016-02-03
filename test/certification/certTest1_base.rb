@@ -5,7 +5,8 @@ require 'test/unit'
 module LitleOnline
   class Litle_certTest < Test::Unit::TestCase
     @@merchant_hash = {'reportGroup'=>'Planets',
-      'merchantId'=>'101'
+      'merchantId'=>'101',
+      'id'=>'test'
     }
   
     def test_1_auth
@@ -38,22 +39,22 @@ module LitleOnline
       capture_hash =  {'litleTxnId' => auth_response.authorizationResponse.litleTxnId}
       hash1a = capture_hash.merge(@@merchant_hash)
       capture_response = LitleOnlineRequest.new.capture(hash1a)
-      assert_equal('000', capture_response.captureResponse.response)
-      assert_equal('Approved', capture_response.captureResponse.message)
+      assert_equal('001', capture_response.captureResponse.response)
+      assert_equal('Transaction Received', capture_response.captureResponse.message)
   
       #test 1B
       credit_hash =  {'litleTxnId' => capture_response.captureResponse.litleTxnId}
       hash1b = credit_hash.merge(@@merchant_hash)
       credit_response = LitleOnlineRequest.new.credit(hash1b)
-      assert_equal('000', credit_response.creditResponse.response)
-      assert_equal('Approved', credit_response.creditResponse.message)
+      assert_equal('001', credit_response.creditResponse.response)
+      assert_equal('Transaction Received', credit_response.creditResponse.message)
   
       #test1C
       void_hash =  {'litleTxnId' => credit_response.creditResponse.litleTxnId}
       hash1c = void_hash.merge(@@merchant_hash)
       void_response = LitleOnlineRequest.new.void(hash1c)
-      assert_equal('000', void_response.voidResponse.response)
-      assert_equal('Approved', void_response.voidResponse.message)
+      assert_equal('001', void_response.voidResponse.response)
+      assert_equal('Transaction Received', void_response.voidResponse.message)
     end
   
     def test_1_AVS
@@ -113,15 +114,15 @@ module LitleOnline
       credit_hash =  {'litleTxnId' => sale_response.saleResponse.litleTxnId}
       hash1b = credit_hash.merge(@@merchant_hash)
       credit_response = LitleOnlineRequest.new.credit(hash1b)
-      assert_equal('000', credit_response.creditResponse.response)
-      assert_equal('Approved', credit_response.creditResponse.message)
+      assert_equal('001', credit_response.creditResponse.response)
+      assert_equal('Transaction Received', credit_response.creditResponse.message)
   
       #test1C
       void_hash =  {'litleTxnId' => credit_response.creditResponse.litleTxnId}
       hash1c = void_hash.merge(@@merchant_hash)
       void_response = LitleOnlineRequest.new.void(hash1c)
-      assert_equal('000', void_response.voidResponse.response)
-      assert_equal('Approved', void_response.voidResponse.message)
+      assert_equal('001', void_response.voidResponse.response)
+      assert_equal('Transaction Received', void_response.voidResponse.message)
     end
   
     def test_2_auth
@@ -157,22 +158,22 @@ module LitleOnline
       capture_hash =  {'litleTxnId' => auth_response.authorizationResponse.litleTxnId}
       hash2a = capture_hash.merge(@@merchant_hash)
       capture_response = LitleOnlineRequest.new.capture(hash2a)
-      assert_equal('000', capture_response.captureResponse.response)
-      assert_equal('Approved', capture_response.captureResponse.message)
+      assert_equal('001', capture_response.captureResponse.response)
+      assert_equal('Transaction Received', capture_response.captureResponse.message)
   
       #test 2B
       credit_hash =  {'litleTxnId' => capture_response.captureResponse.litleTxnId}
       hash2b = credit_hash.merge(@@merchant_hash)
       credit_response = LitleOnlineRequest.new.credit(hash2b)
-      assert_equal('000', credit_response.creditResponse.response)
-      assert_equal('Approved', credit_response.creditResponse.message)
+      assert_equal('001', credit_response.creditResponse.response)
+      assert_equal('Transaction Received', credit_response.creditResponse.message)
   
       #test 2C
       void_hash =  {'litleTxnId' => credit_response.creditResponse.litleTxnId}
       hash2c = void_hash.merge(@@merchant_hash)
       void_response = LitleOnlineRequest.new.void(hash2c)
-      assert_equal('000', void_response.voidResponse.response)
-      assert_equal('Approved', void_response.voidResponse.message)
+      assert_equal('001', void_response.voidResponse.response)
+      assert_equal('Transaction Received', void_response.voidResponse.message)
     end
   
     def test_2_avs
@@ -238,15 +239,15 @@ module LitleOnline
       credit_hash =  {'litleTxnId' => sale_response.saleResponse.litleTxnId}
       hash2b = credit_hash.merge(@@merchant_hash)
       credit_response = LitleOnlineRequest.new.credit(hash2b)
-      assert_equal('000', credit_response.creditResponse.response)
-      assert_equal('Approved', credit_response.creditResponse.message)
+      assert_equal('001', credit_response.creditResponse.response)
+      assert_equal('Transaction Received', credit_response.creditResponse.message)
   
       #test 2C
       void_hash =  {'litleTxnId' => credit_response.creditResponse.litleTxnId}
       hash2c = void_hash.merge(@@merchant_hash)
       void_response = LitleOnlineRequest.new.void(hash2c)
-      assert_equal('000', void_response.voidResponse.response)
-      assert_equal('Approved', void_response.voidResponse.message)
+      assert_equal('001', void_response.voidResponse.response)
+      assert_equal('Transaction Received', void_response.voidResponse.message)
     end
   
     def test_3_auth
@@ -279,22 +280,22 @@ module LitleOnline
       capture_hash =  {'litleTxnId' => auth_response.authorizationResponse.litleTxnId}
       hash2a = capture_hash.merge(@@merchant_hash)
       capture_response = LitleOnlineRequest.new.capture(hash2a)
-      assert_equal('000', capture_response.captureResponse.response)
-      assert_equal('Approved', capture_response.captureResponse.message)
+      assert_equal('001', capture_response.captureResponse.response)
+      assert_equal('Transaction Received', capture_response.captureResponse.message)
   
       #test 3B
       credit_hash =  {'litleTxnId' => capture_response.captureResponse.litleTxnId}
       hash2b = credit_hash.merge(@@merchant_hash)
       credit_response = LitleOnlineRequest.new.credit(hash2b)
-      assert_equal('000', credit_response.creditResponse.response)
-      assert_equal('Approved', credit_response.creditResponse.message)
+      assert_equal('001', credit_response.creditResponse.response)
+      assert_equal('Transaction Received', credit_response.creditResponse.message)
   
       #test 3C
       void_hash =  {'litleTxnId' => credit_response.creditResponse.litleTxnId}
       hash2c = void_hash.merge(@@merchant_hash)
       void_response = LitleOnlineRequest.new.void(hash2c)
-      assert_equal('000', void_response.voidResponse.response)
-      assert_equal('Approved', void_response.voidResponse.message)
+      assert_equal('001', void_response.voidResponse.response)
+      assert_equal('Transaction Received', void_response.voidResponse.message)
     end
   
     def test_3_avs
@@ -354,15 +355,15 @@ module LitleOnline
       credit_hash =  {'litleTxnId' => sale_response.saleResponse.litleTxnId}
       hash2b = credit_hash.merge(@@merchant_hash)
       credit_response = LitleOnlineRequest.new.credit(hash2b)
-      assert_equal('000', credit_response.creditResponse.response)
-      assert_equal('Approved', credit_response.creditResponse.message)
+      assert_equal('001', credit_response.creditResponse.response)
+      assert_equal('Transaction Received', credit_response.creditResponse.message)
   
       #test 3C
       void_hash =  {'litleTxnId' => credit_response.creditResponse.litleTxnId}
       hash2c = void_hash.merge(@@merchant_hash)
       void_response = LitleOnlineRequest.new.void(hash2c)
-      assert_equal('000', void_response.voidResponse.response)
-      assert_equal('Approved', void_response.voidResponse.message)
+      assert_equal('001', void_response.voidResponse.response)
+      assert_equal('Transaction Received', void_response.voidResponse.message)
     end
   
     def test_4_auth
@@ -394,21 +395,21 @@ module LitleOnline
       capture_hash =  {'litleTxnId' => auth_response.authorizationResponse.litleTxnId}
       hash2a = capture_hash.merge(@@merchant_hash)
       capture_response = LitleOnlineRequest.new.capture(hash2a)
-      assert_equal('Approved', capture_response.captureResponse.message)
+      assert_equal('Transaction Received', capture_response.captureResponse.message)
   
       #test 4B
       credit_hash =  {'litleTxnId' => capture_response.captureResponse.litleTxnId}
       hash2b = credit_hash.merge(@@merchant_hash)
       credit_response = LitleOnlineRequest.new.credit(hash2b)
-      assert_equal('000', credit_response.creditResponse.response)
-      assert_equal('Approved', credit_response.creditResponse.message)
+      assert_equal('001', credit_response.creditResponse.response)
+      assert_equal('Transaction Received', credit_response.creditResponse.message)
   
       #test 4C
       void_hash =  {'litleTxnId' => credit_response.creditResponse.litleTxnId}
       hash2c = void_hash.merge(@@merchant_hash)
       void_response = LitleOnlineRequest.new.void(hash2c)
-      assert_equal('000', void_response.voidResponse.response)
-      assert_equal('Approved', void_response.voidResponse.message)
+      assert_equal('001', void_response.voidResponse.response)
+      assert_equal('Transaction Received', void_response.voidResponse.message)
     end
   
     def test_4_avs
@@ -466,15 +467,15 @@ module LitleOnline
       credit_hash =  {'litleTxnId' => sale_response.saleResponse.litleTxnId}
       hash2b = credit_hash.merge(@@merchant_hash)
       credit_response = LitleOnlineRequest.new.credit(hash2b)
-      assert_equal('000', credit_response.creditResponse.response)
-      assert_equal('Approved', credit_response.creditResponse.message)
+      assert_equal('001', credit_response.creditResponse.response)
+      assert_equal('Transaction Received', credit_response.creditResponse.message)
   
       #test 4C
       void_hash =  {'litleTxnId' => credit_response.creditResponse.litleTxnId}
       hash2c = void_hash.merge(@@merchant_hash)
       void_response = LitleOnlineRequest.new.void(hash2c)
-      assert_equal('000', void_response.voidResponse.response)
-      assert_equal('Approved', void_response.voidResponse.message)
+      assert_equal('001', void_response.voidResponse.response)
+      assert_equal('Transaction Received', void_response.voidResponse.message)
     end
   
     def test_5_auth
@@ -501,22 +502,22 @@ module LitleOnline
       capture_hash =  {'litleTxnId' => auth_response.authorizationResponse.litleTxnId}
       hash2a = capture_hash.merge(@@merchant_hash)
       capture_response = LitleOnlineRequest.new.capture(hash2a)
-      assert_equal('000', capture_response.captureResponse.response)
-      assert_equal('Approved', capture_response.captureResponse.message)
+      assert_equal('001', capture_response.captureResponse.response)
+      assert_equal('Transaction Received', capture_response.captureResponse.message)
   
       #test 5B
       credit_hash =  {'litleTxnId' => capture_response.captureResponse.litleTxnId}
       hash2b = credit_hash.merge(@@merchant_hash)
       credit_response = LitleOnlineRequest.new.credit(hash2b)
-      assert_equal('000', credit_response.creditResponse.response)
-      assert_equal('Approved', credit_response.creditResponse.message)
+      assert_equal('001', credit_response.creditResponse.response)
+      assert_equal('Transaction Received', credit_response.creditResponse.message)
   
       #test 5C
       void_hash =  {'litleTxnId' => credit_response.creditResponse.litleTxnId}
       hash2c = void_hash.merge(@@merchant_hash)
       void_response = LitleOnlineRequest.new.void(hash2c)
-      assert_equal('000', void_response.voidResponse.response)
-      assert_equal('Approved', void_response.voidResponse.message)
+      assert_equal('001', void_response.voidResponse.response)
+      assert_equal('Transaction Received', void_response.voidResponse.message)
     end
   
     def test_5_avs
@@ -564,15 +565,15 @@ module LitleOnline
       credit_hash =  {'litleTxnId' => sale_response.saleResponse.litleTxnId}
       hash2b = credit_hash.merge(@@merchant_hash)
       credit_response = LitleOnlineRequest.new.credit(hash2b)
-      assert_equal('000', credit_response.creditResponse.response)
-      assert_equal('Approved', credit_response.creditResponse.message)
+      assert_equal('001', credit_response.creditResponse.response)
+      assert_equal('Transaction Received', credit_response.creditResponse.message)
   
       #test 5C
       void_hash =  {'litleTxnId' => credit_response.creditResponse.litleTxnId}
       hash2c = void_hash.merge(@@merchant_hash)
       void_response = LitleOnlineRequest.new.void(hash2c)
-      assert_equal('000', void_response.voidResponse.response)
-      assert_equal('Approved', void_response.voidResponse.message)
+      assert_equal('001', void_response.voidResponse.response)
+      assert_equal('Transaction Received', void_response.voidResponse.message)
     end
   
     def test_6_auth
@@ -630,8 +631,8 @@ module LitleOnline
       void_hash =  {'litleTxnId' => sale_response.saleResponse.litleTxnId }
       hash6A = void_hash.merge(@@merchant_hash)
       void_response = LitleOnlineRequest.new.void(hash6A)
-      assert_equal('360', void_response.voidResponse.response)
-      assert_equal('No transaction found with specified litleTxnId', void_response.voidResponse.message)
+      assert_equal('001', void_response.voidResponse.response)
+      assert_equal('Transaction Received', void_response.voidResponse.message)
     end
   
     def test_7_auth

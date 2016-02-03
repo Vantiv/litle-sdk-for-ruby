@@ -30,6 +30,8 @@ require 'mocha/setup'
 module LitleOnline
   
   class TestLitleTransaction < Test::Unit::TestCase
+    
+
     def test_authorization
       ltlTxn = LitleTransaction.new
       authHash = {
@@ -392,6 +394,33 @@ module LitleOnline
       assert_equal "4100000000000001", result.card.number
       assert_equal "VI", result.card.mop
       assert_equal "1210", result.card.expDate
-    end    
+    end   
+
+    
+    def test_queryTransaction
+          ltlTxn = LitleTransaction.new
+      queryTransactionHash = {
+            'merchantId' => '101',
+            'version'=>'8.8',
+            'reportGroup'=>'Planets',
+            'id'=>'12345',
+            'customerId'=>'0987',
+            'origId'=>'834262',
+            'origActionType'=>'A',
+            'origLitleTxnId'=>'123456',
+            'origOrderId' => '65347567',
+            'origAccountNumber'=>'4000000000000001'
+          }
+          
+          result = ltlTxn.query_Transaction(queryTransactionHash)
+          assert_equal 'Planets', result.reportGroup
+          assert_equal '12345', result.transactionId
+          assert_equal '0987', result.customerId
+          assert_equal '834262', result.origId
+          assert_equal 'A', result.origActionType
+          assert_equal '123456', result.origLitleTxnId
+          assert_equal '65347567', result.origOrderId
+          assert_equal '4000000000000001', result.origAccountNumber
+        end 
   end
 end
