@@ -25,7 +25,6 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 require File.expand_path("../../../lib/LitleOnline",__FILE__) 
 require 'test/unit'
-require 'mocha/setup'
 module LitleOnline
   class TestqueryTransaction < Test::Unit::TestCase
     def test_queryTransaction
