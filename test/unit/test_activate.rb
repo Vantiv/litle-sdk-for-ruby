@@ -48,7 +48,7 @@ module LitleOnline
       LitleOnlineRequest.new.activate(hash)
     end
 
-    def test_simple_card
+    def test_simple_card1
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',

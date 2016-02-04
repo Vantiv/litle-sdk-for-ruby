@@ -163,7 +163,7 @@ module LitleOnline
       LitleOnlineRequest.new.capture_given_auth(hash)
     end
 
-    def test_fraudResult
+    def test_fraudResult1
       hash = {
         'amount' => '2',
         'orderSource' => 'ecommerce',

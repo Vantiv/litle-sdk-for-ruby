@@ -55,7 +55,7 @@ module LitleOnline
       assert_match /The content of element 'echeckSale' is not complete/, response.message
     end
 
-    def test_echeck_sale_with_echeck
+    def test_echeck_sale_with_echeck1
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',

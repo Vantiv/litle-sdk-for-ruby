@@ -312,7 +312,7 @@ module LitleOnline
     end
     
     #SDK XML 10 
-    def test_simple_auth_with_wallet
+    def test_simple_auth_with_wallet1
       hash = {
         'merchantId' => '101',
         'id' => 'test',

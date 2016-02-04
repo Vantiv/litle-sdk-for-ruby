@@ -173,7 +173,7 @@ module LitleOnline
       assert_equal('000', response.saleResponse.response)
     end
 
-    def test_simple_sale_with_card
+    def test_simple_sale_with_card1
       hash = {
         'merchantId'=>'101',
         'id' => 'test',
@@ -301,7 +301,7 @@ module LitleOnline
     end
         
     #SDK Ruby XML 10
-    def test_simple_sale_with_wallet
+    def test_simple_sale_with_wallet1
       hash = 
       {
         'merchantId' => '101',

@@ -103,7 +103,7 @@ class TestQueryTransaction < Test::Unit::TestCase
     assert(response.message =~ /Error validating xml data against the schema/)
  end
     
-   def test_queryTransaction_no_origId
+   def test_queryTransaction_no_origId1
      hash = 
      {
        'merchantId' => '101',
