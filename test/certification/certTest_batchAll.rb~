@@ -497,9 +497,9 @@ module LitleOnline
       echeckPreNoteSaleHashSuccess = {
         'merchantId' => '0180',
         'version'=>'9.3',
+        'id' => '006',
         'reportGroup'=>'Planets',
         'orderId'=>'000',
-        'id' => '006',
         'orderSource'=>'ecommerce',
         'billToAddress'=> billToAddress,
         'echeck' => echeckSuccess
@@ -508,9 +508,9 @@ module LitleOnline
       echeckPreNoteSaleHashErrRout = {
         'merchantId' => '0180',
         'version'=>'9.3',
+        'id' => '006',
         'reportGroup'=>'Planets',
         'orderId'=>'900',
-        'id' => '006',
         'orderSource'=>'ecommerce',
         'billToAddress'=> billToAddress,
         'echeck' => echeckRoutErr
@@ -519,9 +519,9 @@ module LitleOnline
       echeckPreNoteSaleHashErrAcc = {
         'merchantId' => '0180',
         'version'=>'9.3',
+        'id' => '006',
         'reportGroup'=>'Planets',
         'orderId'=>'301',
-        'id' => '006',
         'orderSource'=>'ecommerce',
         'billToAddress'=> billToAddress,
         'echeck' => echeckAccErr
@@ -530,9 +530,9 @@ module LitleOnline
       echeckPreNoteCreditHashSuccess = {
         'merchantId' => '0180',
         'version'=>'9.3',
+        'id' => '006',
         'reportGroup'=>'Planets',
         'orderId'=>'000',
-        'id' => '006',
         'orderSource'=>'ecommerce',
         'billToAddress'=>  billToAddress,
         'echeck' => echeckSuccess
@@ -541,9 +541,9 @@ module LitleOnline
       echeckPreNoteCreditHashErrRout = {
         'merchantId' => '0180',
         'version'=>'9.3',
+        'id' => '006',
         'reportGroup'=>'Planets',
         'orderId'=>'900',
-        'id' => '006',
         'orderSource'=>'ecommerce',
         'billToAddress'=>  billToAddress,
         'echeck' => echeckRoutErr
@@ -552,9 +552,9 @@ module LitleOnline
       echeckPreNoteCreditHashErrAcc = {
         'merchantId' => '101',
         'version'=>'9.3',
+        'id' => '006',
         'reportGroup'=>'Planets',
         'orderId'=>'301',
-        'id' => '006',
         'orderSource'=>'ecommerce',
         'billToAddress'=>  billToAddress,
         'echeck' => echeckAccErr
@@ -592,7 +592,7 @@ module LitleOnline
       request.process_responses({:transaction_listener => LitleOnline::DefaultLitleListener.new do |transaction|
         assert_not_nil transaction["litleTxnId"] =~ /\d+/
         assert_not_nil transaction["message"]
-        assert_not_nil transaction["response"]
+        assert_equal(transaction["orderId"],transaction["response"])
         count+=1
         end})
       assert_equal 6,count
