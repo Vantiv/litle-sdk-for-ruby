@@ -34,7 +34,7 @@ spec = Gem::Specification.new do |s|
   s.description = File.read(File.join(File.dirname(__FILE__), 'DESCRIPTION'))
   s.requirements =
   [ 'Contact sdksupport@litle.com for more information' ]
-  s.version = "9.3.2"
+  s.version = "10.1"
   s.author = "Litle & Co"
   s.email = "sdksupport@litle.com"
   s.homepage = "http://www.litle.com/developers"
