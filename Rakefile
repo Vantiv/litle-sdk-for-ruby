@@ -35,7 +35,11 @@ spec = Gem::Specification.new do |s|
   s.requirements =
   [ 'Contact sdksupport@litle.com for more information' ]
   s.version = "10.1"
+<<<<<<< HEAD
   s.author = "Vantiv - eCommerce"
+=======
+  s.author = "Litle & Co"
+>>>>>>> origin/10.0
   s.email = "sdksupport@litle.com"
   s.homepage = "https://www.vantiv.com/developers/ecommerce-payments#sdk-ruby"
   s.platform = Gem::Platform::RUBY
