@@ -1330,19 +1330,19 @@ module LitleOnline
       end
     end
   end
-  #
-  #  class FraudCheckRequest
-  #    include XML::Mapping
-  #    root_element_name "fraudCheck"
-  #    text_node :reportGroup, "@reportGroup", :default_value=>nil
-  #    text_node :transactionId, "@id", :default_value=>nil
-  #    text_node :customerId, "@customerId", :default_value=>nil
-  #    object_node :advancedFraudChecks, "advancedFraudChecks", :default_value=>nil
-  #    object_node :billToAddress, "billToAddress", :class=>Contact, :default_value=>nil
-  #    object_node :shipToAddress, "shipToAddress", :class=>Contact, :default_value=>nil
-  #    text_node :amount, "amount", :default_value=>nil
-  #  end
 
+  class FraudCheckRequest
+    include XML::Mapping
+    root_element_name "fraudCheck"
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+    object_node :advancedFraudChecks, "advancedFraudChecks", :default_value=>nil
+    object_node :billToAddress, "billToAddress", :class=>Contact, :default_value=>nil
+    object_node :shipToAddress, "shipToAddress", :class=>Contact, :default_value=>nil
+    text_node :amount, "amount", :default_value=>nil
+  end
+  
   class Authorization
     include XML::Mapping
     root_element_name "authorization"
@@ -1935,7 +1935,8 @@ module LitleOnline
     :elsif, 'deactivateReversal', :then, (object_node :deactivateReversal,"deactivateReversal", :class=>DeactivateReversal),
     :elsif, 'loadReversal', :then, (object_node :loadReversal,"loadReversal", :class=>LoadReversal),
     :elsif, 'unloadReversal', :then, (object_node :unloadReversal,"unloadReversal", :class=>UnloadReversal),
-    :elsif, 'advancedFraudResults', :then, (object_node :advancedFraudResults,"advancedFraudResults", :class=>AdvancedFraudResults)
+    :elsif, 'advancedFraudResults', :then, (object_node :advancedFraudResults,"advancedFraudResults", :class=>AdvancedFraudResults),
+    :elsif, 'fraudCheck', :then, (object_node :fraudCheck, "fraudCheck", :class=>FraudCheck)
     def post_save(xml, options={:Mapping=>:_default})
       xml.each_element() {|el|
         if(el.name == 'captureTxn')

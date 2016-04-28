@@ -62,4 +62,5 @@ require_relative 'test_refundReversal'
 require_relative 'test_loadReversal'
 require_relative 'test_unloadReversal'
 require_relative 'test_deactivateReversal'
+require_relative 'test_fraudCheck'
 
