@@ -61,10 +61,7 @@ require_relative 'test_refundReversal'
 require_relative 'test_loadReversal'
 require_relative 'test_unloadReversal'
 require_relative 'test_deactivateReversal'
-<<<<<<< HEAD
 require_relative 'test_wallet'
 require_relative 'test_queryTransaction'
-=======
 require_relative 'test_fraudCheck'
->>>>>>> ebfe3bd... add FraudCheck transaction type
 
