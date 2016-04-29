@@ -87,7 +87,7 @@ module LitleOnline
         'orderId'=>'12344',
         'amount'=>'106',
         'orderSource'=>'ecommerce',
-        #        'fraudCheck'=>{'authenticationTransactionId'=>'123'}, #for test
+                'fraudCheck'=>{'authenticationTransactionId'=>'123'}, #for test
         'card'=>{
         'type'=>'VI',
         'number' =>'4100000000000002',

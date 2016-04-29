@@ -229,13 +229,13 @@ module LitleOnline
       end
     end
   end
-  #
-  #  class FraudCheckListener < DefaultLitleListener
-  #    def apply(duck)
-  #      if(duck["type"] == "fraudCheckResponse") then
-  #        @action.call(duck)
-  #      end
-  #    end
-  #  end
+
+  class FraudCheckListener < DefaultLitleListener
+    def apply(duck)
+      if(duck["type"] == "advancedFraudResult") then
+        @action.call(duck)
+      end
+    end
+  end
 
 end

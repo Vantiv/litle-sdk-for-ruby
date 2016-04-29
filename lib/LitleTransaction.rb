@@ -537,18 +537,16 @@ module LitleOnline
 
       return transaction
     end
-    #
-    #    def fraud_check_request(options)
-    #      transaction = FraudCheckRequest.new
-    #      transaction.advancedFraudChecks = AdvancedFraudChecks.from_hash(options,'advancedFraudChecks')
-    #      transaction.billToAddress = Contact.from_hash(options,'billToAddress')
-    #      transaction.shipToAddress = Contact.from_hash(options,'shipToAddress')
-    #      transaction.amount = options['amount']
-    #
-    #      add_account_info(transaction, options)
-    #
-    #      return transaction
-    #    end
+
+    def fraud_check_request(options)
+      transaction = FraudCheckRequest.new
+      transaction.advancedFraudChecks = AdvancedFraudChecks.from_hash(options,'advancedFraudChecks')
+      transaction.transactionId = options["id"]
+
+      add_account_info(transaction, options)
+
+      return transaction
+    end
 
     private
 

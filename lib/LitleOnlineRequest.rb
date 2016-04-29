@@ -229,6 +229,7 @@ module LitleOnline
       commit(transaction, :echeckVoid, options)
     end
     
+<<<<<<< HEAD
     #SDK XML 10
     def query_Transaction(options)      
       transaction = @litle_transaction.query_Transaction(options)
@@ -241,6 +242,13 @@ module LitleOnline
 #            
 #      commit(transaction, :fraudCheck, options)
 #    end
+=======
+    def fraud_check_request(options)
+      transaction = @litle_transaction.fraud_check_request(options)
+            
+      commit(transaction, :fraudCheck, options)
+    end
+>>>>>>> ebfe3bd... add FraudCheck transaction type
 
     private
 
