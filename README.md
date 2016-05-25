@@ -18,7 +18,7 @@ See LICENSE file for details on using this software.
 
 Source Code available from : https://github.com/LitleCo/litle-sdk-for-ruby
 
-Please contact [Vantiv eCommerce](http://www.vantiv.com) to receive valid merchant credentials in order to run tests successfully or if you require assistance in any way.  We are reachable at sdksupport@litle.com
+Please contact [Vantiv eCommerce](http://www.vantiv.com) to receive valid merchant credentials in order to run tests successfully or if you require assistance in any way.  We are reachable at sdksupport@Vantiv.com
 
 Setup
 -----
@@ -61,7 +61,7 @@ puts "Message: "+ response.message
 puts "Litle Transaction ID: "+ response.saleResponse.litleTxnId
 ```
 
-3) Next run this file using ruby. You should see the following result provided you have connectivity to the Litle certification environment.  You will see an HTTP error if you don't have access to the Litle URL
+3) Next run this file using ruby. You should see the following result provided you have connectivity to the Vantiv eCommerce certification environment.  You will see an HTTP error if you don't have access to the Vantiv eCommerce URL
 
     Message: Valid Format
     Litle Transaction ID: <your-numeric-litle-txn-id>
