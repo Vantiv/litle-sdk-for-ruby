@@ -12,7 +12,7 @@ The Vantiv eCommerce Ruby SDK is a Ruby implementation of the [Vantiv eCommerce]
 
 Each Ruby SDK release supports all of the functionality present in the associated Vantiv eCommerce XML version (e.g., SDK v9.3.2 supports Vantiv eCommerce XML v9.3). Please see the online copy of our XSD for Vantiv eCommerce XML to get more details on what the Vantiv eCommerce payments engine supports.
 
-This SDK was implemented to support the Python programming language and was created by Vantiv eCommerce. Its intended use is for online transaction processing utilizing your account on the Vantiv eCommerce payments engine.
+This SDK was implemented to support the Ruby programming language and was created by Vantiv eCommerce. Its intended use is for online transaction processing utilizing your account on the Vantiv eCommerce payments engine.
 
 See LICENSE file for details on using this software.
 
