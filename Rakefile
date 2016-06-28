@@ -33,7 +33,7 @@ spec = Gem::Specification.new do |s|
   s.summary = "Ruby SDK produced by Vantiv eCommerce for transaction processing using Vantiv eCommerce XML format v8.29"
   s.description = File.read(File.join(File.dirname(__FILE__), 'DESCRIPTION'))
   s.requirements =
-  [ 'Contact sdksupport@litle.com for more information' ]
+  [ 'Contact sdksupport@vantiv.com for more information' ]
   s.version = "8.29.2"
   s.author = "Vantiv eCommerce"
   s.email = "sdksupport@vantiv.com"
