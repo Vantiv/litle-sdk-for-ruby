@@ -30,14 +30,14 @@ require 'rake/clean'
 spec = Gem::Specification.new do |s|
   FileUtils.rm_rf('pkg')
   s.name = "LitleOnline"
-  s.summary = "Ruby SDK produced by Litle & Co. for transaction processing using Litle XML format v8.29"
+  s.summary = "Ruby SDK produced by Vantiv eCommerce for transaction processing using Vantiv eCommerce XML format v8.29"
   s.description = File.read(File.join(File.dirname(__FILE__), 'DESCRIPTION'))
   s.requirements =
-  [ 'Contact sdksupport@litle.com for more information' ]
+  [ 'Contact sdksupport@vantiv.com for more information' ]
   s.version = "9.3.3"
-  s.author = "Litle & Co"
-  s.email = "sdksupport@litle.com"
-  s.homepage = "http://www.litle.com/developers"
+  s.author = "Vantiv eCommerce"
+  s.email = "sdksupport@vantiv.com"
+  s.homepage = "http://www.vantiv.com/developers"
   s.platform = Gem::Platform::RUBY
   s.required_ruby_version = '>=1.8.7'
   s.files = Dir['**/**']
