@@ -43,10 +43,10 @@ module LitleOnline
       response = LitleOnlineRequest.new.fraud_check_request(hash)
       assert_equal('001', response.fraudCheckResponse.response)
       assert_equal('Transaction Received', response.fraudCheckResponse.message)
-      assert_equal('pass', response.fraudCheckResponse.advancedFraudResult.deviceReviewStatus)
-      assert_equal('55', response.fraudCheckResponse.advancedFraudResult.deviceReputationScore)
-      assert_equal('triggered_rule_1', response.fraudCheckResponse.advancedFraudResult.triggeredRule[0])
-      assert_equal(5, response.fraudCheckResponse.advancedFraudResult.triggeredRule.size())
+      assert_equal('pass', response.fraudCheckResponse.advancedFraudResults.deviceReviewStatus)
+      assert_equal('55', response.fraudCheckResponse.advancedFraudResults.deviceReputationScore)
+      assert_equal('triggered_rule_1', response.fraudCheckResponse.advancedFraudResults.triggeredRule[0])
+      assert_equal(5, response.fraudCheckResponse.advancedFraudResults.triggeredRule.size())
     end
     
     def test_fraud_check_session_id
@@ -62,14 +62,14 @@ module LitleOnline
       response = LitleOnlineRequest.new.fraud_check_request(hash)
       assert_equal('001', response.fraudCheckResponse.response)
       assert_equal('Transaction Received', response.fraudCheckResponse.message)
-      assert_equal('pass', response.fraudCheckResponse.advancedFraudResult.deviceReviewStatus)
-      assert_equal('42', response.fraudCheckResponse.advancedFraudResult.deviceReputationScore)
+      assert_equal('pass', response.fraudCheckResponse.advancedFraudResults.deviceReviewStatus)
+      assert_equal('42', response.fraudCheckResponse.advancedFraudResults.deviceReputationScore)
       # kind of a hack to get around the variable # of triggered rule elements. ie. 1 element is added as a string not
       # an Array. Fix is to write an unmarshaller or custom node class in XMLFields.rb 
-      if(response.fraudCheckResponse.advancedFraudResult.triggeredRule.is_a?(Array))
-        assert_equal('triggered_rule_default', response.fraudCheckResponse.advancedFraudResult.triggeredRule[0])
+      if(response.fraudCheckResponse.advancedFraudResults.triggeredRule.is_a?(Array))
+        assert_equal('triggered_rule_default', response.fraudCheckResponse.advancedFraudResults.triggeredRule[0])
       elsif
-        assert_equal('triggered_rule_default', response.fraudCheckResponse.advancedFraudResult.triggeredRule)
+        assert_equal('triggered_rule_default', response.fraudCheckResponse.advancedFraudResults.triggeredRule)
       end
     end
     

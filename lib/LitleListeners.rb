@@ -232,7 +232,7 @@ module LitleOnline
 
   class FraudCheckListener < DefaultLitleListener
     def apply(duck)
-      if(duck["type"] == "advancedFraudResult") then
+      if(duck["type"] == "advancedFraudResults") then
         @action.call(duck)
       end
     end
