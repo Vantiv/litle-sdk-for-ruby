@@ -67,7 +67,7 @@ module LitleOnline
         'transactionId'=>'1234'
         },
         'signature' =>'1',
-        'version'=>'1'
+        'version'=>'12345'
         }
       }
       response= LitleOnlineRequest.new.register_token_request(hash)
