@@ -417,5 +417,23 @@ module LitleOnline
       LitleOnlineRequest.new.authorization(hash)
     end
 
+    def test_processingType_originalNetworkTransactionId_originalTransactionAmount
+      hash = {
+        'orderId' => '12344',
+        'amount' => '2',
+        'orderSource' => 'ecommerce',
+        'card' => {
+        'number' => '4141000000000000',
+        'expDate' => '1210',
+        'type' => 'GC'        
+        },
+        'processingType' => 'initialInstallment',
+        'originalNetworkTransactionId' => '9876543210',
+        'originalTransactionAmount' => '536981'
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<processingType>initialInstallment<\/processingType><originalNetworkTransactionId>9876543210<\/originalNetworkTransactionId><originalTransactionAmount>536981<\/originalTransactionAmount>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.authorization(hash)
+    end
+
   end
 end

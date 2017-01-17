@@ -294,5 +294,28 @@ module LitleOnline
       response= LitleOnlineRequest.new.authorization(hash)
       assert_equal('000', response.authorizationResponse.response)
     end
+    
+    def test_simple_auth_with_processingType_originalNetworkTransactionId_originalTransactionAmount
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12355',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000000',
+        'expDate' =>'1210'
+        },
+        'processingType' => 'initialInstallment',
+        'originalNetworkTransactionId' => '9876543210',
+        'originalTransactionAmount' => '536981'
+      }
+      response= LitleOnlineRequest.new.authorization(hash)
+      assert_equal('000', response.authorizationResponse.response)
+      assert_equal('63225578415568556365452427825', response.authorizationResponse.networkTransactionId)
+    end
+        
   end
 end
