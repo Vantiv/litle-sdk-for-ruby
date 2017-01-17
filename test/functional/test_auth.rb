@@ -80,7 +80,7 @@ module LitleOnline
         'transactionId'=>'1234'
         },
         'signature' =>'1',
-        'version'=>'1'
+        'version'=>'1.0.0'
         }}
       response= LitleOnlineRequest.new.authorization(hash)
       assert_equal('Insufficient Funds', response.authorizationResponse.message)
