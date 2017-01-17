@@ -39,7 +39,10 @@ module LitleOnline
       transaction.debtRepayment	     = options['debtRepayment']
       transaction.advancedFraudChecks = AdvancedFraudChecks.from_hash(options, 'advancedFraudChecks')
       add_transaction_info(transaction, options)
-
+      #9.10
+      transaction.processingType                    = options['processingType']
+      transaction.originalNetworkTransactionId      = options['originalNetworkTransactionId']
+      transaction.originalTransactionAmount         = options['originalTransactionAmount']
       return transaction
     end
 
