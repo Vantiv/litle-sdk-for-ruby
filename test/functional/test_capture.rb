@@ -59,7 +59,7 @@ module LitleOnline
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456000',
         'amount'=>'106',
-        'enhancedData'=>{
+        'enhancedData'=>{000
         'customerReference'=>'Litle',
         'salesTax'=>'50',
         'deliveryType'=>'TBD'},
@@ -74,11 +74,26 @@ module LitleOnline
         'merchantId' => '101',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
-        'amount'=>'106',
+        'amount'=>'106',000
       }
       response= LitleOnlineRequest.new.capture(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-  
+    
+    def test_simple_capture_with_pin
+      hash = {
+        #'merchantId' => '101',
+        #'version'=>'8.8',
+        #'reportGroup'=>'Planets',
+        'payPalNotes'=>'Notes',
+        'litleTxnId'=>'123456000',
+        'amount'=>'106',
+        'pin'=>'1234'
+      }
+      response= LitleOnlineRequest.new.capture(hash)
+      assert_equal('Valid Format', response.message)
+      assert_equal('Approved', response.captureResponse.message)
+    end
+
   end
 end

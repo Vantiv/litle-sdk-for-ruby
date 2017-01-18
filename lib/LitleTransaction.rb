@@ -298,7 +298,10 @@ module LitleOnline
       transaction.processingInstructions  = ProcessingInstructions.from_hash(options)
       transaction.payPalOrderComplete     = options['payPalOrderComplete']
       transaction.payPalNotes             = options['payPalNotes']
-
+      #9.10
+      transaction.customBilling           = CustomBilling.from_hash(options)
+      transaction.pin                     = options['pin']
+      
       add_account_info(transaction, options)
       return transaction
     end

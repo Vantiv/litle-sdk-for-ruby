@@ -1565,6 +1565,9 @@ module LitleOnline
     object_node :processingInstructions, "processingInstructions", :class=>ProcessingInstructions, :default_value=>nil
     text_node :payPalOrderComplete, "payPalOrderComplete", :default_value=>nil
     text_node :payPalNotes, "payPalNotes", :default_value=>nil
+    #9.10
+    object_node :customBilling, "customBilling", :class=>CustomBilling, :default_value=>nil
+    text_node :pin, "pin", :default_value=>nil
   end
 
   class Void
