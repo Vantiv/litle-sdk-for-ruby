@@ -138,7 +138,18 @@ module LitleOnline
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*(loggedInUser="gdake".*merchantSdk="Ruby;8.14.0")|(merchantSdk="Ruby;8.14.0".*loggedInUser="gdake").*/m), is_a(Hash))
       LitleOnlineRequest.new.register_token_request(hash)
     end
+    
+    def test_androidpay
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'androidpay',
+        'accountNumber'=>'1233456789103801'
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<orderId>androidpay<\/orderId>.*<accountNumber>1233456789103801<\/accountNumber>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.register_token_request(hash)
+    end
 
   end
-
 end
