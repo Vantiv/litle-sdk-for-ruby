@@ -311,13 +311,17 @@ module LitleOnline
     def capture_given_auth(options)
       transaction = CaptureGivenAuth.new
       add_order_info(transaction, options)
-      transaction.secondaryAmount    = options['secondaryAmount']
-      transaction.surchargeAmount    = options['surchargeAmount']
-      transaction.authInformation    = AuthInformation.from_hash(options)
-      transaction.shipToAddress      = Contact.from_hash(options,'shipToAddress')
-      transaction.customBilling      = CustomBilling.from_hash(options)
-      transaction.billMeLaterRequest = BillMeLaterRequest.from_hash(options)
-      transaction.debtRepayment	     = options['debtRepayment']
+      transaction.secondaryAmount                   = options['secondaryAmount']
+      transaction.surchargeAmount                   = options['surchargeAmount']
+      transaction.authInformation                   = AuthInformation.from_hash(options)
+      transaction.shipToAddress                     = Contact.from_hash(options,'shipToAddress')
+      transaction.customBilling                     = CustomBilling.from_hash(options)
+      transaction.billMeLaterRequest                = BillMeLaterRequest.from_hash(options)
+      transaction.debtRepayment	                    = options['debtRepayment']
+      #9.10
+      transaction.processingType                    = options['processingType']
+      transaction.originalNetworkTransactionId      = options['originalNetworkTransactionId']
+      transaction.originalTransactionAmount         = options['originalTransactionAmount']
       return transaction
     end
 

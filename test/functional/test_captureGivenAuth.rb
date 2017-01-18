@@ -231,5 +231,54 @@ module LitleOnline
       response= LitleOnlineRequest.new.capture_given_auth(hash)
       assert_equal('Valid Format', response.message)
     end
+    
+    def test_simple_capture_given_auth_with_processingType
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'authInformation' => {
+        'authDate'=>'2002-10-09','authCode'=>'543216',
+        'authAmount'=>'12345'
+        },
+        'processingType'=>'initialRecurring',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        }}
+      response= LitleOnlineRequest.new.capture_given_auth(hash)
+      assert_equal('Valid Format', response.message)
+      #assert_equal('000', response.captureGivenAuthResponse.response)
+    end    
+
+    def test_simple_capture_given_auth_with_originalNetworkTransactionId_originalTransactionAmount
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'authInformation' => {
+        'authDate'=>'2002-10-09','authCode'=>'543216',
+        'authAmount'=>'12345'
+        },
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        },
+        'originalNetworkTransactionId'=>'987654321098765432109876543210',
+        'originalTransactionAmount'=>'10661'
+        }
+      response= LitleOnlineRequest.new.capture_given_auth(hash)
+      assert_equal('Valid Format', response.message)
+      #assert_equal('000', response.captureGivenAuthResponse.response)
+    end 
+    
   end
 end

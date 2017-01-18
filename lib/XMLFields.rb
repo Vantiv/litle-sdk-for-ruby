@@ -1506,6 +1506,10 @@ module LitleOnline
     object_node :amexAggregatorData, "amexAggregatorData", :class=>AmexAggregatorData, :default_value=>nil
     object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
     text_node :debtRepayment,"debtRepayment", :default_value=>nil
+    #9.10
+    text_node :processingType,"processingType", :default_value=>nil
+    text_node :originalNetworkTransactionId,"originalNetworkTransactionId", :default_value=>nil
+    text_node :originalTransactionAmount,"originalTransactionAmount", :default_value=>nil    
   end
 
   class ForceCapture
