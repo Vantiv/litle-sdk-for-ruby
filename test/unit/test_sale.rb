@@ -482,7 +482,7 @@ module LitleOnline
       LitleOnlineRequest.new.sale(hash)
     end
 
-    def test_processingType
+    def test_originalNetworkTransactionId_originalTransactionAmount_pin
       hash = {
         'merchantId' => '101',
         'version'=>'8.8',
@@ -493,14 +493,15 @@ module LitleOnline
         'orderSource'=>'ecommerce',
         'card'=>
         {
-        'type'=>'MC',
-        'number' =>'5400000000000000',
-        'expDate' =>'1210'
+        'type'=>'VI',
+        'number' =>'4100700000000000',
+        'expDate' =>'1210',
+        'pin'=>'1111'
         },
         'originalNetworkTransactionId'=>'98765432109876543210',
         'originalTransactionAmount'=>'7001'
       }
-      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<originalNetworkTransactionId>98765432109876543210<\/originalNetworkTransactionId><originalTransactionAmount>7001<\/originalTransactionAmount>.*/m), is_a(Hash))
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<pin>1111<\/pin>.*<originalNetworkTransactionId>98765432109876543210<\/originalNetworkTransactionId><originalTransactionAmount>7001<\/originalTransactionAmount>.*/m), is_a(Hash))
       LitleOnlineRequest.new.sale(hash)
     end
 

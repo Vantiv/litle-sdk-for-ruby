@@ -59,7 +59,7 @@ module LitleOnline
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456000',
         'amount'=>'106',
-        'enhancedData'=>{000
+        'enhancedData'=>{
         'customerReference'=>'Litle',
         'salesTax'=>'50',
         'deliveryType'=>'TBD'},
@@ -74,7 +74,7 @@ module LitleOnline
         'merchantId' => '101',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
-        'amount'=>'106',000
+        'amount'=>'106',
       }
       response= LitleOnlineRequest.new.capture(hash)
       assert(response.message =~ /Error validating xml data against the schema/)

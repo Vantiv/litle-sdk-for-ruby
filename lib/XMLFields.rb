@@ -628,6 +628,7 @@ module LitleOnline
     text_node :number, "number", :default_value=>nil
     text_node :expDate, "expDate", :default_value=>nil
     text_node :cardValidationNum, "cardValidationNum", :default_value=>nil
+    text_node :pin, "pin", :default_value=>nil
     def self.from_hash(hash, name='card')
       base = hash[name]
       if(base)
@@ -637,11 +638,12 @@ module LitleOnline
         this.number = base['number']
         this.expDate = base['expDate']
         this.cardValidationNum = base['cardValidationNum']
+        this.pin = base['pin']
         SchemaValidation.validate_enum(this.mop, false, ['','MC','VI','AX','DC','DI','PP','JC','BL','EC','GC'], name, 'type')
         SchemaValidation.validate_length(this.track, false, 1, 256, name, 'track')
         SchemaValidation.validate_length(this.number, false, 13, 25, name, 'number')
         SchemaValidation.validate_length(this.expDate, false, 4, 4, name, 'expDate')
-        SchemaValidation.validate_length(this.cardValidationNum, false, 1, 4, name, 'cardValidationNum')
+        SchemaValidation.validate_length(this.pin, false, 4, 12, name, 'pin')
         this
       else
         nil
