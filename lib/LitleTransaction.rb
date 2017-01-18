@@ -278,10 +278,12 @@ module LitleOnline
 
     def force_capture(options)
       transaction = ForceCapture.new
-      transaction.secondaryAmount = options['secondaryAmount']
+      transaction.secondaryAmount    = options['secondaryAmount']
       transaction.surchargeAmount    = options['surchargeAmount']
       transaction.customBilling      = CustomBilling.from_hash(options)
       transaction.debtRepayment	     = options['debtRepayment']
+      #9.10
+      transaction.processingType     = options['processingType']
       add_order_info(transaction, options)
 
       return transaction

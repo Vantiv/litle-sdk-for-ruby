@@ -108,7 +108,7 @@ module LitleOnline
       LitleOnlineRequest.new.force_capture(hash)
     end
     
-def test_secondary_amount
+    def test_secondary_amount
       hash = {
         'amount' => '2',
         'secondaryAmount' => '1',
@@ -137,6 +137,24 @@ def test_secondary_amount
         'reportGroup' => 'Planets'
       }
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<amount>2<\/amount><orderSource>ecommerce<\/orderSource>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.force_capture(hash)
+    end
+    
+    def test_processing_type
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'processingType'=>'accountFunding',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        }}
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<processingType>accountFunding<\/processingType>.*/m), is_a(Hash))
       LitleOnlineRequest.new.force_capture(hash)
     end
     
