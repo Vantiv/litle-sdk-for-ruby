@@ -232,6 +232,9 @@ module LitleOnline
       transaction.enhancedData            = EnhancedData.from_hash(options)
       transaction.processingInstructions  = ProcessingInstructions.from_hash(options)
       transaction.pos                     = Pos.from_hash(options)
+      #9.10
+      transaction.pin                     = options['pin']
+      #9.10 end 
       transaction.billMeLaterRequest      = BillMeLaterRequest.from_hash(options)
       transaction.payPalNotes             = options['payPalNotes']
       transaction.actionReason            = options['actionReason']

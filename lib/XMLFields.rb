@@ -1462,6 +1462,9 @@ module LitleOnline
     object_node :enhancedData, "enhancedData", :class=>EnhancedData, :default_value=>nil
     object_node :processingInstructions, "processingInstructions", :class=>ProcessingInstructions, :default_value=>nil
     object_node :pos, "pos", :class=>Pos, :default_value=>nil
+    #9.10
+    text_node :pin, "pin", :default_value=>nil    
+    #9.10 end
     object_node :amexAggregatorData, "amexAggregatorData", :class=>AmexAggregatorData, :default_value=>nil
     object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
     text_node :payPalNotes, "payPalNotes", :default_value=>nil

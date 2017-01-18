@@ -183,5 +183,21 @@ module LitleOnline
       response= LitleOnlineRequest.new.credit(hash)
       assert_equal('Valid Format', response.message)
     end
+    
+    def test_simple_credit_with_pin
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'amount'=>'106',
+        'secondaryAmount'=>'20',
+        'litleTxnId'=>'1234',
+        'pin'=>'3333'
+        }
+      response= LitleOnlineRequest.new.credit(hash)
+      assert_equal('Valid Format', response.message)
+      assert_equal('000', response.creditResponse.response)
+    end
+        
   end
 end
