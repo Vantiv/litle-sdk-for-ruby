@@ -111,6 +111,21 @@ module LitleOnline
       response= LitleOnlineRequest.new.register_token_request(hash)
       assert_equal('Valid Format', response.message)
     end
+    
+    def test_simple_token_with_androidpay
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'androidpay',
+        'accountNumber'=>'1233456789103801'
+      }
+      response= LitleOnlineRequest.new.register_token_request(hash)
+      assert_equal('Account number was successfully registered', response.registerTokenResponse.message)
+      assert_equal('01', response.registerTokenResponse.androidpayResponse.expMonth)
+      assert_equal('2050', response.registerTokenResponse.androidpayResponse.expYear)
+      assert_equal('aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1kUXc0dzlXZ1hjUQ0K', response.registerTokenResponse.androidpayResponse.cryptogram)
+    end
+    
   end
-
 end
