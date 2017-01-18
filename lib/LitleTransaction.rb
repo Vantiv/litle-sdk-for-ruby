@@ -195,15 +195,19 @@ module LitleOnline
     def sale(options)
       transaction = Sale.new
       add_transaction_info(transaction, options)
-      transaction.secondaryAmount     = options['secondaryAmount']
-      transaction.surchargeAmount     = options['surchargeAmount']
-      transaction.fraudCheck          = FraudCheck.from_hash(options,'fraudCheck')
-      transaction.payPalOrderComplete = options['payPalOrderComplete']
-      transaction.payPalNotes         = options['payPalNotes']
-      transaction.recurringRequest    = RecurringRequest.from_hash(options,'recurringRequest')
-      transaction.litleInternalRecurringRequest = LitleInternalRecurringRequest.from_hash(options,'litleInternalRecurringRequest')
-      transaction.debtRepayment	     = options['debtRepayment']
-      transaction.advancedFraudChecks = AdvancedFraudChecks.from_hash(options, 'advancedFraudChecks')
+      transaction.secondaryAmount                   = options['secondaryAmount']
+      transaction.surchargeAmount                   = options['surchargeAmount']
+      transaction.fraudCheck                        = FraudCheck.from_hash(options,'fraudCheck')
+      transaction.payPalOrderComplete               = options['payPalOrderComplete']
+      transaction.payPalNotes                       = options['payPalNotes']
+      transaction.recurringRequest                  = RecurringRequest.from_hash(options,'recurringRequest')
+      transaction.litleInternalRecurringRequest     = LitleInternalRecurringRequest.from_hash(options,'litleInternalRecurringRequest')
+      transaction.debtRepayment	                    = options['debtRepayment']
+      transaction.advancedFraudChecks               = AdvancedFraudChecks.from_hash(options, 'advancedFraudChecks')
+      #9.10
+      transaction.processingType                    = options['processingType']
+      transaction.originalNetworkTransactionId      = options['originalNetworkTransactionId']
+      transaction.originalTransactionAmount         = options['originalTransactionAmount']
       return transaction
     end
 

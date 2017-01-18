@@ -1431,6 +1431,10 @@ module LitleOnline
     object_node :litleInternalRecurringRequest, "litleInternalRecurringRequest", :class=>LitleInternalRecurringRequest, :default_value=>nil
     text_node :debtRepayment,"debtRepayment", :default_value=>nil
     object_node :advancedFraudChecks, "advancedFraudChecks",:class=>AdvancedFraudChecks, :default_value=>nil
+    #9.10
+    text_node :processingType,"processingType", :default_value=>nil
+    text_node :originalNetworkTransactionId,"originalNetworkTransactionId", :default_value=>nil
+    text_node :originalTransactionAmount,"originalTransactionAmount", :default_value=>nil     
   end
 
   class Credit

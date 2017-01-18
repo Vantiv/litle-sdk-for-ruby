@@ -461,5 +461,48 @@ module LitleOnline
       LitleOnlineRequest.new.sale(hash)
     end
 
+    def test_processingType
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>
+        {
+        'type'=>'MC',
+        'number' =>'5400000000000000',
+        'expDate' =>'1210'
+        },
+        'processingType'=>'initialInstallment'
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<processingType>initialInstallment<\/processingType>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.sale(hash)
+    end
+
+    def test_processingType
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>
+        {
+        'type'=>'MC',
+        'number' =>'5400000000000000',
+        'expDate' =>'1210'
+        },
+        'originalNetworkTransactionId'=>'98765432109876543210',
+        'originalTransactionAmount'=>'7001'
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<originalNetworkTransactionId>98765432109876543210<\/originalNetworkTransactionId><originalTransactionAmount>7001<\/originalTransactionAmount>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.sale(hash)
+    end
+
   end
 end
