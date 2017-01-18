@@ -1342,6 +1342,25 @@ module LitleOnline
     object_node :shipToAddress, "shipToAddress", :class=>Contact, :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
   end
+
+  class Wallet
+    include XML::Mapping
+    text_node :walletSourceType, "walletSourceType", :default_value=>nil
+    text_node :walletSourceTypeId, "walletSourceTypeId", :default_value=>nil
+    def self.from_hash(hash, name='wallet')
+      base = hash[name]
+      if(base)
+        this = Wallet.new
+        this.walletSourceType = base['walletSourceType']
+        this.walletSourceTypeId = base['walletSourceTypeId']
+        SchemaValidation.validate_enum(this.walletSourceType, false, ['MasterPass','VisaCheckout'], name, 'walletSourceType')
+        SchemaValidation.validate_required(this.walletSourceTypeId,true,name,'walletSourceTypeId')
+        this
+      else
+        nil
+      end
+    end
+  end 
   
   class Authorization
     include XML::Mapping
@@ -1383,6 +1402,7 @@ module LitleOnline
     text_node :debtRepayment,"debtRepayment", :default_value=>nil
     object_node :advancedFraudChecks, "advancedFraudChecks",:class=>AdvancedFraudChecks, :default_value=>nil
     #9.10
+    object_node :wallet,"wallet", :class=>Wallet, :default_value=>nil
     text_node :processingType,"processingType", :default_value=>nil
     text_node :originalNetworkTransactionId,"originalNetworkTransactionId", :default_value=>nil
     text_node :originalTransactionAmount,"originalTransactionAmount", :default_value=>nil    
@@ -2075,7 +2095,7 @@ module LitleOnline
     object_node :authentication, "authentication", :class=>Authentication
     object_node :rfrRequest, 'RFRRequest', :class=>LitleRFRRequest
   end
-
+  
   # begin
   # class LitleOnlineResponse
   # attr_accessor :message

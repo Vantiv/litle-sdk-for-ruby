@@ -40,6 +40,7 @@ module LitleOnline
       transaction.advancedFraudChecks = AdvancedFraudChecks.from_hash(options, 'advancedFraudChecks')
       add_transaction_info(transaction, options)
       #9.10
+      transaction.wallet                            = Wallet.from_hash(options, 'wallet')
       transaction.processingType                    = options['processingType']
       transaction.originalNetworkTransactionId      = options['originalNetworkTransactionId']
       transaction.originalTransactionAmount         = options['originalTransactionAmount']

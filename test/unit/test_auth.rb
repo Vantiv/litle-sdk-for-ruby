@@ -435,5 +435,31 @@ module LitleOnline
       LitleOnlineRequest.new.authorization(hash)
     end
 
+    def test_processingType_wallet
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'id'=>'12345',
+        'orderId'=>'67890',
+        'amount'=>'10000',
+        'orderSource'=>'ecommerce',
+        'processingType' => 'initialInstallment',
+        'originalNetworkTransactionId' => '9876543210',
+        'originalTransactionAmount' => '536981',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000000',
+        'expDate' =>'1215'
+        },
+        'wallet'=>{
+          'walletSourceType'=>'VisaCheckout',
+          'walletSourceTypeId' => 'VCIND'
+        }
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<wallet><walletSourceType>VisaCheckout<\/walletSourceType><walletSourceTypeId>VCIND<\/walletSourceTypeId><\/wallet>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.authorization(hash)
+    end
+
   end
 end
