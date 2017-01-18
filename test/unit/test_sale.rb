@@ -68,7 +68,7 @@ module LitleOnline
         'transactionId'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
         },
         'signature' =>'sign',
-        'version' =>'1'
+        'version' =>'1.0.0'
         }
       }
 
@@ -501,7 +501,7 @@ module LitleOnline
         'originalNetworkTransactionId'=>'98765432109876543210',
         'originalTransactionAmount'=>'7001'
       }
-      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<pin>1111<\/pin>.*<originalNetworkTransactionId>98765432109876543210<\/originalNetworkTransactionId><originalTransactionAmount>7001<\/originalTransactionAmount>.*/m), is_a(Hash))
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<originalNetworkTransactionId>98765432109876543210<\/originalNetworkTransactionId><originalTransactionAmount>7001<\/originalTransactionAmount>.*/m), is_a(Hash))
       LitleOnlineRequest.new.sale(hash)
     end
 

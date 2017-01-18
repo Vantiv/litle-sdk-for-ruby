@@ -643,6 +643,7 @@ module LitleOnline
         SchemaValidation.validate_length(this.track, false, 1, 256, name, 'track')
         SchemaValidation.validate_length(this.number, false, 13, 25, name, 'number')
         SchemaValidation.validate_length(this.expDate, false, 4, 4, name, 'expDate')
+        SchemaValidation.validate_length(this.cardValidationNum, false, 1, 4, name, 'cardValidationNum')
         SchemaValidation.validate_length(this.pin, false, 4, 12, name, 'pin')
         this
       else
@@ -665,10 +666,10 @@ module LitleOnline
         this.ephemeralPublicKey = base['ephemeralPublicKey']
         this.publicKeyHash = base['publicKeyHash']
         this.transactionId = base['transactionId']
-        SchemaValidation.validate_required(this.applicationData,true,name,'applicationData')
-        SchemaValidation.validate_required(this.ephemeralPublicKey,true,name,'ephemeralPublicKey')
-        SchemaValidation.validate_required(this.publicKeyHash,true,name,'publicKeyHash')
-        SchemaValidation.validate_required(this.transactionId,true,name,'transactionId')
+        SchemaValidation.validate_length(this.applicationData,true,0,10000,name,'applicationData')
+        SchemaValidation.validate_length(this.ephemeralPublicKey,true,0,400,name,'ephemeralPublicKey')
+        SchemaValidation.validate_length(this.publicKeyHash,true,0,200,name,'publicKeyHash')
+        SchemaValidation.validate_length(this.transactionId,true,0,250,name,'transactionId')
         this
       else
         nil
@@ -690,10 +691,10 @@ module LitleOnline
         this.header = ApplepayHeader.from_hash(base)
         this.signature = base['signature']
         this.version = base['version']
-        SchemaValidation.validate_required(this.data,true,name,'data')
+        SchemaValidation.validate_length(this.data,true,0,2000,name,'data')
         SchemaValidation.validate_required(this.header,true,name,'header')
-        SchemaValidation.validate_required(this.signature,true,name,'signature')
-        SchemaValidation.validate_required(this.version,true,name,'version')
+        SchemaValidation.validate_length(this.signature,true,0,10000,name,'signature')
+        SchemaValidation.validate_length(this.version,true,5,20,name,'version')
         this
       else
         nil
