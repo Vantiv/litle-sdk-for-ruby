@@ -321,6 +321,81 @@ module LitleOnline
       assert_equal('123456', response.saleResponse.cardSuffix)
       assert_equal('63225578415568556365452427825', response.saleResponse.networkTransactionId)
     end
+    
+    def test_simple_sale_with_networkTxnId_response_cardSuffix_response
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>
+        {
+        'type'=>'VI',
+        'number' =>'4100700000000000',
+        'expDate' =>'1210',
+        'pin'=>'1111'
+        },
+        'originalNetworkTransactionId'=>'98765432109876543210',
+        'originalTransactionAmount'=>'7001'
+      }
+      response= LitleOnlineRequest.new.sale(hash)
+      assert_equal('000', response.saleResponse.response)
+      assert_equal('123456', response.saleResponse.cardSuffix)
+      assert_equal('63225578415568556365452427825', response.saleResponse.networkTransactionId)
+    end
+    
+    def test_simple_sale_with_Wallet_Visa
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>
+        {
+        'type'=>'VI',
+        'number' =>'4100700000000000',
+        'expDate' =>'1210',
+        },
+        'wallet'=>{
+          'walletSourceType'=>'VisaCheckout',
+          'walletSourceTypeId'=>'VCIND'
+        }
+      }
+      response= LitleOnlineRequest.new.sale(hash)
+      assert_equal('000', response.saleResponse.response)
+      assert_equal('123456', response.saleResponse.cardSuffix)
+      assert_equal('63225578415568556365452427825', response.saleResponse.networkTransactionId)
+    end
+
+    def test_simple_sale_with_Wallet_Mastercard
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>
+        {
+        'type'=>'MC',
+        'number' =>'5400000000000000',
+        'expDate' =>'1210',
+        },
+        'wallet'=>{
+          'walletSourceType'=>'MasterPass',
+          'walletSourceTypeId'=>'MasterPass'
+        }
+      }
+      response= LitleOnlineRequest.new.sale(hash)
+      assert_equal('000', response.saleResponse.response)
+    end
 
   end
 end

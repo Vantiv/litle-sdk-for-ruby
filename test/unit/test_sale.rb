@@ -505,5 +505,29 @@ module LitleOnline
       LitleOnlineRequest.new.sale(hash)
     end
 
+    def test_wallet
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>
+        {
+        'type'=>'VI',
+        'number' =>'4100700000000000',
+        'expDate' =>'1210',
+        },
+        'wallet'=>{
+          'walletSourceType'=>'VisaCheckout',
+          'walletSourceTypeId'=>'VCIND'
+        }
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<wallet><walletSourceType>VisaCheckout<\/walletSourceType><walletSourceTypeId>VCIND<\/walletSourceTypeId><\/wallet>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.sale(hash)
+    end
+
   end
 end

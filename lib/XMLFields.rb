@@ -1455,6 +1455,7 @@ module LitleOnline
     text_node :debtRepayment,"debtRepayment", :default_value=>nil
     object_node :advancedFraudChecks, "advancedFraudChecks",:class=>AdvancedFraudChecks, :default_value=>nil
     #9.10
+    object_node :wallet,"wallet", :class=>Wallet, :default_value=>nil
     text_node :processingType,"processingType", :default_value=>nil
     text_node :originalNetworkTransactionId,"originalNetworkTransactionId", :default_value=>nil
     text_node :originalTransactionAmount,"originalTransactionAmount", :default_value=>nil     
