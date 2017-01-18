@@ -335,32 +335,6 @@ module LitleOnline
         'expDate' =>'1215'
         },
         'wallet'=>{
-          'walletSourceType'=>'VisaCheckout'
-        }
-      }
-      response= LitleOnlineRequest.new.authorization(hash)
-      assert_equal('000', response.authorizationResponse.response)
-      assert_equal('63225578415568556365452427825', response.authorizationResponse.networkTransactionId)
-    end
-
-    def test_simple_auth_with_wallet
-      hash = {
-        'merchantId' => '101',
-        'version'=>'8.8',
-        'reportGroup'=>'Planets',
-        'id'=>'12345',
-        'orderId'=>'67890',
-        'amount'=>'10000',
-        'orderSource'=>'ecommerce',
-        'processingType' => 'initialInstallment',
-        'originalNetworkTransactionId' => '9876543210',
-        'originalTransactionAmount' => '536981',
-        'card'=>{
-        'type'=>'VI',
-        'number' =>'4100000000000000',
-        'expDate' =>'1215'
-        },
-        'wallet'=>{
           'walletSourceType'=>'VisaCheckout',
           'walletSourceTypeId' => 'VCIND'
         }
