@@ -27,24 +27,6 @@ require 'test/unit'
 
 module LitleOnline
   class TestSale < Test::Unit::TestCase
-    def test_simple_sale_with_card
-      hash = {
-        'merchantId' => '101',
-        'version'=>'8.8',
-        'reportGroup'=>'Planets',
-        'litleTxnId'=>'123456',
-        'orderId'=>'12344',
-        'amount'=>'106',
-        'orderSource'=>'ecommerce',
-        'card'=>{
-        'type'=>'VI',
-        'number' =>'4100000000000002',
-        'expDate' =>'1210'
-        }}
-      response= LitleOnlineRequest.new.sale(hash)
-      assert_equal('000', response.saleResponse.response)
-    end
-
     def test_simple_sale_with_paypal
       hash = {
         'merchantId' => '101',
@@ -295,31 +277,6 @@ module LitleOnline
       }
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal('000', response.saleResponse.response)
-    end
-
-    def test_simple_sale_with_networkTxnId_response_cardSuffix_response
-      hash = {
-        'merchantId' => '101',
-        'version'=>'8.8',
-        'reportGroup'=>'Planets',
-        'litleTxnId'=>'123456',
-        'orderId'=>'12344',
-        'amount'=>'106',
-        'orderSource'=>'ecommerce',
-        'card'=>
-        {
-        'type'=>'VI',
-        'number' =>'4100700000000000',
-        'expDate' =>'1210',
-        'pin'=>'1111'
-        },
-        'originalNetworkTransactionId'=>'98765432109876543210',
-        'originalTransactionAmount'=>'7001'
-      }
-      response= LitleOnlineRequest.new.sale(hash)
-      assert_equal('000', response.saleResponse.response)
-      assert_equal('123456', response.saleResponse.cardSuffix)
-      assert_equal('63225578415568556365452427825', response.saleResponse.networkTransactionId)
     end
     
     def test_simple_sale_with_networkTxnId_response_cardSuffix_response

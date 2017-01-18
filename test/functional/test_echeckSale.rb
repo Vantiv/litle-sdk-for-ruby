@@ -27,21 +27,6 @@ require 'test/unit'
 
 module LitleOnline
   class Test_echeckSale < Test::Unit::TestCase
-    def test_echeck_sale_with_echeck
-      hash = {
-        'merchantId' => '101',
-        'version'=>'8.8',
-        'reportGroup'=>'Planets',
-        'amount'=>'123456',
-        'verify'=>'true',
-        'orderId'=>'12345',
-        'orderSource'=>'ecommerce',
-        'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
-        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
-      }
-      response= LitleOnlineRequest.new.echeck_sale(hash)
-      assert_equal('Valid Format', response.message)
-    end
 
     def test_no_amount
       hash = {
