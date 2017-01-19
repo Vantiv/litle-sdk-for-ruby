@@ -1,10 +1,18 @@
 = LitleOnline CHANGELOG
 
+==Version 9.10
+* Feature: add androidpay
+* Feature: add network enhancements for original txn Id and original amount
+* Feature: add processingType
+* Feature: add cardSuffix on responses
+* Feature: add Card Pin Support
+* Feature: add Wallet support
+
 ==Version 9.3.3
-*add fraudCheck transaction type
+* add fraudCheck transaction type
 
 ==Version 9.3.2
-HTTP timeout set to 500ms
+* HTTP timeout set to 500ms
 
 ==Version 9.3.1 (March 9, 2015)
 *Feature: PFIF instruction transaction support was added
