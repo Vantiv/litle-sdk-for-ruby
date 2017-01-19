@@ -50,7 +50,8 @@ module LitleOnline
         'type'=>'VI',
         'number' =>'4100000000000001',
         'expDate' =>'1210'
-        }}
+        }, 'processingType' => 'initialInstallment',
+        }
 
       saleHash = {
         'reportGroup'=>'Planets',
@@ -62,7 +63,9 @@ module LitleOnline
         'type'=>'VI',
         'number' =>'4100000000000001',
         'expDate' =>'1210'
-        }}
+        },'originalNetworkTransactionId' => '9876543210',
+        'originalTransactionAmount' => '536981'
+        }
 
       creditHash = {
         'merchantId' => '101',
@@ -117,7 +120,8 @@ module LitleOnline
         'type'=>'VI',
         'number' =>'4100000000000001',
         'expDate' =>'1210'
-        }}
+        },'processingType' => 'initialInstallment',
+        }
 
       captHash = {
         'merchantId' => '101',
@@ -125,6 +129,7 @@ module LitleOnline
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456000',
         'amount'=>'106',
+        'pin'=>'1234'
       }
 
       captGivenAuthHash = {
@@ -136,7 +141,7 @@ module LitleOnline
         'authInformation' => {
         'authDate'=>'2002-10-09','authCode'=>'543216',
         'authAmount'=>'12345'
-        },
+        },'originalNetworkTransactionId' => '9876543210',
         'orderSource'=>'ecommerce',
         'card'=>{
         'type'=>'VI',

@@ -80,6 +80,20 @@ module LitleOnline
       assert(response.message =~ /Error validating xml data against the schema/)
     end
     
+    def test_custom_billing
+      hash = {
+        'payPalNotes'=>'Notes',
+        'litleTxnId'=>'123456000',
+        'amount'=>'106',
+        'customBilling'=>{
+        'city' =>'boston',
+        'descriptor' => 'card was present',
+        }}
+      response= LitleOnlineRequest.new.capture(hash)
+      assert_equal('Valid Format', response.message)   
+    end
+    
+    
     def test_simple_capture_with_pin
       hash = {
         #'merchantId' => '101',

@@ -79,6 +79,20 @@ module LitleOnline
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<pin>1234<\/pin>.*/m), is_a(Hash))
       LitleOnlineRequest.new.capture(hash)
     end
+    
+    def test_custom_billing
+      hash = {
+        'payPalNotes'=>'Notes',
+        'litleTxnId'=>'123456000',
+        'amount'=>'106',
+        'customBilling'=>{
+        'city' =>'boston',
+        'descriptor' => 'card was present',
+        }
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<customBilling><city>boston<\/city><descriptor>card was present<\/descriptor><\/customBilling>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.capture(hash)
+    end
 
   end
 end
