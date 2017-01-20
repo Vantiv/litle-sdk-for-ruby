@@ -86,7 +86,7 @@ module LitleOnline
         'reportGroup'=>'Planets',
       }
       #Get exceptions
-      exception = assert_raise{LitleOnlineRequest.new.echeck_redeposit(hash)}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_redeposit(hash)}
       #Test 
       assert(exception.message =~ /Error validating xml data against the schema/)
     end

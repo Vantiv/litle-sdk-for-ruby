@@ -53,7 +53,7 @@ def test_simple_happy
 	   }
 
     #Get exceptions
-    exception = assert_raise{LitleOnlineRequest.new.update_plan(hash)}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.update_plan(hash)}
     #Test 
     assert(exception.message =~ /Error validating xml data against the schema/)
   end

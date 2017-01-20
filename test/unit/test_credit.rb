@@ -129,8 +129,7 @@ module LitleOnline
         'reportGroup'=>'Planets',
         'actionReason'=> 'SUSPECT_FRAUD'
       }
-      XMLObject.expects(:new)
-      Communications.expects(:http_post).with(regexp_matches(/.*<actionReason>SUSPECT_FRAUD<\/actionReason>.*/m),kind_of(Hash))
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<actionReason>SUSPECT_FRAUD<\/actionReason>.*/m), is_a(Hash))
       LitleOnlineRequest.new.credit(hash)
     end
 

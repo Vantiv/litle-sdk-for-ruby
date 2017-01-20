@@ -111,7 +111,7 @@ module LitleOnline
         'expDate' =>'1210'
         }}
       #Get exceptions
-      exception = assert_raise{LitleOnlineRequest.new.sale(hash)}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
       #Test 
       assert(exception.message =~ /Error validating xml data against the schema/)
     end
@@ -209,7 +209,7 @@ module LitleOnline
         'expDate' =>'1210'
         }}
       #Get exceptions
-      exception = assert_raise{LitleOnlineRequest.new.sale(hash)}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
       #Test 
       assert(exception.message =~ /Error validating xml data against the schema/)
     end
@@ -229,7 +229,7 @@ module LitleOnline
         'expDate' =>'1210'
         }}
       #Get exceptions
-      exception = assert_raise{LitleOnlineRequest.new.sale(hash)}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
       #Test 
       assert(exception.message =~ /Error validating xml data against the schema/)
     end
@@ -249,7 +249,7 @@ module LitleOnline
         'expDate' =>'1210'
         }}
       #Get exceptions
-      exception = assert_raise{LitleOnlineRequest.new.sale(hash)}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
       #Test 
       assert(exception.message =~ /Error validating xml data against the schema/)
     end

@@ -107,7 +107,7 @@ module LitleOnline
         'expDate' =>'1210'
         }}
       #Get exceptions
-      exception = assert_raise{
+      exception = assert_raise(RuntimeError){
         LitleOnlineRequest.new.authorization(hash)
         }
       #Test 
@@ -166,7 +166,7 @@ module LitleOnline
         'expDate' =>'1210'
         }}
       #Get exceptions
-      exception = assert_raise{
+      exception = assert_raise(RuntimeError){
         LitleOnlineRequest.new.authorization(hash)
         }
       #Test 
@@ -187,7 +187,7 @@ module LitleOnline
         'expDate' =>'1210'
         }}
       #Get exceptions
-      exception = assert_raise{
+      exception = assert_raise(RuntimeError){
         LitleOnlineRequest.new.authorization(hash)
         }
       #Test 
@@ -209,7 +209,7 @@ module LitleOnline
         'expDate' =>'1210'
         }}
       #Get exceptions
-      exception = assert_raise{
+      exception = assert_raise(RuntimeError){
         LitleOnlineRequest.new.authorization(hash)
         }
       #Test 
@@ -228,7 +228,7 @@ module LitleOnline
         'expDate' =>'1210'
         }}
       #Get exceptions
-      exception = assert_raise{
+      exception = assert_raise(RuntimeError){
         LitleOnlineRequest.new.authorization(hash)
         }
       #Test 
@@ -247,7 +247,7 @@ module LitleOnline
         }
       }
       #Get exceptions
-      exception = assert_raise{
+      exception = assert_raise(RuntimeError){
         LitleOnlineRequest.new.authorization(hash)
         }
       #Test 

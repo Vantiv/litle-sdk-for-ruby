@@ -75,7 +75,7 @@ module LitleOnline
        'origAccountNumber' => '4000000000000001'      
       }
       #Get exceptions
-      exception = assert_raise{LitleOnlineRequest.new.query_Transaction(hash)}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.query_Transaction(hash)}
       #Test 
       assert(exception.message =~ /Error validating xml data against the schema/)  
     end     
@@ -93,7 +93,7 @@ module LitleOnline
        'origAccountNumber' => '4000000000000001'      
        }  
        #Get exceptions
-        exception = assert_raise{LitleOnlineRequest.new.query_Transaction(hash)}
+        exception = assert_raise(RuntimeError){LitleOnlineRequest.new.query_Transaction(hash)}
         #Test 
         assert(exception.message =~ /Error validating xml data against the schema/)   
     end
@@ -113,7 +113,7 @@ module LitleOnline
        'origAccountNumber' => '4000000000000001'      
      }
      #Get exceptions
-      exception = assert_raise{LitleOnlineRequest.new.query_Transaction(hash)}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.query_Transaction(hash)}
       #Test 
       assert(exception.message =~ /Error validating xml data against the schema/)  
     end     
@@ -129,7 +129,7 @@ module LitleOnline
        'origAccountNumber' => '4000000000000001'      
        }
        #Get exceptions
-      exception = assert_raise{LitleOnlineRequest.new.query_Transaction(hash)}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.query_Transaction(hash)}
       #Test 
       assert(exception.message =~ /Error validating xml data against the schema/)  
     end

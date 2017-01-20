@@ -256,8 +256,7 @@ module LitleOnline
         }
       }
 
-      XMLObject.expects(:new)
-      Communications.expects(:http_post).with(regexp_matches(/.*<merchantData>.*?<affiliate>bar<\/affiliate>.*?<\/merchantData>.*/m),kind_of(Hash))
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<merchantData>.*?<affiliate>bar<\/affiliate>.*?<\/merchantData>.*/m), is_a(Hash))
       LitleOnlineRequest.new.sale(hash)
     end
 
@@ -292,8 +291,7 @@ module LitleOnline
         'fraudFilterOverride'=> 'false'
       }
 
-      XMLObject.expects(:new)
-      Communications.expects(:http_post).with(regexp_matches(/.*<sale.*?<fraudFilterOverride>false<\/fraudFilterOverride>.*?<\/sale>.*/m),kind_of(Hash))
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<sale.*?<fraudFilterOverride>false<\/fraudFilterOverride>.*?<\/sale>.*/m), is_a(Hash))
       LitleOnlineRequest.new.sale(hash)
     end
 

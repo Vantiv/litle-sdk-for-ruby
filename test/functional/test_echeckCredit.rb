@@ -48,7 +48,7 @@ module LitleOnline
         'reportGroup'=>'Planets',
       }
       #Get exceptions
-      exception = assert_raise{LitleOnlineRequest.new.echeck_credit(hash)}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_credit(hash)}
       #Test 
       assert(exception.message =~ /Error validating xml data against the schema/)
     end
@@ -119,7 +119,7 @@ module LitleOnline
         'orderSource'=>'ecommerce',
       }
       #Get exceptions
-      exception = assert_raise{LitleOnlineRequest.new.echeck_credit(hash)}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_credit(hash)}
       #Test 
       assert(exception.message =~ /Error validating xml data against the schema/) 
     end

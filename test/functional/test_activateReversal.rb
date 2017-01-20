@@ -51,7 +51,7 @@ def test_simple
 	   }
 
     #Get exceptions
-    exception = assert_raise{
+    exception = assert_raise(RuntimeError){
       LitleOnlineRequest.new.activate_reversal(hash)
       }
     #Test 
