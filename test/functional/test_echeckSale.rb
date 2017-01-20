@@ -51,8 +51,10 @@ module LitleOnline
         'id'=>'test',
         'reportGroup'=>'Planets'
       }
-      response = LitleOnlineRequest.new.echeck_sale(hash)
-      assert_match /The content of element 'echeckSale' is not complete/, response.message
+      #Get exceptions
+      exception = assert_raise{LitleOnlineRequest.new.echeck_sale(hash)}
+      #Test 
+      assert(exception.message =~ /The content of element 'echeckSale' is not complete/) 
     end
 
     def test_echeck_sale_with_echeck1
@@ -139,8 +141,10 @@ module LitleOnline
         'orderId'=>'12345',
         'orderSource'=>'ecommerce',
       }
-      response= LitleOnlineRequest.new.echeck_sale(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      #Get exceptions
+      exception = assert_raise{LitleOnlineRequest.new.echeck_sale(hash)}
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)
     end
 
     def test_simple_echeck_sale
@@ -211,8 +215,10 @@ module LitleOnline
         'amount'=>'12',
         'secondaryAmount'=>'50'
       }
-      response= LitleOnlineRequest.new.echeck_sale(hash)
-      assert(response.message=~/Error validating xml data against the schema.*/)
+      #Get exceptions
+      exception = assert_raise{LitleOnlineRequest.new.echeck_sale(hash)}
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)
     end
 
   end

@@ -75,8 +75,10 @@ def test_simple_happy
         'amount' =>'500',	
 	   }
 
-    response= LitleOnlineRequest.new.balance_inquiry(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
+    #Get exceptions
+    exception = assert_raise{LitleOnlineRequest.new.balance_inquiry(hash)}
+    #Test 
+    assert(exception.message =~ /Error validating xml data against the schema/)
   end
  end
 end

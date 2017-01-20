@@ -42,6 +42,13 @@ module LitleOnline
       # create response object from xml returned form the Litle API
       response_object = XMLObject.new(response_xml)
       
+      # Check if the response xml is valid.
+      if (response_object.response == "0")
+        return response_object
+      else
+        raise("Error with http response, code: " + response_object.response + ", message: " + response_object.message)
+      end
+      
       return response_object
     end
 

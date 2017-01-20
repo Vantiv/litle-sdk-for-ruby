@@ -96,8 +96,12 @@ def test_simple_virtualGiftCard_happy
         'amount' =>'500',	
 	   }
 
-    response= LitleOnlineRequest.new.activate(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
+    #Get exceptions
+    exception = assert_raise{
+      LitleOnlineRequest.new.activate(hash)
+      }
+    #Test 
+    assert(exception.message =~ /Error validating xml data against the schema/)
   end
  end
 end

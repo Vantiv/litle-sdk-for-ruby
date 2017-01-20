@@ -86,23 +86,6 @@ class TestQueryTransaction < Test::Unit::TestCase
       LitleOnlineRequest.new.query_Transaction(hash)
   end
         
- 
-  def test_queryTransaction_no_origId
-    hash = 
-    {
-      'merchantId' => '101',
-      'id' => 'test',
-      'version'=>'10.0',
-      'reportGroup'=>'Some RG',
-      'customerId' => '038945',
-      'origActionType' => 'A',
-      'transactionId'=>'123456'
-    }  
-            
-    response= LitleOnlineRequest.new.query_Transaction(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
- end
-    
    def test_queryTransaction_no_origId1
      hash = 
      {
@@ -111,12 +94,12 @@ class TestQueryTransaction < Test::Unit::TestCase
        'version'=>'10.0',
        'reportGroup'=>'Some RG',
        'customerId' => '038945',
-       'origActionType' => 'AAA',
+       'origActionType' => 'A',
        'transactionId'=>'123456'
      }  
               
-    response= LitleOnlineRequest.new.query_Transaction(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*?<litleOnlineRequest.*?<queryTransaction.*?<origActionType>A<\/origActionType>.*?<\/queryTransaction>.*?/m), is_a(Hash))
+      LitleOnlineRequest.new.query_Transaction(hash)
   end   
  end
 end

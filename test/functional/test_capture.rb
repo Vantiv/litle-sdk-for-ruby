@@ -79,8 +79,10 @@ module LitleOnline
         'reportGroup'=>'Planets',
         'amount'=>'106',
       }
-      response= LitleOnlineRequest.new.capture(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      #Get exceptions
+      exception = assert_raise{LitleOnlineRequest.new.capture(hash)}
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)
     end
   
   end
