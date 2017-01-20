@@ -180,8 +180,10 @@ module LitleOnline
         'number' =>'4100000000000001',
         'expDate' =>'1210'
         }}
-      response= LitleOnlineRequest.new.capture_given_auth(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+            #Get exceptions
+      exception = assert_raise{LitleOnlineRequest.new.capture_given_auth(hash)}
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)  
     end
 
     def test_simple_captureGivenAuth_with_mpos

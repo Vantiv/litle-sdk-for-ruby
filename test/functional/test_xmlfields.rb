@@ -41,8 +41,10 @@ module LitleOnline
         'expDate' =>'1210',
         'cardValidationNum'=> '123'
         }}
-      response= LitleOnlineRequest.new.sale(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      #Get exceptions
+      exception = assert_raise{LitleOnlineRequest.new.sale(hash)}
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/) 
     end
   
     def test_simple_custom_billing
@@ -189,8 +191,10 @@ module LitleOnline
         'expDate' =>'1210'},
         'amexAggregatorData'=>{'sellerMerchantCategoryCode'=>'1234'}
       }
-      response= LitleOnlineRequest.new.credit(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      #Get exceptions
+      exception = assert_raise{LitleOnlineRequest.new.credit(hash)}
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/) 
     end
   
     def test_simple_enhanced_data

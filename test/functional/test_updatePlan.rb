@@ -51,8 +51,10 @@ def test_simple_happy
         'planCode'=>'planCodeString',
 	   }
 
-    response= LitleOnlineRequest.new.update_plan(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
+    #Get exceptions
+    exception = assert_raise{LitleOnlineRequest.new.update_plan(hash)}
+    #Test 
+    assert(exception.message =~ /Error validating xml data against the schema/) 
   end
  end
 end

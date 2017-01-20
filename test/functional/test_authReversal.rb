@@ -61,8 +61,10 @@ module LitleOnline
         'amount'=>'106',
         'payPalNotes'=>'Notes'
       }
-      response= LitleOnlineRequest.new.auth_reversal(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      #Get exceptions
+      exception = assert_raise{LitleOnlineRequest.new.auth_reversal(hash)}
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)      
     end
   
   end

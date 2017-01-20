@@ -100,8 +100,14 @@ module LitleOnline
         'number' =>'4100000000000001',
         'expDate' =>'1210'
         }}
-      response= LitleOnlineRequest.new.authorization(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+
+      #Get exceptions
+      exception = assert_raise{
+        LitleOnlineRequest.new.authorization(hash)
+        }
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)
+      
     end
 
     def test_fields_out_of_order
@@ -152,8 +158,12 @@ module LitleOnline
         'number' =>'4100000000000001',
         'expDate' =>'1210'
         }}
-      response= LitleOnlineRequest.new.authorization(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      #Get exceptions
+      exception = assert_raise{
+        LitleOnlineRequest.new.authorization(hash)
+        }
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)
     end
 
     def test_no_amount
@@ -168,8 +178,12 @@ module LitleOnline
         'number' =>'4100000000000001',
         'expDate' =>'1210'
         }}
-      response= LitleOnlineRequest.new.authorization(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      #Get exceptions
+      exception = assert_raise{
+        LitleOnlineRequest.new.authorization(hash)
+        }
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)
     end
    
     def test_no_order_source
@@ -185,8 +199,12 @@ module LitleOnline
         'number' =>'4100000000000001',
         'expDate' =>'1210'
         }}
-      response= LitleOnlineRequest.new.authorization(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      #Get exceptions
+      exception = assert_raise{
+        LitleOnlineRequest.new.authorization(hash)
+        }
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)
     end
 
     def test_authorization_missing_attributes
@@ -201,12 +219,16 @@ module LitleOnline
         'expDate' =>'1210'
         }}
 
-      response= LitleOnlineRequest.new.authorization(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      #Get exceptions
+      exception = assert_raise{
+        LitleOnlineRequest.new.authorization(hash)
+        }
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)
     end
 
     def test_orderId_required
-      start_hash = {
+      hash = {
         'merchantId'=>'101',
         'reportGroup'=>'Planets',
         'amount'=>'101',
@@ -216,10 +238,14 @@ module LitleOnline
         'number' => '1111222233334444'
         }
       }
-      response= LitleOnlineRequest.new.authorization(start_hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      #Get exceptions
+      exception = assert_raise{
+        LitleOnlineRequest.new.authorization(hash)
+        }
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)
 
-      response = LitleOnlineRequest.new.authorization(start_hash.merge({'orderId'=>'1234'}))
+      response = LitleOnlineRequest.new.authorization(hash.merge({'orderId'=>'1234'}))
       assert_equal('000', response.authorizationResponse.response)
     end
 
