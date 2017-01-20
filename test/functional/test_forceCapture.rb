@@ -117,7 +117,7 @@ module LitleOnline
         'type'=>'VI'
         }}
       #Get exceptions
-      exception = assert_raise{LitleOnlineRequest.new.force_capture(hash)}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.force_capture(hash)}
       #Test 
       assert(exception.message =~ /Error validating xml data against the schema/)       
     end
@@ -136,7 +136,7 @@ module LitleOnline
         'expDate' =>'1210'
         }}
       #Get exceptions
-      exception = assert_raise{LitleOnlineRequest.new.force_capture(hash)}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.force_capture(hash)}
       #Test 
       assert(exception.message =~ /Error validating xml data against the schema/) 
     end

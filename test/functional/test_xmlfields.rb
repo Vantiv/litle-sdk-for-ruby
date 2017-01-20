@@ -42,7 +42,7 @@ module LitleOnline
         'cardValidationNum'=> '123'
         }}
       #Get exceptions
-      exception = assert_raise{LitleOnlineRequest.new.sale(hash)}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
       #Test 
       assert(exception.message =~ /Error validating xml data against the schema/) 
     end
@@ -192,7 +192,7 @@ module LitleOnline
         'amexAggregatorData'=>{'sellerMerchantCategoryCode'=>'1234'}
       }
       #Get exceptions
-      exception = assert_raise{LitleOnlineRequest.new.credit(hash)}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
       #Test 
       assert(exception.message =~ /Error validating xml data against the schema/) 
     end

@@ -35,7 +35,7 @@ module LitleOnline
         'reportGroup'=>'Planets'
       }
       #Get exceptions
-      exception = assert_raise{LitleOnlineRequest.new.echeck_sale(hash)}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_sale(hash)}
       #Test 
       assert(exception.message =~ /The content of element 'echeckSale' is not complete/) 
     end
@@ -120,7 +120,7 @@ module LitleOnline
         'orderSource'=>'ecommerce',
       }
       #Get exceptions
-      exception = assert_raise{LitleOnlineRequest.new.echeck_sale(hash)}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_sale(hash)}
       #Test 
       assert(exception.message =~ /Error validating xml data against the schema/) 
     end
@@ -189,7 +189,7 @@ module LitleOnline
         'secondaryAmount'=>'50'
       }
       #Get exceptions
-      exception = assert_raise{LitleOnlineRequest.new.echeck_sale(hash)}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_sale(hash)}
       #Test 
       assert(exception.message =~ /Error validating xml data against the schema/) 
     end

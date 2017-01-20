@@ -94,7 +94,7 @@ def test_simple_virtualGiftCard_happy
 	   }
 
     #Get exceptions
-    exception = assert_raise{
+    exception = assert_raise(RuntimeError){
       LitleOnlineRequest.new.activate(hash)
       }
     #Test 

@@ -77,7 +77,7 @@ module LitleOnline
         'amount'=>'106',
       }
       #Get exceptions
-      exception = assert_raise{LitleOnlineRequest.new.capture(hash)}
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.capture(hash)}
       #Test 
       assert(exception.message =~ /Error validating xml data against the schema/)   
     end

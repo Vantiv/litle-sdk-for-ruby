@@ -50,7 +50,7 @@ def test_simple
 	   }
 	   
     #Get exceptions
-    exception = assert_raise{LitleOnlineRequest.new.unload_reversal(hash)}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.unload_reversal(hash)}
     #Test 
     assert(exception.message =~ /Error validating xml data against the schema/)
   end

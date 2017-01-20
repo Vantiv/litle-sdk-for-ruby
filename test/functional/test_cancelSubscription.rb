@@ -48,7 +48,7 @@ module LitleOnline
 	   }
 
         #Get exceptions
-    exception = assert_raise{LitleOnlineRequest.new.cancel_subscription(hash)}
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.cancel_subscription(hash)}
     #Test 
     assert(exception.message =~ /Error validating xml data against the schema/)     
   end
