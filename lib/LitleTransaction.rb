@@ -35,6 +35,12 @@ module LitleOnline
       transaction.recurringRequest   = RecurringRequest.from_hash(options,'recurringRequest')
       transaction.debtRepayment      = options['debtRepayment']
       transaction.advancedFraudChecks= AdvancedFraudChecks.from_hash(options, 'advancedFraudChecks')
+      #SDK XML 11
+      transaction.wallet                            = Wallet.from_hash(options, 'wallet')
+      transaction.processingType                    = options['processingType']
+      transaction.originalNetworkTransactionId      = options['originalNetworkTransactionId']
+      transaction.originalTransactionAmount         = options['originalTransactionAmount']
+      
       add_transaction_info(transaction, options)
 
       return transaction
@@ -198,6 +204,11 @@ module LitleOnline
       transaction.litleInternalRecurringRequest = LitleInternalRecurringRequest.from_hash(options,'litleInternalRecurringRequest')
       transaction.debtRepayment      = options['debtRepayment']
       transaction.advancedFraudChecks = AdvancedFraudChecks.from_hash(options, 'advancedFraudChecks')
+      #SDK XML 11
+      transaction.wallet                            = Wallet.from_hash(options, 'wallet')
+      transaction.processingType                    = options['processingType']
+      transaction.originalNetworkTransactionId      = options['originalNetworkTransactionId']
+      transaction.originalTransactionAmount         = options['originalTransactionAmount']
           
       return transaction
     end
@@ -227,6 +238,8 @@ module LitleOnline
       transaction.payPalNotes             = options['payPalNotes']
       transaction.actionReason            = options['actionReason']
       transaction.paypal                  = CreditPayPal.from_hash(options,'paypal')
+      #SDK XML 11
+      transaction.pin                     = options['pin']
 
       add_account_info(transaction, options)
       return transaction
@@ -277,6 +290,9 @@ module LitleOnline
       transaction.surchargeAmount    = options['surchargeAmount']
       transaction.customBilling      = CustomBilling.from_hash(options)
       transaction.debtRepayment      = options['debtRepayment']
+      #SDK XML 11
+      transaction.processingType                    = options['processingType']
+      
       add_order_info(transaction, options)
 
       return transaction
@@ -293,7 +309,10 @@ module LitleOnline
       transaction.processingInstructions  = ProcessingInstructions.from_hash(options)
       transaction.payPalOrderComplete     = options['payPalOrderComplete']
       transaction.payPalNotes             = options['payPalNotes']
-
+      #SDK XML 11
+      transaction.customBilling           = CustomBilling.from_hash(options)
+      transaction.pin                     = options['pin']
+      
       add_account_info(transaction, options)
       return transaction
     end
@@ -308,6 +327,10 @@ module LitleOnline
       transaction.customBilling      = CustomBilling.from_hash(options)
       transaction.billMeLaterRequest = BillMeLaterRequest.from_hash(options)
       transaction.debtRepayment      = options['debtRepayment']
+      #SDK XML 11
+      transaction.processingType                    = options['processingType']
+      transaction.originalNetworkTransactionId      = options['originalNetworkTransactionId']
+      transaction.originalTransactionAmount         = options['originalTransactionAmount']
       return transaction
     end
 
@@ -351,6 +374,7 @@ module LitleOnline
       transaction.billToAddress = Contact.from_hash(options,'billToAddress')
       add_account_info(transaction, options)
       transaction.merchantData              = MerchantData.from_hash(options)
+      
 
       return transaction
     end

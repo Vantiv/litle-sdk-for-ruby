@@ -186,6 +186,24 @@ module LitleOnline
       assert_equal('001', response.forceCaptureResponse.response)
     end
   
+    def test_simple_force_capture_with_processing_type
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'processingType'=>'accountFunding',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        }}
+      response= LitleOnlineRequest.new.force_capture(hash)
+      assert(response.message =~ /Error validating xml data against the schema/)
+    end
+  
   end
 
 end

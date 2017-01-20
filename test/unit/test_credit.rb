@@ -338,5 +338,19 @@ module LitleOnline
       LitleOnlineRequest.new.credit(hash)
     end
 
+     def test_pin
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'amount'=>'106',
+        'secondaryAmount'=>'20',
+        'litleTxnId'=>'1234',
+        'pin'=>'3333'
+        }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<pin>3333<\/pin>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.credit(hash)
+    end
+
   end
 end

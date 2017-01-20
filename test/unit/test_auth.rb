@@ -418,5 +418,50 @@ module LitleOnline
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<mpos><ksn>ksnString<\/ksn><formatId>30<\/formatId><encryptedTrack>encryptedTrackString<\/encryptedTrack><track1Status>0<\/track1Status><track2Status>0<\/track2Status><\/mpos>.*/m), is_a(Hash))
       LitleOnlineRequest.new.authorization(hash)
     end
+    
+    def test_processingType_originalNetworkTransactionId_originalTransactionAmount
+      hash = {
+        'orderId' => '12344',
+        'amount' => '2',
+        'orderSource' => 'ecommerce',
+        'card' => {
+        'number' => '4141000000000000',
+        'expDate' => '1210',
+        'type' => 'GC'        
+        },
+        'processingType' => 'initialInstallment',
+        'originalNetworkTransactionId' => '9876543210',
+        'originalTransactionAmount' => '536981'
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<processingType>initialInstallment<\/processingType><originalNetworkTransactionId>9876543210<\/originalNetworkTransactionId><originalTransactionAmount>536981<\/originalTransactionAmount>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.authorization(hash)
+    end
+    
+     def test_processingType_wallet
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'id'=>'12345',
+        'orderId'=>'67890',
+        'amount'=>'10000',
+        'orderSource'=>'ecommerce',
+        'processingType' => 'initialInstallment',
+        'originalNetworkTransactionId' => '9876543210',
+        'originalTransactionAmount' => '536981',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000000',
+        'expDate' =>'1215'
+        },
+        'wallet'=>{
+          'walletSourceType'=>'VisaCheckout',
+          'walletSourceTypeId' => 'VCIND'
+        }
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<wallet><walletSourceType>VisaCheckout<\/walletSourceType><walletSourceTypeId>VCIND<\/walletSourceTypeId><\/wallet>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.authorization(hash)
+    end
+    
   end
 end

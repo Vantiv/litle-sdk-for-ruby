@@ -1424,6 +1424,11 @@ module LitleOnline
     object_node :advancedFraudChecks, "advancedFraudChecks",:class=>AdvancedFraudChecks, :default_value=>nil
     #SDK XML 10
     object_node :wallet, "wallet", :class=>Wallet, :default_value=>nil
+    #SDK XML 11
+    text_node :processingType,"processingType", :default_value=>nil
+    text_node :originalNetworkTransactionId,"originalNetworkTransactionId", :default_value=>nil
+    text_node :originalTransactionAmount,"originalTransactionAmount", :default_value=>nil 
+    
   end
 
   class Sale
@@ -1471,6 +1476,10 @@ module LitleOnline
     object_node :advancedFraudChecks, "advancedFraudChecks",:class=>AdvancedFraudChecks, :default_value=>nil
     #SDK XML 10
     object_node :wallet, "wallet", :class=>Wallet, :default_value=>nil
+    #SDK XML 11
+    text_node :processingType,"processingType", :default_value=>nil
+    text_node :originalNetworkTransactionId,"originalNetworkTransactionId", :default_value=>nil
+    text_node :originalTransactionAmount,"originalTransactionAmount", :default_value=>nil 
   end
 
   class Credit
@@ -1502,6 +1511,8 @@ module LitleOnline
     object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
     text_node :payPalNotes, "payPalNotes", :default_value=>nil
     text_node :actionReason, "actionReason", :default_value=>nil
+    #SDK XML 11
+    text_node :pin, "pin", :default_value=>nil
   end
 
   class RegisterTokenRequest
@@ -1546,6 +1557,10 @@ module LitleOnline
     object_node :amexAggregatorData, "amexAggregatorData", :class=>AmexAggregatorData, :default_value=>nil
     object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
     text_node :debtRepayment,"debtRepayment", :default_value=>nil
+    #SDK XML 11
+    text_node :processingType,"processingType", :default_value=>nil
+    text_node :originalNetworkTransactionId,"originalNetworkTransactionId", :default_value=>nil
+    text_node :originalTransactionAmount,"originalTransactionAmount", :default_value=>nil 
   end
 
   class ForceCapture
@@ -1573,6 +1588,8 @@ module LitleOnline
     object_node :amexAggregatorData, "amexAggregatorData", :class=>AmexAggregatorData, :default_value=>nil
     object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
     text_node :debtRepayment,"debtRepayment", :default_value=>nil
+    #SDK XML 11
+    text_node :processingType,"processingType", :default_value=>nil
   end
 
   class AuthReversal
@@ -1605,6 +1622,9 @@ module LitleOnline
     object_node :processingInstructions, "processingInstructions", :class=>ProcessingInstructions, :default_value=>nil
     text_node :payPalOrderComplete, "payPalOrderComplete", :default_value=>nil
     text_node :payPalNotes, "payPalNotes", :default_value=>nil
+    #SDK XML 11
+    object_node :customBilling, "customBilling", :class=>CustomBilling, :default_value=>nil
+    text_node :pin, "pin", :default_value=>nil
   end
 
   class Void

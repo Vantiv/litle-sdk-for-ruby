@@ -183,6 +183,52 @@ module LitleOnline
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<advancedFraudResults><deviceReviewStatus>deviceReviewStatusString<\/deviceReviewStatus><deviceReputationScore>100<\/deviceReputationScore><triggeredRule>rule1<\/triggeredRule><triggeredRule>rule2<\/triggeredRule><\/advancedFraudResults>.*/m), is_a(Hash))
       LitleOnlineRequest.new.capture_given_auth(hash)
     end
+    
+     def test_processingType
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'authInformation' => {
+        'authDate'=>'2002-10-09','authCode'=>'543216',
+        'authAmount'=>'12345'
+        },
+        'processingType'=>'initialRecurring',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        }}
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<processingType>initialRecurring<\/processingType>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.capture_given_auth(hash)
+    end    
+
+    def test_originalNetworkTransactionId_originalTransactionAmount
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'authInformation' => {
+        'authDate'=>'2002-10-09','authCode'=>'543216',
+        'authAmount'=>'12345'
+        },
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+        },
+        'originalNetworkTransactionId'=>'987654321098765432109876543210',
+        'originalTransactionAmount'=>'10661'
+        }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<originalNetworkTransactionId>987654321098765432109876543210<\/originalNetworkTransactionId><originalTransactionAmount>10661<\/originalTransactionAmount>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.capture_given_auth(hash)
+    end 
 
   end
 end

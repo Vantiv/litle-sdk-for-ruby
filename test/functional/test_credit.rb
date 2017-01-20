@@ -192,5 +192,8 @@ module LitleOnline
       response= LitleOnlineRequest.new.credit(hash)
       assert_equal('Valid Format', response.message)
     end
+    
+    
+   
   end
 end
