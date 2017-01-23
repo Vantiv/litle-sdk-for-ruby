@@ -107,8 +107,8 @@ module LitleOnline
         'reportGroup'=>'Planets',
         'amount'=>'106',
         'secondaryAmount'=>'20',
-        'litleTxnId'=>'1234',
-        
+        'litleTxnId'=>'123456000',
+        'pin'=>'1234'
       }
       response= LitleOnlineRequest.new.capture(hash)
       assert_equal('Valid Format', response.message) 

@@ -1513,6 +1513,7 @@ module LitleOnline
     text_node :actionReason, "actionReason", :default_value=>nil
     #SDK XML 11
     text_node :pin, "pin", :default_value=>nil
+    
   end
 
   class RegisterTokenRequest
