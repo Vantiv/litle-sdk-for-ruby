@@ -318,6 +318,7 @@ module LitleOnline
     end
   end    
 
+
   class FraudCheck
     include XML::Mapping
     text_node :authenticationValue, "authenticationValue", :default_value=>nil
@@ -753,7 +754,42 @@ module LitleOnline
         this
       end
     end
-
+  end
+  
+  #XML 11.0
+  class SepaDirectDebit
+    include XML::Mapping
+    text_node :iban, "iban", :default_value=>nil
+    text_node :mandateProvider, "mandateProvider", :default_value=>nil
+    text_node :sequenceType, "sequenceType", :default_value=>nil
+    text_node :mandateReference, "mandateReference", :default_value=>nil
+    text_node :mandateURL, "mandateURL", :default_value=>nil
+    text_node :mandateSignatureDate, "mandateSignatureDate", :default_value=>nil
+    text_node :preferredLanguage, "preferredLanguage", :default_value=>nil
+    def self.from_hash(hash, name='sepaDirectDebit')
+      base = hash[name]
+      if(base)
+        this = SepaDirectDebit.new
+        this.iban = base['iban']
+        this.mandateProvider = base['mandateProvider']
+        this.sequenceType = base['sequenceType']
+        this.mandateReference = base['mandateReference']
+        this.mandateURL = base['mandateURL']
+        this.mandateSignatureDate = base['mandateSignatureDate']
+        this.preferredLanguage = base['preferredLanguage']
+        SchemaValidation.validate_required(this.iban, true, name, 'iban')
+        SchemaValidation.validate_required(this.mandateProvider, true, name, 'mandateProvider')
+        SchemaValidation.validate_required(this.sequenceType, true, name, 'sequenceType')
+        SchemaValidation.validate_length(this.iban, true, 15, 34 , name, 'iban')
+        SchemaValidation.validate_enum(this.mandateProvider, true, ['Merchant','Vantiv'], name, 'mandateProvider')
+        SchemaValidation.validate_enum(this.sequenceType, true, ['OneTime','FirstRecurring','SubsequentRecurring','FinalRecurring'], name, 'sequenceType')
+        SchemaValidation.validate_length(this.mandateReference, false, 0,256, name, 'mandateReference')
+        SchemaValidation.validate_regex(this.mandateURL, false, /\A([A-Z,a-z,0-9,\/,\-,_,.]){1,13}\Z/, name, 'mandateURL')  
+        SchemaValidation.validate_date(this.mandateSignatureDate, false,name, 'mandateSignatureDate')
+        SchemaValidation.validate_length(this.preferredLanguage, false,3,3, name, 'preferredLanguage')
+        this
+      end
+    end
   end
 
   class CardToken
@@ -1452,7 +1488,8 @@ module LitleOnline
     :elsif, 'token', :then, (object_node :token, "token", :class=>CardToken),
     :elsif, 'paypage', :then, (object_node :paypage, "paypage", :class=>CardPaypage),
     :elsif, 'mpos', :then, (object_node :mpos, "mpos", :class=>Mpos),
-    :elsif, 'applepay', :then, (object_node :applepay, "applepay", :class=>Applepay)
+    :elsif, 'applepay', :then, (object_node :applepay, "applepay", :class=>Applepay),
+    :elsif, 'sepaDirectDebit', :then, (object_node :sepaDirectDebit, "sepaDirectDebit", :class=>SepaDirectDebit)
     object_node :billMeLaterRequest, "billMeLaterRequest", :class=>BillMeLaterRequest, :default_value=>nil
     optional_choice_node :if, 'fraudCheck', :then, (object_node :fraudCheck, "fraudCheck", :class=>FraudCheck, :default_value=>nil),
     :elsif, 'cardholderAuthentication', :then, (object_node :cardholderAuthentication, "cardholderAuthentication", :class=>FraudCheck, :default_value=>nil)
@@ -1480,6 +1517,7 @@ module LitleOnline
     text_node :processingType,"processingType", :default_value=>nil
     text_node :originalNetworkTransactionId,"originalNetworkTransactionId", :default_value=>nil
     text_node :originalTransactionAmount,"originalTransactionAmount", :default_value=>nil 
+     
   end
 
   class Credit

@@ -329,68 +329,64 @@ module LitleOnline
      
      def test_simple_sale_with_processingType
       hash = {
-        'merchantId' => '101',
+       'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
         'orderId'=>'12344',
         'amount'=>'106',
         'orderSource'=>'ecommerce',
-        'card'=>
-        {
-        'type'=>'MC',
-        'number' =>'5400000000000000',
+        'processingType'=>'initialInstallment',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000002',
         'expDate' =>'1210'
-        },
-        'processingType'=>'initialInstallment'
+        }
       }
       response= LitleOnlineRequest.new.sale(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      assert_equal 'Valid Format', response.message
     end
 
-    def test_simple_sale_with_originalNetworkTransactionId_originalTransactionAmount
+   def test_simple_sale_with_originalNetworkTransactionId_originalTransactionAmount
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
         'orderId'=>'12344',
         'amount'=>'106',
         'orderSource'=>'ecommerce',
-        'card'=>
-        {
-        'type'=>'MC',
-        'number' =>'5400700000000000',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000002',
         'expDate' =>'1210'
         },
         'originalNetworkTransactionId'=>'98765432109876543210',
         'originalTransactionAmount'=>'7001'
       }
       response= LitleOnlineRequest.new.sale(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      assert_equal 'Valid Format', response.message
     end
     
-    def test_simple_sale_with_networkTxnId_response_cardSuffix_response
+  def test_simple_sale_with_sepaDirectDebit
       hash = {
         'merchantId' => '101',
+        'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456',
         'orderId'=>'12344',
         'amount'=>'106',
         'orderSource'=>'ecommerce',
-        'card'=>
-        {
-        'type'=>'VI',
-        'number' =>'4100700000000000',
-        'expDate' =>'1210',
-        'pin'=>'1111'
-        },
-        'originalNetworkTransactionId'=>'98765432109876543210',
-        'originalTransactionAmount'=>'7001'
-      }
+        'sepaDirectDebit'=> {
+        'iban'=>'123456789123456789',
+        'mandateProvider'=>'Merchant',
+        'sequenceType'=>'FirstRecurring'
+        }}
       response= LitleOnlineRequest.new.sale(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      assert_equal 'Valid Format', response.message
     end
      
    end

@@ -595,6 +595,7 @@ module LitleOnline
       transaction.customBilling             = CustomBilling.from_hash(options)
       transaction.paypal                    = PayPal.from_hash(options,'paypal')
       transaction.applepay                  = Applepay.from_hash(options,'applepay')
+      transaction.sepaDirectDebit           = SepaDirectDebit.from_hash(options,'sepaDirectDebit')
       #SDK Ruby XML 10
       transaction.wallet                    = Wallet.from_hash(options, 'wallet')
       

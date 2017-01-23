@@ -530,5 +530,23 @@ module LitleOnline
       LitleOnlineRequest.new.sale(hash)
     end
 
+
+  def test_sepaDirectDebit
+      hash = {
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'orderId'=>'12344',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'sepaDirectDebit'=> {
+        'iban'=>'123456789123456',
+        'mandateProvider'=>'Merchant',
+        'sequenceType'=>'OneTime',
+        }}
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<sepaDirectDebit><iban>123456789123456<\/iban><mandateProvider>Merchant<\/mandateProvider><sequenceType>OneTime<\/sequenceType><\/sepaDirectDebit>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.sale(hash)
+    end
+
   end
 end
