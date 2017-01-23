@@ -74,8 +74,10 @@ module LitleOnline
        'orderId'=>'65347567',
        'origAccountNumber' => '4000000000000001'      
       }
-      response= LitleOnlineRequest.new.query_Transaction(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)  
+      #Get exceptions
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.query_Transaction(hash)}
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)  
     end     
           
     def test_queryTransaction_no_accttype
@@ -90,8 +92,10 @@ module LitleOnline
        'orderId'=>'65347567',
        'origAccountNumber' => '4000000000000001'      
        }  
-       response= LitleOnlineRequest.new.query_Transaction(hash)
-       assert(response.message =~ /Error validating xml data against the schema/)   
+       #Get exceptions
+        exception = assert_raise(RuntimeError){LitleOnlineRequest.new.query_Transaction(hash)}
+        #Test 
+        assert(exception.message =~ /Error validating xml data against the schema/)   
     end
     
     def test_queryTransaction_invalid_values
@@ -108,8 +112,10 @@ module LitleOnline
        'orderId'=>'65347567',
        'origAccountNumber' => '4000000000000001'      
      }
-     response= LitleOnlineRequest.new.query_Transaction(hash)
-     assert(response.message =~ /Error validating xml data against the schema/)
+     #Get exceptions
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.query_Transaction(hash)}
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)  
     end     
         
     def test_queryTransaction_missing_attributes
@@ -122,8 +128,10 @@ module LitleOnline
        'transactionId'=>'123456',
        'origAccountNumber' => '4000000000000001'      
        }
-       response= LitleOnlineRequest.new.query_Transaction(hash)
-       assert(response.message =~ /Error validating xml data against the schema/)
+       #Get exceptions
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.query_Transaction(hash)}
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)  
     end
      
     def test_queryTransaction_unavailable_response

@@ -110,8 +110,10 @@ module LitleOnline
         'number' =>'4100000000000002',
         'expDate' =>'1210'
         }}
-      response= LitleOnlineRequest.new.sale(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      #Get exceptions
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)
     end
 
     def test_no_report_group
@@ -206,8 +208,10 @@ module LitleOnline
         'number' =>'4100000000000002',
         'expDate' =>'1210'
         }}
-      response= LitleOnlineRequest.new.sale(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      #Get exceptions
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)
     end
 
     def test_no_amount
@@ -224,8 +228,10 @@ module LitleOnline
         'number' =>'4100000000000002',
         'expDate' =>'1210'
         }}
-      response= LitleOnlineRequest.new.sale(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      #Get exceptions
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)
     end
 
     def test_no_order_source
@@ -242,8 +248,10 @@ module LitleOnline
         'number' =>'4100000000000002',
         'expDate' =>'1210'
         }}
-      response= LitleOnlineRequest.new.sale(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      #Get exceptions
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)
     end
 
     def test_simple_sale_with_mpos

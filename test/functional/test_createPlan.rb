@@ -78,8 +78,10 @@ def test_simple_happy
         'intervalType'=>'ANNUAL',	
 	   }
 
-    response= LitleOnlineRequest.new.create_plan(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
+    #Get exceptions
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.create_plan(hash)}
+    #Test 
+    assert(exception.message =~ /Error validating xml data against the schema/)
   end
  end
 end

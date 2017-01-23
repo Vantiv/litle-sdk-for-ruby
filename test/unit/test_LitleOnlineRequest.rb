@@ -49,9 +49,7 @@ module LitleOnline
         'expDate' =>'1210'
         }}
   
-      Communications.expects(:http_post).with(regexp_matches(/<litleOnlineRequest .*/m),kind_of(Hash))
-      XMLObject.expects(:new)
-  
+      LitleXmlMapper.expects(:request).with(regexp_matches(/<litleOnlineRequest .*/m), is_a(Hash))
       response = LitleOnlineRequest.new.authorization(hash)
     end
   
@@ -69,9 +67,7 @@ module LitleOnline
         'expDate' =>'1210'
         }}
   
-      Communications.expects(:http_post).with(regexp_matches(/.*<authorization ((reportGroup="Planets" id="003")|(id="003" reportGroup="Planets")).*/m),kind_of(Hash))
-      XMLObject.expects(:new)
-  
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<authorization ((reportGroup="Planets" id="003")|(id="003" reportGroup="Planets")).*/m), is_a(Hash))
       response = LitleOnlineRequest.new.authorization(hash)
     end
   
@@ -89,9 +85,7 @@ module LitleOnline
         'expDate' =>'1210'
         }}
   
-      Communications.expects(:http_post).with(regexp_matches(/.*<authorization.*<orderId>12344.*<amount>106.*<orderSource>ecommerce.*/m),kind_of(Hash))
-      XMLObject.expects(:new)
-  
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<authorization.*<orderId>12344.*<amount>106.*<orderSource>ecommerce.*/m), is_a(Hash))
       response = LitleOnlineRequest.new.authorization(hash)
     end
   
@@ -109,9 +103,7 @@ module LitleOnline
         'expDate' =>'1210'
         }}
   
-      Communications.expects(:http_post).with(regexp_matches(/.*<authorization.*<card>.*<number>4100000000000001.*<expDate>1210.*/m),kind_of(Hash))
-      XMLObject.expects(:new)
-  
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<authorization.*<card>.*<number>4100000000000001.*<expDate>1210.*/m), is_a(Hash))
       response = LitleOnlineRequest.new.authorization(hash)
     end
   
@@ -129,9 +121,7 @@ module LitleOnline
         'expDate' =>'1210'
         }}
   
-      Communications.expects(:http_post).with(regexp_matches(/<litleOnlineRequest.*<sale.*<card>.*<number>4100000000000001.*<expDate>1210.*/m),kind_of(Hash))
-      XMLObject.expects(:new)
-  
+      LitleXmlMapper.expects(:request).with(regexp_matches(/<litleOnlineRequest.*<sale.*<card>.*<number>4100000000000001.*<expDate>1210.*/m), is_a(Hash))
       response = LitleOnlineRequest.new.sale(hash)
     end
   
@@ -143,9 +133,7 @@ module LitleOnline
         'litleTxnId'=>'123456789012345678'
       }
       
-      Communications.expects(:http_post).with(Not(regexp_matches(/.*amount.*/m)),kind_of(Hash))
-      XMLObject.expects(:new)
-
+      LitleXmlMapper.expects(:request).with(Not(regexp_matches(/.*amount.*/m)), is_a(Hash))
       response = LitleOnlineRequest.new.capture(hash)
     end
   
@@ -159,9 +147,7 @@ module LitleOnline
         'litleTxnId'=>'123456789012345678'
       }
   
-      Communications.expects(:http_post).with(Not(regexp_matches(/.*amount.*/m)),kind_of(Hash))
-      XMLObject.expects(:new)
-  
+      LitleXmlMapper.expects(:request).with(Not(regexp_matches(/.*amount.*/m)), is_a(Hash))
       response = LitleOnlineRequest.new.force_capture(hash)
     end
   
@@ -175,8 +161,7 @@ module LitleOnline
         'litleTxnId'=>'123456789012345678',
       }
   
-      Communications.expects(:http_post).with(Not(regexp_matches(/.*amount.*/m)),kind_of(Hash))
-      XMLObject.expects(:new)
+      LitleXmlMapper.expects(:request).with(Not(regexp_matches(/.*amount.*/m)), is_a(Hash))
   
       response = LitleOnlineRequest.new.echeck_credit(hash)
     end
@@ -191,9 +176,7 @@ module LitleOnline
         'litleTxnId'=>'123456789012345678',
       }
   
-      Communications.expects(:http_post).with(Not(regexp_matches(/.*amount.*/m)),kind_of(Hash))
-      XMLObject.expects(:new)
-  
+      LitleXmlMapper.expects(:request).with(Not(regexp_matches(/.*amount.*/m)), is_a(Hash))
       response = LitleOnlineRequest.new.echeck_sale(hash)
     end
   
@@ -213,8 +196,7 @@ module LitleOnline
         }
       }
   
-      XMLObject.expects(:new)
-      Communications.expects(:http_post).with(regexp_matches(/.*card.*/m),kind_of(Hash))
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*card.*/m), is_a(Hash))
       LitleOnlineRequest.new.authorization(start_hash.merge(card_only))
     end
     
@@ -233,8 +215,7 @@ module LitleOnline
       }
     }
   
-    XMLObject.expects(:new)
-    Communications.expects(:http_post).with(regexp_matches(/.*token.*/m),kind_of(Hash))
+    LitleXmlMapper.expects(:request).with(regexp_matches(/.*token.*/m), is_a(Hash))
     LitleOnlineRequest.new.authorization(start_hash.merge(token_only))
   end
   
@@ -261,9 +242,7 @@ module LitleOnline
           'expDate' =>'1210'
         }}
 
-      Communications.expects(:http_post).with(regexp_matches(/<litleOnlineRequest.*<sale.*<payPalOrderComplete>true<\/payPalOrderComplete>.*/m),kind_of(Hash))
-      XMLObject.expects(:new)
- 
+      LitleXmlMapper.expects(:request).with(regexp_matches(/<litleOnlineRequest.*<sale.*<payPalOrderComplete>true<\/payPalOrderComplete>.*/m), is_a(Hash))
       response = LitleOnlineRequest.new.sale(hash)
     end
 
@@ -272,23 +251,8 @@ module LitleOnline
       hash={
         'litleTxnId' => '006'
       }
-
-      Communications.expects(:http_post).with(regexp_matches(/<litleOnlineRequest.*version="10\.1".*/m),kind_of(Hash))
-      XMLObject.expects(:new)
- 
+      LitleXmlMapper.expects(:request).with(regexp_matches(/<litleOnlineRequest.*version="10\.1".*/m), is_a(Hash))
       response = LitleOnlineRequest.new.void(hash)
-    end
-    
-    def test_void_response_contains_recycling
-      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
-      hash={
-        'litleTxnId' => '123'
-      }
-
-      Communications.expects(:http_post).with(kind_of(String),kind_of(Hash)).returns('<litleOnlineResponse><voidResponse><recycling><creditLitleTxnId>65</creditLitleTxnId></recycling></voidResponse></litleOnlineResponse>')
- 
-      response = LitleOnlineRequest.new.void(hash)
-      assert_equal '65', response.voidResponse.recycling.creditLitleTxnId
     end
     
   end

@@ -80,8 +80,10 @@ module LitleOnline
         'amount'=>'106',
         'pin'=>'3333'
       }
-      response= LitleOnlineRequest.new.capture(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      #Get exceptions
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.capture(hash)}
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)
     end
     
      def test_custom_billing

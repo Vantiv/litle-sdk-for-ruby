@@ -193,8 +193,7 @@ module LitleOnline
         }
       }
 
-      XMLObject.expects(:new)
-      Communications.expects(:http_post).with(regexp_matches(/.*<merchantData>.*?<campaign>foo<\/campaign>.*?<\/merchantData>.*/m),kind_of(Hash))
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<merchantData>.*?<campaign>foo<\/campaign>.*?<\/merchantData>.*/m), is_a(Hash))
       LitleOnlineRequest.new.authorization(hash)
     end
 
@@ -209,8 +208,7 @@ module LitleOnline
         'fraudFilterOverride'=> 'true'
       }
 
-      XMLObject.expects(:new)
-      Communications.expects(:http_post).with(regexp_matches(/.*<authorization.*?<fraudFilterOverride>true<\/fraudFilterOverride>.*?<\/authorization>.*/m),kind_of(Hash))
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<authorization.*?<fraudFilterOverride>true<\/fraudFilterOverride>.*?<\/authorization>.*/m), is_a(Hash))
       LitleOnlineRequest.new.authorization(hash)
     end
     
@@ -298,8 +296,7 @@ module LitleOnline
         'fraudFilterOverride'=> 'true'
       }
 
-      XMLObject.expects(:new)
-      Communications.expects(:http_post).with(regexp_matches(/.*<authentication.*?<user>UNIT<\/user>.*?<\/authentication>.*/m),kind_of(Hash))
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<authentication.*?<user>UNIT<\/user>.*?<\/authentication>.*/m), is_a(Hash))
       LitleOnlineRequest.new.authorization(hash)
     end
 
@@ -316,8 +313,7 @@ module LitleOnline
         'fraudFilterOverride'=> 'true'
       }
 
-      XMLObject.expects(:new)
-      Communications.expects(:http_post).with(regexp_matches(/.*<authentication.*?<password>TEST<\/password>.*?<\/authentication>.*/m),kind_of(Hash))
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<authentication.*?<password>TEST<\/password>.*?<\/authentication>.*/m), is_a(Hash))
       LitleOnlineRequest.new.authorization(hash)
     end
 

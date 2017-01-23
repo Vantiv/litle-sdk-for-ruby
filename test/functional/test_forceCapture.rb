@@ -121,8 +121,10 @@ module LitleOnline
         'cardValidationNum'=>'555',
         'type'=>'VI'
         }}
-      response= LitleOnlineRequest.new.force_capture(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      #Get exceptions
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.force_capture(hash)}
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)
     end
   
     def test_no_order_source
@@ -139,8 +141,10 @@ module LitleOnline
         'number' =>'4100000000000001',
         'expDate' =>'1210'
         }}
-      response= LitleOnlineRequest.new.force_capture(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      #Get exceptions
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.force_capture(hash)}
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)
     end
 
     def test_simple_forceCapture_with_mpos

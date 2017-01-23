@@ -50,8 +50,10 @@ def test_simple
         'reportGroup'=>'Planets',
 	   }
 
-    response= LitleOnlineRequest.new.refund_reversal(hash)
-    assert(response.message =~ /Error validating xml data against the schema/)
+    #Get exceptions
+    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.refund_reversal(hash)}
+    #Test 
+    assert(exception.message =~ /Error validating xml data against the schema/)
   end
  end
 end

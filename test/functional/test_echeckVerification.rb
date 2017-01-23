@@ -89,8 +89,10 @@ module LitleOnline
         'orderId'=>'12345',
         'orderSource'=>'ecommerce',
       }
-      response= LitleOnlineRequest.new.echeck_verification(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      #Get exceptions
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_verification(hash)}
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)
     end
     
     def test_no_amount
@@ -101,8 +103,10 @@ module LitleOnline
         'reportGroup'=>'Planets',
         'orderId'=>'12345'
       }
-      response= LitleOnlineRequest.new.echeck_verification(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      #Get exceptions
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_verification(hash)}
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)
     end
   
     def test_no_order_id
@@ -112,8 +116,10 @@ module LitleOnline
         'id'=>'test',
         'reportGroup'=>'Planets',
       }
-      response= LitleOnlineRequest.new.echeck_verification(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      #Get exceptions
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_verification(hash)}
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)
     end
   
     def test_no_order_source
@@ -125,8 +131,10 @@ module LitleOnline
         'amount'=>'123456',
         'orderId'=>'12345'
       }
-      response= LitleOnlineRequest.new.echeck_verification(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      #Get exceptions
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_verification(hash)}
+      #Test 
+      assert(exception.message =~ /Error validating xml data against the schema/)
     end
   
   end
