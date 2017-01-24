@@ -35,11 +35,23 @@ def test_simple
         'version'=>'8.8',
         'id'=>'test',
         'reportGroup'=>'Planets',
-        'litleTxnId' =>'5000'
-	   }
+        'litleTxnId' =>'5000',
+        'card'=>{
+          'type'=>'GC',
+          'number' =>'400000000000001',
+          'expDate' =>'0150',
+          'pin' => '1234',
+          'cardValidationNum' => '411'
+        },
+        'originalRefCode' => '101',
+        'originalAmount' => '34561',
+        'originalTxnTime' => '2017-01-24T09:00:00',
+        'originalSystemTraceId' => '33',
+        'originalSequenceNumber' => '111111',
+     }
 
-    response= LitleOnlineRequest.new.deactivate_reversal(hash)
-    assert_equal('Valid Format', response.message)
+    response= LitleOnlineRequest.new.deposit_reversal(hash)
+    assert_equal('000', response.depositReversalResponse.response)
   end
 
 

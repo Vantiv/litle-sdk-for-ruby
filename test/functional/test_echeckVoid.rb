@@ -36,7 +36,7 @@ module LitleOnline
         'litleTxnId'=>'12345678000',
       }
       response= LitleOnlineRequest.new.echeck_void(hash)
-      assert_equal('Transaction Received', response.echeckVoidResponse.message)
+      assert_equal('0', response.response)
     end  
   end
 end
