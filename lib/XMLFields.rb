@@ -647,6 +647,7 @@ module LitleOnline
     text_node :number, "number", :default_value=>nil
     text_node :expDate, "expDate", :default_value=>nil
     text_node :cardValidationNum, "cardValidationNum", :default_value=>nil
+    text_node :pin, "pin", :default_value=>nil
     def self.from_hash(hash, name='card')
       base = hash[name]
       if(base)
@@ -656,11 +657,13 @@ module LitleOnline
         this.number = base['number']
         this.expDate = base['expDate']
         this.cardValidationNum = base['cardValidationNum']
-        SchemaValidation.validate_enum(this.mop, false, ['','MC','VI','AX','DC','DI','PP','JC','BL','EC','GC'], name, 'type')
+        this.pin = base['pin']
+        SchemaValidation.validate_enum(this.mop, true, ['','MC','VI','AX','DC','DI','PP','JC','BL','EC','GC'], name, 'type')
         SchemaValidation.validate_length(this.track, false, 1, 256, name, 'track')
         SchemaValidation.validate_length(this.number, false, 13, 25, name, 'number')
         SchemaValidation.validate_length(this.expDate, false, 4, 4, name, 'expDate')
         SchemaValidation.validate_length(this.cardValidationNum, false, 1, 4, name, 'cardValidationNum')
+        SchemaValidation.validate_length(this.pin, false, 4, 12, name, 'pin')
         this
       else
         nil
@@ -1628,6 +1631,18 @@ module LitleOnline
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
   end
 
+  class GiftCardCardType
+    def self.from_hash(hash, name='card')
+      base = hash[name]
+      if(base)
+        SchemaValidation.validate_enum(base['type'], true, ['GC'], name, 'type')
+        Card.from_hash(hash)
+      else
+        nil
+      end
+    end
+  end
+
   class DepositReversal
     include XML::Mapping
     root_element_name "depositReversal"
@@ -1636,6 +1651,14 @@ module LitleOnline
     text_node :customerId, "@customerId", :default_value=>nil
 
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
+    #11.0
+    object_node :card, "card", :class => GiftCardCardType, :default_value=>nil
+    text_node :originalRefCode, "originalRefCode", :default_value=>nil
+    text_node :originalAmount, "originalAmount", :default_value=>nil
+    text_node :originalTxnTime, "originalTxnTime", :default_value=>nil
+    text_node :originalSystemTraceId, "originalSystemTraceId", :default_value=>nil
+    text_node :originalSequenceNumber, "originalSequenceNumber", :default_value=>nil
+    
   end
 
   class RefundReversal

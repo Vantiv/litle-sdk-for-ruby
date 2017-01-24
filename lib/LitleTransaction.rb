@@ -159,6 +159,12 @@ module LitleOnline
     def deposit_reversal(options)
       transaction = DepositReversal.new
       transaction.litleTxnId = options['litleTxnId']
+      transaction.card = GiftCardCardType.from_hash(options,'card')
+      transaction.originalRefCode = options['originalRefCode']
+      transaction.originalAmount = options['originalAmount']
+      transaction.originalTxnTime = options['originalTxnTime']
+      transaction.originalSystemTraceId = options['originalSystemTraceId']
+      transaction.originalSequenceNumber = options['originalSequenceNumber']
       return transaction
     end
 
