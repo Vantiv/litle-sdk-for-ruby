@@ -219,13 +219,7 @@ module LitleOnline
     LitleOnlineRequest.new.authorization(start_hash.merge(token_only))
   end
   
-    def test_set_merchant_sdk
-      litle = LitleOnlineRequest.new
-      #Explicit - used for integrations
-      assert_equal 'ActiveMerchant;3.2', litle.send(:get_merchant_sdk, {'merchantSdk'=>'ActiveMerchant;3.2'})
-      #Implicit - used raw when nothing is specified
-      assert_equal 'Ruby;10.1', litle.send(:get_merchant_sdk, {'NotMerchantSdk'=>'ActiveMerchant;3.2'})
-    end
+   
   
     def test_sale_paypal_order_complete_typo
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
@@ -251,7 +245,7 @@ module LitleOnline
       hash={
         'litleTxnId' => '006'
       }
-      LitleXmlMapper.expects(:request).with(regexp_matches(/<litleOnlineRequest.*version="10\.1".*/m), is_a(Hash))
+      LitleXmlMapper.expects(:request).with(regexp_matches(/<litleOnlineRequest.*version="11\.0".*/m), is_a(Hash))
       response = LitleOnlineRequest.new.void(hash)
     end
     

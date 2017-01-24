@@ -389,9 +389,9 @@ module LitleOnline
         'amount'=>'106',
         'orderSource'=>'ecommerce',
         'sepaDirectDebit'=> {
-        'iban'=>'123456789123456789',
         'mandateProvider'=>'Merchant',
-        'sequenceType'=>'FirstRecurring'
+        'sequenceType'=>'FirstRecurring',
+        'iban'=>'123456789123456789'
         }}
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal 'Valid Format', response.message

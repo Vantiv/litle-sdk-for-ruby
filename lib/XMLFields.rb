@@ -759,12 +759,12 @@ module LitleOnline
   #XML 11.0
   class SepaDirectDebit
     include XML::Mapping
-    text_node :iban, "iban", :default_value=>nil
     text_node :mandateProvider, "mandateProvider", :default_value=>nil
     text_node :sequenceType, "sequenceType", :default_value=>nil
     text_node :mandateReference, "mandateReference", :default_value=>nil
     text_node :mandateURL, "mandateURL", :default_value=>nil
     text_node :mandateSignatureDate, "mandateSignatureDate", :default_value=>nil
+    text_node :iban, "iban", :default_value=>nil
     text_node :preferredLanguage, "preferredLanguage", :default_value=>nil
     def self.from_hash(hash, name='sepaDirectDebit')
       base = hash[name]

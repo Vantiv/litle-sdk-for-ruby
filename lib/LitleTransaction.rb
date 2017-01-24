@@ -209,6 +209,7 @@ module LitleOnline
       transaction.processingType                    = options['processingType']
       transaction.originalNetworkTransactionId      = options['originalNetworkTransactionId']
       transaction.originalTransactionAmount         = options['originalTransactionAmount']
+      transaction.sepaDirectDebit                   = SepaDirectDebit.from_hash(options,'sepaDirectDebit')
           
       return transaction
     end
@@ -594,7 +595,8 @@ module LitleOnline
       transaction.fraudFilterOverride       = options['fraudFilterOverride']
       transaction.customBilling             = CustomBilling.from_hash(options)
       transaction.paypal                    = PayPal.from_hash(options,'paypal')
-      transaction.applepay                  = Applepay.from_hash(options,'applepay')
+      transaction.applepay                  = Applepay.from_hash(options,'applepay') 
+      
       
       #SDK Ruby XML 10
       transaction.wallet                    = Wallet.from_hash(options, 'wallet')
