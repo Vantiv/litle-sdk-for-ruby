@@ -206,7 +206,7 @@ module LitleOnline
         'reportGroup'=>'Planets',
         'subscriptionId'=>'100',
         'planCode'=>'planCodeString',
-        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'vantiv.com'}
       }
 
       batch = LitleBatchRequest.new
@@ -343,7 +343,7 @@ module LitleOnline
         'orderId'=>'12345',
         'orderSource'=>'ecommerce',
         'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
-        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'vantiv.com'}
       }
 
       batch = LitleBatchRequest.new
@@ -417,7 +417,7 @@ module LitleOnline
         'orderId'=>'12345',
         'orderSource'=>'ecommerce',
         'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
-        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'vantiv.com'}
       }
 
       batch = LitleBatchRequest.new

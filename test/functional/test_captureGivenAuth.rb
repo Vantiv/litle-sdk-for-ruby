@@ -125,7 +125,7 @@ module LitleOnline
         'authDate'=>'2002-10-09','authCode'=>'543216',
         'authAmount'=>'12345'
         },
-        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'},
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'vantiv.com'},
         'processingInstructions'=>{'bypassVelocityCheck'=>'true'},
         'orderSource'=>'ecommerce',
         'card'=>{

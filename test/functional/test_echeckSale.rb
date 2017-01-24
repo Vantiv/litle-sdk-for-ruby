@@ -50,7 +50,7 @@ module LitleOnline
         'orderId'=>'12345',
         'orderSource'=>'ecommerce',
         'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
-        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'vantiv.com'}
       }
       response= LitleOnlineRequest.new.echeck_sale(hash)
       assert_equal('Valid Format', response.message)
@@ -66,8 +66,8 @@ module LitleOnline
         'orderId'=>'12345',
         'orderSource'=>'ecommerce',
         'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
-        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'},
-        'shipToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'vantiv.com'},
+        'shipToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'vantiv.com'}
       }
       response= LitleOnlineRequest.new.echeck_sale(hash)
       assert_equal('Valid Format', response.message)
@@ -84,7 +84,7 @@ module LitleOnline
         'orderSource'=>'ecommerce',
         'echeckToken' => {'accType'=>'Checking','litleToken'=>'1234565789012','routingNum'=>'123456789','checkNum'=>'123455'},
         'customBilling'=>{'phone'=>'123456789','descriptor'=>'good'},
-        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'vantiv.com'}
       }
       response= LitleOnlineRequest.new.echeck_sale(hash)
       assert_equal('Valid Format', response.message)
@@ -101,7 +101,7 @@ module LitleOnline
         'verify'=>'true',
         'orderId'=>'12345',
         'orderSource'=>'ecommerce',
-        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'vantiv.com'}
       }
       response= LitleOnlineRequest.new.echeck_sale(hash)
       assert_equal('Valid Format', response.message)
@@ -156,7 +156,7 @@ module LitleOnline
         'orderId'=>'12345',
         'orderSource'=>'ecommerce',
         'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455','ccdPaymentInformation'=>'12345678901234567890123456789012345678901234567890123456789012345678901234567890'},
-        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'vantiv.com'}
       }
       response= LitleOnlineRequest.new.echeck_sale(hash)
       assert_equal('Valid Format', response.message)
@@ -173,7 +173,7 @@ module LitleOnline
         'orderId'=>'12345',
         'orderSource'=>'ecommerce',
         'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455','ccdPaymentInformation'=>'123456789012345678901234567890123456789012345678901234567890123456789012345678901'},
-        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'vantiv.com'}
       }
       assert_raises RuntimeError do 
         response= LitleOnlineRequest.new.echeck_sale(hash)

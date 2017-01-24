@@ -2060,11 +2060,6 @@ module LitleOnline
 
   class LitleRequest
     include XML::Mapping
-    # version="6.0" xmlns="http://www.litle.com/schema" numBatchRequests = "1">
-    # <authentication>
-    # <user>XMLTESTV6ORG14</user>
-    # <password>password</password>
-    # </authentication>
     root_element_name "litleRequest"
 
     text_node :version, "@version", :default_value=>"0"

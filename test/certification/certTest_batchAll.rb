@@ -157,7 +157,7 @@ module LitleOnline
         'orderId'=>'12345',
         'orderSource'=>'ecommerce',
         'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
-        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'vantiv.com'}
       }
 
       echeckCreditHash = {
@@ -184,7 +184,7 @@ module LitleOnline
         'orderId'=>'12345',
         'orderSource'=>'ecommerce',
         'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
-        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'vantiv.com'}
       }
 
       accountUpdateHash = {
@@ -255,7 +255,7 @@ module LitleOnline
         'orderId'=>'12345',
         'orderSource'=>'ecommerce',
         'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
-        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'vantiv.com'}
       }
 
       path = "/tmp/litle-sdk-for-ruby/cert/"
@@ -301,7 +301,7 @@ module LitleOnline
         'orderId'=>'12345',
         'orderSource'=>'ecommerce',
         'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
-        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'vantiv.com'}
       }
 
       path = "/tmp/litle-sdk-for-ruby/cert/"
@@ -471,7 +471,7 @@ module LitleOnline
     
     def test_echeck_pre_note_all 
       
-      billToAddress = {'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}        
+      billToAddress = {'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'vantiv.com'}        
       echeckSuccess = {'accType'=>'Corporate','accNum'=>'1092969901','routingNum'=>'011075150'}
       echeckRoutErr = {'accType'=>'Checking','accNum'=>'6099999992','routingNum'=>'053133052'}
       echeckAccErr = {'accType'=>'Corporate','accNum'=>'10@2969901','routingNum'=>'011100012'}

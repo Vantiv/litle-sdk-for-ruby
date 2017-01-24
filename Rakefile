@@ -39,7 +39,7 @@ spec = Gem::Specification.new do |s|
   s.email = "sdksupport@vantiv.com"
   s.homepage = "http://www.vantiv.com/developers"
   s.platform = Gem::Platform::RUBY
-  s.required_ruby_version = '>=1.8.7'
+  s.required_ruby_version = '>=2.2.0'
   s.files = Dir['**/**']
   s.executables = [ 'sample_driver.rb', 'Setup.rb' ]
   s.test_files = Dir["test/unit/ts_unit.rb"]

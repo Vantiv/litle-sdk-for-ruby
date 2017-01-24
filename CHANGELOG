@@ -1,6 +1,6 @@
 = LitleOnline CHANGELOG
 
-==Version 9.10
+==Version 9.10.0
 * Feature: add androidpay
 * Feature: add network enhancements for original txn Id and original amount
 * Feature: add processingType

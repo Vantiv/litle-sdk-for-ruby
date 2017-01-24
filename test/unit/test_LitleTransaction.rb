@@ -281,7 +281,7 @@ module LitleOnline
         'billToAddress'=>{'name'=>'Bob',
         'city'=>'lowell',
         'state'=>'MA',
-        'email'=>'litle.com'}
+        'email'=>'vantiv.com'}
       }
       
       result = ltlTxn.echeck_verification(echeckVerificationHash)
@@ -298,7 +298,7 @@ module LitleOnline
       assert_equal 'Bob', result.billToAddress.name
       assert_equal 'lowell', result.billToAddress.city
       assert_equal 'MA', result.billToAddress.state
-      assert_equal 'litle.com', result.billToAddress.email
+      assert_equal 'vantiv.com', result.billToAddress.email
     end
     
     def test_echeck_credit
@@ -352,7 +352,7 @@ module LitleOnline
         'orderId'=>'12345',
         'orderSource'=>'ecommerce',
         'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
-        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'vantiv.com'}
       }
       
       result = ltlTxn.echeck_sale(echeckSaleHash)
@@ -370,7 +370,7 @@ module LitleOnline
       assert_equal 'Bob', result.billToAddress.name
       assert_equal 'lowell', result.billToAddress.city
       assert_equal 'MA', result.billToAddress.state
-      assert_equal 'litle.com', result.billToAddress.email
+      assert_equal 'vantiv.com', result.billToAddress.email
     end
     
     def test_account_update

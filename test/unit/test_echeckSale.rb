@@ -78,7 +78,7 @@ module LitleOnline
         'orderId'=>'12345',
         'orderSource'=>'ecommerce',
         'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455','ccdPaymentInformation'=>'12345678901234567890123456789012345678901234567890123456789012345678901234567890'},
-        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'vantiv.com'}
       }
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<amount>123<\/amount><secondaryAmount>1<\/secondaryAmount>.*?<echeck>.*?<ccdPaymentInformation>.*<\/ccdPaymentInformation><\/echeck>.*/m), is_a(Hash))
       LitleOnlineRequest.new.echeck_sale(hash)

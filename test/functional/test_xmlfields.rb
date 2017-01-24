@@ -113,7 +113,7 @@ module LitleOnline
         'orderId'=>'12344',
         'amount'=>'106',
         'orderSource'=>'ecommerce',
-        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'},
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'vantiv.com'},
         'card'=>{
         'type'=>'VI',
         'number' =>'4100000000000000',
