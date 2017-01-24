@@ -1,5 +1,5 @@
 =begin
-Copyright (c) 2011 Litle & Co.
+Copyright (c) 2017 Vantiv eCommerce.
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -30,16 +30,16 @@ require 'rake/clean'
 spec = Gem::Specification.new do |s|
   FileUtils.rm_rf('pkg')
   s.name = "LitleOnline"
-  s.summary = "Ruby SDK produced by Vantiv eCommerce for transaction processing using Vantiv eCommerce XML format v10.1"
+  s.summary = "Ruby SDK produced by Vantiv eCommerce for transaction processing using Vantiv eCommerce XML format v11.0"
   s.description = File.read(File.join(File.dirname(__FILE__), 'DESCRIPTION'))
   s.requirements =
-  [ 'Contact sdksupport@litle.com for more information' ]
-  s.version = "10.1.1"
+  [ 'Contact sdksupport@vantiv.com for more information' ]
+  s.version = "11.0.0"
   s.author = "Vantiv - eCommerce"
   s.email = "sdksupport@vantiv.com"
   s.homepage = "https://www.vantiv.com/developers/ecommerce-payments#sdk-ruby"
   s.platform = Gem::Platform::RUBY
-  s.required_ruby_version = '>=2.0.0'
+  s.required_ruby_version = '>=2.2.0'
   s.files = Dir['**/**']
   s.executables = [ 'sample_driver.rb', 'Setup.rb' ]
   s.test_files = Dir["test/unit/ts_unit.rb"]

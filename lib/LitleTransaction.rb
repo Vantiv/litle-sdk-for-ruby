@@ -1,5 +1,5 @@
 =begin
-Copyright (c) 2011 Litle & Co.
+Copyright (c) 2017 Vantiv eCommerce
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
 files (the "Software"), to deal in the Software without
@@ -159,36 +159,72 @@ module LitleOnline
     def activate_reversal(options)
       transaction = ActivateReversal.new
       transaction.litleTxnId = options['litleTxnId']
+      transaction.card = GiftCardCardType.from_hash(options,'card')
+      transaction.originalRefCode = options['originalRefCode']
+      transaction.originalAmount = options['originalAmount']
+      transaction.originalTxnTime = options['originalTxnTime']
+      transaction.originalSystemTraceId = options['originalSystemTraceId']
+      transaction.originalSequenceNumber = options['originalSequenceNumber']
       return transaction
     end
 
     def deposit_reversal(options)
       transaction = DepositReversal.new
       transaction.litleTxnId = options['litleTxnId']
+      transaction.card = GiftCardCardType.from_hash(options,'card')
+      transaction.originalRefCode = options['originalRefCode']
+      transaction.originalAmount = options['originalAmount']
+      transaction.originalTxnTime = options['originalTxnTime']
+      transaction.originalSystemTraceId = options['originalSystemTraceId']
+      transaction.originalSequenceNumber = options['originalSequenceNumber']
       return transaction
     end
 
     def refund_reversal(options)
       transaction = RefundReversal.new
       transaction.litleTxnId = options['litleTxnId']
+      transaction.card = GiftCardCardType.from_hash(options,'card')
+      transaction.originalRefCode = options['originalRefCode']
+      transaction.originalAmount = options['originalAmount']
+      transaction.originalTxnTime = options['originalTxnTime']
+      transaction.originalSystemTraceId = options['originalSystemTraceId']
+      transaction.originalSequenceNumber = options['originalSequenceNumber']
       return transaction
     end
 
     def deactivate_reversal(options)
       transaction = DeactivateReversal.new
       transaction.litleTxnId = options['litleTxnId']
+      transaction.card = GiftCardCardType.from_hash(options,'card')
+      transaction.originalRefCode = options['originalRefCode']
+      transaction.originalAmount = options['originalAmount']
+      transaction.originalTxnTime = options['originalTxnTime']
+      transaction.originalSystemTraceId = options['originalSystemTraceId']
+      transaction.originalSequenceNumber = options['originalSequenceNumber']
       return transaction
     end
 
     def load_reversal(options)
       transaction = LoadReversal.new
       transaction.litleTxnId = options['litleTxnId']
+      transaction.card = GiftCardCardType.from_hash(options,'card')
+      transaction.originalRefCode = options['originalRefCode']
+      transaction.originalAmount = options['originalAmount']
+      transaction.originalTxnTime = options['originalTxnTime']
+      transaction.originalSystemTraceId = options['originalSystemTraceId']
+      transaction.originalSequenceNumber = options['originalSequenceNumber']
       return transaction
     end
 
     def unload_reversal(options)
       transaction = UnloadReversal.new
       transaction.litleTxnId = options['litleTxnId']
+      transaction.card = GiftCardCardType.from_hash(options,'card')
+      transaction.originalRefCode = options['originalRefCode']
+      transaction.originalAmount = options['originalAmount']
+      transaction.originalTxnTime = options['originalTxnTime']
+      transaction.originalSystemTraceId = options['originalSystemTraceId']
+      transaction.originalSequenceNumber = options['originalSequenceNumber']
       return transaction
     end
 

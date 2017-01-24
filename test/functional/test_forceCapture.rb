@@ -1,5 +1,5 @@
 =begin
-Copyright (c) 2012 Litle & Co.
+Copyright (c) 2017 Vantiv eCommerce
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -43,7 +43,9 @@ module LitleOnline
         'expDate' =>'1210'
         }}
       response= LitleOnlineRequest.new.force_capture(hash)
-      assert_equal('000', response.forceCaptureResponse.response)
+
+      assert_equal('0', response.response)
+
     end
   
     def test_simple_force_capture_with_token
@@ -167,7 +169,8 @@ module LitleOnline
 		}
       }
       response= LitleOnlineRequest.new.force_capture(hash)
-      assert_equal('000', response.forceCaptureResponse.response)
+      assert_equal('0', response.response)
+
     end
     
     def test_simple_force_capture_with_secondaryAmount
@@ -206,7 +209,9 @@ module LitleOnline
         'expDate' =>'1210'
         }}
       response= LitleOnlineRequest.new.force_capture(hash)
-      assert_equal('000', response.forceCaptureResponse.response)
+   
+      assert_equal('0', response.response)
+
     end
   
   end

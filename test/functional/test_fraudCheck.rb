@@ -1,5 +1,5 @@
 =begin
-Copyright (c) 2012 Litle & Co.
+Copyright (c) 2017 Vantiv eCommerce
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -41,8 +41,7 @@ module LitleOnline
           'customAttribute3' => '5'}
       }
       response = LitleOnlineRequest.new.fraud_check_request(hash)
-      assert_equal('001', response.fraudCheckResponse.response)
-      assert_equal('Transaction Received', response.fraudCheckResponse.message)
+      assert_equal('0', response.response)
       assert_equal('pass', response.fraudCheckResponse.advancedFraudResults.deviceReviewStatus)
       assert_equal('55', response.fraudCheckResponse.advancedFraudResults.deviceReputationScore)
       assert_equal('triggered_rule_1', response.fraudCheckResponse.advancedFraudResults.triggeredRule[0])
@@ -60,8 +59,7 @@ module LitleOnline
           }
       }
       response = LitleOnlineRequest.new.fraud_check_request(hash)
-      assert_equal('001', response.fraudCheckResponse.response)
-      assert_equal('Transaction Received', response.fraudCheckResponse.message)
+      assert_equal('0', response.response)
       assert_equal('pass', response.fraudCheckResponse.advancedFraudResults.deviceReviewStatus)
       assert_equal('42', response.fraudCheckResponse.advancedFraudResults.deviceReputationScore)
       # kind of a hack to get around the variable # of triggered rule elements. ie. 1 element is added as a string not

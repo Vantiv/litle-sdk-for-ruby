@@ -1,5 +1,4 @@
-=begin
-Copyright (c) 2017 Vantiv eCommerce
+Copyright (c) 2017 Vantiv eCommerce.
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -21,41 +20,3 @@ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
-=end
-require File.expand_path("../../../lib/LitleOnline",__FILE__) 
-require 'test/unit'
-
-#test UpdatePlan Transaction
-module LitleOnline
- class TestUpdatePlan < Test::Unit::TestCase
-  
-def test_simple_happy
-    hash ={
-        'merchantId' => '101',
-        'version'=>'8.8',
-        'id'=>'test',
-        'reportGroup'=>'Planets',
-        'planCode'=>'planCodeString',
-        'active'=>'true'  
-            }
-
-    response= LitleOnlineRequest.new.update_plan(hash)
-    assert_equal('Valid Format', response.message)
-  end
-
-
-  def test_simple_error
-    hash = {
-        'merchantId' => '101',
-        'version'=>'8.8',
-        'reportGroup'=>'Planets',
-        'planCode'=>'planCodeString',
-	   }
-
-    #Get exceptions
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.update_plan(hash)}
-    #Test 
-    assert(exception.message =~ /Error validating xml data against the schema/)
-  end
- end
-end

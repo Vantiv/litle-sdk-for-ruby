@@ -1,5 +1,5 @@
 =begin
-Copyright (c) 2012 Litle & Co.
+Copyright (c) 2017 Vantiv eCommerce
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -33,11 +33,23 @@ module LitleOnline
         'merchantId' => '101',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
-        'litleTxnId' => '5000'
+        'litleTxnId' => '5000',
+        'card'=>{
+          'type'=>'GC',
+          'number' =>'400000000000001',
+          'expDate' =>'0150',
+          'pin' => '1234',
+          'cardValidationNum' => '411'
+        },
+        'originalRefCode' => '101',
+        'originalAmount' => '34561',
+        'originalTxnTime' => '2017-01-24T09:00:00',
+        'originalSystemTraceId' => '33',
+        'originalSequenceNumber' => '111111',
       }
 
-      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<refundReversal reportGroup="Planets"><litleTxnId>5000<\/litleTxnId><\/refundReversal>.*/m), is_a(Hash))
-      LitleOnlineRequest.new.refund_reversal(hash)
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<litleTxnId>5000<\/litleTxnId><card><type>GC<\/type><number>400000000000001<\/number><expDate>0150<\/expDate><cardValidationNum>411<\/cardValidationNum><pin>1234<\/pin><\/card>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.deposit_reversal(hash)
     end
    end
 

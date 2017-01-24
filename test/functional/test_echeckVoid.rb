@@ -1,5 +1,5 @@
 =begin
-Copyright (c) 2012 Litle & Co.
+Copyright (c) 2017 Vantiv eCommerce
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -36,7 +36,7 @@ module LitleOnline
         'litleTxnId'=>'12345678000',
       }
       response= LitleOnlineRequest.new.echeck_void(hash)
-      assert_equal('Transaction Received', response.echeckVoidResponse.message)
+      assert_equal('0', response.response)
     end  
   end
 end

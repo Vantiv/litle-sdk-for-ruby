@@ -1,5 +1,5 @@
 =begin
-Copyright (c) 2011 Litle & Co.
+Copyright (c) 2017 Vantiv eCommerce
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -219,7 +219,7 @@ module LitleOnline
     LitleOnlineRequest.new.authorization(start_hash.merge(token_only))
   end
   
-   
+
   
     def test_sale_paypal_order_complete_typo
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'})
