@@ -1,4 +1,4 @@
-Setting up and Configuring the Litle SDK
+Setting up and Configuring the Vantiv eCommerce SDK
 =========================================
 
 Running the built in configuration file generator
@@ -9,7 +9,7 @@ This program runs as follows:
    
 ```
 >Setup.rb 
-Welcome to Litle Ruby_SDK
+Welcome to Vantiv eCommerce Ruby_SDK
 please input your user name:
 test_user
 please input your password:
@@ -31,7 +31,7 @@ Modifying your configuration
 ----------------------------
 You may change the configuration values at anytime by running Setup.rb again, or simpy opening the configuration file directly in the editor of your choice and changing the appropriate fields. 
 
-Changing the location of the Litle configuration file:
+Changing the location of the Vantiv eCommerce configuration file:
 ------------------------------------------------------
 NOTICE you can set the environment variable $LITLE_CONFIG_DIR to locate your configuration file in a location other than the $HOME Directory, the the file will reside in $LITLE_CONFIG_DIR/.litle_SDK_config.yml  
 
