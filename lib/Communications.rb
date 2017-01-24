@@ -71,9 +71,9 @@ end
   The round-trip time of an Authorization can be broken down into three parts, as follows:
     1.  Transmission time (across the internet) to Vantiv eCommerce and back to the merchant
     2.  Processing time by the authorization provider
-    3.  Processing time by Litle 
-  Under normal operating circumstances, the transmission time to and from Litle does not exceed 0.6 seconds 
-  and processing overhead by Litle occurs in 0.1 seconds. 
+    3.  Processing time by Vantiv eCommerce 
+  Under normal operating circumstances, the transmission time to and from Vantiv eCommerce does not exceed 0.6 seconds 
+  and processing overhead by Vantiv eCommerce occurs in 0.1 seconds. 
   Typically, the processing time by the card association or authorization provider can take between 0.5 and 3 seconds,
   but some percentage of transactions may take significantly longer.
  

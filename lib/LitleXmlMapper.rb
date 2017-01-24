@@ -27,7 +27,7 @@ require 'logger'
 
 #
 # Handles round trip of transactions
-# Maps the request to Litle XML -> Sends XML payload to Litle via HTTP(S) -> formats XML response into a Ruby hash and returns it
+# Maps the request to Vantiv eCommerce XML -> Sends XML payload to Vantiv eCommerce via HTTP(S) -> formats XML response into a Ruby hash and returns it
 #
 module LitleOnline
   class LitleXmlMapper
@@ -35,7 +35,7 @@ module LitleOnline
       logger = initialize_logger(config_hash)
 
       logger.debug request_xml
-      # get the Litle Online Response from the API server over HTTP
+      # get the Vantiv eCommerce Online Response from the API server over HTTP
       response_xml = Communications.http_post(request_xml,config_hash)
       logger.debug response_xml
 

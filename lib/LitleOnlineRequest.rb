@@ -25,7 +25,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 require_relative 'Configuration'
 
 #
-# This class handles sending the Litle online request
+# This class handles sending the Vantiv eCommerce online request
 #
 module LitleOnline
 

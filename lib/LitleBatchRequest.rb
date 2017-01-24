@@ -25,9 +25,9 @@ OTHER DEALINGS IN THE SOFTWARE.
 require_relative 'Configuration'
 
 #
-# This class creates a new batch to which Litle XML transactions are added.
+# This class creates a new batch to which Vantiv eCommerce XML transactions are added.
 # The batch is stored in the local file system until it is ready to be sent
-# to Litle.
+# to Vantiv eCommerce.
 #
 module LitleOnline
   class LitleBatchRequest

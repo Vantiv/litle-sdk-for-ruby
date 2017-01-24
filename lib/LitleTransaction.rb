@@ -25,7 +25,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 require_relative 'Configuration'
 
 #
-# This class does all the heavy lifting of mapping the Ruby hash into Litle XML format
+# This class does all the heavy lifting of mapping the Ruby hash into Vantiv eCommerce XML format
 # It also handles validation looking for missing or incorrect fields
 # contains the methods to properly create each transaction type
 #
