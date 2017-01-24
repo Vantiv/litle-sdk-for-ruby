@@ -418,10 +418,11 @@ module LitleOnline
 
     def submerchant_credit(options)
       transaction = SubmerchantCredit.new
-      transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
-      transaction.submerchantName       = options['submerchantName']
-      transaction.fundsTransferId   = options['fundsTransferId']
-      transaction.amount   = options['amount']
+      transaction.fundingSubmerchantId    = options['fundingSubmerchantId']
+      transaction.submerchantName         = options['submerchantName']
+      transaction.fundsTransferId         = options['fundsTransferId']
+      transaction.amount                  = options['amount']
+      transaction.customIdentifier        = options['customIdentifier']
       transaction.accountInfo = Echeck.from_hash(options,'accountInfo')
       add_account_info(transaction, options)
 
@@ -430,10 +431,11 @@ module LitleOnline
 
     def vendor_credit(options)
       transaction = VendorCredit.new
-      transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
-      transaction.vendorName       = options['vendorName']
-      transaction.fundsTransferId   = options['fundsTransferId']
-      transaction.amount   = options['amount']
+      transaction.fundingSubmerchantId    = options['fundingSubmerchantId']
+      transaction.vendorName              = options['vendorName']
+      transaction.fundsTransferId         = options['fundsTransferId']
+      transaction.amount                  = options['amount']
+      transaction.customIdentifier        = options['customIdentifier']
       transaction.accountInfo = Echeck.from_hash(options,'accountInfo')
       add_account_info(transaction, options)
 
@@ -442,9 +444,10 @@ module LitleOnline
 
     def payFac_credit(options)
       transaction = PayFacCredit.new
-      transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
-      transaction.fundsTransferId   = options['fundsTransferId']
-      transaction.amount   = options['amount']
+      transaction.fundingSubmerchantId    = options['fundingSubmerchantId']
+      transaction.fundsTransferId         = options['fundsTransferId']
+      transaction.amount                  = options['amount']
+      transaction.customIdentifier        = options['customIdentifier']
       add_account_info(transaction, options)
 
       return transaction
@@ -452,9 +455,10 @@ module LitleOnline
 
     def reserve_credit(options)
       transaction = ReserveCredit.new
-      transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
-      transaction.fundsTransferId   = options['fundsTransferId']
-      transaction.amount   = options['amount']
+      transaction.fundingSubmerchantId    = options['fundingSubmerchantId']
+      transaction.fundsTransferId         = options['fundsTransferId']
+      transaction.amount                  = options['amount']
+      transaction.customIdentifier        = options['customIdentifier']
       add_account_info(transaction, options)
 
       return transaction
@@ -462,9 +466,10 @@ module LitleOnline
 
     def physical_check_credit(options)
       transaction = PhysicalCheckCredit.new
-      transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
-      transaction.fundsTransferId   = options['fundsTransferId']
-      transaction.amount   = options['amount']
+      transaction.fundingSubmerchantId    = options['fundingSubmerchantId']
+      transaction.fundsTransferId         = options['fundsTransferId']
+      transaction.amount                  = options['amount']
+      transaction.customIdentifier        = options['customIdentifier']
       add_account_info(transaction, options)
 
       return transaction
@@ -496,10 +501,11 @@ module LitleOnline
 
     def submerchant_debit(options)
       transaction = SubmerchantDebit.new
-      transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
-      transaction.submerchantName       = options['submerchantName']
-      transaction.fundsTransferId   = options['fundsTransferId']
-      transaction.amount   = options['amount']
+      transaction.fundingSubmerchantId    = options['fundingSubmerchantId']
+      transaction.submerchantName         = options['submerchantName']
+      transaction.fundsTransferId         = options['fundsTransferId']
+      transaction.amount                  = options['amount']
+      transaction.customIdentifier        = options['customIdentifier']
       transaction.accountInfo = Echeck.from_hash(options,'accountInfo')
       add_account_info(transaction, options)
 
@@ -508,10 +514,11 @@ module LitleOnline
 
     def vendor_debit(options)
       transaction = VendorDebit.new
-      transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
-      transaction.vendorName       = options['vendorName']
-      transaction.fundsTransferId   = options['fundsTransferId']
-      transaction.amount   = options['amount']
+      transaction.fundingSubmerchantId    = options['fundingSubmerchantId']
+      transaction.vendorName              = options['vendorName']
+      transaction.fundsTransferId         = options['fundsTransferId']
+      transaction.amount                  = options['amount']
+      transaction.customIdentifier        = options['customIdentifier']
       transaction.accountInfo = Echeck.from_hash(options,'accountInfo')
       add_account_info(transaction, options)
 
@@ -520,9 +527,10 @@ module LitleOnline
 
     def payFac_debit(options)
       transaction = PayFacDebit.new
-      transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
-      transaction.fundsTransferId   = options['fundsTransferId']
-      transaction.amount   = options['amount']
+      transaction.fundingSubmerchantId    = options['fundingSubmerchantId']
+      transaction.fundsTransferId         = options['fundsTransferId']
+      transaction.amount                  = options['amount']
+      transaction.customIdentifier        = options['customIdentifier']
       add_account_info(transaction, options)
 
       return transaction
@@ -530,9 +538,10 @@ module LitleOnline
 
     def reserve_debit(options)
       transaction = ReserveDebit.new
-      transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
-      transaction.fundsTransferId   = options['fundsTransferId']
-      transaction.amount   = options['amount']
+      transaction.fundingSubmerchantId    = options['fundingSubmerchantId']
+      transaction.fundsTransferId         = options['fundsTransferId']
+      transaction.amount                  = options['amount']
+      transaction.customIdentifier        = options['customIdentifier']
       add_account_info(transaction, options)
 
       return transaction
@@ -540,9 +549,10 @@ module LitleOnline
 
     def physical_check_debit(options)
       transaction = PhysicalCheckDebit.new
-      transaction.fundingSubmerchantId       = options['fundingSubmerchantId']
-      transaction.fundsTransferId   = options['fundsTransferId']
-      transaction.amount   = options['amount']
+      transaction.fundingSubmerchantId    = options['fundingSubmerchantId']
+      transaction.fundsTransferId         = options['fundsTransferId']
+      transaction.amount                  = options['amount']
+      transaction.customIdentifier        = options['customIdentifier']
       add_account_info(transaction, options)
 
       return transaction

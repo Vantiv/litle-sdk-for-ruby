@@ -1915,6 +1915,8 @@ module LitleOnline
     text_node :submerchantName, "submerchantName", :default_value=>nil
     text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
+    text_node :customIdentifier, "customIdentifier", :default_value=>nil
+    
     object_node :accountInfo, "accountInfo", :class=>Echeck, :default_value=>nil
   end
   
@@ -1928,6 +1930,7 @@ module LitleOnline
     text_node :fundingSubmerchantId, "fundingSubmerchantId", :default_value=>nil
     text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
+    text_node :customIdentifier, "customIdentifier", :default_value=>nil
   end
 
   class ReserveCredit
@@ -1940,6 +1943,7 @@ module LitleOnline
     text_node :fundingSubmerchantId, "fundingSubmerchantId", :default_value=>nil
     text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
+    text_node :customIdentifier, "customIdentifier", :default_value=>nil
   end
 
   class VendorCredit
@@ -1953,6 +1957,7 @@ module LitleOnline
     text_node :vendorName, "vendorName", :default_value=>nil
     text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
+    text_node :customIdentifier, "customIdentifier", :default_value=>nil
     object_node :accountInfo, "accountInfo", :class=>Echeck, :default_value=>nil
   end
 
@@ -1966,6 +1971,7 @@ module LitleOnline
     text_node :fundingSubmerchantId, "fundingSubmerchantId", :default_value=>nil
     text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
+    text_node :customIdentifier, "customIdentifier", :default_value=>nil
   end
 
   class SubmerchantDebit
@@ -1979,6 +1985,8 @@ module LitleOnline
     text_node :submerchantName, "submerchantName", :default_value=>nil
     text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
+    text_node :customIdentifier, "customIdentifier", :default_value=>nil
+    
     object_node :accountInfo, "accountInfo", :class=>Echeck, :default_value=>nil
   end
 
@@ -1992,6 +2000,7 @@ module LitleOnline
     text_node :fundingSubmerchantId, "fundingSubmerchantId", :default_value=>nil
     text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
+    text_node :customIdentifier, "customIdentifier", :default_value=>nil
   end
 
   class ReserveDebit
@@ -2004,6 +2013,7 @@ module LitleOnline
     text_node :fundingSubmerchantId, "fundingSubmerchantId", :default_value=>nil
     text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
+    text_node :customIdentifier, "customIdentifier", :default_value=>nil
   end
 
   class VendorDebit
@@ -2017,6 +2027,7 @@ module LitleOnline
     text_node :vendorName, "vendorName", :default_value=>nil
     text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
+    text_node :customIdentifier, "customIdentifier", :default_value=>nil
     object_node :accountInfo, "accountInfo", :class=>Echeck, :default_value=>nil
   end
 
@@ -2030,6 +2041,7 @@ module LitleOnline
     text_node :fundingSubmerchantId, "fundingSubmerchantId", :default_value=>nil
     text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
+    text_node :customIdentifier, "customIdentifier", :default_value=>nil
   end
 
   class UpdateCardValidationNumOnToken
@@ -2161,54 +2173,48 @@ end
     include XML::Mapping
     root_element_name "batchRequest"
 
+    text_node :merchantSdk,"merchantSdk",:default_value=>"0"
+    text_node :id, "@id", :default_value=>nil
     text_node :numAuths, "@numAuths", :default_value=>"0"
     text_node :authAmount, "@authAmount", :default_value=>"0"
-    text_node :numSales, "@numSales", :default_value=>"0"
-    text_node :saleAmount, "@saleAmount", :default_value=>"0"
-    text_node :numCredits, "@numCredits", :default_value=>"0"
-    text_node :creditAmount, "@creditAmount", :default_value=>"0"
-    text_node :numTokenRegistrations, "@numTokenRegistrations", :default_value=>"0"
-    text_node :numCaptureGivenAuths, "@numCaptureGivenAuths", :default_value=>"0"
-    text_node :captureGivenAuthAmount, "@captureGivenAuthAmount", :default_value=>"0"
-    text_node :numForceCaptures, "@numForceCaptures", :default_value=>"0"
-    text_node :forceCaptureAmount, "@forceCaptureAmount", :default_value=>"0"
-    text_node :numAuthReversals, "@numAuthReversals", :default_value=>"0"
+    text_node :numAuthReversals, "@numAuthReversals", :default_value=>"0" 
     text_node :authReversalAmount, "@authReversalAmount", :default_value=>"0"
+    #11.0 begin
+    text_node :numGiftCardAuthReversals, "@numGiftCardAuthReversals", :default_value=>"0"
+    text_node :giftCardAuthReversalOriginalAmount, "@giftCardAuthReversalOriginalAmount", :default_value=>"0"
+    #11.0 end 
     text_node :numCaptures, "@numCaptures", :default_value=>"0"
     text_node :captureAmount, "@captureAmount", :default_value=>"0"
+    #11.0 begin
+    text_node :numGiftCardCaptures, "@numGiftCardCaptures", :default_value=>"0"
+    text_node :giftCardCaptureAmount, "@giftCardCaptureAmount", :default_value=>"0"
+    #11.0 end
+    #<xs:attribute name="numExtCaptures" type="xs:integer" use="optional" /> 
+    #<xs:attribute name="extCaptureAmount" type="xp:batchTotalAmountType" use="optional" /> 
+    text_node :numCredits, "@numCredits", :default_value=>"0" 
+    text_node :creditAmount, "@creditAmount", :default_value=>"0"
+    #11.0 begin
+    text_node :numGiftCardCredits, "@numGiftCardCredits", :default_value=>"0"
+    text_node :giftCardCreditAmount, "@giftCardCreditAmount", :default_value=>"0"
+    #11.0 end
+    text_node :numForceCaptures, "@numForceCaptures", :default_value=>"0"
+    text_node :forceCaptureAmount, "@forceCaptureAmount", :default_value=>"0" 
+    text_node :numSales, "@numSales", :default_value=>"0"
+    text_node :saleAmount, "@saleAmount", :default_value=>"0"
+    text_node :numCaptureGivenAuths, "@numCaptureGivenAuths", :default_value=>"0"
+    text_node :captureGivenAuthAmount, "@captureGivenAuthAmount", :default_value=>"0"
     text_node :numEcheckSales, "@numEcheckSales", :default_value=>"0"
-    text_node :echeckSalesAmount, "@echeckSalesAmount", :default_value=>"0"
-    text_node :numEcheckRedeposit, "@numEcheckRedeposit", :default_value=>"0"
-    text_node :numEcheckPreNoteSale, "@numEcheckPreNoteSale", :default_value=>"0"
-    text_node :numEcheckPreNoteCredit, "@numEcheckPreNoteCredit", :default_value=>"0"
-    text_node :numSubmerchantCredit , "@numSubmerchantCredit", :default_value=>"0"
-    text_node :numPayFacCredit , "@numPayFacCredit", :default_value=>"0"
-    text_node :numReserveCredit , "@numReserveCredit", :default_value=>"0"
-    text_node :numVendorCredit , "@numVendorCredit", :default_value=>"0"
-    text_node :numPhysicalCheckCredit , "@numPhysicalCheckCredit", :default_value=>"0"
-    text_node :submerchantCreditAmount , "@submerchantCreditAmount", :default_value=>"0"
-    text_node :payFacCreditAmount , "@payFacCreditAmount", :default_value=>"0"
-    text_node :reserveCreditAmount , "@reserveCreditAmount", :default_value=>"0"
-    text_node :vendorCreditAmount , "@vendorCreditAmount", :default_value=>"0"
-    text_node :physicalCheckCreditAmount , "@physicalCheckCreditAmount", :default_value=>"0"
-    text_node :numSubmerchantDebit , "@numSubmerchantDebit", :default_value=>"0"
-    text_node :numPayFacDebit , "@numPayFacDebit", :default_value=>"0"
-    text_node :numReserveDebit , "@numReserveDebit", :default_value=>"0"
-    text_node :numVendorDebit , "@numVendorDebit", :default_value=>"0"
-    text_node :numPhysicalCheckDebit , "@numPhysicalCheckDebit", :default_value=>"0"
-    text_node :submerchantDebitAmount , "@submerchantDebitAmount", :default_value=>"0"
-    text_node :payFacDebitAmount , "@payFacDebitAmount", :default_value=>"0"
-    text_node :reserveDebitAmount , "@reserveDebitAmount", :default_value=>"0"
-    text_node :vendorDebitAmount , "@vendorDebitAmount", :default_value=>"0"
-    text_node :physicalCheckDebitAmount , "@physicalCheckDebitAmount", :default_value=>"0"
+    text_node :echeckSalesAmount, "@echeckSalesAmount", :default_value=>"0" 
     text_node :numEcheckCredit, "@numEcheckCredit", :default_value=>"0"
     text_node :echeckCreditAmount, "@echeckCreditAmount", :default_value=>"0"
     text_node :numEcheckVerification, "@numEcheckVerification", :default_value=>"0"
     text_node :echeckVerificationAmount, "@echeckVerificationAmount", :default_value=>"0"
-    text_node :numUpdateCardValidationNumOnTokens, "@numUpdateCardValidationNumOnTokens", :default_value=>"0"
+    text_node :numEcheckRedeposit, "@numEcheckRedeposit", :default_value=>"0"
+    text_node :numEcheckPreNoteSale, "@numEcheckPreNoteSale", :default_value=>"0"
+    text_node :numEcheckPreNoteCredit, "@numEcheckPreNoteCredit", :default_value=>"0" 
     text_node :numAccountUpdates, "@numAccountUpdates", :default_value=>"0"
-    text_node :merchantId, "@merchantId", :default_value=>nil
-    text_node :id, "@id", :default_value=>nil
+    text_node :numTokenRegistrations, "@numTokenRegistrations", :default_value=>"0" 
+    text_node :numUpdateCardValidationNumOnTokens, "@numUpdateCardValidationNumOnTokens", :default_value=>"0" 
     text_node :numCancelSubscriptions,"@numCancelSubscriptions", :default_value=>"0"
     text_node :numUpdateSubscriptions,"@numUpdateSubscriptions", :default_value=>"0"
     text_node :numCreatePlans,"@numCreatePlans",:default_value=>"0"
@@ -2220,10 +2226,29 @@ end
     text_node :loadAmount,"@loadAmount",:default_value=>"0"
     text_node :numUnloads,"@numUnloads",:default_value=>"0"
     text_node :unloadAmount,"@unloadAmount",:default_value=>"0"
-    text_node :numBalanceInquirys,"@numBalanceInquirys",:default_value=>"0"
-    text_node :merchantSdk,"merchantSdk",:default_value=>"0"
-    # SDK XML 10
-    text_node :numFundingInstructionVoid, "@numFundingInstructionVoid", :default_value=>"0"
+    text_node :numBalanceInquirys,"@numBalanceInquirys",:default_value=>"0" 
+    text_node :numPayFacCredit , "@numPayFacCredit", :default_value=>"0" 
+    text_node :numPayFacDebit , "@numPayFacDebit", :default_value=>"0"
+    text_node :numSubmerchantCredit , "@numSubmerchantCredit", :default_value=>"0" 
+    text_node :numSubmerchantDebit , "@numSubmerchantDebit", :default_value=>"0" 
+    text_node :numReserveCredit , "@numReserveCredit", :default_value=>"0"
+    text_node :numReserveDebit , "@numReserveDebit", :default_value=>"0" 
+    text_node :numVendorDebit , "@numVendorDebit", :default_value=>"0" 
+    text_node :numVendorCredit , "@numVendorCredit", :default_value=>"0" 
+    text_node :numPhysicalCheckDebit , "@numPhysicalCheckDebit", :default_value=>"0" 
+    text_node :numPhysicalCheckCredit , "@numPhysicalCheckCredit", :default_value=>"0" 
+    text_node :numFundingInstructionVoid, "@numFundingInstructionVoid", :default_value=>"0" 
+    text_node :payFacCreditAmount , "@payFacCreditAmount", :default_value=>"0" 
+    text_node :payFacDebitAmount , "@payFacDebitAmount", :default_value=>"0"
+    text_node :submerchantCreditAmount , "@submerchantCreditAmount", :default_value=>"0" 
+    text_node :submerchantDebitAmount , "@submerchantDebitAmount", :default_value=>"0" 
+    text_node :reserveCreditAmount , "@reserveCreditAmount", :default_value=>"0" 
+    text_node :reserveDebitAmount , "@reserveDebitAmount", :default_value=>"0"    
+    text_node :vendorDebitAmount , "@vendorDebitAmount", :default_value=>"0" 
+    text_node :vendorCreditAmount , "@vendorCreditAmount", :default_value=>"0"
+    text_node :physicalCheckDebitAmount , "@physicalCheckDebitAmount", :default_value=>"0" 
+    text_node :physicalCheckCreditAmount , "@physicalCheckCreditAmount", :default_value=>"0"                      
+    text_node :merchantId, "@merchantId", :default_value=>nil
   end
 
   class LitleRequest
