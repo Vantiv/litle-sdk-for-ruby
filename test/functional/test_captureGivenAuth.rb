@@ -246,6 +246,7 @@ module LitleOnline
      def test_simple_capture_given_auth_with_processingType
       hash = {
         'merchantId' => '101',
+        'id'=>'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -262,12 +263,13 @@ module LitleOnline
         'expDate' =>'1210'
         }}
       response= LitleOnlineRequest.new.capture_given_auth(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      assert_equal('Valid Format', response.message)
     end    
 
     def test_simple_capture_given_auth_with_originalNetworkTransactionId_originalTransactionAmount
       hash = {
         'merchantId' => '101',
+        'id'=>'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
@@ -286,7 +288,7 @@ module LitleOnline
         'originalTransactionAmount'=>'10661'
         }
       response= LitleOnlineRequest.new.capture_given_auth(hash)
-      assert(response.message =~ /Error validating xml data against the schema/)
+      assert_equal('Valid Format', response.message)
     end 
     
   end
