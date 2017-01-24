@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 =begin
-Copyright (c) 2011 Litle & Co.
+Copyright (c) 2017 Vantiv eCommerce
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -35,7 +35,7 @@ class Setup
   def initialize(filename)
     @handle = File.new(filename, File::CREAT|File::TRUNC|File::RDWR, 0600)
     File.open(filename, "w") do |f|
-      puts "Welcome to Litle Ruby_SDK"
+      puts "Welcome to Vantiv eCommerce Ruby_SDK"
       puts "Please input your user name:"
       f.puts  "user: "+ gets
       puts "Please input your password:"
@@ -46,7 +46,7 @@ class Setup
       f.puts "  DEFAULT: " + gets
       f.puts "default_report_group: 'Default Report Group'"
       
-      puts "Please choose Litle url from the following list (example: 'prelive') or directly input another URL: \nsandbox => https://www.testlitle.com/sandbox/communicator/online \nprelive => https://prelive.litle.com/vap/communicator/online \npostlive => https://postlive.litle.com/vap/communicator/online \nproduction => https://payments.litle.com/vap/communicator/online \ntransact_prelive => https://transact-prelive.litle.com/vap/communicator/online \ntransact_postlive => https://transact-postlive.litle.com/vap/communicator/online \ntransact_production => https://transact.litle.com/vap/communicator/online \ntransact_betacert => https://transact-betacert.litle.com/vap/communicator/online \nbetacert => https://betacert.litle.com/vap/communicator/online"
+      puts "Please choose Vantiv eCommerce url from the following list (example: 'prelive') or directly input another URL: \nsandbox => https://www.testlitle.com/sandbox/communicator/online \nprelive => https://prelive.litle.com/vap/communicator/online \npostlive => https://postlive.litle.com/vap/communicator/online \nproduction => https://payments.litle.com/vap/communicator/online \ntransact_prelive => https://transact-prelive.litle.com/vap/communicator/online \ntransact_postlive => https://transact-postlive.litle.com/vap/communicator/online \ntransact_production => https://transact.litle.com/vap/communicator/online \ntransact_betacert => https://transact-betacert.litle.com/vap/communicator/online \nbetacert => https://betacert.litle.com/vap/communicator/online"
       f.puts "url: " + Setup.choice(gets)
       puts "Please input the proxy address, if no proxy hit enter key: "
       f.puts	"proxy_addr: " + gets
@@ -120,6 +120,6 @@ f = Setup.new(config_file)
 
 # return the path of the config file and the path file
 @path = File.expand_path(config_file)
-puts "The Litle configuration file has been generated, the file is located at: " + @path
+puts "The Vantiv eCommerce configuration file has been generated, the file is located at: " + @path
 f.finished
 

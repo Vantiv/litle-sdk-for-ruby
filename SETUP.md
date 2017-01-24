@@ -1,4 +1,4 @@
-Setting up and Configuring the Litle SDK
+Setting up and Configuring the Vantiv eCommerce SDK
 =========================================
 
 Running the built in configuration file generator
@@ -9,12 +9,12 @@ This program runs as follows:
    
 ```
 >Setup.rb 
-Welcome to Litle Ruby_SDK
+Welcome to Vantiv eCommerce Ruby_SDK
 please input your user name:
 test_user
 please input your password:
 test_password
-Please choose Litle url from the following list (example: 'cert') or directly input another URL:
+Please choose Vantiv eCommerce url from the following list (example: 'cert') or directly input another URL:
 cert => https://cert.litle.com/vap/communicator/online
 precert => https://precert.litle.com/vap/communicator/online
 production1 => https://payments.litle.com/vap/communicator/online
