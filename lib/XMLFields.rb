@@ -1701,6 +1701,41 @@ module LitleOnline
       end
     end
   end
+  
+  
+  #XML 11.0
+    class GiftCardAuthReversal
+    include XML::Mapping
+    root_element_name "giftCardAuthReversal"
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+    text_node   :litleTxnId, "litleTxnId", :default_value=>nil
+    object_node :card, "card", :class => GiftCardCardType, :default_value=>nil
+    text_node :originalRefCode, "originalRefCode", :default_value=>nil
+    text_node :originalAmount, "originalAmount", :default_value=>nil
+    text_node :originalTxnTime, "originalTxnTime", :default_value=>nil
+    text_node :originalSystemTraceId, "originalSystemTraceId", :default_value=>nil
+    text_node :originalSequenceNumber, "originalSequenceNumber", :default_value=>nil
+  end
+  
+  class GiftCardCapture
+    include XML::Mapping
+    root_element_name "giftCardCapture"
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+    text_node   :litleTxnId, "litleTxnId", :default_value=>nil
+    text_node :captureAmount, "captureAmount", :default_value=>nil
+    object_node :card, "card", :class => GiftCardCardType, :default_value=>nil
+    text_node :originalRefCode, "originalRefCode", :default_value=>nil
+    text_node :originalAmount, "originalAmount", :default_value=>nil
+    text_node :originalTxnTime, "originalTxnTime", :default_value=>nil
+    text_node :originalSystemTraceId, "originalSystemTraceId", :default_value=>nil
+    text_node :originalSequenceNumber, "originalSequenceNumber", :default_value=>nil
+  end
+  
+ 
 
   class DepositReversal
     include XML::Mapping
@@ -1708,7 +1743,6 @@ module LitleOnline
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
     #11.0
     object_node :card, "card", :class => GiftCardCardType, :default_value=>nil
@@ -1726,7 +1760,6 @@ module LitleOnline
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
     #11.0
     object_node :card, "card", :class => GiftCardCardType, :default_value=>nil
@@ -2152,6 +2185,8 @@ end
     :elsif, 'virtualGiftCard', :then,(object_node :virtualGiftCard,"virtualGiftCard",:class=>VirtualGiftCard),
     :elsif, 'activateReversal', :then, (object_node :activateReversal,"activateReversal", :class=>ActivateReversal),
     :elsif, 'depositReversal', :then, (object_node :depositReversal,"depositReversal", :class=>DepositReversal),
+    :elsif, 'giftCardAuthReversal', :then, (object_node :giftCardAuthReversal,"giftCardAuthReversal", :class=>GiftCardAuthReversal),
+    :elsif, 'giftCardCapture', :then, (object_node :giftCardCapture,"giftCardCapture", :class=>GiftCardCapture),
     :elsif, 'refundReversal', :then, (object_node :refundReversal,"refundReversal", :class=>RefundReversal),
     :elsif, 'deactivateReversal', :then, (object_node :deactivateReversal,"deactivateReversal", :class=>DeactivateReversal),
     :elsif, 'loadReversal', :then, (object_node :loadReversal,"loadReversal", :class=>LoadReversal),

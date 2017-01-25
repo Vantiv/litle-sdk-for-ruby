@@ -107,6 +107,19 @@ module LitleOnline
 
       commit(transaction, :depositReversal, options)
     end
+    
+    #XML 11.0
+    def giftCardAuth_reversal(options)
+      transaction = @litle_transaction.giftCardAuth_reversal(options)
+
+      commit(transaction, :giftCardAuthReversal, options)
+    end
+    
+    def giftCardCapture(options)
+      transaction = @litle_transaction.giftCardCapture(options)
+
+      commit(transaction, :giftCardCapture, options)
+    end
 
     def refund_reversal(options)
       transaction = @litle_transaction.refund_reversal(options)
