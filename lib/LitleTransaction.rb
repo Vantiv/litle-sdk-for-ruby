@@ -179,6 +179,33 @@ module LitleOnline
       transaction.originalSequenceNumber = options['originalSequenceNumber']
       return transaction
     end
+    
+    #XML 11.0
+    
+    def giftCardAuth_reversal(options)
+      transaction = GiftCardAuthReversal.new
+      transaction.litleTxnId = options['litleTxnId']
+      transaction.card = GiftCardCardType.from_hash(options,'card')
+      transaction.originalRefCode = options['originalRefCode']
+      transaction.originalAmount = options['originalAmount']
+      transaction.originalTxnTime = options['originalTxnTime']
+      transaction.originalSystemTraceId = options['originalSystemTraceId']
+      transaction.originalSequenceNumber = options['originalSequenceNumber']
+      return transaction
+    end
+    
+     def giftCardCapture(options)
+      transaction = GiftCardCapture.new
+      transaction.litleTxnId = options['litleTxnId']
+      transaction.captureAmount = options['captureAmount']
+      transaction.card = GiftCardCardType.from_hash(options,'card')
+      transaction.originalRefCode = options['originalRefCode']
+      transaction.originalAmount = options['originalAmount']
+      transaction.originalTxnTime = options['originalTxnTime']
+      transaction.originalSystemTraceId = options['originalSystemTraceId']
+      transaction.originalSequenceNumber = options['originalSequenceNumber']
+      return transaction
+    end
 
     def refund_reversal(options)
       transaction = RefundReversal.new
