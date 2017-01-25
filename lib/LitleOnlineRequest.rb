@@ -120,6 +120,12 @@ module LitleOnline
 
       commit(transaction, :giftCardCapture, options)
     end
+    
+    def giftCardCredit(options)
+      transaction = @litle_transaction.giftCardCredit(options)
+
+      commit(transaction, :giftCardCredit, options)
+    end
 
     def refund_reversal(options)
       transaction = @litle_transaction.refund_reversal(options)

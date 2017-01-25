@@ -206,6 +206,16 @@ module LitleOnline
       transaction.originalSequenceNumber = options['originalSequenceNumber']
       return transaction
     end
+    
+     def giftCardCredit(options)
+      transaction = GiftCardCredit.new
+      transaction.litleTxnId = options['litleTxnId']
+      transaction.creditAmount = options['creditAmount']
+      transaction.orderId = options['orderId']
+      transaction.orderSource = options['orderSource']
+      transaction.card = GiftCardCardType.from_hash(options,'card')
+      return transaction
+    end
 
     def refund_reversal(options)
       transaction = RefundReversal.new
