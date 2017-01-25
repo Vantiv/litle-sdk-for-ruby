@@ -42,7 +42,14 @@ module LitleOnline
         :captureGivenAuth=>{ :numCaptureGivenAuths=>0, :captureGivenAuthAmount=>0 },
         :forceCapture=>{ :numForceCaptures=>0, :forceCaptureAmount=>0 },
         :authReversal=>{ :numAuthReversals=>0, :authReversalAmount=>0 },
+        #11.0 begin
+        :giftCardAuthReversal=>{ :numGiftCardAuthReversals=>0, :giftCardAuthReversalOriginalAmount=>0 },
+        #end 
         :capture=>{ :numCaptures=>0, :captureAmount=>0 },
+        #11.0 begin
+        :giftCardCapture=>{ :numGiftCardCaptures=>0, :giftCardCaptureAmount=>0 },
+        :giftCardCredit=>{ :numGiftCardCredits=>0, :giftCardCreditAmount=>0 },
+        #end 
         :echeckVerification=>{ :numEcheckVerification=>0, :echeckVerificationAmount=>0 },
         :echeckCredit=>{ :numEcheckCredit=>0, :echeckCreditAmount=>0 },
         :numEcheckRedeposit=>0,
@@ -201,6 +208,27 @@ module LitleOnline
       @txn_counts[:authReversal][:authReversalAmount] += options['amount'].to_i
 
       add_txn_to_batch(transaction, :authReversal, options)
+    end
+
+    def gift_card_auth_reversal(options)
+      transaction = @litle_txn.gift_card_auth_reversal(options)
+      @txn_counts[:giftCardAuthReversal][:numGiftCardAuthReversals] += 1
+      @txn_counts[:giftCardAuthReversal][:giftCardAuthReversalOriginalAmount] += options['amount'].to_i
+      add_txn_to_batch(transaction, :giftCardAuthReversal, options)
+    end
+    
+    def gift_card_capture(options)
+      transaction = @litle_txn.gift_card_capture(options)
+      @txn_counts[:giftCardCapture][:numGiftCardCaptures] += 1
+      @txn_counts[:giftCardCapture][:giftCardCaptureAmount] += options['amount'].to_i
+      add_txn_to_batch(transaction, :giftCardCapture, options)
+    end
+
+    def gift_card_credit(options)
+      transaction = @litle_txn.gift_card_credit(options)
+      @txn_counts[:giftCardCredit][:numGiftCardCredits] += 1
+      @txn_counts[:giftCardCredit][:giftCardCreditAmount] += options['amount'].to_i
+      add_txn_to_batch(transaction, :giftCardCredit, options)
     end
 
     def cancel_subscription(options)
@@ -497,8 +525,18 @@ module LitleOnline
       request.forceCaptureAmount       = @txn_counts[:forceCapture][:forceCaptureAmount]
       request.numAuthReversals         = @txn_counts[:authReversal][:numAuthReversals]
       request.authReversalAmount       = @txn_counts[:authReversal][:authReversalAmount]
+      # 11.0 begin
+      request.numGiftCardAuthReversals                 = @txn_counts[:giftCardAuthReversal][:numGiftCardAuthReversals]
+      request.giftCardAuthReversalOriginalAmount       = @txn_counts[:giftCardAuthReversal][:giftCardAuthReversalOriginalAmount]
+      # 11.0 end 
       request.numCaptures              = @txn_counts[:capture][:numCaptures]
       request.captureAmount            = @txn_counts[:capture][:captureAmount]
+      # 11.0 begin
+      request.numGiftCardCaptures      = @txn_counts[:giftCardCapture][:numGiftCardCaptures]
+      request.giftCardCaptureAmount    = @txn_counts[:giftCardCapture][:giftCardCaptureAmount]
+      request.numGiftCardCredits      = @txn_counts[:giftCardCredit][:numGiftCardCredits]
+      request.giftCardCreditAmount    = @txn_counts[:giftCardCredit][:giftCardCreditAmount]
+      # 11.0 end 
       request.numEcheckSales           = @txn_counts[:echeckSale][:numEcheckSales]
       request.echeckSalesAmount        = @txn_counts[:echeckSale][:echeckSalesAmount]
       request.numEcheckRedeposit       = @txn_counts[:numEcheckRedeposit]
