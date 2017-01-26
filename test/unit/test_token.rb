@@ -35,17 +35,17 @@ module LitleOnline
         'reportGroup'=>'Planets',
         'orderId'=>'12344',
         'applepay'=>{
-        'data'=>'user',
-        'header'=>{
-        'applicationData'=>'454657413164',
-        'ephemeralPublicKey'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
-        'publicKeyHash'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
-        'transactionId'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
-        },
-        'signature' =>'sign',
-         #  'version' =>'1'
-         # SDL Ruby XML 10
-         'version' =>'10000'
+          'data'=>'user',
+          'header'=>{
+            'applicationData'=>'454657413164',
+            'ephemeralPublicKey'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+            'publicKeyHash'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+            'transactionId'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+          },
+          'signature' =>'sign',
+          #  'version' =>'1'
+          # SDL Ruby XML 10
+          'version' =>'10000'
         }
       }
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*?<litleOnlineRequest.*?<registerTokenRequest.*?<applepay>.*?<data>user<\/data>.*?<\/applepay>.*?<\/registerTokenRequest>.*?/m), is_a(Hash))
@@ -60,17 +60,17 @@ module LitleOnline
         'orderId'=>'12344',
         'accountNumber'=>'1233456789101112',
         'applepay'=>{
-        'data'=>'user',
-        'header'=>{
-        'applicationData'=>'454657413164',
-        'ephemeralPublicKey'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
-        'publicKeyHash'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
-        'transactionId'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
-        },
-        'signature' =>'sign',
-         #  'version' =>'1'
-         # SDL Ruby XML 10
-         'version' =>'10000'
+          'data'=>'user',
+          'header'=>{
+            'applicationData'=>'454657413164',
+            'ephemeralPublicKey'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+            'publicKeyHash'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+            'transactionId'=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+          },
+          'signature' =>'sign',
+          #  'version' =>'1'
+          # SDL Ruby XML 10
+          'version' =>'10000'
         }
       }
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.register_token_request(hash)}
@@ -143,6 +143,17 @@ module LitleOnline
       LitleOnlineRequest.new.register_token_request(hash)
     end
 
+    def test_androidpay
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'id'=>'test',
+        'orderId'=>'androidpay',
+        'accountNumber'=>'1233456789103801'
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<orderId>androidpay<\/orderId>.*<accountNumber>1233456789103801<\/accountNumber>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.register_token_request(hash)
+    end
   end
-
 end
