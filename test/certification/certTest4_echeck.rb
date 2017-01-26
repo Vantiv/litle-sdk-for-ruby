@@ -207,7 +207,7 @@ module LitleOnline
         hash = customer_hash.merge(@@merchant_hash)
         echeck_response = LitleOnlineRequest.new.echeck_credit(hash)
     
-        assert_equal('001', echeck_response.echeckCreditResponse.response)
+        assert_equal('301', echeck_response.echeckCreditResponse.response)
       end
     
       def test_46
@@ -228,8 +228,8 @@ module LitleOnline
         hash = customer_hash.merge(@@merchant_hash)
         echeck_response = LitleOnlineRequest.new.echeck_credit(hash)
     
-        assert_equal('001', echeck_response.echeckCreditResponse.response)
-        assert_equal('Transaction Received', echeck_response.echeckCreditResponse.message)
+        assert_equal('000', echeck_response.echeckCreditResponse.response)
+        
       end
     
       def test_47
@@ -250,30 +250,36 @@ module LitleOnline
         hash = customer_hash.merge(@@merchant_hash)
         echeck_response = LitleOnlineRequest.new.echeck_credit(hash)
     
-        assert_equal('001', echeck_response.echeckCreditResponse.response)
-        assert_equal('Transaction Received', echeck_response.echeckCreditResponse.message)
+        assert_equal('000', echeck_response.echeckCreditResponse.response)
+        
       end
       
     def test_48
       customer_hash = {
-        'litleTxnId' => '430000000000000001'
+        'litleTxnId' => '430000000000000000'
       }
       hash = customer_hash.merge(@@merchant_hash)
       echeck_response = LitleOnlineRequest.new.echeck_credit(hash)
   
-      assert_equal('001', echeck_response.echeckCreditResponse.response)
-      assert_equal('Transaction Received', echeck_response.echeckCreditResponse.message)
+      assert_equal('000', echeck_response.echeckCreditResponse.response)
+      
     end
     
     def test_49
       customer_hash = {
-        'litleTxnId' => '2'
+        
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'id'=>'test',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456789101000',
+        'amount'=>'12'
       }
       hash = customer_hash.merge(@@merchant_hash)
       echeck_response = LitleOnlineRequest.new.echeck_credit(hash)
   
-      assert_equal('001', echeck_response.echeckCreditResponse.response)
-      assert_equal('Transaction Received', echeck_response.echeckCreditResponse.message)
+      assert_equal('000', echeck_response.echeckCreditResponse.response)
+      
     end
   end
 end

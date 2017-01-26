@@ -39,15 +39,15 @@ module LitleOnline
       capture_hash =  {'litleTxnId' => auth_response.authorizationResponse.litleTxnId, 'amount' => '5005'}
       hash1a = capture_hash.merge(@@merchant_hash)
       capture_response = LitleOnlineRequest.new.capture(hash1a)
-      assert_equal('001', capture_response.captureResponse.response)
-      assert_equal('Transaction Received', capture_response.captureResponse.message)
+      assert_equal('000', capture_response.captureResponse.response)
+      
   
       #test 32B
-      auth_r_hash =  {'litleTxnId' => auth_response.authorizationResponse.litleTxnId }
+      auth_r_hash =  {'litleTxnId' => '123456789000' }
       hash1b = auth_r_hash.merge(@@merchant_hash)
       auth_r_response = LitleOnlineRequest.new.auth_reversal(hash1b)
-      assert_equal('001', auth_r_response.authReversalResponse.response)
-      assert_equal('Transaction Received', auth_r_response.authReversalResponse.message)
+      assert_equal('000', auth_r_response.authReversalResponse.response)
+      
     end
   
     def test_33
@@ -82,8 +82,8 @@ module LitleOnline
       auth_reversal_hash =  {'litleTxnId' => auth_response.authorizationResponse.litleTxnId}
       hash1a = auth_reversal_hash.merge(@@merchant_hash)
       auth_reversal_response = LitleOnlineRequest.new.auth_reversal(hash1a)
-      assert_equal('001', auth_reversal_response.authReversalResponse.response)
-      assert_equal('Transaction Received', auth_reversal_response.authReversalResponse.message)
+      assert_equal('000', auth_reversal_response.authReversalResponse.response)
+      
     end
   
     def test_34
@@ -116,8 +116,8 @@ module LitleOnline
       auth_reversal_hash =  {'litleTxnId' => auth_response.authorizationResponse.litleTxnId}
       hash1a = auth_reversal_hash.merge(@@merchant_hash)
       auth_reversal_response = LitleOnlineRequest.new.auth_reversal(hash1a)
-      assert_equal('001', auth_reversal_response.authReversalResponse.response)
-      assert_equal('Transaction Received', auth_reversal_response.authReversalResponse.message)
+      assert_equal('000', auth_reversal_response.authReversalResponse.response)
+      
     end
   
     def test_35
@@ -148,15 +148,15 @@ module LitleOnline
       capture_hash =  {'litleTxnId' => auth_response.authorizationResponse.litleTxnId, 'amount' => '20020'}
       hash1a = capture_hash.merge(@@merchant_hash)
       capture_response = LitleOnlineRequest.new.capture(hash1a)
-      assert_equal('001', capture_response.captureResponse.response)
-      assert_equal('Transaction Received', capture_response.captureResponse.message)
+      assert_equal('000', capture_response.captureResponse.response)
+      
   
       #    #test 35B
       auth_reversal_hash =  {'litleTxnId' => auth_response.authorizationResponse.litleTxnId, 'amount' => '20020'}
       hash2a = auth_reversal_hash.merge(@@merchant_hash)
       auth_reversal_response = LitleOnlineRequest.new.auth_reversal(hash2a)
-      assert_equal('001', auth_reversal_response.authReversalResponse.response)
-      assert_equal('Transaction Received', auth_reversal_response.authReversalResponse.message)
+      assert_equal('000', auth_reversal_response.authReversalResponse.response)
+      
     end
     
     def test_36
@@ -175,11 +175,11 @@ module LitleOnline
       assert_equal('Approved', auth_response.authorizationResponse.message)
   
       #test 36A
-      auth_reversal_hash =  {'litleTxnId' => auth_response.authorizationResponse.litleTxnId, 'amount' => '10000'}
+      auth_reversal_hash =  {'litleTxnId' => '123456789000', 'amount' => '10000'}
       hash1a = auth_reversal_hash.merge(@@merchant_hash)
       auth_reversal_response = LitleOnlineRequest.new.auth_reversal(hash1a)
-      assert_equal('001', auth_reversal_response.authReversalResponse.response)
-      assert_equal('Transaction Received', auth_reversal_response.authReversalResponse.message)
+      assert_equal('000', auth_reversal_response.authReversalResponse.response)
+      
     end
   
   end
