@@ -379,5 +379,24 @@ module LitleOnline
       assert_equal('4', response.authorizationResponse.enhancedAuthResponse.networkResponse.networkField['fieldNumber'])
       assert_equal('Transaction Amount', response.authorizationResponse.enhancedAuthResponse.networkResponse.networkField['fieldName'])
     end
+    
+    def test_simple_auth_with_networkTransactionId
+      hash = {
+        'merchantId' => '101',
+        'id' => 'test',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12355',
+        'amount'=>'106',
+        'orderSource'=>'ecommerce',
+        'card'=>{
+          'type'=>'VI',
+          'number' =>'4100800000000000',
+          'expDate' =>'1210'
+        },
+      }
+      response= LitleOnlineRequest.new.authorization(hash)
+      assert_equal('63225578415568556365452427825', response.authorizationResponse.networkTransactionId)
+    end
   end
 end

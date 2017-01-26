@@ -22,15 +22,14 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require File.expand_path("../../../lib/LitleOnline",__FILE__) 
+require File.expand_path("../../../lib/LitleOnline",__FILE__)
 require 'test/unit'
 
 #test GiftCardCapture Transaction
 module LitleOnline
- class TestGiftCardCapture < Test::Unit::TestCase
-  
-def test_giftCardCapture
-    hash = {
+  class TestGiftCardCapture < Test::Unit::TestCase
+    def test_giftCardCapture
+      hash = {
         'captureAmount'=>'1000',
         'merchantId' => '101',
         'version'=>'8.8',
@@ -39,7 +38,7 @@ def test_giftCardCapture
         'litleTxnId' =>'5000',
         'card'=>{
           'type'=>'GC',
-          'number' =>'400000000000001',
+          'number' =>'400000000000000',
           'expDate' =>'0150',
           'pin' => '1234',
           'cardValidationNum' => '411'
@@ -47,26 +46,27 @@ def test_giftCardCapture
         'originalRefCode' => '101',
         'originalAmount' => '34561',
         'originalTxnTime' => '2017-01-24T09:00:00',
-       
-     }
 
-    response= LitleOnlineRequest.new.giftCardCapture(hash)
-    assert_equal 'Valid Format', response.message
-  end
+      }
 
-  def test_simple_error
-    hash = {
+      response= LitleOnlineRequest.new.giftCardCapture(hash)
+      assert_equal('000', response.giftCardCaptureResponse.response)
+      assert_equal('0', response.giftCardCaptureResponse.giftCardResponse.systemTraceId)
+    end
+
+    def test_simple_error
+      hash = {
         'merchantId' => '101',
         'version'=>'8.8',
         'id'=>'test',
         'reportGroup'=>'Planets',
-     }
+      }
 
-    #Get exceptions
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.giftCardCapture(hash)}
-    #Test 
-    assert(exception.message =~ /Error validating xml data against the schema/)
+      #Get exceptions
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.giftCardCapture(hash)}
+      #Test
+      assert(exception.message =~ /Error validating xml data against the schema/)
+    end
+
   end
-
- end
 end

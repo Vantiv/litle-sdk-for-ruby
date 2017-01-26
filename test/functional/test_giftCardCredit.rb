@@ -22,15 +22,14 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require File.expand_path("../../../lib/LitleOnline",__FILE__) 
+require File.expand_path("../../../lib/LitleOnline",__FILE__)
 require 'test/unit'
 
 #test GiftCardCapture Transaction
 module LitleOnline
- class TestGiftCardCredit < Test::Unit::TestCase
-  
-def test_giftCardCredit
-    hash = {
+  class TestGiftCardCredit < Test::Unit::TestCase
+    def test_giftCardCredit
+      hash = {
         'id'=>'test',
         'merchantId' => '101',
         'version'=>'8.8',
@@ -39,31 +38,32 @@ def test_giftCardCredit
         #'orderId' =>'1230',
         'card'=>{
           'type'=>'GC',
-          'number' =>'400000000000001',
+          'number' =>'400000000000000',
           'expDate' =>'0150',
           'pin' => '1234',
           'cardValidationNum' => '411'
-        }, 
-        'reportGroup'=>'Planets', 
-     }
+        },
+        'reportGroup'=>'Planets',
+      }
 
-    response= LitleOnlineRequest.new.giftCardCredit(hash)
-    assert_equal 'Valid Format', response.message
-  end
+      response= LitleOnlineRequest.new.giftCardCredit(hash)
+      assert_equal('000', response.giftCardCreditResponse.response)
+      assert_equal('0', response.giftCardCreditResponse.giftCardResponse.systemTraceId)
+    end
 
-  def test_simple_error
-    hash = {
+    def test_simple_error
+      hash = {
         'merchantId' => '101',
         'version'=>'8.8',
         'id'=>'test',
         'reportGroup'=>'Planets',
-     }
+      }
 
-    #Get exceptions
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.giftCardCredit(hash)}
-    #Test 
-    assert(exception.message =~ /Error validating xml data against the schema/)
+      #Get exceptions
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.giftCardCredit(hash)}
+      #Test
+      assert(exception.message =~ /Error validating xml data against the schema/)
+    end
+
   end
-
- end
 end
