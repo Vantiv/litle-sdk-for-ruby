@@ -22,15 +22,14 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require File.expand_path("../../../lib/LitleOnline",__FILE__) 
+require File.expand_path("../../../lib/LitleOnline",__FILE__)
 require 'test/unit'
 
 #test DepositReversal Transaction
 module LitleOnline
- class TestDepositReversal < Test::Unit::TestCase
-  
-def test_simple
-    hash = {
+  class TestDepositReversal < Test::Unit::TestCase
+    def test_simple
+      hash = {
         'merchantId' => '101',
         'version'=>'8.8',
         'id'=>'test',
@@ -38,7 +37,7 @@ def test_simple
         'litleTxnId' =>'5000',
         'card'=>{
           'type'=>'GC',
-          'number' =>'400000000000001',
+          'number' =>'400000000000000',
           'expDate' =>'0150',
           'pin' => '1234',
           'cardValidationNum' => '411'
@@ -48,25 +47,24 @@ def test_simple
         'originalTxnTime' => '2017-01-24T09:00:00',
         'originalSystemTraceId' => '33',
         'originalSequenceNumber' => '111111',
-	   }
+      }
 
-    response= LitleOnlineRequest.new.deposit_reversal(hash)
-    assert_equal('000', response.depositReversalResponse.response)
-  end
+      response= LitleOnlineRequest.new.deposit_reversal(hash)
+      assert_equal('000', response.depositReversalResponse.response)
+    end
 
-
-  def test_simple_error
-    hash = {
+    def test_simple_error
+      hash = {
         'merchantId' => '101',
         'version'=>'8.8',
         'id'=>'test',
         'reportGroup'=>'Planets',
-	   }
+      }
 
-    #Get exceptions
-    exception = assert_raise(RuntimeError){LitleOnlineRequest.new.deposit_reversal(hash)}
-    #Test 
-    assert(exception.message =~ /Error validating xml data against the schema/)
+      #Get exceptions
+      exception = assert_raise(RuntimeError){LitleOnlineRequest.new.deposit_reversal(hash)}
+      #Test
+      assert(exception.message =~ /Error validating xml data against the schema/)
+    end
   end
- end
 end
