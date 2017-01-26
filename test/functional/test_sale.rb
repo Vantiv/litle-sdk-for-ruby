@@ -376,6 +376,7 @@ module LitleOnline
       }
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal 'Valid Format', response.message
+      assert_equal('63225578415568556365452427825', response.saleResponse.networkTransactionId)
     end
     
   def test_simple_sale_with_sepaDirectDebit
@@ -395,7 +396,12 @@ module LitleOnline
         }}
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal 'Valid Format', response.message
+      assert_equal('http://redirect.url.vantiv.com', response.saleResponse.sepaDirectDebitResponse.redirectUrl)
+      assert_equal('jj2d1d372osmmt7tb8epm0a99q', response.saleResponse.sepaDirectDebitResponse.redirectToken)
+      assert_equal('1BADA58', response.saleResponse.sepaDirectDebitResponse.mandateReference)    
     end
-     
+    
+    
+    
    end
 end

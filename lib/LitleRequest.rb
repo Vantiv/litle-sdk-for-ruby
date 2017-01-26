@@ -44,7 +44,7 @@ module LitleOnline
       @options = options
       # current time out set to 2 mins
       # this value is in seconds
-      @RESPONSE_TIME_OUT = 360
+      @RESPONSE_TIME_OUT = 520
       @POLL_DELAY = 0
       @responses_expected = 0
     end
