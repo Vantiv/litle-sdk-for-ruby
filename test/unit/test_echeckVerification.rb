@@ -32,7 +32,7 @@ module LitleOnline
         'merchantId' => '101',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
-        'litleTxnId'=>'123456',
+        #'litleTxnId'=>'123456',
         'echeckToken' => {'accType'=>'Checking','litleToken'=>'1234565789012','routingNum'=>'123456789','checkNum'=>'123455'},
         'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'}
       }
@@ -47,7 +47,7 @@ module LitleOnline
         'merchantId' => '101',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
-        'litleTxnId'=>'123456',
+        #'litleTxnId'=>'123456',
         'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'}
       }
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*(loggedInUser="gdake".*merchantSdk="Ruby;8.14.0")|(merchantSdk="Ruby;8.14.0".*loggedInUser="gdake").*/m), is_a(Hash))
@@ -60,7 +60,7 @@ module LitleOnline
         'merchantId' => '101',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
-        'litleTxnId'=>'123456',
+        #'litleTxnId'=>'123456',
         'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'}
       }
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<\/echeck>.*<merchantData>.*<campaign>camping<\/campaign>.*<\/merchantData>/m), is_a(Hash))

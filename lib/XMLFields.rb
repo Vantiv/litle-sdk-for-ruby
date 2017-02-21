@@ -1864,8 +1864,8 @@ module LitleOnline
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-
-    text_node :litleTxnId, "litleTxnId", :default_value=>nil
+    #XML 11.0
+    #text_node :litleTxnId, "litleTxnId", :default_value=>nil
     text_node :orderId, "orderId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
     text_node :orderSource, "orderSource", :default_value=>nil
@@ -1893,6 +1893,7 @@ module LitleOnline
     :elsif, 'echeckToken', :then, (object_node :echeckToken, "echeckToken", :class=>EcheckToken, :default_value=>nil)
     object_node :customBilling, "customBilling", :class=>CustomBilling, :default_value=>nil
     object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
+    text_node :customIdentifier, "customIdentifier", :default_value=>nil
   end
 
   class EcheckRedeposit
@@ -1906,6 +1907,7 @@ module LitleOnline
     optional_choice_node :if,    'echeck', :then, (object_node :echeck, "echeck", :class=>Echeck, :default_value=>nil),
     :elsif, 'echeckToken', :then, (object_node :echeckToken, "echeckToken", :class=>EcheckToken, :default_value=>nil)
     object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
+    text_node :customIdentifier, "customIdentifier", :default_value=>nil
   end
 
   class EcheckSale
@@ -1914,7 +1916,7 @@ module LitleOnline
     text_node :reportGroup, "@reportGroup", :default_value=>nil
     text_node :transactionId, "@id", :default_value=>nil
     text_node :customerId, "@customerId", :default_value=>nil
-
+    
     text_node :litleTxnId, "litleTxnId", :default_value=>nil
     text_node :orderId, "orderId", :default_value=>nil
     text_node :verify, "verify", :default_value=>nil
@@ -1927,6 +1929,7 @@ module LitleOnline
     :elsif, 'echeckToken', :then, (object_node :echeckToken, "echeckToken", :class=>EcheckToken, :default_value=>nil)
     object_node :customBilling, "customBilling", :class=>CustomBilling, :default_value=>nil
     object_node :merchantData, "merchantData", :class=>MerchantData, :default_value=>nil
+    text_node :customIdentifier, "customIdentifier", :default_value=>nil
   end
 
   class EcheckPreNoteSale

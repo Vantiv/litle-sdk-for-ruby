@@ -136,6 +136,24 @@ module LitleOnline
       #Test 
       assert(exception.message =~ /Error validating xml data against the schema/)
     end
+    
+    def test_no_litleTxnId
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'id'=>'test',
+        'reportGroup'=>'Planets',
+        'amount'=>'123',
+        'invalidfield'=>'nonexistant',
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'},
+        'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
+        'orderId'=>'12345',
+        'orderSource'=>'ecommerce',
+        #'litleTxnId'=>'123456',
+      }
+      response= LitleOnlineRequest.new.echeck_verification(hash)
+      assert_equal('Valid Format', response.message)
+    end
   
   end
 

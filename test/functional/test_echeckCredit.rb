@@ -155,5 +155,25 @@ module LitleOnline
       response= LitleOnlineRequest.new.echeck_credit(hash)
       assert_equal('Valid Format', response.message)
     end
+    
+    def test_echeck_credit_with_customIdentifier
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'id'=>'test',
+        'reportGroup'=>'Planets',
+        'amount'=>'123456',
+        'verify'=>'true',
+        'orderId'=>'12345',
+        'orderSource'=>'ecommerce',
+        'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'},
+        'shipToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'},
+        'merchantData'=>{'campaign'=>'camping'},
+        'customIdentifier' =>'identifier',         
+      }
+      response= LitleOnlineRequest.new.echeck_credit(hash)
+      assert_equal('Valid Format', response.message)
+    end
   end
 end

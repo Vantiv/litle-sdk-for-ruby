@@ -90,5 +90,20 @@ module LitleOnline
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<\/echeck>.*<merchantData>.*<campaign>camping<\/campaign>.*<\/merchantData>/m), is_a(Hash))
       LitleOnlineRequest.new.echeck_redeposit(hash)
     end
+    
+    def test_customIdentifier
+      hash = {
+        'merchantData' => {'campaign'=>'camping'},
+        'customIdentifier' =>'identifier',
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'litleTxnId'=>'123456',
+        'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'}
+      }
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<customIdentifier>identifier<\/customIdentifier>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.echeck_redeposit(hash)
+    end
+    
   end
 end

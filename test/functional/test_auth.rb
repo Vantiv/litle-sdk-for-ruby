@@ -200,7 +200,7 @@ module LitleOnline
         'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
-        #      'litleTxnId'=>'123456',
+        # 'litleTxnId'=>'123456',
         'orderId'=>'12344',
         'amount'=>'106',
         'card'=>{
@@ -420,5 +420,28 @@ module LitleOnline
       response= LitleOnlineRequest.new.authorization(hash)
       assert_equal 'Valid Format', response.message
     end
+    
+    def test_eciIndicator
+      hash = {
+        'merchantId' => '101',
+        'id' => 'test',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId'=>'12355',
+        'amount'=>'106',
+        'orderSource'=>'androidpay',
+        'card'=>{
+          'type'=>'VI',
+          'number' =>'4100800000000000',
+          'expDate' =>'1210'
+        },
+        'processingType' => 'initialInstallment',
+        'originalNetworkTransactionId' => '9876543210',
+        'originalTransactionAmount' => '536981'
+      }
+      response= LitleOnlineRequest.new.authorization(hash)
+      assert_equal 'Valid Format', response.message
+    end
+    
   end
 end

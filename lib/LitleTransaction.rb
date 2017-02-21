@@ -422,9 +422,9 @@ module LitleOnline
       transaction = EcheckRedeposit.new
       add_echeck(transaction, options)
 
-      transaction.litleTxnId = options['litleTxnId']
-      transaction.merchantData              = MerchantData.from_hash(options)
-
+      transaction.litleTxnId        = options['litleTxnId']
+      transaction.merchantData      = MerchantData.from_hash(options)
+      transaction.customIdentifier  = options['customIdentifier']
       return transaction
     end
 
@@ -603,7 +603,7 @@ module LitleOnline
       transaction.verify        = options['verify']
       transaction.shipToAddress = Contact.from_hash(options,'shipToAddress')
       transaction.customBilling = CustomBilling.from_hash(options)
-
+      transaction.customIdentifier = options['customIdentifier']
       return transaction
     end
 
@@ -611,19 +611,21 @@ module LitleOnline
       transaction = EcheckCredit.new
       transaction.customBilling = CustomBilling.from_hash(options)
       transaction.secondaryAmount = options['secondaryAmount']
+      transaction.customIdentifier = options['customIdentifier']
       add_echeck_order_info(transaction, options)
       add_echeck(transaction, options)
-
       return transaction
     end
 
     def echeck_verification(options)
       transaction = EcheckVerification.new
-
-      add_echeck_order_info(transaction, options)
-      add_echeck(transaction, options)
+      transaction.orderId       = options['orderId']
+      transaction.amount        = options['amount']
+      transaction.orderSource   = options['orderSource']
+      transaction.billToAddress = Contact.from_hash(options,'billToAddress')
+      transaction.echeck      = Echeck.from_hash(options)
+      transaction.echeckToken = EcheckToken.from_hash(options)
       transaction.merchantData = MerchantData.from_hash(options)
-
       return transaction
     end
 
