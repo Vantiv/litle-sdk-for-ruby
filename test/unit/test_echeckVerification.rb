@@ -32,6 +32,7 @@ module LitleOnline
         'merchantId' => '101',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
+        'id'=>'12345',
         #'litleTxnId'=>'123456',
         'echeckToken' => {'accType'=>'Checking','litleToken'=>'1234565789012','routingNum'=>'123456789','checkNum'=>'123455'},
         'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'}
@@ -47,6 +48,7 @@ module LitleOnline
         'merchantId' => '101',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
+        'id'=>'12345',
         #'litleTxnId'=>'123456',
         'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'}
       }
@@ -60,6 +62,7 @@ module LitleOnline
         'merchantId' => '101',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
+        'id'=>'12345',
         #'litleTxnId'=>'123456',
         'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'}
       }

@@ -39,7 +39,7 @@ def test_simple_card_happy
         'amount' =>'500',
         'orderSource' =>'ecommerce',
         'card'=>{
-        'type'=>'VI',
+        'type'=>'GC',
         'number' =>'4100000000000001',
         'expDate' =>'1210'
        }

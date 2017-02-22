@@ -610,6 +610,7 @@ module LitleOnline
     def echeck_credit(options)
       transaction = EcheckCredit.new
       transaction.customBilling = CustomBilling.from_hash(options)
+      transaction.litleTxnId    = options['litleTxnId']
       transaction.secondaryAmount = options['secondaryAmount']
       transaction.customIdentifier = options['customIdentifier']
       add_echeck_order_info(transaction, options)
@@ -619,12 +620,8 @@ module LitleOnline
 
     def echeck_verification(options)
       transaction = EcheckVerification.new
-      transaction.orderId       = options['orderId']
-      transaction.amount        = options['amount']
-      transaction.orderSource   = options['orderSource']
-      transaction.billToAddress = Contact.from_hash(options,'billToAddress')
-      transaction.echeck      = Echeck.from_hash(options)
-      transaction.echeckToken = EcheckToken.from_hash(options)
+      add_echeck_order_info(transaction, options)
+      add_echeck(transaction, options)
       transaction.merchantData = MerchantData.from_hash(options)
       return transaction
     end
@@ -707,7 +704,7 @@ module LitleOnline
     end
 
     def add_echeck_order_info(transaction, options)
-      transaction.litleTxnId    = options['litleTxnId']
+      #transaction.litleTxnId    = options['litleTxnId']
       transaction.orderId       = options['orderId']
       transaction.amount        = options['amount']
       transaction.orderSource   = options['orderSource']
