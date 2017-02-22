@@ -1342,7 +1342,7 @@ module LitleOnline
     text_node :transactionId, "@id", :default_value=>nil
     text_node :orderId,'orderId', :default_value=>nil
     text_node :orderSource, "orderSource", :default_value=>nil
-    object_node :card,'card',:class=>Card, :default_value=>nil
+    object_node :card, "card", :class => Card, :default_value=>nil
   end
 
   class Load

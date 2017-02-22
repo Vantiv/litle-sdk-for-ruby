@@ -37,13 +37,13 @@ module LitleOnline
         'orderSource'=>'ecommerce',
         'card'=>
                 {  
-                 'type'=>'VI',
+                 'type'=>'GC',
                  'number' =>'4100000000000001',
                  'expDate' =>'1210'
                 }
       }
 
-      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<balanceInquiry reportGroup="Planets"><orderId>11<\/orderId><orderSource>ecommerce<\/orderSource><card><type>VI<\/type><number>4100000000000001<\/number><expDate>1210<\/expDate><\/card><\/balanceInquiry>.*/m), is_a(Hash))
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<balanceInquiry reportGroup="Planets"><orderId>11<\/orderId><orderSource>ecommerce<\/orderSource><card><type>GC<\/type><number>4100000000000001<\/number><expDate>1210<\/expDate><\/card><\/balanceInquiry>.*/m), is_a(Hash))
       LitleOnlineRequest.new.balance_inquiry(hash)
     end
 

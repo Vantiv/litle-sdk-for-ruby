@@ -78,7 +78,7 @@ def test_simple_virtualGiftCard_happy
         'orderId' =>'1001',
         'orderSource' =>'ecommerce',
         'card'=>{
-        'type'=>'VI',
+        'type'=>'GC',
         'number' =>'4100000000000001',
         'expDate' =>'1210'
                 }
@@ -95,6 +95,30 @@ def test_simple_virtualGiftCard_happy
         'reportGroup'=>'Planets',
         'amount' =>'500',	
 	   }
+
+    #Get exceptions
+    exception = assert_raise(RuntimeError){
+      LitleOnlineRequest.new.activate(hash)
+      }
+    #Test 
+    assert(exception.message =~ /Error validating xml data against the schema/)
+  end
+  
+  def test_GiftCardCardType_NotPresent
+    hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'id' =>'test',
+        'reportGroup'=>'Planets',
+        'amount' =>'500',
+        'orderId' =>'1001',
+        'orderSource' =>'ecommerce',
+        'card'=>{
+        'type'=>'VI',
+        'number' =>'4100000000000001',
+        'expDate' =>'1210'
+                }
+     }
 
     #Get exceptions
     exception = assert_raise(RuntimeError){
