@@ -38,7 +38,7 @@ module LitleOnline
        'origActionType' => 'A',
        'transactionId'=>'123456',
        'orderId'=>'65347567',
-       'origAccountNumber' => '4000000000000001'      
+       #'origAccountNumber' => '4000000000000001'      
        }
        response= LitleOnlineRequest.new.query_Transaction(hash)
        assert_equal('000', response.queryTransactionResponse.response)
@@ -52,11 +52,10 @@ module LitleOnline
        'reportGroup'=>'Some RG',
        'customerId' => '038945',
        'origId' => '834262',
-       'origId' => '834262',
        'origActionType' => '',
        'transactionId'=>'123456',
        'orderId'=>'65347567',
-       'origAccountNumber' => '4000000000000001'      
+       #'origAccountNumber' => '4000000000000001'      
       }  
       response= LitleOnlineRequest.new.query_Transaction(hash)
       assert('000', response.queryTransactionResponse.response)                
@@ -72,7 +71,7 @@ module LitleOnline
        'origActionType' => 'A',
        'transactionId'=>'123456',
        'orderId'=>'65347567',
-       'origAccountNumber' => '4000000000000001'      
+       #'origAccountNumber' => '4000000000000001'      
       }
       #Get exceptions
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.query_Transaction(hash)}
@@ -90,7 +89,7 @@ module LitleOnline
        'origId' => '834262',
        'transactionId'=>'123456',
        'orderId'=>'65347567',
-       'origAccountNumber' => '4000000000000001'      
+       #'origAccountNumber' => '4000000000000001'      
        }  
        #Get exceptions
         exception = assert_raise(RuntimeError){LitleOnlineRequest.new.query_Transaction(hash)}
@@ -106,11 +105,10 @@ module LitleOnline
        'reportGroup'=>'Some RG',
        'customerId' => '038945',
        'origId' => '834262',
-       'origId' => '834262',
        'origActionType' => 'AAA',
        'transactionId'=>'123456',
        'orderId'=>'65347567',
-       'origAccountNumber' => '4000000000000001'      
+       #'origAccountNumber' => '4000000000000001'      
      }
      #Get exceptions
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.query_Transaction(hash)}
@@ -126,7 +124,7 @@ module LitleOnline
        'customerId' => '038945',                      
        'origActionType' => 'A',
        'transactionId'=>'123456',
-       'origAccountNumber' => '4000000000000001'      
+       #'origAccountNumber' => '4000000000000001'      
        }
        #Get exceptions
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.query_Transaction(hash)}
@@ -145,7 +143,7 @@ module LitleOnline
        'origActionType' => 'A',
        'transactionId'=>'123456',
        'orderId'=>'65347567',
-       'origAccountNumber' => '4000000000000001' 
+       #'origAccountNumber' => '4000000000000001' 
        } 
        response= LitleOnlineRequest.new.query_Transaction(hash)
        assert_equal('152', response.queryTransactionUnavailableResponse.response)

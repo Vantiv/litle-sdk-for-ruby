@@ -57,7 +57,7 @@ class TestQueryTransaction < Test::Unit::TestCase
       'origActionType' => 'A',
       'transactionId'=>'123456',
       'orderId'=>'65347567',
-      'origAccountNumber' => '4000000000000001'      
+      #'origAccountNumber' => '4000000000000001'      
      }  
          
      LitleXmlMapper.expects(:request).with(regexp_matches(/.*?<litleOnlineRequest.*?<queryTransaction.*?<origId>834262<\/origId><origActionType>A<\/origActionType>.*?<\/queryTransaction>.*?/m), is_a(Hash))

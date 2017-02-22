@@ -1986,7 +1986,7 @@ module LitleOnline
     text_node :fundingSubmerchantId, "fundingSubmerchantId", :default_value=>nil
     text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
-    text_node :customIdentifier, "customIdentifier", :default_value=>nil
+    
   end
 
   class ReserveCredit
@@ -1999,7 +1999,7 @@ module LitleOnline
     text_node :fundingSubmerchantId, "fundingSubmerchantId", :default_value=>nil
     text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
-    text_node :customIdentifier, "customIdentifier", :default_value=>nil
+    
   end
 
   class VendorCredit
@@ -2013,7 +2013,7 @@ module LitleOnline
     text_node :vendorName, "vendorName", :default_value=>nil
     text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
-    text_node :customIdentifier, "customIdentifier", :default_value=>nil
+  
     object_node :accountInfo, "accountInfo", :class=>Echeck, :default_value=>nil
   end
 
@@ -2027,7 +2027,7 @@ module LitleOnline
     text_node :fundingSubmerchantId, "fundingSubmerchantId", :default_value=>nil
     text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
-    text_node :customIdentifier, "customIdentifier", :default_value=>nil
+    
   end
 
   class SubmerchantDebit
@@ -2056,7 +2056,7 @@ module LitleOnline
     text_node :fundingSubmerchantId, "fundingSubmerchantId", :default_value=>nil
     text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
-    text_node :customIdentifier, "customIdentifier", :default_value=>nil
+    
   end
 
   class ReserveDebit
@@ -2069,7 +2069,7 @@ module LitleOnline
     text_node :fundingSubmerchantId, "fundingSubmerchantId", :default_value=>nil
     text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
-    text_node :customIdentifier, "customIdentifier", :default_value=>nil
+    
   end
 
   class VendorDebit
@@ -2083,7 +2083,7 @@ module LitleOnline
     text_node :vendorName, "vendorName", :default_value=>nil
     text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
-    text_node :customIdentifier, "customIdentifier", :default_value=>nil
+    
     object_node :accountInfo, "accountInfo", :class=>Echeck, :default_value=>nil
   end
 
@@ -2097,7 +2097,7 @@ module LitleOnline
     text_node :fundingSubmerchantId, "fundingSubmerchantId", :default_value=>nil
     text_node :fundsTransferId, "fundsTransferId", :default_value=>nil
     text_node :amount, "amount", :default_value=>nil
-    text_node :customIdentifier, "customIdentifier", :default_value=>nil
+    
   end
 
   class UpdateCardValidationNumOnToken
@@ -2149,8 +2149,8 @@ module LitleOnline
   text_node :origId, "origId", :default_value=>nil
   text_node :origActionType, "origActionType", :default_value=>nil
   text_node :origLitleTxnId, "origLitleTxnId", :default_value=>nil   
-  text_node :origOrderId, "origOrderId", :default_value=>nil
-  text_node :origAccountNumber, "origAccountNumber", :default_value=>nil
+  #text_node :origOrderId, "origOrderId", :default_value=>nil
+  #text_node :origAccountNumber, "origAccountNumber", :default_value=>nil
   def self.from_hash(hash, name='queryTransaction')
         base = hash[name]
         if(base)

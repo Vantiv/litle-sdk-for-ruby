@@ -103,5 +103,6 @@ def test_simple_virtualGiftCard_happy
     #Test 
     assert(exception.message =~ /Error validating xml data against the schema/)
   end
+  
  end
 end
