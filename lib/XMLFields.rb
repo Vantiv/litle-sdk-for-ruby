@@ -1364,6 +1364,50 @@ module LitleOnline
       end
     end
   end 
+ 
+  class SepaDirectDebitType
+    include XML::Mapping
+    root_element_name "sepaDirectDebit"
+    text_node :mandateProvider, "mandateProvider", :default_value=>nil
+    text_node :sequenceType, "sequenceType", :default_value=>nil
+    text_node :mandateReference, "mandateReference", :default_value=>nil
+    text_node :mandateUrl, "mandateUrl", :default_value=>nil
+    text_node :mandateSignatureDate, "mandateSignatureDate", :default_value=>nil
+    text_node :iban, "iban", :default_value=>nil
+    text_node :preferredLanguage, "preferredLanguage", :default_value=>nil
+    def self.from_hash(hash, name='sepaDirectDebit')
+      base = hash[name]
+      if(base)
+        this = SepaDirectDebitType.new
+        this.mandateProvider = base['mandateProvider']
+        this.sequenceType = base['sequenceType']
+        this.mandateReference = base['mandateReference']
+        this.mandateUrl = base['mandateUrl']
+        this.mandateSignatureDate = base['mandateSignatureDate']
+        this.iban = base['iban']
+        this.preferredLanguage = base['preferredLanguage']
+        this
+      else
+        nil
+      end
+    end
+  end 
+
+  class IdealType
+    include XML::Mapping
+    root_element_name "ideal"
+    text_node :preferredLanguage, "preferredLanguage", :default_value=>nil
+    def self.from_hash(hash, name='ideal')
+      base = hash[name]
+      if(base)
+        this = IdealType.new
+        this.preferredLanguage = base['preferredLanguage']
+        this
+      else
+        nil
+      end
+    end    
+  end  
   
   class Authorization
     include XML::Mapping
@@ -1432,7 +1476,9 @@ module LitleOnline
     :elsif, 'token', :then, (object_node :token, "token", :class=>CardToken),
     :elsif, 'paypage', :then, (object_node :paypage, "paypage", :class=>CardPaypage),
     :elsif, 'mpos', :then, (object_node :mpos, "mpos", :class=>Mpos),
-    :elsif, 'applepay', :then, (object_node :applepay, "applepay", :class=>Applepay)
+    :elsif, 'applepay', :then, (object_node :applepay, "applepay", :class=>Applepay),
+    :elsif, 'sepaDirectDebit', :then, (object_node :sepaDirectDebit, "sepaDirectDebit", :class=>SepaDirectDebitType),
+    :elsif, 'ideal', :then, (object_node :ideal, "ideal", :class=>IdealType)
     object_node :billMeLaterRequest, "billMeLaterRequest", :class=>BillMeLaterRequest, :default_value=>nil
     optional_choice_node :if, 'fraudCheck', :then, (object_node :fraudCheck, "fraudCheck", :class=>FraudCheck, :default_value=>nil),
     :elsif, 'cardholderAuthentication', :then, (object_node :cardholderAuthentication, "cardholderAuthentication", :class=>FraudCheck, :default_value=>nil)

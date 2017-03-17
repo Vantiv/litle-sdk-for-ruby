@@ -210,6 +210,9 @@ module LitleOnline
       transaction.processingType                    = options['processingType']
       transaction.originalNetworkTransactionId      = options['originalNetworkTransactionId']
       transaction.originalTransactionAmount         = options['originalTransactionAmount']
+      #9.12
+      transaction.sepaDirectDebit                   = SepaDirectDebitType.from_hash(options,'sepaDirectDebit')
+      transaction.ideal                             = IdealType.from_hash(options,'ideal')   
       return transaction
     end
 
