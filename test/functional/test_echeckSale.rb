@@ -152,7 +152,12 @@ module LitleOnline
         'reportGroup'=>'Planets',
         'id'=>'test',
         'litleTxnId'=>'123456789101112',
-        'amount'=>'12'
+        'orderId'=>'12345',
+        'amount'=>'12',
+        'orderSource'=>'ecommerce',
+        'echeckToken' => {'accType'=>'Checking','litleToken'=>'1234565789012','routingNum'=>'123456789','checkNum'=>'123455'},
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'},
+        'shipToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
       }
       response= LitleOnlineRequest.new.echeck_sale(hash)
       assert_equal('Valid Format', response.message)
@@ -163,7 +168,12 @@ module LitleOnline
         'reportGroup'=>'Planets',
         'id'=>'test',
         'litleTxnId'=>'123456',
+        'orderId'=>'12345',
         'amount'=>'10',
+        'orderSource'=>'ecommerce',
+        'echeckToken' => {'accType'=>'Checking','litleToken'=>'1234565789012','routingNum'=>'123456789','checkNum'=>'123455'},
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'},
+        'shipToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'}
       }
       response= LitleOnlineRequest.new.echeck_sale(hash)
       assert_equal('Valid Format', response.message)
@@ -219,6 +229,26 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_sale(hash)}
       #Test 
       assert(exception.message =~ /Error validating xml data against the schema/)
+    end
+    
+    def test_echeck_sale_with_customIdentifier
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'id'=>'test',
+        'reportGroup'=>'Planets',
+        'amount'=>'123456',
+        'verify'=>'true',
+        'orderId'=>'12345',
+        'orderSource'=>'ecommerce',
+        'echeck' => {'accType'=>'Checking','accNum'=>'12345657890','routingNum'=>'123456789','checkNum'=>'123455'},
+        'billToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'},
+        'shipToAddress'=>{'name'=>'Bob','city'=>'lowell','state'=>'MA','email'=>'litle.com'},
+        'merchantData'=>{'campaign'=>'camping'},
+        'customIdentifier' =>'identifier',   
+      }
+      response= LitleOnlineRequest.new.echeck_sale(hash)
+      assert_equal('Valid Format', response.message)
     end
 
   end

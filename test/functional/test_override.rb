@@ -13,7 +13,7 @@ module LitleOnline
         'amount' =>'500',
         'orderSource' =>'ecommerce',
         'card'=>{
-          'type'=>'VI',
+          'type'=>'GC',
           'number' =>'4100000000000001',
           'expDate' =>'1210'
         }
@@ -21,6 +21,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.activate(hash)
       assert_equal('Default Report Group', response.activateResponse.reportGroup)
     end
+    
     def test_override_withoutLocal
       hash = {
         'merchantId' => '101',
@@ -30,7 +31,7 @@ module LitleOnline
         'amount' =>'500',
         'orderSource' =>'ecommerce',
         'card'=>{
-          'type'=>'VI',
+          'type'=>'GC',
           'number' =>'4100000000000001',
           'expDate' =>'1210'
         }
@@ -51,7 +52,7 @@ module LitleOnline
         'amount' =>'500',
         'orderSource' =>'ecommerce',
         'card'=>{
-          'type'=>'VI',
+          'type'=>'GC',
           'number' =>'4100000000000001',
           'expDate' =>'1210'
         }

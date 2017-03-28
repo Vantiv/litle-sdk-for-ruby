@@ -422,9 +422,9 @@ module LitleOnline
       transaction = EcheckRedeposit.new
       add_echeck(transaction, options)
 
-      transaction.litleTxnId = options['litleTxnId']
-      transaction.merchantData              = MerchantData.from_hash(options)
-
+      transaction.litleTxnId        = options['litleTxnId']
+      transaction.merchantData      = MerchantData.from_hash(options)
+      transaction.customIdentifier  = options['customIdentifier']
       return transaction
     end
 
@@ -472,7 +472,7 @@ module LitleOnline
       transaction.vendorName              = options['vendorName']
       transaction.fundsTransferId         = options['fundsTransferId']
       transaction.amount                  = options['amount']
-      transaction.customIdentifier        = options['customIdentifier']
+      
       transaction.accountInfo = Echeck.from_hash(options,'accountInfo')
       add_account_info(transaction, options)
 
@@ -484,7 +484,7 @@ module LitleOnline
       transaction.fundingSubmerchantId    = options['fundingSubmerchantId']
       transaction.fundsTransferId         = options['fundsTransferId']
       transaction.amount                  = options['amount']
-      transaction.customIdentifier        = options['customIdentifier']
+      
       add_account_info(transaction, options)
 
       return transaction
@@ -495,7 +495,7 @@ module LitleOnline
       transaction.fundingSubmerchantId    = options['fundingSubmerchantId']
       transaction.fundsTransferId         = options['fundsTransferId']
       transaction.amount                  = options['amount']
-      transaction.customIdentifier        = options['customIdentifier']
+      
       add_account_info(transaction, options)
 
       return transaction
@@ -506,7 +506,7 @@ module LitleOnline
       transaction.fundingSubmerchantId    = options['fundingSubmerchantId']
       transaction.fundsTransferId         = options['fundsTransferId']
       transaction.amount                  = options['amount']
-      transaction.customIdentifier        = options['customIdentifier']
+    
       add_account_info(transaction, options)
 
       return transaction
@@ -528,8 +528,8 @@ module LitleOnline
       transaction.origId = options['origId']
       transaction.origActionType = options['origActionType']
       transaction.origLitleTxnId = options['origLitleTxnId']
-      transaction.origOrderId = options['origOrderId']
-      transaction.origAccountNumber = options['origAccountNumber']
+     # transaction.origOrderId = options['origOrderId']
+     # transaction.origAccountNumber = options['origAccountNumber']
       add_account_info(transaction, options)
          
       return transaction
@@ -555,7 +555,7 @@ module LitleOnline
       transaction.vendorName              = options['vendorName']
       transaction.fundsTransferId         = options['fundsTransferId']
       transaction.amount                  = options['amount']
-      transaction.customIdentifier        = options['customIdentifier']
+     
       transaction.accountInfo = Echeck.from_hash(options,'accountInfo')
       add_account_info(transaction, options)
 
@@ -567,7 +567,7 @@ module LitleOnline
       transaction.fundingSubmerchantId    = options['fundingSubmerchantId']
       transaction.fundsTransferId         = options['fundsTransferId']
       transaction.amount                  = options['amount']
-      transaction.customIdentifier        = options['customIdentifier']
+      
       add_account_info(transaction, options)
 
       return transaction
@@ -578,7 +578,7 @@ module LitleOnline
       transaction.fundingSubmerchantId    = options['fundingSubmerchantId']
       transaction.fundsTransferId         = options['fundsTransferId']
       transaction.amount                  = options['amount']
-      transaction.customIdentifier        = options['customIdentifier']
+      
       add_account_info(transaction, options)
 
       return transaction
@@ -589,7 +589,7 @@ module LitleOnline
       transaction.fundingSubmerchantId    = options['fundingSubmerchantId']
       transaction.fundsTransferId         = options['fundsTransferId']
       transaction.amount                  = options['amount']
-      transaction.customIdentifier        = options['customIdentifier']
+      
       add_account_info(transaction, options)
 
       return transaction
@@ -603,27 +603,26 @@ module LitleOnline
       transaction.verify        = options['verify']
       transaction.shipToAddress = Contact.from_hash(options,'shipToAddress')
       transaction.customBilling = CustomBilling.from_hash(options)
-
+      transaction.customIdentifier = options['customIdentifier']
       return transaction
     end
 
     def echeck_credit(options)
       transaction = EcheckCredit.new
       transaction.customBilling = CustomBilling.from_hash(options)
+      transaction.litleTxnId    = options['litleTxnId']
       transaction.secondaryAmount = options['secondaryAmount']
+      transaction.customIdentifier = options['customIdentifier']
       add_echeck_order_info(transaction, options)
       add_echeck(transaction, options)
-
       return transaction
     end
 
     def echeck_verification(options)
       transaction = EcheckVerification.new
-
       add_echeck_order_info(transaction, options)
       add_echeck(transaction, options)
       transaction.merchantData = MerchantData.from_hash(options)
-
       return transaction
     end
 
@@ -705,7 +704,7 @@ module LitleOnline
     end
 
     def add_echeck_order_info(transaction, options)
-      transaction.litleTxnId    = options['litleTxnId']
+      #transaction.litleTxnId    = options['litleTxnId']
       transaction.orderId       = options['orderId']
       transaction.amount        = options['amount']
       transaction.orderSource   = options['orderSource']
