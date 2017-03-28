@@ -355,7 +355,6 @@ module LitleOnline
         'submerchantName'=>'001',
         'fundsTransferId'=>'00003',
         'amount'=>'10000',
-        'customIdentifier'=>'0987',
         'accountInfo' => {'accType'=>'Checking','accNum'=>'123456789012','routingNum'=>'114567895'}
       }
 
@@ -409,7 +408,6 @@ module LitleOnline
         'submerchantName'=>'001',
         'fundsTransferId'=>'00003',
         'amount'=>'10000',
-        'customIdentifier'=>'0987',
         'accountInfo' => {'accType'=>'Checking','accNum'=>'123456789012','routingNum'=>'114567895'}
       }
 
