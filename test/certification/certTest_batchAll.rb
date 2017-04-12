@@ -355,7 +355,6 @@ module LitleOnline
         'submerchantName'=>'001',
         'fundsTransferId'=>'00003',
         'amount'=>'10000',
-        'customIdentifier'=>'0987',
         'accountInfo' => {'accType'=>'Checking','accNum'=>'123456789012','routingNum'=>'114567895'}
       }
 
@@ -367,7 +366,7 @@ module LitleOnline
         'vendorName'=>'001',
         'fundsTransferId'=>'00007',
         'amount'=>'7000',
-        'customIdentifier'=>'0987',
+        
         'accountInfo' => {'accType'=>'Checking','accNum'=>'123456789012','routingNum'=>'114567895'}
       }
 
@@ -378,7 +377,7 @@ module LitleOnline
         'fundingSubmerchantId'=>'123456',
         'fundsTransferId'=>'00001',
         'amount'=>'1000',
-        'customIdentifier'=>'0987',
+        
       }
 
       reserveCreditHash = {
@@ -388,7 +387,7 @@ module LitleOnline
         'fundingSubmerchantId'=>'123456',
         'fundsTransferId'=>'00005',
         'amount'=>'50000',
-        'customIdentifier'=>'0987',
+        
       }
 
       physicalCheckCreditHash = {
@@ -398,7 +397,7 @@ module LitleOnline
         'fundingSubmerchantId'=>'123456',
         'fundsTransferId'=>'00009',
         'amount'=>'9000',
-        'customIdentifier'=>'0987',
+        
       }
       
       submerchantDebitHash = {
@@ -409,7 +408,6 @@ module LitleOnline
         'submerchantName'=>'001',
         'fundsTransferId'=>'00003',
         'amount'=>'10000',
-        'customIdentifier'=>'0987',
         'accountInfo' => {'accType'=>'Checking','accNum'=>'123456789012','routingNum'=>'114567895'}
       }
 
@@ -421,7 +419,7 @@ module LitleOnline
         'vendorName'=>'001',
         'fundsTransferId'=>'00007',
         'amount'=>'7000',
-        'customIdentifier'=>'0987',
+       
         'accountInfo' => {'accType'=>'Checking','accNum'=>'123456789012','routingNum'=>'114567895'}
       }
 
@@ -432,7 +430,7 @@ module LitleOnline
         'fundingSubmerchantId'=>'123456',
         'fundsTransferId'=>'00001',
         'amount'=>'1000',
-        'customIdentifier'=>'0987',
+       
       }
 
       reserveDebitHash = {
@@ -442,7 +440,7 @@ module LitleOnline
         'fundingSubmerchantId'=>'123456',
         'fundsTransferId'=>'00005',
         'amount'=>'50000',
-        'customIdentifier'=>'0987',
+        
       }
 
       physicalCheckDebitHash = {
@@ -452,7 +450,7 @@ module LitleOnline
         'fundingSubmerchantId'=>'123456',
         'fundsTransferId'=>'00009',
         'amount'=>'9000',
-        'customIdentifier'=>'0987',
+        
       }
 
       path = "/tmp/litle-sdk-for-ruby/cert/"

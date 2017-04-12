@@ -49,7 +49,7 @@ module LitleOnline
         https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
       end
       https.start { |http|
-        response = http.request_post(url.path, post_data.to_s, {'Content-Type'=>'text/xml','Connection'=>'close'})
+        response = http.request_post(url.path, post_data.to_s, {'Content-Type'=>'text/xml; charset=UTF-8','Connection'=>'close'})
         response_xml = response
       }
   

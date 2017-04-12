@@ -37,6 +37,25 @@ module LitleOnline
         'orderSource'=>'ecommerce',
         'card'=>
                 {  
+                 'type'=>'GC',
+                 'number' =>'4100000000000001',
+                 'expDate' =>'1210'
+                }
+      }
+
+      LitleXmlMapper.expects(:request).with(regexp_matches(/.*<deactivate reportGroup="Planets"><orderId>11<\/orderId><orderSource>ecommerce<\/orderSource><card><type>GC<\/type><number>4100000000000001<\/number><expDate>1210<\/expDate><\/card><\/deactivate>.*/m), is_a(Hash))
+      LitleOnlineRequest.new.deactivate(hash)
+    end
+    
+    def test_simple
+      hash = {
+        'merchantId' => '101',
+        'version'=>'8.8',
+        'reportGroup'=>'Planets',
+        'orderId' => '11',
+        'orderSource'=>'ecommerce',
+        'card'=>
+                {  
                  'type'=>'VI',
                  'number' =>'4100000000000001',
                  'expDate' =>'1210'
