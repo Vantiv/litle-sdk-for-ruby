@@ -212,9 +212,9 @@ module LitleOnline
         handle = sftp.opendir!('/inbound/')
         files_on_srv = sftp.readdir!(handle)
         files_on_srv.each {|file|
-        ents.push(file.name)
+          ents.push(file.name)
         }
-        assert_equal 4,ents.size
+        assert_equal 3,ents.size
         ents.sort!
         assert_equal ents[2], uploaded_file.gsub('sent', 'asc')
         sftp.remove('/inbound/' + ents[2])  
