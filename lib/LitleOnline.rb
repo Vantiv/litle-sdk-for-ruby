@@ -54,9 +54,10 @@ require_relative 'LitleRequest'
 require_relative 'LitleListeners'
 require_relative 'Configuration'
 
-#allows attribute values to be in double quotes, required by Vantiv eCommerce Server
-REXML::Attribute.class_eval( %q^
+# allows attribute values to be in double quotes,
+# required by Vantiv eCommerce Server
+REXML::Attribute.class_eval(%q^
     def to_string
       %Q[#@expanded_name="#{to_s().gsub(/"/, '&quot;')}"]
     end
-  ^ )
+  ^)

@@ -260,7 +260,7 @@ module LitleOnline
       request.merchantId      = get_merchant_id(options)
       request.version         = '9.12'
       request.loggedInUser    = get_logged_in_user(options)
-      request.xmlns           = "http://www.litle.com/schema"
+      request.xmlns           = 'http://www.litle.com/schema'
       request.merchantSdk     = get_merchant_sdk(options)
 
       request
@@ -299,7 +299,7 @@ module LitleOnline
     def get_config(field, options)
       options[field.to_s] == nil ? @config_hash[field.to_s] : options[field.to_s]
     end
-    
+
     def get_logged_in_user(options)
       options['loggedInUser'] || nil
     end
