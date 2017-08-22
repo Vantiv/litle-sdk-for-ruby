@@ -44,7 +44,14 @@ class Setup
       f.puts 'currency_merchant_map:'
       f.puts '  DEFAULT: ' + gets
       f.puts "default_report_group: 'Default Report Group'"
-      puts "Please choose Vantiv eCommerce url from the following list (example: 'prelive') or directly input another URL: \nsandbox => https://www.testvantivcnp.com/sandbox/communicator/online \nprelive => https://payments.vantivprelive.com/vap/communicator/online \npostlive => https://payments.vantivpostlive.com/vap/communicator/online \nproduction => https://payments.vantivcnp.com/vap/communicator/online \ntransact_prelive => https://transact.vantivprelive.com/vap/communicator/online \ntransact_postlive => https://transact.vantivpostlive.com/vap/communicator/online \ntransact_production => https://transact.vantivcnp.com/vap/communicator/online"
+      puts "Please choose Vantiv eCommerce url from the following list (example: 'prelive') or directly input another URL:
+sandbox => https://www.testvantivcnp.com/sandbox/communicator/online
+prelive => https://payments.vantivprelive.com/vap/communicator/online
+postlive => https://payments.vantivpostlive.com/vap/communicator/online
+production => https://payments.vantivcnp.com/vap/communicator/online
+transact_prelive => https://transact.vantivprelive.com/vap/communicator/online
+transact_postlive => https://transact.vantivpostlive.com/vap/communicator/online
+transact_production => https://transact.vantivcnp.com/vap/communicator/online"
       f.puts 'url: ' + Setup.choice(gets)
       puts 'Please input the proxy address, if no proxy hit enter key: '
       f.puts 'proxy_addr: ' + gets

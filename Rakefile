@@ -35,7 +35,7 @@ spec = Gem::Specification.new do |s|
   s.version = '11.0.0'
   s.author = 'Vantiv - eCommerce'
   s.email = 'sdksupport@vantiv.com'
-  s.homepage = 'https://www.vantiv.com/developers/ecommerce-payments#sdk-ruby'
+  s.homepage = 'https://developer.vantiv.com/community/ecommerce/pages/sdks#jive_content_id_Ruby_SDK'
   s.platform = Gem::Platform::RUBY
   s.required_ruby_version = '>=2.2.0'
   s.files = Dir['**/**']
