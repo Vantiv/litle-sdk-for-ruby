@@ -196,6 +196,7 @@ module LitleOnline
       entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       entries.sort!
       assert_equal 3, entries.size
+      puts entries[2]
       assert_not_nil entries[2] =~ /request_\d+.complete.sent\z/
 
       uploaded_file = entries[2]

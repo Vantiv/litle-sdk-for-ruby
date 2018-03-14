@@ -22,6 +22,7 @@
 # OTHER DEALINGS IN THE SOFTWARE.
 
 require 'yaml'
+require_relative 'EnvironmentVariables'
 #
 # Loads the configuration from a file
 #
@@ -38,13 +39,18 @@ module LitleOnline
       else
         config_file = ENV['HOME'] + '/.litle_SDK_config.yml'
       end
+      datas = {}
       # if Env variable exist, then just override the data from config file
       if File.exist?(config_file)
         datas = YAML.load_file(config_file)
-      else
-        environments = EnvironmentVariables.new
-        datas = {}
-        environments.instance_variables.each { |var| datas[var.to_s.delete('@')] = environments.instance_variable_get(var) }
+      end
+
+      # fill in fields missing in config from run time environment
+      environments = EnvironmentVariables.new
+      environments.instance_variables.each do |var|
+        if datas[var.to_s.delete('@')].nil?
+          datas[var.to_s.delete('@')] = environments.instance_variable_get(var)
+        end
       end
       datas.each { |key, _value| setENV(key, datas) }
       return datas
@@ -53,7 +59,16 @@ module LitleOnline
     end
 
     def setENV(key, datas)
-      datas[key] = ENV['litle_' + key] unless ENV['litle_' + key].nil?
+      val = ENV['litle_' + key]
+      if !val.nil?
+        if val == 'true'
+          datas[key] = true
+        elsif val == 'false'
+          datas[key] = false
+        else
+          datas[key] = val
+        end
+      end
     end
   end
 end

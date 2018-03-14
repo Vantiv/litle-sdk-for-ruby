@@ -147,7 +147,7 @@ module LitleOnline
       test = ""
       rescue RuntimeError => e
         test = e.message
-      assert_equal "You entered neither a path nor a batch. Game over :("  ,test 
+      assert_equal "You entered neither a path nor a batch."  ,test
     end
     
     def test_add_open_batch
@@ -237,7 +237,9 @@ module LitleOnline
       args.expects(:[]).with(:transaction_listener)
       args.expects(:[]).with(:batch_listener).returns(nil)
       args.expects(:[]).with(:path_to_responses).returns("fake/path/")
-      Dir.expects(:foreach).with("fake/path/")      
+      args.expects(:[]).twice.with(:deleteBatchFiles)
+      args.expects(:[]).with("deleteBatchFiles")
+      Dir.expects(:foreach).with("fake/path/")
       
       request.process_responses(args)
     end
@@ -249,7 +251,7 @@ module LitleOnline
       
       File.expects(:directory?).with("new/path/").returns(false).once.in_sequence(resp_seq)
       Dir.expects(:mkdir).with("new/path/").once.in_sequence(resp_seq)
-      Net::SFTP.expects(:start).twice.with("reddit.com", "periwinkle", :password=>"password")
+      Net::SFTP.expects(:start).with("reddit.com", "periwinkle", :password=>"password")
       
       request.get_responses_from_server(args)
     end

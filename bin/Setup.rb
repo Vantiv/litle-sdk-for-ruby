@@ -27,6 +27,8 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 # make setup file executable
 
+require 'iostreams'
+
 #
 # Configuration generation for URL and credentials
 #
@@ -70,6 +72,23 @@ transact_production => https://transact.vantivcnp.com/vap/communicator/online"
       f.puts 'printxml: false'
       # default http timeout set to 500 ms
       f.puts 'timeout: 500'
+      puts 'Use PGP encryption for sending batch files through sftp (true/false) (No encryption by default): '
+      useEncryption = (gets.chomp() == 'true')
+      f.puts "useEncryption: #{useEncryption}"
+      if useEncryption
+        puts "Path to Vantiv's Public key (For encryption of batch files): "
+        puts "Note: The key from the provided file path will be added to your gpg keyring. If you do not have gpg2 installed, please install it before proceeding"
+        key_path = gets.chomp()
+        key = File.read(key_path)
+        key_info = IOStreams::Pgp.import(key: key)
+        if key_info.empty?
+          key_info = IOStreams::Pgp.key_info(key: key)
+        end
+        key_id = key_info[0][:key_id]
+        f.puts "vantivPublicKeyID: " + key_id
+        puts "Enter passphrase of your merchant key for decrypting responses: "
+        f.puts "passphrase: " + gets
+      end
     end
   end
 

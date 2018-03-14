@@ -16,6 +16,10 @@ module LitleOnline
       @fast_port = ''
       @printxml = false
       @timeout = 65
+      @useEncryption = false
+      @vantivPublicKeyID = ''
+      @passphrase = ''
+      @deleteBatchFies = false
     end
   end
 end
