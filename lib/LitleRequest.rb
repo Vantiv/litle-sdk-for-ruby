@@ -24,11 +24,30 @@ require 'net/sftp'
 require 'libxml'
 require 'crack/xml'
 require 'socket'
+require 'iostreams'
+require 'open3'
 
 include Socket::Constants
 #
 # This class handles sending the Litle Request (which is actually a series of batches!)
 #
+
+SFTP_USERNAME_CONFIG_NAME = :sftp_username
+SFTP_PASSWORD_CONFIG_NAME = :sftp_password
+SFTP_URL_CONFIG_NAME = :sftp_url
+SFTP_USE_ENCRYPTION_CONFIG_NAME = :useEncryption
+SFTP_DELETE_BATCH_FILES_CONFIG_NAME = :deleteBatchFiles
+
+REQUEST_PATH_DIR = 'requests/'
+REQUEST_FILE_PREFIX = 'request_'
+ENCRYPTED_PATH_DIR = 'encrypted/'
+ENCRYPTED_FILE_SUFFIX = '.encrypted'
+RESPONSE_PATH_DIR = 'responses/'
+RESPONSE_FILE_PREFIX = 'response_'
+
+SENT_FILE_SUFFIX = '.sent'
+RECEIVED_FILE_SUFFIX = '.received'
+COMPLETE_FILE_SUFFIX = '.complete'
 
 module LitleOnline
   class LitleRequest
@@ -73,7 +92,7 @@ module LitleOnline
         Dir.mkdir(path)
       end
       
-      @path_to_request = path + 'request_' + ts
+      @path_to_request = path + REQUEST_FILE_PREFIX + ts
       @path_to_batches = @path_to_request + '_batches'
 
       if File.file?(@path_to_request) or File.file?(@path_to_batches) then
@@ -212,12 +231,12 @@ module LitleOnline
         Dir.mkdir(path)
       end
       
-      path_to_request = path + 'request_' + ts
+      path_to_request = path + REQUEST_FILE_PREFIX + ts
 
       File.open(path_to_request, 'a+') do |file|
         file.write xml
       end
-      File.rename(path_to_request, path_to_request + '.complete')
+      File.rename(path_to_request, path_to_request + COMPLETE_FILE_SUFFIX)
       @RESPONSE_TIME_OUT += 90   
     end
 
@@ -229,47 +248,32 @@ module LitleOnline
     # +options+:: An (option) +Hash+ containing the username, password, and URL to attempt to sFTP to.
     # If not provided, the values will be populated from the configuration file.
     def send_to_litle(path = (File.dirname(@path_to_batches)), options = {})
-      username = get_config(:sftp_username, options)
-      password = get_config(:sftp_password, options)
-    
-      url = get_config(:sftp_url, options)
-    
+      use_encryption = get_config(SFTP_USE_ENCRYPTION_CONFIG_NAME, options)
+      username = get_config(SFTP_USERNAME_CONFIG_NAME, options)
+      password = get_config(SFTP_PASSWORD_CONFIG_NAME, options)
+      delete_batch_files = get_config(SFTP_DELETE_BATCH_FILES_CONFIG_NAME, options)
+      url = get_config(SFTP_URL_CONFIG_NAME, options)
+
       if(username == nil or password == nil or url == nil) then
         raise ArgumentError, "You are not configured to use sFTP for batch processing. Please run /bin/Setup.rb again!"
       end
-      
-      if(path[-1,1] != '/' && path[-1,1] != '\\') then
-        path = path + File::SEPARATOR
+      path = path_to_requests = prepare_for_sftp(path, use_encryption)
+
+      if use_encryption
+        encrypted_path = path_to_requests + ENCRYPTED_PATH_DIR
+        encrypt_request_files(path, encrypted_path, options)
+        path_to_requests = encrypted_path
       end
-      
-      begin 
-        Net::SFTP.start(url, username, :password => password) do |sftp|
-         
-          # our folder is /SHORTNAME/SHORTNAME/INBOUND
-          Dir.foreach(path) do |filename|
-            #we have a complete report according to filename regex
-            if((filename =~ /request_\d+.complete\z/) != nil) then
-              # adding .prg extension per the XML 
-              File.rename(path + filename, path + filename + '.prg')
-            end
-          end
-          
-          @responses_expected = 0
-          Dir.foreach(path) do |filename|
-            if((filename =~ /request_\d+.complete.prg\z/) != nil) then
-              # upload the file
-              sftp.upload!(path + filename, '/inbound/' + filename)
-              @responses_expected += 1
-              # rename now that we're done
-              sftp.rename!('/inbound/'+ filename, '/inbound/' + filename.gsub('prg', 'asc'))
-              File.rename(path + filename, path + filename.gsub('prg','sent'))
-            end
-          end
+
+      @responses_expected = upload_to_sftp(path_to_requests, url, username, password, use_encryption)
+      if delete_batch_files
+        delete_files_in_path(path_to_requests, /#{REQUEST_FILE_PREFIX}\d+#{COMPLETE_FILE_SUFFIX}#{ENCRYPTED_FILE_SUFFIX}?#{SENT_FILE_SUFFIX}\z/)
+        if use_encryption
+          delete_files_in_path(path, /#{REQUEST_FILE_PREFIX}\d+#{COMPLETE_FILE_SUFFIX}#{SENT_FILE_SUFFIX}\z/)
         end
-      rescue Net::SSH::AuthenticationFailed
-        raise ArgumentError, "The sFTP credentials provided were incorrect. Try again!"
       end
     end
+
     
     # Sends all previously unsent LitleRequests in the specified directory to the Litle server
     # by use of fast batch. All results will be written to disk as we get them. Note that use
@@ -277,51 +281,50 @@ module LitleOnline
     def send_to_litle_stream(options = {}, path = (File.dirname(@path_to_batches)))
       url = get_config(:fast_url, options)
       port = get_config(:fast_port, options)
-    
-      
+
+
       if(url == nil or url == "") then
         raise ArgumentError, "A URL for fastbatch was not specified in the config file or passed options. Reconfigure and try again."
-      end 
-        
+      end
+
       if(port == "" or port == nil) then
         raise ArgumentError, "A port number for fastbatch was not specified in the config file or passed options. Reconfigure and try again."
-      end        
-      
+      end
+
       if(path[-1,1] != '/' && path[-1,1] != '\\') then
         path = path + File::SEPARATOR
       end
-      
-      if (!File.directory?(path + 'responses/')) then
-        Dir.mkdir(path + 'responses/')
+
+      if (!File.directory?(path + RESPONSE_PATH_DIR)) then
+        Dir.mkdir(path + RESPONSE_PATH_DIR)
       end
-          
+
       Dir.foreach(path) do |filename|
-        if((filename =~ /request_\d+.complete\z/) != nil) then
-          begin 
+        if((filename =~ /#{REQUEST_FILE_PREFIX}\d+#{COMPLETE_FILE_SUFFIX}\z/) != nil) then
+          begin
             socket = TCPSocket.open(url,port.to_i)
             ssl_context = OpenSSL::SSL::SSLContext.new()
             ssl_context.ssl_version = :SSLv23
             ssl_socket = OpenSSL::SSL::SSLSocket.new(socket, ssl_context)
             ssl_socket.sync_close = true
             ssl_socket.connect
-                 
-           rescue => e 
+
+          rescue => e
             raise "A connection couldn't be established. Are you sure you have the correct credentials? Exception: " + e.message
-           end 
-            
-            File.foreach(path + filename) do |li|
-              ssl_socket.puts li
-              
-            end
-            File.rename(path + filename, path + filename + '.sent')
-            File.open(path + 'responses/' + (filename + '.asc.received').gsub("request", "response"), 'a+') do |fo|
+          end
+
+          File.foreach(path + filename) do |li|
+            ssl_socket.puts li
+
+          end
+          File.rename(path + filename, path + filename + SENT_FILE_SUFFIX)
+          File.open(path + RESPONSE_PATH_DIR + (filename + '.asc' + RECEIVED_FILE_SUFFIX).gsub("request", "response"), 'a+') do |fo|
             while line = ssl_socket.gets
-                 fo.puts(line)
+              fo.puts(line)
             end
-           end
-           
+          end
         end
-      end    
+      end
     end
     
     
@@ -332,73 +335,25 @@ module LitleOnline
     # password with which to connect ot the sFTP server, and the URL to connect over sFTP. Values not
     # provided in the hash will be populate automatically based on our best guess
     def get_responses_from_server(args = {})
+      use_encryption = get_config(SFTP_USE_ENCRYPTION_CONFIG_NAME, args)
       @responses_expected = args[:responses_expected] ||= @responses_expected
-      response_path = args[:response_path] ||= (File.dirname(@path_to_batches) + '/responses/')
-      username = get_config(:sftp_username, args)
-      password = get_config(:sftp_password, args)
-      url = get_config(:sftp_url, args)
+      response_path = args[:response_path] ||= (File.dirname(@path_to_batches) + '/' + RESPONSE_PATH_DIR)
+      username = get_config(SFTP_USERNAME_CONFIG_NAME, args)
+      password = get_config(SFTP_PASSWORD_CONFIG_NAME, args)
+      url = get_config(SFTP_URL_CONFIG_NAME, args)
 
       if(username == nil or password == nil or url == nil) then
-        raise ConfigurationException, "You are not configured to use sFTP for batch processing. Please run /bin/Setup.rb again!"
+        raise ArgumentError, "You are not configured to use sFTP for batch processing. Please run /bin/Setup.rb again!"
+      end
+      response_path = prepare_for_sftp(response_path, use_encryption)
+      if use_encryption
+        response_path += ENCRYPTED_PATH_DIR
       end
 
-      if(response_path[-1,1] != '/' && response_path[-1,1] != '\\') then
-        response_path = response_path + File::SEPARATOR
-      end
+      download_from_sftp(response_path, url, username, password)
 
-      if(!File.directory?(response_path)) then
-        Dir.mkdir(response_path)
-      end
-      begin
-        responses_grabbed = 0
-        Net::SFTP.start(url, username, :password => password) do |sftp|
-          # clear out the sFTP outbound dir prior to checking for new files, avoids leaving files on the server
-          # if files are left behind we are not counting then towards the expected total
-          sftp.dir.foreach('/outbound/') do |entry|
-            if((entry.name =~ /request_\d+.complete.asc\z/) != nil) then
-              sftp.download!('/outbound/' + entry.name, response_path + entry.name.gsub('request', 'response') + '.received')
-              3.times{
-                begin
-                  sftp.remove!('/outbound/' + entry.name)
-                  break
-                rescue Net::SFTP::StatusException
-                #try, try, try again
-                  puts "We couldn't remove it! Try again"
-                end
-              }
-            end
-          end
-        end
-        #wait until a response has a possibility of being there
-        sleep(@POLL_DELAY)
-        time_begin = Time.now
-        Net::SFTP.start(url, username, :password => password) do |sftp|
-          while((Time.now - time_begin) < @RESPONSE_TIME_OUT && responses_grabbed < @responses_expected)
-            #sleep for 60 seconds, ¿no es bueno?
-            sleep(60)
-            sftp.dir.foreach('/outbound/') do |entry|
-              if((entry.name =~ /request_\d+.complete.asc\z/) != nil) then
-                sftp.download!('/outbound/' + entry.name, response_path + entry.name.gsub('request', 'response') + '.received')
-                responses_grabbed += 1
-                3.times{
-                  begin
-                    sftp.remove!('/outbound/' + entry.name)
-                    break
-                  rescue Net::SFTP::StatusException
-                  #try, try, try again
-                    puts "We couldn't remove it! Try again"
-                  end
-                }
-              end
-            end
-          end
-          #if our timeout timed out, we're having problems
-          if responses_grabbed < @responses_expected then
-            raise RuntimeError, "We timed out in waiting for a response from the server. :("
-          end
-        end
-      rescue Net::SSH::AuthenticationFailed
-        raise ArgumentError, "The sFTP credentials provided were incorrect. Try again!"
+      if use_encryption
+        decrypt_response_files(response_path, args)
       end
     end
     
@@ -411,16 +366,22 @@ module LitleOnline
       if(!args.has_key?(:transaction_listener)) then
         raise ArgumentError, "The arguments hash must contain an entry for transaction listener!"
       end
-      
+
       transaction_listener = args[:transaction_listener]
       batch_listener = args[:batch_listener] ||= nil
-      path_to_responses = args[:path_to_responses] ||= (File.dirname(@path_to_batches) + '/responses/')
-      
+      path_to_responses = args[:path_to_responses] ||= (File.dirname(@path_to_batches) + '/' + RESPONSE_PATH_DIR)
+      delete_batch_files = args[:deleteBatchFiles] ||= get_config(:deleteBatchFiles, args)
+      #deleteBatchFiles = get_config(:deleteBatchFiles, args)
+
       Dir.foreach(path_to_responses) do |filename|
-        if ((filename =~ /response_\d+.complete.asc.received\z/) != nil) then
+        if ((filename =~ /#{RESPONSE_FILE_PREFIX}\d+#{COMPLETE_FILE_SUFFIX}.asc#{RECEIVED_FILE_SUFFIX}\z/) != nil) then
           process_response(path_to_responses + filename, transaction_listener, batch_listener)
           File.rename(path_to_responses + filename, path_to_responses + filename + '.processed')
-        end 
+        end
+      end
+
+      if delete_batch_files
+        delete_files_in_path(path_to_responses, /#{RESPONSE_FILE_PREFIX}\d+#{COMPLETE_FILE_SUFFIX}.asc#{RECEIVED_FILE_SUFFIX}.processed\z/)
       end
     end
     
@@ -437,30 +398,30 @@ module LitleOnline
       if reader.get_attribute('response') != "0" and reader.get_attribute('response') != nil then
         raise RuntimeError,  "Error parsing Litle Request: " + reader.get_attribute("message")
       end
-      
+
       reader.read
       count = 0
       while true and count < 500001 do
-        
+
         count += 1
         if(reader.node == nil) then
           return false
-        end 
-        
+        end
+
         case reader.node.name.to_s
-        when "batchResponse"
-          reader.read
-        when "litleResponse"
-          return false
-        when "text"
-          reader.read
-        else
-          xml = reader.read_outer_xml
-          duck = Crack::XML.parse(xml)
-          duck[duck.keys[0]]["type"] = duck.keys[0]
-          duck = duck[duck.keys[0]]
-          transaction_listener.apply(duck)
-          reader.next
+          when "batchResponse"
+            reader.read
+          when "litleResponse"
+            return false
+          when "text"
+            reader.read
+          else
+            xml = reader.read_outer_xml
+            duck = Crack::XML.parse(xml)
+            duck[duck.keys[0]]["type"] = duck.keys[0]
+            duck = duck[duck.keys[0]]
+            transaction_listener.apply(duck)
+            reader.next
         end
       end
     end
@@ -484,7 +445,7 @@ module LitleOnline
       end
 
       #rename the requests file
-      File.rename(@path_to_request, @path_to_request + '.complete')
+      File.rename(@path_to_request, @path_to_request + COMPLETE_FILE_SUFFIX)
       #we don't need the master batch file anymore
       File.delete(@path_to_batches)
     end
@@ -517,6 +478,175 @@ module LitleOnline
       else       
         return options[field]
       end
+    end
+
+    def delete_files_in_path(path, pattern)
+      Dir.foreach(path) do |filename|
+        if((filename =~ pattern)) != nil then
+          File.delete(path + filename)
+        end
+      end
+    end
+
+    def prepare_for_sftp(path, use_encryption)
+      if(path[-1,1] != '/' && path[-1,1] != '\\') then
+        path = path + File::SEPARATOR
+      end
+
+      if(!File.directory?(path)) then
+        Dir.mkdir(path)
+      end
+
+      if use_encryption
+        encrypted_path = path + ENCRYPTED_PATH_DIR
+        if !File.directory?(encrypted_path)
+          Dir.mkdir(encrypted_path)
+        end
+      end
+      return path
+    end
+
+    def encrypt_request_files(path, encrypted_path, options)
+      Dir.foreach(path) do |filename|
+        if (filename =~ /#{REQUEST_FILE_PREFIX}\d+#{COMPLETE_FILE_SUFFIX}\z/) != nil
+          cipher_filename = encrypted_path + filename + ENCRYPTED_FILE_SUFFIX
+          plain_filename = path + filename
+          encrypt_batch_file_request(cipher_filename, plain_filename, options)
+        end
+      end
+    end
+
+
+    def decrypt_response_files(response_path, args)
+      delete_batch_files = get_config(SFTP_DELETE_BATCH_FILES_CONFIG_NAME, args)
+
+      Dir.foreach(response_path) do |filename|
+        if (filename =~ /#{RESPONSE_FILE_PREFIX}\d+#{COMPLETE_FILE_SUFFIX}#{ENCRYPTED_FILE_SUFFIX}.asc#{RECEIVED_FILE_SUFFIX}\z/) != nil
+          decrypt_batch_file_response(response_path + filename, args)
+        end
+      end
+      if delete_batch_files
+        delete_files_in_path(response_path, /#{RESPONSE_FILE_PREFIX}\d+#{COMPLETE_FILE_SUFFIX}#{ENCRYPTED_FILE_SUFFIX}.asc#{RECEIVED_FILE_SUFFIX}\z/)
+      end
+    end
+
+    def upload_to_sftp(path_to_requests, url, username, password, use_encryption)
+      begin
+        responses_expected = 0
+        Net::SFTP.start(url, username, :password => password) do |sftp|
+          Dir.foreach(path_to_requests) do |filename|
+            if (filename =~ /#{REQUEST_FILE_PREFIX}\d+#{COMPLETE_FILE_SUFFIX}((#{ENCRYPTED_FILE_SUFFIX})?)\z/) != nil
+              new_filename = filename + '.prg'
+              File.rename(path_to_requests + filename, path_to_requests + new_filename)
+              # upload the file
+              sftp.upload!(path_to_requests + new_filename, '/inbound/' + new_filename)
+              responses_expected += 1
+              # rename now that we're done
+              sftp.rename!('/inbound/'+ new_filename, '/inbound/' + new_filename.gsub('prg', 'asc'))
+              File.rename(path_to_requests + new_filename, path_to_requests + new_filename.gsub('prg','sent'))
+              if use_encryption
+                # rename the plain text file too
+                text_filename = (path_to_requests + filename).gsub(ENCRYPTED_PATH_DIR, '').gsub(ENCRYPTED_FILE_SUFFIX, '')
+                File.rename(text_filename, text_filename + SENT_FILE_SUFFIX)
+              end
+            end
+          end
+        end
+        return responses_expected
+      rescue Net::SSH::AuthenticationFailed
+        raise ArgumentError, "The sFTP credentials provided were incorrect. Try again!"
+      end
+    end
+
+
+    def download_from_sftp(response_path, url, username, password)
+      responses_grabbed = 0
+      begin
+        #wait until a response has a possibility of being there
+        sleep(@POLL_DELAY)
+        time_begin = Time.now
+        Net::SFTP.start(url, username, :password => password) do |sftp|
+          while((Time.now - time_begin) < @RESPONSE_TIME_OUT  && responses_grabbed < @responses_expected)
+            #sleep for 60 seconds, ¿no es bueno?
+            sleep(60)
+            sftp.dir.foreach('/outbound/') do |entry|
+              if (entry.name =~ /#{REQUEST_FILE_PREFIX}\d+#{COMPLETE_FILE_SUFFIX}((#{ENCRYPTED_FILE_SUFFIX})?).asc\z/) != nil then
+                response_filename = response_path + entry.name.gsub(REQUEST_FILE_PREFIX, RESPONSE_FILE_PREFIX) + RECEIVED_FILE_SUFFIX
+                sftp.download!('/outbound/' + entry.name, response_filename)
+                responses_grabbed += 1
+                3.times{
+                  begin
+                    sftp.remove!('/outbound/' + entry.name)
+                    break
+                  rescue Net::SFTP::StatusException
+                    #try, try, try again
+                    puts "We couldn't remove it! Try again"
+                  end
+                }
+              end
+            end
+          end
+          if responses_grabbed < @responses_expected then
+            raise RuntimeError, "We timed out in waiting for a response from the server. :("
+          end
+        end
+      rescue Net::SSH::AuthenticationFailed
+        raise ArgumentError, "The sFTP credentials provided were incorrect. Try again!"
+      end
+    end
+
+    # Encrypt the request file for a PGP enabled account
+    # +cipher_filename+:: Name of File that would contain encrypted batch
+    # +plain_filename+:: Name of File containing batch in XML markup
+    # +options+:: An (option) +Hash+ containing the public key to attempt to encrypt the file.
+    # If not provided, the values will be populated from the configuration file.
+    def encrypt_batch_file_request(cipher_filename, plain_filename, options)
+      pgpkeyID = get_config(:vantivPublicKeyID, options)
+      if pgpkeyID == ""
+        raise RuntimeError, "The public key to encrypt batch file requests is missing from the config"
+      end
+
+      IOStreams::Pgp::Writer.open(
+          cipher_filename,
+          recipient: pgpkeyID
+      ) do |output|
+        File.open(plain_filename, "r").readlines.each do |line|
+          output.puts(line)
+        end
+      end
+
+    rescue IOStreams::Pgp::Failure => e
+      raise ArgumentError, "Please check if you have entered correct vantivePublicKeyID to config and that " +
+          "vantiv's public key is added to your gpg keyring and is trusted. #{e.message}"
+    end
+
+
+    # Decrypt the encrypted batch response file
+    # +response_filename+:: Filename of encrypted batch response file
+    #     The decrypted response would be placed in +response_filename+.gsub("encrypted", "")
+    # +args+:: An (arg) +Hash+ containing the passphrase to atempt to decrypt the file
+    # If not provided, the values will be populated from the configuration file.
+    def decrypt_batch_file_response(response_filename, args)
+      passphrase = get_config(:passphrase, args)
+      if passphrase == ""
+        raise RuntimeError, "The passphrase to decrypt the batch file responses is missing from the config"
+      end
+      decrypted_response_filename = response_filename.gsub(ENCRYPTED_PATH_DIR, '').gsub(ENCRYPTED_FILE_SUFFIX, "")
+
+      decrypted_file = File.open(decrypted_response_filename, "w")
+      IOStreams::Pgp::Reader.open(
+          response_filename,
+          passphrase: passphrase
+      ) do |stream|
+        while !stream.eof?
+          decrypted_file.puts(stream.readline)
+          #puts stream.readline()
+        end
+      end
+      decrypted_file.close
+    rescue IOStreams::Pgp::Failure => e
+      raise ArgumentError, "Please check if you have entered correct passphrase to config and that your " +
+          "merchant private key is added to your gpg keyring and is trusted. #{e.message}"
     end
   end
 end

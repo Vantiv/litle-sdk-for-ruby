@@ -1,0 +1,139 @@
+=begin
+Copyright (c) 2017 Vantiv eCommerce
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+=end
+require File.expand_path("../../../lib/LitleOnline",__FILE__)
+require 'test/unit'
+require 'mocha/setup'
+require 'fileutils'
+
+LITLE_SDK_TEST_FOLDER = '/litle-sdk-for-ruby-test'
+
+module LitleOnline
+
+  class TestPgpLitleRequest < Test::Unit::TestCase
+
+    def setup
+      dir = '/tmp' + LITLE_SDK_TEST_FOLDER
+      FileUtils.rm_rf dir
+      Dir.mkdir dir
+
+    end
+
+    def test_noPublicKey
+      config_dir = ENV['LITLE_CONFIG_DIR']
+      ENV['LITLE_CONFIG_DIR'] = '/tmp/pgp_ruby'
+      dir = '/tmp'
+
+      test = ''
+      request = LitleRequest.new()
+      ENV['LITLE_CONFIG_DIR'] = config_dir
+      request.create_new_litle_request(dir + LITLE_SDK_TEST_FOLDER)
+      request.finish_request
+      request.send_to_litle(dir + LITLE_SDK_TEST_FOLDER, {'vantivPublicKeyID' => ''})
+
+    rescue RuntimeError => e
+      test = e.message
+
+      clear_outbound
+      assert_equal "The public key to encrypt batch file requests is missing from the config", test
+    end
+
+    def test_incorrectPublicKey
+      config_dir = ENV['LITLE_CONFIG_DIR']
+      ENV['LITLE_CONFIG_DIR'] = '/tmp/pgp_ruby'
+      dir = '/tmp'
+
+      test = ''
+      request = LitleRequest.new()
+      ENV['LITLE_CONFIG_DIR'] = config_dir
+      request.create_new_litle_request(dir + LITLE_SDK_TEST_FOLDER)
+      request.finish_request
+      request.send_to_litle(dir + LITLE_SDK_TEST_FOLDER, {'vantivPublicKeyID' => '7E25EB2X'})
+
+
+    rescue ArgumentError => e
+      test = e.message
+      clear_outbound
+      assert_match(/Please check if you have entered correct vantivePublicKeyID to config and that vantiv's public key is added to your gpg keyring and is trusted/, test)
+    end
+
+    def test_noPassphrase
+      config_dir = ENV['LITLE_CONFIG_DIR']
+      ENV['LITLE_CONFIG_DIR'] = '/tmp/pgp_ruby'
+      dir = '/tmp'
+
+      test = ''
+      request = LitleRequest.new()
+      ENV['LITLE_CONFIG_DIR'] = config_dir
+      request.create_new_litle_request(dir + LITLE_SDK_TEST_FOLDER)
+      request.finish_request
+      request.send_to_litle
+      request.get_responses_from_server({'passphrase' => ''})
+
+    rescue RuntimeError => e
+      test = e.message
+      clear_outbound
+      assert_equal "The passphrase to decrypt the batch file responses is missing from the config", test
+
+    end
+
+    def test_incorrectPassphrase
+      config_dir = ENV['LITLE_CONFIG_DIR']
+      ENV['LITLE_CONFIG_DIR'] = '/tmp/pgp_ruby'
+      dir = '/tmp'
+
+      test = ''
+      request = LitleRequest.new()
+      ENV['LITLE_CONFIG_DIR'] = config_dir
+      request.create_new_litle_request(dir + LITLE_SDK_TEST_FOLDER)
+      request.finish_request
+      request.send_to_litle
+      request.get_responses_from_server({'passphrase' => 'gameover:('})
+
+    rescue ArgumentError => e
+      test = e.message
+      clear_outbound
+      assert_match(/Please check if you have entered correct passphrase to config and that your merchant private key is added to your gpg keyring and is trusted/, test)
+    end
+
+
+    def clear_outbound
+      config_dir = ENV['LITLE_CONFIG_DIR']
+      ENV['LITLE_CONFIG_DIR'] = '/tmp/pgp_ruby'
+      options = Configuration.new.config
+      sftp_username = options['sftp_username']
+      sftp_password = options['sftp_password']
+      sftp_url = options['sftp_url']
+      ENV['LITLE_CONFIG_DIR'] = config_dir
+
+      Net::SFTP.start(sftp_url, sftp_username, :password => sftp_password) do |sftp|
+        handle = sftp.opendir!('/outbound/')
+        files_on_srv = sftp.readdir!(handle)
+        files_on_srv.each {|file|
+          if (file.name =~ /#{REQUEST_FILE_PREFIX}\d+#{COMPLETE_FILE_SUFFIX}#{ENCRYPTED_FILE_SUFFIX}.asc\z/) != nil
+            sftp.remove('/outbound/' + file.name)
+          end
+        }
+      end
+    end
+
+  end
+end
