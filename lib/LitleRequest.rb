@@ -24,7 +24,6 @@ require 'net/sftp'
 require 'libxml'
 require 'crack/xml'
 require 'socket'
-require 'iostreams'
 require 'open3'
 
 include Socket::Constants
@@ -606,18 +605,16 @@ module LitleOnline
         raise RuntimeError, "The public key to encrypt batch file requests is missing from the config"
       end
 
-      IOStreams::Pgp::Writer.open(
-          cipher_filename,
-          recipient: pgpkeyID
-      ) do |output|
-        File.open(plain_filename, "r").readlines.each do |line|
-          output.puts(line)
+      command = "gpg --batch --yes --quiet --no-secmem-warning --armor --output #{cipher_filename} --recipient #{pgpkeyID} --trust-model always --encrypt #{plain_filename}"
+      out, err, status = Open3.capture3(command, binmode: true)
+      if !status.success?
+        if err =~ /(not found|No (public|secret) key|key not available)/i
+          raise ArgumentError, "Please check if you have entered correct vantivePublicKeyID to config and that " +
+              "vantiv's public key is added to your gpg keyring." + err
+        else
+          raise ArgumentError, "GPG failed to encrypt file" + err
         end
       end
-
-    rescue IOStreams::Pgp::Failure => e
-      raise ArgumentError, "Please check if you have entered correct vantivePublicKeyID to config and that " +
-          "vantiv's public key is added to your gpg keyring and is trusted. #{e.message}"
     end
 
 
@@ -631,22 +628,17 @@ module LitleOnline
       if passphrase == ""
         raise RuntimeError, "The passphrase to decrypt the batch file responses is missing from the config"
       end
-      decrypted_response_filename = response_filename.gsub(ENCRYPTED_PATH_DIR, '').gsub(ENCRYPTED_FILE_SUFFIX, "")
-
-      decrypted_file = File.open(decrypted_response_filename, "w")
-      IOStreams::Pgp::Reader.open(
-          response_filename,
-          passphrase: passphrase
-      ) do |stream|
-        while !stream.eof?
-          decrypted_file.puts(stream.readline)
-          #puts stream.readline()
+      decrypted_response_filename = response_filename.gsub('/encrypted', '').gsub(".encrypted", "")
+      command = "gpg --batch --yes --no-secmem-warning --no-mdc-warning --trust-model always  --output #{decrypted_response_filename} --passphrase #{passphrase} --decrypt #{response_filename} 2>&1"
+      out, err, status = Open3.capture3(command, binmode: true)
+      if !status.success?
+        if out =~ /(not found|No (public|secret) key|key not available)/i
+          raise ArgumentError, "Please check if you have entered correct passphrase to config and that your" +
+              "merchant private key is added to your gpg keyring" + out
+        else
+          raise ArgumentError, "GPG failed to decrypt file" + out
         end
       end
-      decrypted_file.close
-    rescue IOStreams::Pgp::Failure => e
-      raise ArgumentError, "Please check if you have entered correct passphrase to config and that your " +
-          "merchant private key is added to your gpg keyring and is trusted. #{e.message}"
     end
   end
 end
