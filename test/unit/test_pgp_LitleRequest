@@ -72,7 +72,7 @@ module LitleOnline
     rescue ArgumentError => e
       test = e.message
       clear_outbound
-      assert_match(/Please check if you have entered correct vantivePublicKeyID to config and that vantiv's public key is added to your gpg keyring and is trusted/, test)
+      assert_match(/Please check if you have entered correct vantivePublicKeyID to config and that vantiv's public key is added to your gpg keyring/, test)
     end
 
     def test_noPassphrase
@@ -111,7 +111,7 @@ module LitleOnline
     rescue ArgumentError => e
       test = e.message
       clear_outbound
-      assert_match(/Please check if you have entered correct passphrase to config and that your merchant private key is added to your gpg keyring and is trusted/, test)
+      assert_match(/Please check if you have entered correct passphrase to config and that your merchant private key is added to your gpg keyring/, test)
     end
 
 

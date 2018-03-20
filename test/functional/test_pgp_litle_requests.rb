@@ -85,7 +85,7 @@ module LitleOnline
       dir = '/tmp'
 
       request = LitleRequest.new()
-      ENV['LITLE_CONFIG_DIR'] = config_dir
+
       request.create_new_litle_request(dir + LITLE_SDK_TEST_FOLDER)
 
       entries = Dir.entries(dir + LITLE_SDK_TEST_FOLDER)
@@ -170,6 +170,8 @@ module LitleOnline
       entries.sort!
       assert_equal 4, entries.length
       assert_not_nil entries[3] =~ /#{RESPONSE_FILE_PREFIX}\d+#{COMPLETE_FILE_SUFFIX}.asc#{RECEIVED_FILE_SUFFIX}.processed\z/
+
+      ENV['LITLE_CONFIG_DIR'] = config_dir
     end
 
 
@@ -193,8 +195,7 @@ module LitleOnline
       dir = '/tmp'
 
       request = LitleRequest.new()
-      ENV['LITLE_CONFIG_DIR'] = config_dir
-      ENV['litle_deleteBatchFiles'] = 'false'
+
       request.create_new_litle_request(dir + LITLE_SDK_TEST_FOLDER)
 
       entries = Dir.entries(dir + LITLE_SDK_TEST_FOLDER)
@@ -279,6 +280,10 @@ module LitleOnline
       assert_equal 3, entries.length
       entries.sort!
       assert_not_nil entries[2] =~ /encrypted/
+
+
+      ENV['LITLE_CONFIG_DIR'] = config_dir
+      ENV['litle_deleteBatchFiles'] = 'false'
     end
 
     def get_config(field, options)

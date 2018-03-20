@@ -610,7 +610,7 @@ module LitleOnline
       if !status.success?
         if err =~ /(not found|No (public|secret) key|key not available)/i
           raise ArgumentError, "Please check if you have entered correct vantivePublicKeyID to config and that " +
-              "vantiv's public key is added to your gpg keyring." + err
+              "vantiv's public key is added to your gpg keyring. " + err
         else
           raise ArgumentError, "GPG failed to encrypt file" + err
         end
@@ -633,10 +633,10 @@ module LitleOnline
       out, err, status = Open3.capture3(command, binmode: true)
       if !status.success?
         if out =~ /(not found|No (public|secret) key|key not available)/i
-          raise ArgumentError, "Please check if you have entered correct passphrase to config and that your" +
-              "merchant private key is added to your gpg keyring" + out
+          raise ArgumentError, "GPG failed to decrypt file " + out
         else
-          raise ArgumentError, "GPG failed to decrypt file" + out
+          raise ArgumentError, "Please check if you have entered correct passphrase to config and that your " +
+              "merchant private key is added to your gpg keyring " + out
         end
       end
     end
