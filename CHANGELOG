@@ -1,4 +1,6 @@
 = LitleOnline CHANGELOG
+==Version 10.1.2
+* Feature: support for PGP encryption of batch files
 
 ==Version 10.1.1
 * Feature: support standalone FraudCheck transaction type
