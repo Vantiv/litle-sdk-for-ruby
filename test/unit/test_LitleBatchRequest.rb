@@ -429,6 +429,36 @@ module LitleOnline
       assert_equal 123456, counts[:echeckSale][:echeckSalesAmount]
     end
 
+    def test_add_fast_access_funding
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d_txns.*/), 'a+').twice
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').once
+      File.expects(:directory?).returns(true).once
+
+      fastAccessFundingHash = {
+          'reportGroup'=>'Planets',
+          'orderId'=>'12344',
+          'fundingSubmerchantId'=>'123456',
+          'submerhcantName'=>'submerchant',
+          'fundsTransferId'=>'1234567',
+          'amount'=>'123',
+          'card'=>{
+              'type'=>'VI',
+              'number' =>'4100000000000001',
+              'expDate' =>'1210'
+          }
+      }
+
+      batch = LitleBatchRequest.new
+      batch.create_new_batch('D:\Batches\\')
+      batch.fast_access_funding(fastAccessFundingHash)
+
+      counts = batch.get_counts_and_amounts
+      assert_equal 1, counts[:fastAccessFunding][:numFastAccessFunding]
+      assert_equal 123, counts[:fastAccessFunding][:fastAccessFundingAmount]
+    end
+
     def test_close_batch
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'8.10'}).once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').once
@@ -637,8 +667,8 @@ module LitleOnline
 
     def test_PFIF_instruction_txn
       Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'9.3'}).once
-      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').at_most(12)
-      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').at_most(10)
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'a+').at_most(13)
+      File.expects(:open).with(regexp_matches(/.*batch_.*\d.*/), 'wb').at_most(11)
       File.expects(:rename).once
       File.expects(:open).with(regexp_matches(/.*batch_.*\d.closed.*/), 'w').once
       File.expects(:delete).with(regexp_matches(/.*batch_.*\d_txns.*/)).once
@@ -732,6 +762,20 @@ module LitleOnline
         'fundsTransferId'=>'1234567',
         'amount'=>'110',
       }
+
+      fastAccessFundingHash = {
+          'reportGroup'=>'Planets',
+          'orderId'=>'12344',
+          'fundingSubmerchantId'=>'123456',
+          'submerhcantName'=>'submerchant',
+          'fundsTransferId'=>'1234567',
+          'amount'=>'111',
+          'card'=>{
+              'type'=>'VI',
+              'number' =>'4100000000000001',
+              'expDate' =>'1210'
+          }
+      }
       batch = LitleBatchRequest.new
       batch.create_new_batch('/usr/local/Batches/')
 
@@ -745,6 +789,7 @@ module LitleOnline
       batch.vendor_debit(vendorDebitHash)
       batch.reserve_debit(reserveDebitHash)
       batch.physical_check_debit(physicalCheckDebitHash)
+      batch.fast_access_funding(fastAccessFundingHash)
 
       #pid, size = `ps ax -o pid,rss | grep -E "^[[:space:]]*#{$$}"`.strip.split.map(&:to_i)
       #puts "PID: " + pid.to_s + " size: " + size.to_s
@@ -772,6 +817,9 @@ module LitleOnline
       assert_equal 109, counts[:reserveDebit ][:reserveDebitAmount ]
       assert_equal 107, counts[:vendorDebit ][:vendorDebitAmount ]
       assert_equal 110, counts[:physicalCheckDebit ][:physicalCheckDebitAmount ]
+
+      assert_equal 1, counts[:fastAccessFunding ][:numFastAccessFunding ]
+      assert_equal 111, counts[:fastAccessFunding ][:fastAccessFundingAmount ]
     end
   end
 end

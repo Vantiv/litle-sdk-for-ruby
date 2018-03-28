@@ -238,4 +238,20 @@ module LitleOnline
     end
   end
 
+  class FastAccessFundingListener < DefaultLitleListener
+    def apply(duck)
+      if(duck["type"] == "fastAccessFundingResponse") then
+        @action.call(duck)
+      end
+    end
+  end
+
+  class ServiceStatusResponse < DefaultLitleListener
+    def apply(duck)
+      if(duck["type"] == "serviceStatusResponse") then
+        @action.call(duck)
+      end
+    end
+  end
+
 end

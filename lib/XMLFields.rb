@@ -801,6 +801,7 @@ module LitleOnline
     text_node :expDate, "expDate", :default_value=>nil
     text_node :cardValidationNum, "cardValidationNum", :default_value=>nil
     text_node :mop, "type", :default_value=>nil
+    text_node :checkoutId, "checkoutId", :default_value=>nil
     def self.from_hash(hash, name='cardToken')
       base = hash[name]
       if(base)
@@ -809,10 +810,12 @@ module LitleOnline
         this.expDate = base['expDate']
         this.cardValidationNum = base['cardValidationNum']
         this.mop = base['type']
+        this.checkoutId = base['checkoutId']
         SchemaValidation.validate_length(this.litleToken, true, 13, 25, name, 'litleToken')
         SchemaValidation.validate_length(this.expDate, false, 4, 4, name, 'expDate')
         SchemaValidation.validate_length(this.cardValidationNum, false, 1, 4, name, 'cardValidationNum')
         SchemaValidation.validate_enum(this.mop, false, ['','MC','VI','AX','DC','DI','PP','JC','BL','EC'], name, 'type')
+        SchemaValidation.validate_length(this.checkoutId, false, 18, 18, name, 'checkoutId')
         this
       else
         nil
@@ -2180,6 +2183,7 @@ end
     text_node :xmlns, "@xmlns", :default_value=>nil
     text_node :merchantSdk, "@merchantSdk", :default_value=>nil
     text_node :loggedInUser, "@loggedInUser", :default_value=>nil
+    text_node :sameDayFunding, "@sameDayFunding", :default_value=>nil
     object_node :authentication, "authentication", :class=>Authentication
     optional_choice_node   :if,    'authorization', :then, (object_node :authorization, "authorization", :class=>Authorization),
     :elsif, 'sale',    :then, (object_node :sale,    "sale",    :class=>Sale),
@@ -2306,7 +2310,13 @@ end
     text_node :vendorDebitAmount , "@vendorDebitAmount", :default_value=>"0" 
     text_node :vendorCreditAmount , "@vendorCreditAmount", :default_value=>"0"
     text_node :physicalCheckDebitAmount , "@physicalCheckDebitAmount", :default_value=>"0" 
-    text_node :physicalCheckCreditAmount , "@physicalCheckCreditAmount", :default_value=>"0"                      
+    text_node :physicalCheckCreditAmount , "@physicalCheckCreditAmount", :default_value=>"0"
+    #11.4 Begin
+    text_node :sameDayFunding, "@sameDayFunding", :default_value=>"0"
+    text_node :numFastAccessFunding, "@numFastAccessFunding", :default_value=>"0"
+    text_node :fastAccessFundingAmount, "@fastAccessFundingAmount", :default_value=>"0"
+
+    #11.4 End
     text_node :merchantId, "@merchantId", :default_value=>nil
   end
 
@@ -2353,7 +2363,31 @@ end
   end
 
   
- 
+ class FastAccessFunding
+   include XML::Mapping
+   root_element_name "fastAccessFunding"
+   text_node :reportGroup, "@reportGroup", :default_value=>nil
+   text_node :transactionId, "@id", :default_value=>nil
+   text_node :customerId, "@customerId", :default_value=>nil
+   text_node :fundingSubmerchantId, "@fundingSubmerchantId", :default_value=>nil
+   text_node :submerchantName, "@submerchantName", :default_value=>nil
+   text_node :fundsTransferId, "@fundsTransferId", :default_value=>nil
+   text_node :amount, "@amount", :default_value=>nil
+   optional_choice_node :if,    'card', :then, (object_node :card, "card", :class=>Card, :default_value=>nil),
+                        :elsif, 'token', :then, (object_node :token, "token", :class=>CardToken, :default_value=>nil),
+                        :elsif, 'paypage', :then, (object_node :paypage, "paypage", :class=>CardPaypage, :default_value=>nil)
+ end
+
+  class ServiceStatusRequest
+    include XML::Mapping
+    root_element_name "serviceStatusRequest"
+    text_node :reportGroup, "@reportGroup", :default_value=>nil
+    text_node :transactionId, "@id", :default_value=>nil
+    text_node :customerId, "@customerId", :default_value=>nil
+
+    text_node :serviceId, "@serviceId", :default_value=>nil
+    text_node :pathId, "@pathId", :default_value=>nil
+  end
  
   # begin
   # class LitleOnlineResponse

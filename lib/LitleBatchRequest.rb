@@ -42,6 +42,7 @@ module LitleOnline
         :captureGivenAuth=>{ :numCaptureGivenAuths=>0, :captureGivenAuthAmount=>0 },
         :forceCapture=>{ :numForceCaptures=>0, :forceCaptureAmount=>0 },
         :authReversal=>{ :numAuthReversals=>0, :authReversalAmount=>0 },
+        :fastAccessFunding=>{ :numFastAccessFunding=>0, :fastAccessFundingAmount=>0 },
         #11.0 begin
         :giftCardAuthReversal=>{ :numGiftCardAuthReversals=>0, :giftCardAuthReversalOriginalAmount=>0 },
         #end 
@@ -470,6 +471,14 @@ module LitleOnline
       add_txn_to_batch(transaction, :echeckSale, options)
     end
 
+    def fast_access_funding(options)
+      transaction = @litle_txn.fast_access_funding(options)
+      @txn_counts[:fastAccessFunding][:numFastAccessFunding] += 1
+      @txn_counts[:fastAccessFunding][:fastAccessFundingAmount] += options['amount'].to_i
+
+      add_txn_to_batch(transaction, :fastAccessFunding, options)
+    end
+
     def account_update(options)
 
       if(@au_batch == nil) then
@@ -525,6 +534,10 @@ module LitleOnline
       request.forceCaptureAmount       = @txn_counts[:forceCapture][:forceCaptureAmount]
       request.numAuthReversals         = @txn_counts[:authReversal][:numAuthReversals]
       request.authReversalAmount       = @txn_counts[:authReversal][:authReversalAmount]
+      #11.4 begin
+      request.numFastAccessFunding          = @txn_counts[:fastAccessFunding][:numFastAccessFunding]
+      request.fastAccessFundingAmount       = @txn_counts[:fastAccessFunding][:fastAccessFundingAmount]
+      # 11.4 end
       # 11.0 begin
       request.numGiftCardAuthReversals                 = @txn_counts[:giftCardAuthReversal][:numGiftCardAuthReversals]
       request.giftCardAuthReversalOriginalAmount       = @txn_counts[:giftCardAuthReversal][:giftCardAuthReversalOriginalAmount]
