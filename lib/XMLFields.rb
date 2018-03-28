@@ -2184,6 +2184,7 @@ end
     text_node :merchantSdk, "@merchantSdk", :default_value=>nil
     text_node :loggedInUser, "@loggedInUser", :default_value=>nil
     text_node :sameDayFunding, "@sameDayFunding", :default_value=>nil
+    text_node :fastAccessFunding, "@fastAccessFunding", :default_value=>nil
     object_node :authentication, "authentication", :class=>Authentication
     optional_choice_node   :if,    'authorization', :then, (object_node :authorization, "authorization", :class=>Authorization),
     :elsif, 'sale',    :then, (object_node :sale,    "sale",    :class=>Sale),

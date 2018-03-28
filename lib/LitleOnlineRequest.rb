@@ -127,6 +127,12 @@ module LitleOnline
       commit(transaction, :giftCardCredit, options)
     end
 
+    def fast_access_funding(options)
+      transaction = @litle_transaction.fast_access_funding(options)
+
+      commit(transaction, :fastAccessFunding, options)
+    end
+
     def refund_reversal(options)
       transaction = @litle_transaction.refund_reversal(options)
 
@@ -283,7 +289,7 @@ module LitleOnline
 
       request.authentication  = authentication
       request.merchantId      = get_merchant_id(options)
-      request.version         = '11.0'
+      request.version         = '11.4'
       request.loggedInUser    = get_logged_in_user(options)
       request.xmlns           = "http://www.litle.com/schema"
       request.merchantSdk     = get_merchant_sdk(options)
