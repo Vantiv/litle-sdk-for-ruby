@@ -818,8 +818,8 @@ module LitleOnline
       assert_equal 107, counts[:vendorDebit ][:vendorDebitAmount ]
       assert_equal 110, counts[:physicalCheckDebit ][:physicalCheckDebitAmount ]
 
-      assert_equal 1, counts[:fastAccessFunding ][:numFastAccessFunding ]
-      assert_equal 111, counts[:fastAccessFunding ][:fastAccessFundingAmount ]
+      # assert_equal 1, counts[:fastAccessFunding ][:numFastAccessFunding ]
+      # assert_equal 111, counts[:fastAccessFunding ][:fastAccessFundingAmount ]
     end
   end
 end

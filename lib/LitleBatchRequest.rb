@@ -535,8 +535,8 @@ module LitleOnline
       request.numAuthReversals         = @txn_counts[:authReversal][:numAuthReversals]
       request.authReversalAmount       = @txn_counts[:authReversal][:authReversalAmount]
       #11.4 begin
-      request.numFastAccessFunding          = @txn_counts[:fastAccessFunding][:numFastAccessFunding]
-      request.fastAccessFundingAmount       = @txn_counts[:fastAccessFunding][:fastAccessFundingAmount]
+      # request.numFastAccessFunding          = @txn_counts[:fastAccessFunding][:numFastAccessFunding]
+      # request.fastAccessFundingAmount       = @txn_counts[:fastAccessFunding][:fastAccessFundingAmount]
       # 11.4 end
       # 11.0 begin
       request.numGiftCardAuthReversals                 = @txn_counts[:giftCardAuthReversal][:numGiftCardAuthReversals]
