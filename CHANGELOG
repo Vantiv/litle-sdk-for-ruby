@@ -1,5 +1,8 @@
 = LitleOnline CHANGELOG
 
+== version 8.31.0(March 29, 2018)
+* Feature : Processingtype elements added to sale, authorization, and forcecapture
+
 ==version 8.29.2
 HTTP timeout set to 500ms
 

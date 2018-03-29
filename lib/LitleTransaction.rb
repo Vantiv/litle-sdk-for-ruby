@@ -39,6 +39,9 @@ module LitleOnline
       transaction.recurringRequest   = RecurringRequest.from_hash(options,'recurringRequest')
       transaction.debtRepayment	     = options['debtRepayment']
       transaction.advancedFraudChecks = AdvancedFraudChecks.from_hash(options, 'advancedFraudChecks')
+      transaction.processingType = options['processingType']
+      transaction.originalNetworkTransactionId = options['originalNetworkTransactionId']
+      transaction.originalTransactionAmount = options['originalTransactionAmount']
       add_transaction_info(transaction, options)
       
       return transaction
@@ -202,6 +205,9 @@ module LitleOnline
       transaction.litleInternalRecurringRequest = LitleInternalRecurringRequest.from_hash(options,'litleInternalRecurringRequest')
       transaction.debtRepayment	     = options['debtRepayment']
       transaction.advancedFraudChecks = AdvancedFraudChecks.from_hash(options, 'advancedFraudChecks')
+      transaction.processingType = options['processingType']
+      transaction.originalNetworkTransactionId = options['originalNetworkTransactionId']
+      transaction.originalTransactionAmount = options['originalTransactionAmount']
       return transaction
     end
 
@@ -280,6 +286,7 @@ module LitleOnline
       transaction.surchargeAmount    = options['surchargeAmount']
       transaction.customBilling      = CustomBilling.from_hash(options)
       transaction.debtRepayment	     = options['debtRepayment']
+      transaction.processingType	     = options['processingType']
       add_order_info(transaction, options)
 
       return transaction
@@ -296,6 +303,7 @@ module LitleOnline
       transaction.processingInstructions  = ProcessingInstructions.from_hash(options)
       transaction.payPalOrderComplete     = options['payPalOrderComplete']
       transaction.payPalNotes             = options['payPalNotes']
+      transaction.customBilling           = options['customBilling']
 
       add_account_info(transaction, options)
       return transaction
@@ -311,6 +319,9 @@ module LitleOnline
       transaction.customBilling      = CustomBilling.from_hash(options)
       transaction.billMeLaterRequest = BillMeLaterRequest.from_hash(options)
       transaction.debtRepayment	     = options['debtRepayment']
+      transaction.processingType = options['processingType']
+      transaction.originalNetworkTransactionId = options['originalNetworkTransactionId']
+      transaction.originalTransactionAmount = options['originalTransactionAmount']
       return transaction
     end
 
