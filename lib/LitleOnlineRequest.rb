@@ -127,11 +127,11 @@ module LitleOnline
       commit(transaction, :giftCardCredit, options)
     end
 
-    def fast_access_funding(options)
-      transaction = @litle_transaction.fast_access_funding(options)
-
-      commit(transaction, :fastAccessFunding, options)
-    end
+    # def fast_access_funding(options)
+    #   transaction = @litle_transaction.fast_access_funding(options)
+    #
+    #   commit(transaction, :fastAccessFunding, options)
+    # end
 
     def refund_reversal(options)
       transaction = @litle_transaction.refund_reversal(options)

@@ -2184,7 +2184,7 @@ end
     text_node :merchantSdk, "@merchantSdk", :default_value=>nil
     text_node :loggedInUser, "@loggedInUser", :default_value=>nil
     text_node :sameDayFunding, "@sameDayFunding", :default_value=>nil
-    text_node :fastAccessFunding, "@fastAccessFunding", :default_value=>nil
+    # text_node :fastAccessFunding, "@fastAccessFunding", :default_value=>nil
     object_node :authentication, "authentication", :class=>Authentication
     optional_choice_node   :if,    'authorization', :then, (object_node :authorization, "authorization", :class=>Authorization),
     :elsif, 'sale',    :then, (object_node :sale,    "sale",    :class=>Sale),
@@ -2314,8 +2314,8 @@ end
     text_node :physicalCheckCreditAmount , "@physicalCheckCreditAmount", :default_value=>"0"
     #11.4 Begin
     text_node :sameDayFunding, "@sameDayFunding", :default_value=>"0"
-    text_node :numFastAccessFunding, "@numFastAccessFunding", :default_value=>"0"
-    text_node :fastAccessFundingAmount, "@fastAccessFundingAmount", :default_value=>"0"
+    # text_node :numFastAccessFunding, "@numFastAccessFunding", :default_value=>"0"
+    # text_node :fastAccessFundingAmount, "@fastAccessFundingAmount", :default_value=>"0"
 
     #11.4 End
     text_node :merchantId, "@merchantId", :default_value=>nil
