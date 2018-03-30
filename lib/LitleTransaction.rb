@@ -212,7 +212,10 @@ module LitleOnline
       transaction.originalTransactionAmount         = options['originalTransactionAmount']
       #9.12
       transaction.sepaDirectDebit                   = SepaDirectDebitType.from_hash(options,'sepaDirectDebit')
-      transaction.ideal                             = IdealType.from_hash(options,'ideal')   
+      transaction.ideal                             = IdealType.from_hash(options,'ideal')
+      #9.14
+      transaction.giropay                            = GiropayType.from_hash(options,'giropay')
+      transaction.sofort                             = SofortType.from_hash(options,'sofort')
       return transaction
     end
 

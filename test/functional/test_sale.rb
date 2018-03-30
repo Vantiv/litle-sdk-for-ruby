@@ -395,12 +395,50 @@ module LitleOnline
         'ideal'=>
         {
         'preferredLanguage'=>'AD',
-        },
+        }
       }
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal('000', response.saleResponse.response)
       assert_equal('http://redirect.url.vantiv.com', response.saleResponse.idealResponse.redirectUrl)
     end
+
+    # def test_simple_sale_with_giropay
+    #   hash = {
+    #       'merchantId' => '101',
+    #       'version'=>'9.14',
+    #       'reportGroup'=>'Planets',
+    #       'litleTxnId'=>'123456',
+    #       'orderId'=>'12344',
+    #       'amount'=>'106',
+    #       'orderSource'=>'ecommerce',
+    #       'giropay'=>
+    #       {
+    #           'preferredLanguage'=>'AD',
+    #       }
+    #   }
+    #   response= LitleOnlineRequest.new.sale(hash)
+    #   assert_equal('000', response.saleResponse.response)
+    #   assert_equal('http://redirect.url.vantiv.com', response.saleResponse.giropayResponse.redirectUrl)
+    # end
+    #
+    # def test_simple_sale_with_sofort
+    #   hash = {
+    #       'merchantId' => '101',
+    #       'version'=>'8.8',
+    #       'reportGroup'=>'Planets',
+    #       'litleTxnId'=>'123456',
+    #       'orderId'=>'12344',
+    #       'amount'=>'106',
+    #       'orderSource'=>'ecommerce',
+    #       'sofort'=>
+    #           {
+    #               'preferredLanguage'=>'AD',
+    #           },
+    #   }
+    #   response= LitleOnlineRequest.new.sale(hash)
+    #   assert_equal('000', response.saleResponse.response)
+    #   assert_equal('http://redirect.url.vantiv.com', response.saleResponse.sofortResponse.redirectUrl)
+    # end
 
   end
 end

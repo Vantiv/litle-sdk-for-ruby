@@ -238,7 +238,7 @@ module LitleOnline
       #Explicit - used for integrations
       assert_equal 'ActiveMerchant;10.0', litle.send(:get_merchant_sdk, {'merchantSdk'=>'ActiveMerchant;10.0'})
       #Implicit - used raw when nothing is specified
-      assert_equal 'Ruby;9.12.0', litle.send(:get_merchant_sdk, {'NotMerchantSdk'=>'ActiveMerchant;10.0'})
+      assert_equal 'Ruby;9.14.0', litle.send(:get_merchant_sdk, {'NotMerchantSdk'=>'ActiveMerchant;10.0'})
     end
   
     def test_sale_paypal_order_complete_typo
@@ -263,14 +263,14 @@ module LitleOnline
     end
 
     def test_version_matches_sdk_major_and_minor_version_ignoring_config
-      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'9.12'})
+      Configuration.any_instance.stubs(:config).returns({'currency_merchant_map'=>{'DEFAULT'=>'1'}, 'user'=>'a','password'=>'b','version'=>'9.14'})
       hash={
         'litleTxnId' => '006'
       }
 
       #Communications.expects(:http_post).with(regexp_matches(/<litleOnlineRequest.*version="9\.12".*/m),kind_of(Hash))
       #XMLObject.expects(:new)
-      LitleXmlMapper.expects(:request).with(regexp_matches(/<litleOnlineRequest.*version="9\.12".*/m), is_a(Hash))
+      LitleXmlMapper.expects(:request).with(regexp_matches(/<litleOnlineRequest.*version="9\.14".*/m), is_a(Hash))
       response = LitleOnlineRequest.new.void(hash)
     end
     

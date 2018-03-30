@@ -1407,8 +1407,40 @@ module LitleOnline
         nil
       end
     end    
-  end  
-  
+  end
+
+  class GiropayType
+    include XML::Mapping
+    root_element_name "giropay"
+    text_node :preferredLanguage, "preferredLanguage", :default_value=>nil
+    def self.from_hash(hash, name='giropay')
+      base = hash[name]
+      if(base)
+        this = GiropayType.new
+        this.preferredLanguage = base['preferredLanguage']
+        this
+      else
+        nil
+      end
+    end
+  end
+
+  class SofortType
+    include XML::Mapping
+    root_element_name "sofort"
+    text_node :preferredLanguage, "preferredLanguage", :default_value=>nil
+    def self.from_hash(hash, name='sofort')
+      base = hash[name]
+      if(base)
+        this = SofortType.new
+        this.preferredLanguage = base['preferredLanguage']
+        this
+      else
+        nil
+      end
+    end
+  end
+
   class Authorization
     include XML::Mapping
     root_element_name "authorization"
@@ -1478,7 +1510,11 @@ module LitleOnline
     :elsif, 'mpos', :then, (object_node :mpos, "mpos", :class=>Mpos),
     :elsif, 'applepay', :then, (object_node :applepay, "applepay", :class=>Applepay),
     :elsif, 'sepaDirectDebit', :then, (object_node :sepaDirectDebit, "sepaDirectDebit", :class=>SepaDirectDebitType),
-    :elsif, 'ideal', :then, (object_node :ideal, "ideal", :class=>IdealType)
+    :elsif, 'ideal', :then, (object_node :ideal, "ideal", :class=>IdealType),
+    #9.14 Begin
+    :elsif, 'giropay', :then, (object_node :giropay, "giropay", :class=>GiropayType),
+    :elsif, 'sofort', :then, (object_node :sofort, "sofort", :class=>SofortType)
+    #9.14 End
     object_node :billMeLaterRequest, "billMeLaterRequest", :class=>BillMeLaterRequest, :default_value=>nil
     optional_choice_node :if, 'fraudCheck', :then, (object_node :fraudCheck, "fraudCheck", :class=>FraudCheck, :default_value=>nil),
     :elsif, 'cardholderAuthentication', :then, (object_node :cardholderAuthentication, "cardholderAuthentication", :class=>FraudCheck, :default_value=>nil)

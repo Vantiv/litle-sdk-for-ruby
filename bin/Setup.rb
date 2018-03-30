@@ -82,7 +82,7 @@ transact_production => https://transact.vantivcnp.com/vap/communicator/online"
   def self.choice(litle_env)
     litle_online_ctx = 'vap/communicator/online'
     if litle_env == "sandbox\n"
-      return 'https://www.testvantivcnp.com/sandbox/communicator/online'
+      return 'https://www.testvantivcnp.com/sandbox/new/sandbox/communicator/online'
     elsif litle_env == "prelive\n"
       return 'https://payments.vantivprelive.com/' + litle_online_ctx
     elsif litle_env == "postlive\n"
