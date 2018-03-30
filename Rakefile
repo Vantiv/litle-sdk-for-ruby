@@ -32,7 +32,7 @@ spec = Gem::Specification.new do |s|
   s.description = File.read(File.join(File.dirname(__FILE__), 'DESCRIPTION'))
   s.requirements =
     ['Contact sdksupport@vantiv.com for more information']
-  s.version = '8.29.2'
+  s.version = '8.31.0'
   s.author = 'Vantiv eCommerce'
   s.email = 'sdksupport@vantiv.com'
   s.homepage = 'http://www.vantiv.com/developers'
