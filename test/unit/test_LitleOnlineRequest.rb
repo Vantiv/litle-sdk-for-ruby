@@ -245,7 +245,7 @@ module LitleOnline
       hash={
         'litleTxnId' => '006'
       }
-      LitleXmlMapper.expects(:request).with(regexp_matches(/<litleOnlineRequest.*version="11\.0".*/m), is_a(Hash))
+      LitleXmlMapper.expects(:request).with(regexp_matches(/<litleOnlineRequest.*version="11\.4".*/m), is_a(Hash))
       response = LitleOnlineRequest.new.void(hash)
     end
     

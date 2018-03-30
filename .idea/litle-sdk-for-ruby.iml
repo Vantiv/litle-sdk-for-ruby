@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="RUBY_MODULE" version="4">
+  <component name="ModuleRunConfigurationManager">
+    <shared />
+  </component>
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="PROVIDED" name="activesupport (v5.1.5, RVM: ruby-2.2.9) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="concurrent-ruby (v1.0.5, RVM: ruby-2.2.9) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="crack (v0.4.3, RVM: ruby-2.2.9) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="i18n (v0.9.5, RVM: ruby-2.2.9) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="iostreams (v0.14.0, RVM: ruby-2.2.9) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="libxml-ruby (v3.1.0, RVM: ruby-2.2.9) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="metaclass (v0.0.4, RVM: ruby-2.2.9) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="minitest (v5.4.3, RVM: ruby-2.2.9) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="mocha (v1.4.0, RVM: ruby-2.2.9) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="net-sftp (v2.1.2, RVM: ruby-2.2.9) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="net-ssh (v4.2.0, RVM: ruby-2.2.9) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="power_assert (v0.2.2, RVM: ruby-2.2.9) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rake (v12.3.0, RVM: ruby-2.2.9) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="safe_yaml (v1.0.4, RVM: ruby-2.2.9) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="test-unit (v3.0.8, RVM: ruby-2.2.9) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="thread_safe (v0.3.6, RVM: ruby-2.2.9) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="tzinfo (v1.2.5, RVM: ruby-2.2.9) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="xml-mapping (v0.10.1, RVM: ruby-2.2.9) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="xml-object (v1.0.0, RVM: ruby-2.2.9) [gem]" level="application" />
+  </component>
+</module>
