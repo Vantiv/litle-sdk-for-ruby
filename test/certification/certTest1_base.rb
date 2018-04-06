@@ -4,8 +4,9 @@ require 'test/unit'
 
 module LitleOnline
   class Litle_certTest < Test::Unit::TestCase
-    @@merchant_hash = {'reportGroup'=>'Planets',
-      'merchantId'=>'101'
+    @@merchant_hash = {
+        'reportGroup'=>'Planets',
+        'url'=> 'https://payments.vantivprelive.com/vap/communicator/online'
     }
   
     def test_1_auth
@@ -149,7 +150,7 @@ module LitleOnline
       auth_response = LitleOnlineRequest.new.authorization(hash)
       assert_equal('000', auth_response.authorizationResponse.response)
       assert_equal('Approved', auth_response.authorizationResponse.message)
-      assert_equal('22222', auth_response.authorizationResponse.authCode)
+      assert_equal('22222 ', auth_response.authorizationResponse.authCode)
       assert_equal('10', auth_response.authorizationResponse.fraudResult.avsResult)
       assert_equal('M', auth_response.authorizationResponse.fraudResult.cardValidationResult)
   
@@ -200,7 +201,7 @@ module LitleOnline
       auth_response = LitleOnlineRequest.new.authorization(hash)
       assert_equal('000', auth_response.authorizationResponse.response)
       assert_equal('Approved', auth_response.authorizationResponse.message)
-      assert_equal('22222', auth_response.authorizationResponse.authCode)
+      assert_equal('22222 ', auth_response.authorizationResponse.authCode)
       assert_equal('10', auth_response.authorizationResponse.fraudResult.avsResult)
       assert_equal('M', auth_response.authorizationResponse.fraudResult.cardValidationResult)
     end
@@ -230,7 +231,7 @@ module LitleOnline
       sale_response = LitleOnlineRequest.new.sale(hash)
       assert_equal('000', sale_response.saleResponse.response)
       assert_equal('Approved', sale_response.saleResponse.message)
-      assert_equal('22222', sale_response.saleResponse.authCode)
+      assert_equal('22222 ', sale_response.saleResponse.authCode)
       assert_equal('10', sale_response.saleResponse.fraudResult.avsResult)
       assert_equal('M', sale_response.saleResponse.fraudResult.cardValidationResult)
   
@@ -271,7 +272,7 @@ module LitleOnline
       auth_response = LitleOnlineRequest.new.authorization(hash)
       assert_equal('000', auth_response.authorizationResponse.response)
       assert_equal('Approved', auth_response.authorizationResponse.message)
-      assert_equal('33333', auth_response.authorizationResponse.authCode)
+      assert_equal('33333 ', auth_response.authorizationResponse.authCode)
       assert_equal('10', auth_response.authorizationResponse.fraudResult.avsResult)
       assert_equal('M', auth_response.authorizationResponse.fraudResult.cardValidationResult)
   
@@ -319,7 +320,7 @@ module LitleOnline
       auth_response = LitleOnlineRequest.new.authorization(hash)
       assert_equal('000', auth_response.authorizationResponse.response)
       assert_equal('Approved', auth_response.authorizationResponse.message)
-      assert_equal('33333', auth_response.authorizationResponse.authCode)
+      assert_equal('33333 ', auth_response.authorizationResponse.authCode)
       assert_equal('10', auth_response.authorizationResponse.fraudResult.avsResult)
       assert_equal('M', auth_response.authorizationResponse.fraudResult.cardValidationResult)
     end
@@ -346,7 +347,7 @@ module LitleOnline
       sale_response = LitleOnlineRequest.new.sale(hash)
       assert_equal('000', sale_response.saleResponse.response)
       assert_equal('Approved', sale_response.saleResponse.message)
-      assert_equal('33333', sale_response.saleResponse.authCode)
+      assert_equal('33333 ', sale_response.saleResponse.authCode)
       assert_equal('10', sale_response.saleResponse.fraudResult.avsResult)
       assert_equal('M', sale_response.saleResponse.fraudResult.cardValidationResult)
   
@@ -387,8 +388,8 @@ module LitleOnline
       auth_response = LitleOnlineRequest.new.authorization(hash)
       assert_equal('000', auth_response.authorizationResponse.response)
       assert_equal('Approved', auth_response.authorizationResponse.message)
-      assert_equal('44444', auth_response.authorizationResponse.authCode)
-      assert_equal('12', auth_response.authorizationResponse.fraudResult.avsResult)
+      assert_equal('44444 ', auth_response.authorizationResponse.authCode)
+      assert_equal('13', auth_response.authorizationResponse.fraudResult.avsResult)
   
       #test 4A
       capture_hash =  {'litleTxnId' => auth_response.authorizationResponse.litleTxnId}
@@ -433,8 +434,8 @@ module LitleOnline
       auth_response = LitleOnlineRequest.new.authorization(hash)
       assert_equal('000', auth_response.authorizationResponse.response)
       assert_equal('Approved', auth_response.authorizationResponse.message)
-      assert_equal('44444', auth_response.authorizationResponse.authCode)
-      assert_equal('12', auth_response.authorizationResponse.fraudResult.avsResult)
+      assert_equal('44444 ', auth_response.authorizationResponse.authCode)
+      assert_equal('13', auth_response.authorizationResponse.fraudResult.avsResult)
     end
   
     def test_4_sale
@@ -459,8 +460,8 @@ module LitleOnline
       sale_response = LitleOnlineRequest.new.sale(hash)
       assert_equal('000', sale_response.saleResponse.response)
       assert_equal('Approved', sale_response.saleResponse.message)
-      assert_equal('44444', sale_response.saleResponse.authCode)
-      assert_equal('12', sale_response.saleResponse.fraudResult.avsResult)
+      assert_equal('44444 ', sale_response.saleResponse.authCode)
+      assert_equal('13', sale_response.saleResponse.fraudResult.avsResult)
   
       #test 4B
       credit_hash =  {'litleTxnId' => sale_response.saleResponse.litleTxnId}
@@ -495,7 +496,7 @@ module LitleOnline
       assert_equal('Approved', auth_response.authorizationResponse.message)
       assert_equal('55555 ', auth_response.authorizationResponse.authCode)
       assert_equal('32', auth_response.authorizationResponse.fraudResult.avsResult)
-      assert_equal('N', auth_response.authorizationResponse.fraudResult.cardValidationResult)
+      assert_equal('M', auth_response.authorizationResponse.fraudResult.cardValidationResult)
   
       #test 5A
       capture_hash =  {'litleTxnId' => auth_response.authorizationResponse.litleTxnId}
@@ -537,7 +538,7 @@ module LitleOnline
       assert_equal('Approved', auth_response.authorizationResponse.message)
       assert_equal('55555 ', auth_response.authorizationResponse.authCode)
       assert_equal('32', auth_response.authorizationResponse.fraudResult.avsResult)
-      assert_equal('N', auth_response.authorizationResponse.fraudResult.cardValidationResult)
+      assert_equal('M', auth_response.authorizationResponse.fraudResult.cardValidationResult)
     end
   
     def test_5_sale
@@ -558,7 +559,7 @@ module LitleOnline
       assert_equal('Approved', sale_response.saleResponse.message)
       assert_equal('55555 ', sale_response.saleResponse.authCode)
       assert_equal('32', sale_response.saleResponse.fraudResult.avsResult)
-      assert_equal('N', sale_response.saleResponse.fraudResult.cardValidationResult)
+      assert_equal('M', sale_response.saleResponse.fraudResult.cardValidationResult)
   
       #test 5B
       credit_hash =  {'litleTxnId' => sale_response.saleResponse.litleTxnId}
@@ -631,7 +632,7 @@ module LitleOnline
       hash6A = void_hash.merge(@@merchant_hash)
       void_response = LitleOnlineRequest.new.void(hash6A)
       assert_equal('360', void_response.voidResponse.response)
-      assert_equal('No transaction found with specified litleTxnId', void_response.voidResponse.message)
+      assert_equal('No transaction found with specified transaction Id', void_response.voidResponse.message)
     end
   
     def test_7_auth
