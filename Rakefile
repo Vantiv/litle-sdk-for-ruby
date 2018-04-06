@@ -27,8 +27,8 @@ require 'rake/clean'
 
 spec = Gem::Specification.new do |s|
   FileUtils.rm_rf('pkg')
-  s.name = 'LitleOnline'
-  s.summary = 'Ruby SDK produced by Vantiv eCommerce for transaction processing using Vantiv eCommerce XML format v8.29'
+  s.name = 'CnpOnline'
+  s.summary = 'Ruby SDK produced by Vantiv eCommerce for transaction processing using Vantiv eCommerce XML format v8.31'
   s.description = File.read(File.join(File.dirname(__FILE__), 'DESCRIPTION'))
   s.requirements =
     ['Contact sdksupport@vantiv.com for more information']
