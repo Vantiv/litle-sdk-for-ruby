@@ -4,8 +4,9 @@ require 'test/unit'
 module LitleOnline
   class Litle_certTest4 < Test::Unit::TestCase
     # test echeck
-    @@merchant_hash = {'reportGroup'=>'Planets',
-      'merchantId'=>'101'
+    @@merchant_hash = {
+        'reportGroup'=>'Planets',
+        'url'=> 'https://payments.vantivprelive.com/vap/communicator/online'
     }
   
   #  test 37-49 merchant authorizate to do echeck using 087901 with same username IMPTEST, password cert3d6Z
@@ -72,7 +73,7 @@ module LitleOnline
         hash = customer_hash.merge(@@merchant_hash)
         echeck_response = LitleOnlineRequest.new.echeck_verification(hash)
         assert_equal('950', echeck_response.echeckVerificationResponse.response)
-        assert_equal('Declined - Negative Information on File', echeck_response.echeckVerificationResponse.message)
+        assert_equal('Decline - Negative Information on File', echeck_response.echeckVerificationResponse.message)
       end
     
       def test_40
@@ -254,8 +255,28 @@ module LitleOnline
       end
       
     def test_48
+
       customer_hash = {
-        'litleTxnId' => '430000000000000001'
+          'orderId' => '43',
+          'amount' => '2007',
+          'orderSource'=>'telephone',
+          'billToAddress'=>{
+              'firstName' => 'Peter',
+              'lastName' => 'Green',
+              'companyName' => 'Green Co'
+          },
+
+          'echeck'=>{
+              'accNum' =>'6099999992',
+              'accType' => 'Corporate',
+              'routingNum' => '211370545'}
+      }
+      hash = customer_hash.merge(@@merchant_hash)
+      echeck_response = LitleOnlineRequest.new.echeck_sale(hash)
+
+
+      customer_hash = {
+        'litleTxnId' => echeck_response.echeckSalesResponse.litleTxnId
       }
       hash = customer_hash.merge(@@merchant_hash)
       echeck_response = LitleOnlineRequest.new.echeck_credit(hash)
@@ -272,7 +293,7 @@ module LitleOnline
       echeck_response = LitleOnlineRequest.new.echeck_credit(hash)
   
       assert_equal('360', echeck_response.echeckCreditResponse.response)
-      assert_equal('No transaction found with specified litleTxnId', echeck_response.echeckCreditResponse.message)
+      assert_equal('No transaction found with specified transaction Id', echeck_response.echeckCreditResponse.message)
     end
   end
 end
