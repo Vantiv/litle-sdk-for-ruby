@@ -4,9 +4,12 @@ require 'test/unit'
 module LitleOnline
   class Litle_certTest3 < Test::Unit::TestCase
     #test auth reversal
-    @@merchant_hash = {'reportGroup'=>'Planets','id'=>'321','customerId'=>'123',
-      'merchantId'=>'101',
-      'id'=>'test'
+    @@merchant_hash = {
+        'reportGroup'=>'Planets',
+        'id'=>'321',
+        'customerId'=>'123',
+        'url'=> 'https://payments.vantivprelive.com/vap/communicator/online',
+        'id'=>'test'
     }
   
     def test_32
@@ -74,7 +77,7 @@ module LitleOnline
       auth_response = LitleOnlineRequest.new.authorization(hash)
       assert_equal('000', auth_response.authorizationResponse.response)
       assert_equal('Approved', auth_response.authorizationResponse.message)
-      assert_equal('22222', auth_response.authorizationResponse.authCode)
+      assert_equal('22222 ', auth_response.authorizationResponse.authCode)
       assert_equal('10', auth_response.authorizationResponse.fraudResult.avsResult)
       assert_equal('M', auth_response.authorizationResponse.fraudResult.cardValidationResult)
   
@@ -108,7 +111,7 @@ module LitleOnline
       auth_response = LitleOnlineRequest.new.authorization(hash)
       assert_equal('000', auth_response.authorizationResponse.response)
       assert_equal('Approved', auth_response.authorizationResponse.message)
-      assert_equal('33333', auth_response.authorizationResponse.authCode)
+      assert_equal('33333 ', auth_response.authorizationResponse.authCode)
       assert_equal('10', auth_response.authorizationResponse.fraudResult.avsResult)
       assert_equal('M', auth_response.authorizationResponse.fraudResult.cardValidationResult)
   
@@ -141,8 +144,8 @@ module LitleOnline
       auth_response = LitleOnlineRequest.new.authorization(hash)
       assert_equal('000', auth_response.authorizationResponse.response)
       assert_equal('Approved', auth_response.authorizationResponse.message)
-      assert_equal('44444', auth_response.authorizationResponse.authCode)
-      assert_equal('12', auth_response.authorizationResponse.fraudResult.avsResult)
+      assert_equal('44444 ', auth_response.authorizationResponse.authCode)
+      assert_equal('13', auth_response.authorizationResponse.fraudResult.avsResult)
   
       #    #test 35A
       capture_hash =  {'litleTxnId' => auth_response.authorizationResponse.litleTxnId, 'amount' => '20020'}
