@@ -44,7 +44,7 @@ module LitleOnline
       assert_equal('000', response.fraudCheckResponse.response)
       assert_equal('Approved', response.fraudCheckResponse.message)
       assert_equal('pass', response.fraudCheckResponse.advancedFraudResults.deviceReviewStatus)
-      assert_equal('55', response.fraudCheckResponse.advancedFraudResults.deviceReputationScore)
+      assert_equal('42', response.fraudCheckResponse.advancedFraudResults.deviceReputationScore)
       assert_equal('triggered_rule_1', response.fraudCheckResponse.advancedFraudResults.triggeredRule[0])
       assert_equal(5, response.fraudCheckResponse.advancedFraudResults.triggeredRule.size())
     end
