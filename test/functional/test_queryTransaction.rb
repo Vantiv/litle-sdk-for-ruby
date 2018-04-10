@@ -41,7 +41,7 @@ module LitleOnline
        #'origAccountNumber' => '4000000000000001'      
        }
        response= LitleOnlineRequest.new.query_Transaction(hash)
-       assert_equal('000', response.queryTransactionResponse.response)
+       assert_equal('150', response.queryTransactionResponse.response)
     end
       
     def test_queryTransaction_valid_enum
