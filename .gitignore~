@@ -2,4 +2,4 @@
 pkg
 .loadpath
 .DS_STORE
-.idea/
+.idea/*
