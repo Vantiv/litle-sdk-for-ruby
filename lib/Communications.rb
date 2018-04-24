@@ -1,5 +1,5 @@
 =begin
-Copyright (c) 2011 Litle & Co.
+Copyright (c) 2017 Vantiv eCommerce
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -49,7 +49,7 @@ module LitleOnline
         https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
       end
       https.start { |http|
-        response = http.request_post(url.path, post_data.to_s, {'Content-Type'=>'text/xml','Connection'=>'close'})
+        response = http.request_post(url.path, post_data.to_s, {'Content-Type'=>'text/xml; charset=UTF-8','Connection'=>'close'})
         response_xml = response
       }
   
@@ -67,17 +67,17 @@ end
 =begin
  NOTES ON HTTP TIMEOUT
 
-  Litle & Co. optimizes our systems to ensure the return of responses as quickly as possible, some portions of the process are beyond our control.
+  Vantiv eCommerce optimizes our systems to ensure the return of responses as quickly as possible, some portions of the process are beyond our control.
   The round-trip time of an Authorization can be broken down into three parts, as follows:
-    1.  Transmission time (across the internet) to Litle & Co. and back to the merchant
+    1.  Transmission time (across the internet) to Vantiv eCommerce and back to the merchant
     2.  Processing time by the authorization provider
-    3.  Processing time by Litle 
-  Under normal operating circumstances, the transmission time to and from Litle does not exceed 0.6 seconds 
-  and processing overhead by Litle occurs in 0.1 seconds. 
+    3.  Processing time by Vantiv eCommerce 
+  Under normal operating circumstances, the transmission time to and from Vantiv eCommerce does not exceed 0.6 seconds 
+  and processing overhead by Vantiv eCommerce occurs in 0.1 seconds. 
   Typically, the processing time by the card association or authorization provider can take between 0.5 and 3 seconds,
   but some percentage of transactions may take significantly longer.
  
-  Because the total processing time can vary due to a number of factors, Litle & Co. recommends using a minimum timeout setting of
+  Because the total processing time can vary due to a number of factors, Vantiv eCommerce recommends using a minimum timeout setting of
   60 seconds to accomodate Sale transactions and 30 seconds if you are not utilizing Sale tranactions.
 
   These settings should ensure that you do not frequently disconnect prior to receiving a valid authorization causing dropped orders 
