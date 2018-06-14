@@ -33,7 +33,6 @@ module LitleOnline
         'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
-        'litleTxnId'=>'123456',
         'orderId'=>'12344',
         'amount'=>'106',
         'orderSource'=>'ecommerce',
@@ -43,7 +42,7 @@ module LitleOnline
         'expDate' =>'1210'
         }}
       response= LitleOnlineRequest.new.force_capture(hash)
-      assert_equal('001', response.forceCaptureResponse.response)
+      assert_equal('000', response.forceCaptureResponse.response)
     end
   
     def test_simple_force_capture_with_token
@@ -52,7 +51,6 @@ module LitleOnline
         'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
-        'litleTxnId'=>'123456',
         'orderId'=>'12344',
         'amount'=>'106',
         'orderSource'=>'ecommerce',
@@ -72,7 +70,6 @@ module LitleOnline
         'id' => 'test',
         'version'=>'8.8',
         'orderSource'=>'ecommerce',
-        'litleTxnId'=>'123456',
         'amount'=>'106',
         'card'=>{
         'type'=>'VI',
@@ -92,7 +89,6 @@ module LitleOnline
         'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
-        'litleTxnId'=>'123456',
         'orderId'=>'12344',
         'amount'=>'106',
         'orderSource'=>'ecommerce',
@@ -112,7 +108,6 @@ module LitleOnline
         'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
-        'litleTxnId'=>'123456',
         'amount'=>'106',
         'orderSource'=>'ecommerce',
         'token'=> {
@@ -133,7 +128,6 @@ module LitleOnline
         'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
-        'litleTxnId'=>'123456',
         'orderId'=>'12344',
         'amount'=>'106',
         'card'=>{
@@ -153,7 +147,6 @@ module LitleOnline
         'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
-        'litleTxnId'=>'123456',
         'orderId'=>'12344',
         'amount'=>'106',
         'orderSource'=>'ecommerce',
@@ -167,7 +160,7 @@ module LitleOnline
 		}
       }
       response= LitleOnlineRequest.new.force_capture(hash)
-      assert_equal('001', response.forceCaptureResponse.response)
+      assert_equal('000', response.forceCaptureResponse.response)
     end
     
     def test_simple_force_capture_with_secondaryAmount
@@ -176,7 +169,6 @@ module LitleOnline
         'id' => 'test',
         'version'=>'8.8',
         'reportGroup'=>'Planets',
-        'litleTxnId'=>'123456',
         'orderId'=>'12344',
         'amount'=>'106',
         'secondaryAmount'=>'20',
@@ -187,7 +179,7 @@ module LitleOnline
         'expDate' =>'1210'
         }}
       response= LitleOnlineRequest.new.force_capture(hash)
-      assert_equal('001', response.forceCaptureResponse.response)
+      assert_equal('000', response.forceCaptureResponse.response)
     end
   
   end

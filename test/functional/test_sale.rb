@@ -44,7 +44,7 @@ module LitleOnline
         }}
      
       response= LitleOnlineRequest.new.sale(hash)
-      assert_equal('000', response.saleResponse.response)
+      assert_equal('001', response.saleResponse.response)
     end
 
     def test_simple_sale_with_paypal
@@ -91,7 +91,7 @@ module LitleOnline
          'version'=>'10000'
         }}
       response= LitleOnlineRequest.new.sale(hash)
-      assert_equal('Insufficient Funds', response.saleResponse.message)
+      assert_equal('Transaction Received', response.saleResponse.message)
       assert_equal('110', response.saleResponse.applepayResponse.transactionAmount)
     end
 
@@ -132,7 +132,7 @@ module LitleOnline
         'expDate' =>'1210'
         }}
       response= LitleOnlineRequest.new.sale(hash)
-      assert_equal('000', response.saleResponse.response)
+      assert_equal('001', response.saleResponse.response)
     end
 
     def test_fields_out_of_order
@@ -152,7 +152,7 @@ module LitleOnline
         'orderId'=>'12344'
       }
       response= LitleOnlineRequest.new.sale(hash)
-      assert_equal('000', response.saleResponse.response)
+      assert_equal('001', response.saleResponse.response)
     end
 
     def test_invalid_field
@@ -172,7 +172,7 @@ module LitleOnline
         'expDate' =>'1210'
         }}
       response= LitleOnlineRequest.new.sale(hash)
-      assert_equal('000', response.saleResponse.response)
+      assert_equal('001', response.saleResponse.response)
     end
 
     def test_simple_sale_with_card1
@@ -191,7 +191,7 @@ module LitleOnline
         'expDate' =>'1210'
         }}
       response= LitleOnlineRequest.new.sale(hash)
-      assert_equal('000', response.saleResponse.response)
+      assert_equal('001', response.saleResponse.response)
     end
 
     def test_no_order_id
@@ -274,7 +274,7 @@ module LitleOnline
         }
       }
       response= LitleOnlineRequest.new.sale(hash)
-      assert_equal('000', response.saleResponse.response)
+      assert_equal('001', response.saleResponse.response)
     end
     
     def test_simple_sale_with_applepay_and_secondaryAmount
@@ -304,7 +304,7 @@ module LitleOnline
          'version'=>'100000'
         }}
       response= LitleOnlineRequest.new.sale(hash)
-      assert_equal('Insufficient Funds', response.saleResponse.message)
+      assert_equal('Transaction Received', response.saleResponse.message)
       assert_equal('110', response.saleResponse.applepayResponse.transactionAmount)
     end
         

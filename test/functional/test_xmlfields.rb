@@ -86,7 +86,7 @@ module LitleOnline
         'expDate' =>'1210'
         }}
       response= LitleOnlineRequest.new.sale(hash)
-      assert_equal('000', response.saleResponse.response)
+      assert_equal('001', response.saleResponse.response)
     end
   
     def test__customer_info

@@ -19,13 +19,13 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require File.expand_path("../../../lib/LitleOnline",__FILE__) 
+require File.expand_path("../../../lib/LitleOnline",__FILE__)
 require 'test/unit'
 require 'fileutils'
 
 module LitleOnline
   class TestLitleBatchStream < Test::Unit::TestCase
-  
+
     def setup
       dir = '/tmp/litle-sdk-for-ruby-test'
       FileUtils.rm_rf dir
@@ -58,19 +58,19 @@ module LitleOnline
       assert_not_nil entries[3] =~ /request_\d+_batches\z/
 
       #create five batches, each with 10 sales
-   
+
         batch = LitleBatchRequest.new
         batch.create_new_batch(dir + '/litle-sdk-for-ruby-test')
-        
-        cancelSubscriptionHash = 
+
+        cancelSubscriptionHash =
              {
               'subscriptionId'=>'100'
              }
         batch.cancel_subscription(cancelSubscriptionHash)
 
-        updateSubscriptionHash = 
+        updateSubscriptionHash =
             {
-              'subscriptionId'=>'1000' 
+              'subscriptionId'=>'1000'
             }
         batch.update_subscription(updateSubscriptionHash)
 
@@ -86,7 +86,7 @@ module LitleOnline
         'numberOfPayments'=>'2',
         'trialNumberOfIntervals'=>'1',
         'trialIntervalType'=>'MONTH',
-        'active'=>'true'  
+        'active'=>'true'
             }
         batch.create_plan(createPlanHash)
 
@@ -103,18 +103,18 @@ module LitleOnline
 
         #close the batch, indicating we plan to add no more transactions
         batch.close_batch()
-        
-        
+
+
         #add the batch to the LitleRequest
         request.commit_batch(batch)
-      
+
       #finish the Litle Request, indicating we plan to add no more batches
       request.finish_request
       entries = Dir.entries(dir + '/litle-sdk-for-ruby-test')
       assert_equal 3, entries.length
       entries.sort!
       assert_not_nil entries[2] =~ /request_\d+.complete\z/
-      
+
       #send the batch files at the given directory over sFTP
       count = 1
       begin
@@ -129,7 +129,7 @@ module LitleOnline
       end
       request.process_responses({:transaction_listener => LitleOnline::DefaultLitleListener.new do |transaction|
       type = transaction["type"]
-    
+
       if(type == "cancelSubscriptionResponse") then
       assert_equal "100" ,transaction["subscriptionId"]
        end
