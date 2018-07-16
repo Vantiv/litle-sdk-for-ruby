@@ -345,58 +345,58 @@ module LitleOnline
       assert_equal('Invalid healthcare amounts', auth_response.authorizationResponse.message)
     end
   
-    def test_30
-      customer_hash = {
-        'orderId' => '30',
-        'amount' => '20000',
-        'orderSource'=>'ecommerce',
-        'card'=>{
-        'number' =>'4024720001231239',
-        'expDate' => '1212',
-        'type' => 'VI'},
-        'allowPartialAuth' => 'true',
-        'healthcareIIAS' => {
-        'healthcareAmounts' => {
-        'totalHealthcareAmount' =>'20000',
-        'RxAmount' => '1000',
-        'visionAmount' => '19901',
-        'clinicOtherAmount' => '9050',
-        'dentalAmount' => '1049'
-        },
-        'IIASFlag' => 'Y'
-        }
-      }
-      hash = customer_hash.merge(@@merchant_hash)
-      auth_response = LitleOnlineRequest.new.authorization(hash)
-      assert_equal('341', auth_response.authorizationResponse.response)
-      assert_equal('Invalid healthcare amounts', auth_response.authorizationResponse.message)
-    end
-  
-    def test_31
-      customer_hash = {
-        'orderId' => '31',
-        'amount' => '25000',
-        'orderSource'=>'ecommerce',
-        'card'=>{
-        'number' =>'4024720001231239',
-        'expDate' => '1212',
-        'type' => 'VI'},
-        'allowPartialAuth' => 'true',
-        'healthcareIIAS' => {
-        'healthcareAmounts' => {
-        'totalHealthcareAmount' =>'18699',
-        'RxAmount' => '1000',
-        'visionAmount' => '15099'
-        },
-        'IIASFlag' => 'Y'
-        }
-      }
-      hash = customer_hash.merge(@@merchant_hash)
-      auth_response = LitleOnlineRequest.new.authorization(hash)
-      assert_equal('010', auth_response.authorizationResponse.response)
-      assert_equal('Partially Approved', auth_response.authorizationResponse.message)
-      assert_equal('18699', auth_response.authorizationResponse.approvedAmount)
-    end
+    # def test_30
+    #   customer_hash = {
+    #     'orderId' => '30',
+    #     'amount' => '20000',
+    #     'orderSource'=>'ecommerce',
+    #     'card'=>{
+    #     'number' =>'4024720001231239',
+    #     'expDate' => '1212',
+    #     'type' => 'VI'},
+    #     'allowPartialAuth' => 'true',
+    #     'healthcareIIAS' => {
+    #     'healthcareAmounts' => {
+    #     'totalHealthcareAmount' =>'20000',
+    #     'RxAmount' => '1000',
+    #     'visionAmount' => '19901',
+    #     'clinicOtherAmount' => '9050',
+    #     'dentalAmount' => '1049'
+    #     },
+    #     'IIASFlag' => 'Y'
+    #     }
+    #   }
+    #   hash = customer_hash.merge(@@merchant_hash)
+    #   auth_response = LitleOnlineRequest.new.authorization(hash)
+    #   assert_equal('341', auth_response.authorizationResponse.response)
+    #   assert_equal('Invalid healthcare amounts', auth_response.authorizationResponse.message)
+    # end
+    #
+    # def test_31
+    #   customer_hash = {
+    #     'orderId' => '31',
+    #     'amount' => '25000',
+    #     'orderSource'=>'ecommerce',
+    #     'card'=>{
+    #     'number' =>'4024720001231239',
+    #     'expDate' => '1212',
+    #     'type' => 'VI'},
+    #     'allowPartialAuth' => 'true',
+    #     'healthcareIIAS' => {
+    #     'healthcareAmounts' => {
+    #     'totalHealthcareAmount' =>'18699',
+    #     'RxAmount' => '1000',
+    #     'visionAmount' => '15099'
+    #     },
+    #     'IIASFlag' => 'Y'
+    #     }
+    #   }
+    #   hash = customer_hash.merge(@@merchant_hash)
+    #   auth_response = LitleOnlineRequest.new.authorization(hash)
+    #   assert_equal('010', auth_response.authorizationResponse.response)
+    #   assert_equal('Partially Approved', auth_response.authorizationResponse.message)
+    #   assert_equal('18699', auth_response.authorizationResponse.approvedAmount)
+    # end
   
     def test_32
       customer_hash = {
