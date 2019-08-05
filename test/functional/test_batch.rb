@@ -29,7 +29,13 @@ require 'fileutils'
 #test Authorization Transaction
 module LitleOnline
   class TestBatch < Test::Unit::TestCase
-  
+
+    @@preliveStatus = ENV['preliveStatus']
+
+    def self.preliveStatus
+      @@preliveStatus
+    end
+
     def setup
       dir = '/tmp/litle-sdk-for-ruby-test'
       FileUtils.rm_rf dir
@@ -37,6 +43,8 @@ module LitleOnline
     end
   
     def test_batch_file_creation
+      omit_if(TestBatch.preliveStatus.downcase == 'down')
+
       dir = '/tmp'
       
       batch = LitleBatchRequest.new
@@ -51,6 +59,8 @@ module LitleOnline
     end
     
     def test_batch_file_creation_account_update
+      omit_if(TestBatch.preliveStatus.downcase == 'down')
+
       dir = '/tmp'
       
       batch = LitleBatchRequest.new
@@ -84,6 +94,8 @@ module LitleOnline
     end
     
     def test_batch_file_creation_on_file
+      omit_if(TestBatch.preliveStatus.downcase == 'down')
+
       dir = '/tmp'
       
       File.open(dir + '/litle-sdk-for-ruby-test/test_batch_file_creation_on_file', 'a+') do |file|
@@ -97,6 +109,8 @@ module LitleOnline
     end
     
     def test_batch_file_rename_and_remove
+      omit_if(TestBatch.preliveStatus.downcase == 'down')
+
       dir = '/tmp'
 
       batch = LitleBatchRequest.new
@@ -110,6 +124,8 @@ module LitleOnline
     end
     
     def test_batch_file_create_new_dir
+      omit_if(TestBatch.preliveStatus.downcase == 'down')
+
       dir = '/tmp'
       batch = LitleBatchRequest.new
       assert !File.directory?(dir + '/litle-sdk-for-ruby-test/test_batch_file_create_new_dir')
@@ -118,6 +134,8 @@ module LitleOnline
     end
     
     def test_batch_open_existing
+      omit_if(TestBatch.preliveStatus.downcase == 'down')
+
       dir = '/tmp'
       batch = LitleBatchRequest.new
       batch.create_new_batch(dir + '/litle-sdk-for-ruby-test')
@@ -147,6 +165,8 @@ module LitleOnline
     end
     
     def test_batch_open_existing_closed
+      omit_if(TestBatch.preliveStatus.downcase == 'down')
+
       dir = '/tmp'
       batch = LitleBatchRequest.new
       batch.create_new_batch(dir + '/litle-sdk-for-ruby-test')
