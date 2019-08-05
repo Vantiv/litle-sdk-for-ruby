@@ -5,10 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6212fc1c-4837-4b9a-9270-98b6168efe38" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/certification/certTest_batchAll.rb" beforeDir="false" afterPath="$PROJECT_DIR$/test/certification/certTest_batchAll.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/functional/test_batch.rb" beforeDir="false" afterPath="$PROJECT_DIR$/test/functional/test_batch.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/functional/test_batchStream.rb" beforeDir="false" afterPath="$PROJECT_DIR$/test/functional/test_batchStream.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/LitleOnlineRequest.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/LitleOnlineRequest.rb" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -25,15 +22,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/unit/test_LitleOnlineRequest.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3540">
-              <caret line="236" column="10" selection-start-line="236" selection-start-column="10" selection-end-line="236" selection-end-column="10" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/unit/test_LitleBatchRequest.rb">
           <provider selected="true" editor-type-id="text-editor">
@@ -73,8 +61,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/functional/test_batch.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2475">
-              <caret line="168" selection-start-line="168" selection-end-line="168" />
+            <state relative-caret-position="510">
+              <caret line="37" lean-forward="true" selection-start-line="37" selection-end-line="37" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lib/LitleOnlineRequest.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="463">
+              <caret line="314" column="89" selection-start-line="314" selection-start-column="89" selection-end-line="314" selection-end-column="89" />
             </state>
           </provider>
         </entry>
@@ -97,10 +94,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/functional/test_batchStream.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="138">
+            <state relative-caret-position="525">
               <caret line="35" column="42" lean-forward="true" selection-start-line="35" selection-start-column="42" selection-end-line="35" selection-end-column="42" />
             </state>
           </provider>
@@ -121,10 +118,12 @@
     <findStrings>
       <find>merchantsdk</find>
       <find>TestBatch</find>
+      <find>omit_if(TestBatch</find>
       <find>def</find>
     </findStrings>
     <replaceStrings>
       <replace>LitleBatchCertTest</replace>
+      <replace>omit_if(TestLitleBatchStream</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -139,6 +138,7 @@
         <option value="$PROJECT_DIR$/test/functional/test_batch.rb" />
         <option value="$PROJECT_DIR$/test/certification/certTest_batchAll.rb" />
         <option value="$PROJECT_DIR$/test/functional/test_batchStream.rb" />
+        <option value="$PROJECT_DIR$/lib/LitleOnlineRequest.rb" />
       </list>
     </option>
   </component>
@@ -160,6 +160,11 @@
             <path>
               <item name="litle-sdk-for-ruby" type="b2602c69:ProjectViewProjectNode" />
               <item name="litle-sdk-for-ruby" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="litle-sdk-for-ruby" type="b2602c69:ProjectViewProjectNode" />
+              <item name="litle-sdk-for-ruby" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="litle-sdk-for-ruby" type="b2602c69:ProjectViewProjectNode" />
@@ -369,7 +374,7 @@
       <workItem from="1522434407241" duration="3362000" />
       <workItem from="1561733058532" duration="1672000" />
       <workItem from="1563288909779" duration="640000" />
-      <workItem from="1565031364867" duration="904000" />
+      <workItem from="1565031364867" duration="1322000" />
     </task>
     <servers />
   </component>
@@ -400,7 +405,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6578000" />
+    <option name="totallyTimeSpent" value="6996000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-2" y="25" width="1684" height="944" extended-state="6" />
@@ -487,17 +492,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/functional/test_batch.rb">
+    <entry file="file://$PROJECT_DIR$/test/functional/test_batchStream.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2475">
-          <caret line="168" selection-start-line="168" selection-end-line="168" />
+        <state relative-caret-position="525">
+          <caret line="35" column="42" lean-forward="true" selection-start-line="35" selection-start-column="42" selection-end-line="35" selection-end-column="42" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/functional/test_batchStream.rb">
+    <entry file="file://$PROJECT_DIR$/test/functional/test_batch.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="35" column="42" lean-forward="true" selection-start-line="35" selection-start-column="42" selection-end-line="35" selection-end-column="42" />
+        <state relative-caret-position="510">
+          <caret line="37" lean-forward="true" selection-start-line="37" selection-end-line="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/LitleOnlineRequest.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="463">
+          <caret line="314" column="89" selection-start-line="314" selection-start-column="89" selection-end-line="314" selection-end-column="89" />
         </state>
       </provider>
     </entry>
