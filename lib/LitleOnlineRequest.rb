@@ -312,6 +312,7 @@ module LitleOnline
       @config_hash['proxy_addr'] = options['proxy_addr'] unless options['proxy_addr'].nil?
       @config_hash['proxy_port'] = options['proxy_port'] unless options['proxy_port'].nil?
       @config_hash['url']        = options['url']        unless options['url'].nil?
+      @config_hash['multiSite']  = options['multiSite']  unless options['multiSite'].nil?
     end
 
     def get_merchant_id(options)

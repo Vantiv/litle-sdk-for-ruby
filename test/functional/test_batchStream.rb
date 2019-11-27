@@ -25,7 +25,13 @@ require 'fileutils'
 
 module LitleOnline
   class TestLitleBatchStream < Test::Unit::TestCase
-  
+
+    @@preliveStatus = ENV["preliveStatus"]
+
+    def self.preliveStatus
+      @@preliveStatus
+    end
+
     def setup
       dir = '/tmp/litle-sdk-for-ruby-test'
       FileUtils.rm_rf dir
@@ -33,6 +39,8 @@ module LitleOnline
     end
 
     def test_full_flow
+      omit_if(TestLitleBatchStream.preliveStatus.downcase == 'down')
+
       saleHash = {
         'reportGroup'=>'Planets',
         'id' => '006',
